@@ -1,0 +1,265 @@
+* Time complexity of recursive instructions
+To get time complexity of recursive functions/calls, we first also show time complexity as recursive manner. 
+
+** Time complexity in recursive form
+We first have to create a way to describe time complexity of recursive functions in form of an equation as,
+\[ T(n) = ( \text{Recursive calls by the function} ) + ( \text{Time taken per call, i.e, the time taken except for recursive calls in the function} ) \]
+
++ Example, suppose we have a recursive function 
+
+#+BEGIN_SRC c
+int fact(int n){
+  if(n == 0 || n == 1)
+    return 1;
+  else
+    return n * fact(n-1);
+}
+#+END_SRC
+
+in this example, the recursive call is fact(n-1), therefore the time complexity of recursive call is T(n-1) and the time complexity of function except for recursive call is constant (let's assume *c*). So the time complexity is 
+\[ T(n) = T(n-1) + c \]
+\[ T(1) = T(0) = C\ \text{where C is constant time} \]
++ Another example,
+
+#+BEGIN_SRC c
+int func(int n){
+  if(n == 0 || n == 1)
+    return 1;
+  else
+    return func(n - 1) * func(n - 2);
+}
+#+END_SRC
+
+Here, the recursive calls are func(n-1) and func(n-2), therefore time complexities of recursive calls is T(n-1) and T(n-2). The time complexity of function except the recursive calls is constant (let's assume *c*), so the time complexity is 
+\[ T(n) = T(n-1) + T(n-2) + c \]
+\[ T(1) = T(0) = C\ \text{where C is constant time} \]
+
++ Another example,
+
+#+BEGIN_SRC c
+int func(int n){
+  int r = 0;
+  for(int i = 0; i < n; i++)
+    r += i;
+
+  if(n == 0 || n == 1)
+    return r;
+  else
+    return r * func(n - 1) * func(n - 2);
+}
+#+END_SRC
+
+Here, the recursive calls are func(n-1) and func(n-2), therefore time complexities of recursive calls is T(n-1) and T(n-2). The time complexity of function except the recursive calls is *\theta (n)* because of the for loop, so the time complexity is 
+
+\[ T(n) = T(n-1) + T(n-2) + n \]
+\[ T(1) = T(0) = C\ \text{where C is constant time} \]
+
+* Solving Recursive time complexities
+** Iterative method
++ Take for example,
+\[ T(1) = T(0) = C\ \text{where C is constant time} \]
+\[ T(n) = T(n-1) + c \]
+
+We can expand T(n-1).
+\[ T(n) = [ T(n - 2) + c ] + c \]
+\[ T(n) = T(n-2) + 2.c \]
+Then we can expand T(n-2)
+\[ T(n) =  [ T(n - 3) + c ] + 2.c \]
+\[ T(n) =  T(n - 3) + 3.c \]
+
+So, if we expand it k times, we will get
+
+\[ T(n) = T(n - k) + k.c \]
+Since we know this recursion *ends at T(1)*, let's put $n-k=1$.
+Therefore, $k = n-1$.
+\[ T(n) = T(1) + (n-1).c \]
+
+Since T(1) = C
+\[ T(n) = C + (n-1).c \]
+So time complexity is,
+\[ T(n) = O(n) \]
+
++ Another example, 
+\[ T(1) = C\ \text{where C is constant time} \]
+\[ T(n) = T(n-1) + n \]
+
+Expanding T(n-1),
+\[ T(n) = [ T(n-2) + n - 1 ] + n \]
+\[ T(n) = T(n-2) + 2.n - 1 \]
+
+Expanding T(n-2),
+\[ T(n) = [ T(n-3) + n - 2 ] + 2.n - 1 \]
+\[ T(n) = T(n-3) + 3.n  - 1  - 2 \]
+
+Expanding T(n-3),
+\[ T(n) = [ T(n-4) + n - 3 ] + 3.n  - 1 - 2 \]
+\[ T(n) = T(n-4) + 4.n  - 1 - 2 - 3  \]
+
+So expanding till T(n-k)
+\[ T(n) = T(n-k) + k.n - [ 1 + 2 + 3 + .... + k ] \]
+\[ T(n) = T(n-k) + k.n - \frac{k.(k+1)}{2} \]
+
+Putting $n-k=1$. Therefore, $k=n-1$.
+\[ T(n) = T(1) + (n-1).n - \frac{(n-1).(n)}{2} \]
+\[ T(n) = C + n^2 - n - \frac{n^2}{2} + \frac{n}{2} \]
+
+Time complexity is
+\[ T(n) = O(n^2) \]
+** Master Theorem for Subtract recurrences
+
+For recurrence relation of type
+
+\[ T(n) = c\ for\ n \le 1 \]
+\[ T(n) = a.T(n-b) + f(n)\ for\ n > 1 \]
+\[ \text{where for f(n) we can say, } f(n) = O(n^k) \]
+\[ \text{where, a > 0, b > 0 and k}  \ge 0  \]
+
++ If a < 1, then T(n) = O(n^k)
++ If a = 1, then T(n) = O(n^{k+1})
++ If a > 1, then T(n) = O(n^k . a^{n/b})
+
+Example, \[ T(n) = 3T(n-1) + n^2 \]
+Here, f(n) = O(n^2), therfore k = 2,
+\\ 
+Also, a = 3 and b = 1
+\\
+Since a > 1, $T(n) = O(n^2 . 3^n)$
+
+** Master Theorem for divide and conquer recurrences
+\[ T(n) = aT(n/b) + f(n).(log(n))^k \]
+\[ \text{here, f(n) is a polynomial function} \]
+\[ \text{and, a > 0, b > 0 and k } \ge 0 \]
+We calculate a value $n^{log_b a}$
++ If $\theta (f(n)) < \theta ( n^{log_b a} )$ then $T(n) = \theta (n^{log_b a})$
++ If $\theta (f(n)) > \theta ( n^{log_b a} )$ then $T(n) = \theta (f(n).(log(n))^k )$
++ If $\theta (f(n)) = \theta ( n^{log_b a} )$ then $T(n) = \theta (f(n) . (log(n))^{k+1})$
+For the above comparision, we say higher growth rate is greater than slower growth rate. Eg, \theta (n^2) > \theta (n).
+
+Example, calculating complexity for
+\[ T(n) = T(n/2) + 1 \]
+Here, f(n) = 1
+\\
+Also, a = 1, b = 2 and k = 0.
+\\
+Calculating n^{log_b a} = n^{log_21} = n^0 = 1
+\\
+Therfore, \theta (f(n)) = \theta (n^{log_ba})
+\\
+So time complexity is 
+\[ T(n) = \theta ( 1 . (log(n))^{0 + 1} ) \]
+\[ T(n) = \theta (log(n)) \]
+
+Another example, calculate complexity for
+\[ T(n) = 2T(n/2) + nlog(n) \]
+
+Here, f(n) = n
+\\
+Also, a = 2, b = 2 and k = 1
+\\
+Calculating n^{log_ba} = n^{log_22} = n
+\\
+Therefore, \theta (f(n)) = \theta (n^{log_ba})
+\\
+So time complexity is,
+\[ T(n) = \theta ( n . (log(n))^{2}) \]
+
+* Square root recurrence relations
+** Iterative method
+Example, 
+\[ T(n) = T( \sqrt{n} ) + 1 \]
+we can write this as,
+\[ T(n) = T( n^{1/2}) + 1 \]
+Now, we expand $T( n^{1/2})$
+\[ T(n) = [ T(n^{1/4}) + 1 ] + 1 \]
+\[ T(n) = T(n^{1/(2^2)}) + 1 + 1 \]
+Expand, $T(n^{1/4})$
+\[ T(n) = [ T(n^{1/8}) + 1 ] + 1 + 1 \]
+\[ T(n) =  T(n^{1/(2^3)}) + 1  + 1 + 1 \]
+
+Expanding *k* times,
+\[ T(n) =  T(n^{1/(2^k)}) + 1  + 1 ... \text{k times } + 1 \]
+\[ T(n) =  T(n^{1/(2^k)}) + k \]
+
+Let's consider $T(2)=C$ where C is constant.
+\\
+Putting $n^{1/(2^k)} = 2$
+\[ \frac{1}{2^k} log(n) = log(2) \]
+\[ \frac{1}{2^k} = \frac{log(2)}{log(n)} \]
+\[ 2^k = \frac{log(n)}{log(2)} \]
+\[ 2^k = log_2n \]
+\[ k = log(log(n)) \]
+
+So putting *k* in time complexity equation,
+\[ T(n) = T(2) + log(log(n)) \]
+\[ T(n) = C + log(log(n)) \]
+Time complexity is,
+\[ T(n) = \theta (log(log(n))) \]
+
+** Master Theorem for square root recurrence relations
+
+For recurrence relations with square root, we need to first convert the recurrance relation to the form with which we use master theorem. Example,
+\[ T(n) = T( \sqrt{n} ) + 1 \]
+Here, we need to convert $T( \sqrt{n} )$ , we can do that by *substituting* 
+\[ \text{Substitute } n = 2^m \]
+\[ T(2^m) = T ( \sqrt{2^m} ) + 1 \]
+\[ T(2^m) = T ( 2^{m/2} ) + 1 \]
+
+Now, we need to consider a new function such that,
+\[ \text{Let, } S(m) = T(2^m) \]
+Thus our time recurrance relation will become,
+\[ S(m) = S(m/2) + 1 \]
+Now, we can apply the master's theorem.
+\\
+Here, f(m) = 1
+\\
+Also, a = 1, and b = 2 and k = 0
+\\
+Calculating m^{log_ba} = m^{log_21} = m^0 = 1
+\\
+Therefore, \theta (f(m)) = \theta ( m^{log_ba} )
+\\
+So by master's theorem,
+\[ S(m) = \theta (1. (log(m))^{0+1} ) \]
+\[ S(m) = \theta (log(m) ) \]
+Now, putting back $m = log(n)$
+\[ T(n) = \theta (log(log(n))) \]
+Another example,
+\[ T(n) = 2.T(\sqrt{n})+log(n) \]
+Substituting $n = 2^m$
+\[ T(2^m) = 2.T(\sqrt{2^m}) + log(2^m) \]
+\[ T(2^m) = 2.T(2^{m/2}) + m \]
+Consider a function $S(m) = T(2^m)$
+\[ S(m) = 2.S(m/2) + m \]
+Here, f(m) = m
+\\
+Also, a = 2, b = 2 and k = 0
+\\
+Calculating m^{log_ba} = m^{log_22} = 1
+\\
+Therefore, \theta (f(m)) > \theta (m^{log_ba})
+\\
+Using master's theorem,
+\[ S(m) = \theta (m.(log(m))^0 ) \]
+\[ S(m) = \theta (m.1) \]
+Putting value of m,
+\[ T(n) = \theta (log(n)) \]
+
+* Extended Master's theorem for time complexity of recursive algorithms
+** For (k = -1)
+\[ T(n) = aT(n/b) + f(n).(log(n))^{-1} \]
+\[ \text{Here, } f(n) \text{ is a polynomial function} \]
+\[ a > 0\ and\ b > 1 \]
+
++ If \theta (f(n)) < \theta ( n^{log_b a} ) then, T(n) = \theta (n^{log_b a})
++ If \theta (f(n)) > \theta ( n^{log_b a} ) then, T(n) = \theta (f(n))
++ If \theta (f(n)) < \theta ( n^{log_b a} ) then, T(n) = \theta (f(n).log(log(n)))
+
+** For (k < -1)
+\[ T(n) = aT(n/b) + f(n).(log(n))^{k} \]
+\[ \text{Here, } f(n) \text{ is a polynomial function} \]
+\[ a > 0\ and\ b > 1\ and\ k < -1 \]
+
++ If \theta (f(n)) < \theta ( n^{log_b a} ) then, T(n) = \theta (n^{log_b a})
++ If \theta (f(n)) > \theta ( n^{log_b a} ) then, T(n) = \theta (f(n))
++ If \theta (f(n)) < \theta ( n^{log_b a} ) then, T(n) = \theta (n^{log_b a})
+

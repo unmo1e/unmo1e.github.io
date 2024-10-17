@@ -1,0 +1,35 @@
+* Sorting algorithms
+
+** In place vs out place sorting algorithm
+If the space complexity of a sorting algorithm is $\theta (1)$, then the algorithm is called in place sorting, else the algorithm is called out place sorting.
+
+* Bubble sort
+Simplest sorting algorithm, easy to implement so it is useful when number of elements to sort is small. It is an in place sorting algorithm. We will compare pairs of elements from array and swap them to be in correct order. Suppose input has n elements.
++ For first pass of the array, we will do *n-1* comparisions between pairs, so 1st and 2nd element; then 2nd and 3rd element; then 3rd and 4th element; till comparision between (n-1)th and nth element, swapping positions according to the size. /A single pass will put a single element at the end of the list at it's correct position./
++ For second pass of the array, we will do *n-2* comparisions because  the last element is already in it's place after the first pass.
++ Similarly, we will continue till we only do a single comparision.
++ The total number of comparisions will be
+  \[ \text{Total comparisions} = (n - 1) + (n - 2) + (n - 3) + ..... + 2 + 1 \]
+  \[ \text{Total comparisions} = \frac{n(n-1)}{2} \]
+  Therefore, *time complexity is $\theta (n^2)$*
+
+#+BEGIN_SRC C
+  void binary_search(int array[]){
+    /* i is the number of comparisions in the pass */
+    for(int i = len(array) - 1; i >= 1; i--){
+      /* j is used to traverse the list */
+      for(int j = 0; j < i; j++){
+	if(array[j] > array[j+1])
+	  array[j], array[j+1] = array[j+1], array[j];
+      }
+    }
+  }
+#+END_SRC
+
+*/Minimum number of swaps can be calculated by checking how many swap operations are needed to get each element in it's correct position./* This can be done by checking the number of smaller elements towards the left. For descending, check the number of larger elements towards the left of the given element. Example for ascending sort,
+| Array                                              | 21 | 16 | 17 | 8 | 31 | 
+| Minimum number of swaps to get in correct position |  3 |  1 |  0 | 0 |  0 |
+Therefore, minimum number of swaps is ( 3 + 1 + 0 + 0 + 0) , which is equal to 4 swaps.
+
++ */Reducing number of comparisions in implementation/* : at the end of every pass, check the number of swaps. *If number of swaps in a pass is zero, then the array is sorted.* This implementation does not give minimum number of comparisions, but reduces number of comparisions from default implementation. It reduces the time complexity to $\theta (n)$ for best case scenario, since we only need to pass through array once.
+Recursive time complexity : $T(n)  = T(n-1) + n - 1$

@@ -1,0 +1,991 @@
+* Network Layer
+It is a host-to-host layer. This layer has the IP protocol which is used to route packets on the internet. There are two versions of internet protocol IPv4 and IPv6
+** IPv4 Address
+IPv4 address is a 32-bit address that will uniquely and universally define connection of a device (computer or now more commanly a router) to the internet.
++ IPv4 addresses are unique, each address defines a single connection to the internet
++ If a device wants $n$ connections to the internet, it needs to have $n$ addresses (router is one such device)
++ Universal means all devices on internet use the same IP addressing system
+*** Address Space
+For any protocol, the total number of possible addresses is called it's address space.
+
+For IPv4, since it is 32-bit, the address space is $2^{32}$ addresses.
++ Theoretically, IPv4 must support $2^{32}$ connections
++ But actual number of addresses is less since there are restrictions on the adresses
+*** Notation
+There are two prevelant notations for IPv4 addresses
+1. Binary notation : all 32-bits of the address are shown in this notation Eg, $01110101 10010101 00011101 00000010$
+2. Dotted-decimal notation : the four bytes are written in decimal form, seperated by a dot (.) The address from previous example in this notation is $117.149.29.2$
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-11-25%20134522.png @ 2023-11-25 13:45:30
+[[file:Network_Layer/2023-11-25_13-45-30_Screenshot 2023-11-25 134522.png]]
+
+*** Classful addressing
+IPv4 addresses used to have concept of class. This type of addressing is now obsolete
+
+The address space is divided into five classes: A, B, C, D and E
++ The classes are divided based on the first byte  
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-11-25%20135335.png @ 2023-11-25 13:53:41
+[[file:Network_Layer/2023-11-25_13-53-41_Screenshot 2023-11-25 135335.png]]
+
+In binary notion, we can tell class of address by looking at first few bits
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-11-25%20135655.png @ 2023-11-25 13:57:01
+[[file:Network_Layer/2023-11-25_13-57-01_Screenshot 2023-11-25 135655.png]]
+
+Each class has fixed number of blocks and fixed fixed size
++ The class A addresses were designed for large organization with large number of hosts (or routers). Therefore it has a large host ID block (last 24 bits of IP address)
++ The class B addresses were desiged for mid sized organization. Therefore it has a mid sized host ID block (last 16 bits of IP address)
++ The class C addresse were designed for small sized organizations. Therefore, it has small host ID block (last 8 bits of IP address) 
++ The class D IP addresse are for multi-casting
++ The class E IP addresses are reserved addresses. They were reserved for experimentation and research purposes
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Untitled-2023-11-25-1427.png @ 2023-11-25 17:35:00
+[[file:Network_Layer/2023-11-25_17-35-00_Untitled-2023-11-25-1427.png]]
+
+**** Network ID and Host ID
+The network IDs were assigned to the organizations to use. The host IDs are added by the organization to uniquely identify the stations on their network
++ Network IDs will identify the network to which the IP address belongs.
++ Host ID will identify the host (devices) within the network
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-11-25%20185732.png @ 2023-11-25 18:57:36
+[[file:Network_Layer/2023-11-25_18-57-36_Screenshot 2023-11-25 185732.png]]
+
+**** Mask
+A mask is a 32-bit number with $n$ leftmost bits being 1's and remaining $(32 - n)$ bits being 0's. The mask is used to seperate the host id and net id from a given IP address.
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-11-25%20201812.png @ 2023-11-25 20:18:18
+[[file:Network_Layer/2023-11-25_20-18-18_Screenshot 2023-11-25 201812.png]]
+
+We use logical AND to get the network id and host id, from the IP address. The last column of table is called slash notation or Classless Interdomain Routing (CIDR) notation. This notation is used in classless addressing.
+**** Supernetting
+The number of hosts in class C blocks is $2^8$ i.e, 256 hosts on the same network. This is too small for most organizations. The solution to this is supernetting
++ Several networks are combined to create a super network or supernet
++ An organization applies for set of class C blocks instead of one.
++ Example, if organization needs 1000 addresses, it will use 4 contiguous blocks of class C addresses
+*** Classless addressing
+In classless addressing, organizations are still granted block (range) of IP addresses. But unlike classful addressing, their size is not fixed.
+
+There are three restrictions on classless adress blocks
+1. The address blocks must be contiguous
+2. Number of addresses in block must be power of 2
+3. The first address must be divisible by the number of addresses in block (we are referring to first address in binary notation, i.e as a single number)
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-11-26%20000703.png @ 2023-11-26 00:07:09
+[[file:Network_Layer/2023-11-26_00-07-09_Screenshot 2023-11-26 000703.png]]
+
+We can see that this block follows all three restrictions. The first IP address is converted as
+\[ (11001101 00010000 00100101 00100000)_2 = (3,440,387,360)_{10} \]
+Which is divisible by 16
+
+We don't need to convert the first address of block to decimal to check if it is divisible my some $2^m$. *If a binary number is divisible by a number $2^m$ then it's last $log_2 (m)$ bits have to be 0's*
+**** Mask (CIDR notaion)
+Mask is used to define block of addresses. In classless addressing, it is more important since the block sizes aren't fixed. In a mask, the first $n$ bits are 1's and remaining $(32 - n)$ bits are 0's.
++ In CIDR notation, we define a mask by a single value $n$. Where $n$ is the number of leftmost bits that are 1's
++ This is written alongside the IP address seperated by a slash.
+Example, $205.16.37.32/28$ is the block is CIDR notation for the block of our previous example which has starting address $205.16.37.32$ and 16 addresses
+
+Therefore the $n$ is calculated as
+\[ n = 32 - log_2 (\text{number of addresses}) \]
+Since that is the number required bits for all host IDs
+
+**** First and last address of block
+If we are given any address from a block in CIDR notation, we can get the first and last address of that block. Suppose the IP address is $a.b.c.d/n$
++ The first address in the block can be found by setting the rightmost $32 - n$ bits to 0s
++ The last address in the block can be found by setting the rightmost $32 - n$ bits to 1s
+
+The first and last address in block are special addresses. They are not given to any of the devices on the network.
++ *Network address* : The first address in block is called the network address. The router will use this address for unicast and multicast routing protcols. This will not be assigned to any device in the network
++ *Broadcast address* : The last address in block is called the broadcast address. Packets that are destined to this address are sent to all devices on the network. This is also not assigned to any device in the network.
+
+*Number of addresses in block*
+
+The number of addresses in block for the address in CIDR notation is
+\[ \text{number of addresses} = 2^{32 - n} \]
+
+**** Hierarchy in IP addresses
+IP address have levels of hierarchy, based on whether we have subnetting or not
+
+*Two-level Hierarchy: No Subnetting*
+
+When not subnetted, IP address have two levels of hierarchy. A Network ID (or network prefix) to identify the network. And the Host ID (or host address) to identify a host on the network.
++ The prefix remains same for all devices on the network
++ Only the host ID at the end changes for different devices on the network
++ If mask is $n$ in CIDR notation :
+  + The leftmost $n$ bits are network ID
+  + The rightmost $32 - n$ bits are host ID
+
+#+DOWNLOADED: file:E%3A/CN_Notes/Medium_Access_Control_Sublayer/Untitled-2023-12-01-1215.png @ 2023-12-01 12:30:42
+[[file:Network_Layer/2023-12-01_12-30-42_Untitled-2023-12-01-1215.png]]
+
+*Three-level Hierarchy: Subnetting*
+
+If an organization has a large block of address, it can break it into smaller clusters of addresses (subnets).
++ Outside of the network, it is still treated as one big network
++ But internally, it is organized into several subnets. These subnets can be given to different departments of the organization
++ Internally, each subnet has it's own new mask. This subnet mask is only relevant inside the organization itself
+/Example/, suppose an organization has a block 17.12.40.0/26, which has 64 addresses. It wants to break it into three subnets of sizes 32, 16 and 16 addresses.
++ subnet mask for 32 addresses is $n_1 = 32 - log_2 (32) = 27$
++ subnet mask for 16 addresses is $n_2 = 32 - log_2 (16) = 28$
++ subnet mask for 16 addresses is $n_3 = 32 - log_2 (16) = 28$
+In general for the subnet with $x$ addresses, the subnet is given by
+\[ \text{subnet mask for $x$ addresses $(n_i)$} = 32 - log_2 (x) \]
+The network prefix is the same for all the subnets, instead /we divide the host ID further into host ID and the subnet ID (or subnet prefix)/
+
+#+DOWNLOADED: file:E%3A/CN_Notes/Medium_Access_Control_Sublayer/Untitled-2023-12-01-1215.png @ 2023-12-01 13:39:42
+[[file:Network_Layer/2023-12-01_13-39-42_Untitled-2023-12-01-1215.png]]
+
++ This ability to make subnets makes classless addressing more flexible
++ This is very useful since in real application, the ISPs divide their block of network into smaller subnets for local ISPs. Then local ISPs further divide it into even smaller blocks and give them to different organizations
++ The /Internet Corporation for Assigned Names and Addresses/ (ICANN) is responsible for address allocation.
+  + ICANN usually does not allocate to individual organizations
+  + Instead ICANN assigns large blocks of IP address to ISPs who will distribute it to users
+  + This is called /address aggregation by the ISPs/
+*** Network Address Translation (NAT)
+With the increase in number of home users and small businesses. And the number of devices used by individuals, it was hard to assign an IP address to all of them. Previously, we used dial-up which gave the user an IP address for temporary amount of time. But now, we use Network Address Translation (NAT)
++ Internally, users have a large set of addresses that they can use for all their devices. The traffic inside the local network uses this set of addresses
++ Externally, there is a small set of addresses (usually a single address). This is the set of addresses that will connect to outside traffic (i.e, the internet)
+The Internet authorities have reserved three sets of addresses as private addresses for this purpose.
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-12-01%20135718.png @ 2023-12-01 13:57:24
+[[file:Network_Layer/2023-12-01_13-57-24_Screenshot 2023-12-01 135718.png]]
+
+Any organization can use addresses from this set without permission. These are the private addresses that are used within the local area networks (LANs) by homes and organizations.
++ These private addresses are not unique globally, so they can't be used to forward packets on the internet
++ There is usually a single connection to the global internet through the router
++ /The router runs the NAT software/
++ The private network is transparent to the rest of the Internet; the rest of the internet only sees the NAT router with the single outside connection address
++ This connection address to NAT router is given by the ISP
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-12-01%20140202.png @ 2023-12-01 14:02:12
+[[file:Network_Layer/2023-12-01_14-02-12_Screenshot 2023-12-01 140202.png]]
+
+**** Address translation
+All packets to and from the internet go through NAT router. This modifies the outgoing packets
++ For outgoing packets, it will replace the source address of packet to gloabl NAT address
++ For incoming packets, it will replace the destination address of packet to the appropriate private address
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-12-01%20140703.png @ 2023-12-01 14:08:18
+[[file:Network_Layer/2023-12-01_14-08-18_Screenshot 2023-12-01 140703.png]]
+
+**** Translation table
+For outgoing packets, the process is simple. But for incoming packets, we need a way to know the destination address of the incoming packet.
+There are three types of NAT that are used
+
+*_Static NAT_*
+
+In this NAT, the router only has a single external IP address.
++ The translation table marks a pair of information for outgoing packet
+  + It notes the Private IP address that is sending the packet
+  + It notes the External IP address that is receiving the packet
++ When there is an incoming packet,
+  + It matches the source address in the packet with the External IP in table
+  + If found, it will replace the destination address in packet with the Private IP from table
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-12-01%20142732.png @ 2023-12-01 14:27:36
+[[file:Network_Layer/2023-12-01_14-27-36_Screenshot 2023-12-01 142732.png]]
+
+This strategy has following drawback
++ Communication can only be initiated by device from inside the private network (this is why we can't have server from inside private network, when using NAT)
++ Two devices in the private network cannot communicate to same public IP address at the same time
+
+*_Dynamic NAT_*
+
+In this NAT, the router has multiple external IP addresses. The translation process is the same, but it allows multiple hosts from private network to communicate to same external IP address at the same time.
+
+So, if the NAT router has 4 global addresses assigned to it. Then 4 hosts in private network can communicate to the same external IP address at the same time.
+
+*_Port Address Translation_*
+
+In this strategy, instead of only storing a pair of data (Private IP and External IP), we will store 5 columns of data in translation table
++ 5 columns of data is stored in translation table for every outgoing packet
+  + The private IP address and it's private port number
+  + The external IP address and it's external port number
+  + The transport protocol that is used for communication
++ For an incoming packet
+  + It will try to match all the four extra column data i.e, Private Port, External Address, External Port and Transport Protocol
+  + If the data matches, it will replace the destination address in packet with the corrosponding Private Address
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-12-01%20145623.png @ 2023-12-01 14:56:27
+[[file:Network_Layer/2023-12-01_14-56-27_Screenshot 2023-12-01 145623.png]]
+
+There can be a case where two hosts use the same private port, but it is extremely rare that this happens. Therefore, this is a very efficient way to have many-to-may communication in a NAT
+
+**** Usuage of NAT by ISPs
+NAT technology allows ISPs to have way more customers than the number of global IP addresses it is granted. The ISP can simply assign private IP addresses to it's customers and then it will use NAT on it's site to connect all of the users to the internet.
+
+Example, if an ISP has 1000 addresses and 100,000 customers, it can translate packets from all 100,000 customers to one of the 1000 global addresses. As show in the example below
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-12-01%20150143.png @ 2023-12-01 15:01:47
+[[file:Network_Layer/2023-12-01_15-01-47_Screenshot 2023-12-01 150143.png]]
+
+** IPv6 Addresses
+IPv6 address is 128 bits long. That is it is 16 bytes long. So the address space is $2^{128}$ addresses
+*** Notation
+2 bytes of data can be shown by 4 hexadecimal digits. Therefore, we use 4 hexadecimal digits for every 2 bytes which is seperated by colons.
+Example,
+\[ FDEC:0074:0000:0000:0000:B0FF:0000:FFFF \]
+**** Abbriviating notation
+As we can see in the example, the four hexadecimal digits may have leading 0's (we can see it above in 0074). Rather than writing leading 0's, we can abbriviate them. We also write (0000) as just 0
+\[ FDEC:74:0:0:0:B0FF:0:FFFF \]
+This is much more convinient to write. But we can see that between 74 and B0FF, there are only 0's. This is sometimes further abbriviated to only
+\[ FDEC:74::B0FF:0:FFFF \]
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-12-01%20152000.png @ 2023-12-01 15:20:05
+[[file:Network_Layer/2023-12-01_15-20-05_Screenshot 2023-12-01 152000.png]]
+
+*** Address Space
+The few leftmost bits in the IPv6 address are type prefix. The type prefix is variable in length
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-12-01%20160313.png @ 2023-12-01 16:03:23
+[[file:Network_Layer/2023-12-01_16-03-23_Screenshot 2023-12-01 160313.png]]
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-12-01%20160341.png @ 2023-12-01 16:03:45
+[[file:Network_Layer/2023-12-01_16-03-45_Screenshot 2023-12-01 160341.png]]
+
+**** Unicast address
+A unicast address define a single computer. Packet sent to a unicast address must be delivered to that specific computer. There are two types of unicast addresses
+1. Geographic-based unicast addresses
+2. Provider-based unicast addresses
+The provider-based unicast address is discussed here. 
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-12-01%20160915.png @ 2023-12-01 16:09:20
+[[file:Network_Layer/2023-12-01_16-09-20_Screenshot 2023-12-01 160915.png]]
+
+Fields for provider-based address is as follows
+1. Type identifier : This is the first 3-bit field, this defines the address as provider-based address
+2. Registry identifier : This is a 5-bit field, used to identify the agency that has registered the address. There are currently three registry centers. INTERNIC is for north america; RIPNIC is for center European; APNIC is for Asian and Pacific countries.
+3. Provider identifier : varibale-length field identifies the provider for Internet access (such as ISP). 16-bit is recommended length
+4. Subscriber identifier : variable-length field that identifies the subscriber to the ISP. A 24-bit length is recommended
+5. Subnet identifier : each subscriber can have multiple subnets, and each subnet has different identifier. A 32-bit lenght is recommended
+6. Node identifier : defines the node connected to the subnet. A length of 48-bits is recommended for this field to make it compatible with 48-bit MAC addresses.
+ 
+**** Multicast addresses
+Addresses define a group of hosts instead of just one.
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-12-01%20161823.png @ 2023-12-01 16:18:28
+[[file:Network_Layer/2023-12-01_16-18-28_Screenshot 2023-12-01 161823.png]]
+
++ The flag field is used to define group addresses as either permanent or transient. Some group addresses are permanent define by Internet authorities and can be accessed at all times. A transient group address is only used temporarily.
++ The scope field is used to define the scope of the group
+**** Anycast addresses
+IPv6 also defines anycast addresses which like multicast addresses also group nodes. However, in anycast addresses packet is delivered to only one of it's member. It is the member that is the nearest one (with shortest route)
+**** Reserved addresses
+These addressess start with eight 0s. 
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-12-01%20163046.png @ 2023-12-01 16:30:51
+[[file:Network_Layer/2023-12-01_16-30-51_Screenshot 2023-12-01 163046.png]]
+
++ Unspecified is used when host does not know it's own address and send inquiry to find it's address (in DHCP)
++ Loopback is used by host to test itself without going to the network
++ The compatible address is used during transition from IPv4 to IPv6
++ The mapped address is also used for this purpose, it is used when computer that migrated to IPv6 wants to send packet to computer using IPv4
+**** Local addresses
+These are addresses used by organizations that want to use IPv6 without being connected to global internet.
++ They are equivalent in role to the private addresses of IPv4
++ Link local address is used in an isolated subnet
++ Site local address is used in an isolated site with several subnets
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-12-01%20163643.png @ 2023-12-01 16:36:47
+[[file:Network_Layer/2023-12-01_16-36-47_Screenshot 2023-12-01 163643.png]]
+** The Internet Protocol
+The internet is a connectionless network, i.e, there is no connection step where the route is fixed. Also  internet is a datagram network, i.e, it is packet-switched which means it uses universal addresses (IP addresses) to carry packets from source to destination.
+*** IPv4
+The IPv4 is the delivery mechanism used by TCP/IP protocols
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-12-01%20173044.png @ 2023-12-01 17:30:49
+[[file:Network_Layer/2023-12-01_17-30-49_Screenshot 2023-12-01 173044.png]]
+
+IPv4 is unreliable and connectionaless datagram protocol.
++ It is a best-effort service, meaning it provides no error control or flow control (except error detection in header).
++ If reliability is important, we pair IPv4 with TCP.
++ Each datagram is handeled independently, and each can follow a different route to destination.
+**** Datagram format
+Packets in IPv4 are called datagrams. It is a variable-length packet consisting of two parts : header and data.
+
+The header has following parts
+1. Version (VER) : 4-bit field which defines the version of IPv4 protocol. Currently version is 4.
+2. Header Length (HLEN) : 4-bit field defines total length of the header in 4-byte word. This number is between 5 and 15. The minimum is five 4-byte words i.e a total of 20 bytes. The maximum is fifteen 4-byte words i.e, total of 60 bytes. (Header of IPv4 datagram is always in form of 4-byte words)
+3. Services : 8-bit field which has two different interpretations service type and differentiated services. We will only see service-type interpretation
+   
+    [[file:Network_Layer/2023-12-01_18-03-53_Screenshot 2023-12-01 180348.png]]
+    
+    The precedance is 3-bit subfield which ranges from 0 to 7 and holds the priority of a packet. TOS is 4-bit subfield that stores the type of service that this datagram requires
+    
+     [[file:Network_Layer/2023-12-01_18-06-31_Screenshot 2023-12-01 180628.png]]
+     
+4. Total length : 16-bits field that stores the total lenght of packet (header + data) in bytes. This field is needed since underlying protocols (like ethernet) may add padding to the data which needs to be removed.
+5. Identification : 16-bit field used in fragmentation
+6. Flags : 16-bit field used in fragmentation
+7. Fragmentation Offset : 13-bit field used in fragmentation
+8. Time to live : 8-bit field. Datagram packets have limited lifetime in its travel.
+   + Originally this held timestamp which decremented by each visited router.
+   + When it is 0, packet is discarded
+   + However, that meant all machines must be synchronized. So now it is used to control maximum number of hops (routers visited)
+   + This field is needed because routing tables can become corrupted and datagram may get passed around forever if not destroyed
+   + It can also be used to limit the journed to local network only by setting it to 1
+9. Protocol : 8-bit field which defines the higher-level protocol being used.
+   #+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-12-01%20183720.png @ 2023-12-01 18:37:24
+   [[file:Network_Layer/2023-12-01_18-37-24_Screenshot 2023-12-01 183720.png]]
+   
+10. Checksum : 16-bit field. The IPv4 checksum only covers the header and not the data, this is because upper-layers are already storing checksums for data. It is calculated as follows
+    + The checksum field is set to 0
+    + The entire header is divided to 16-bit sections
+    + All sections are added together, if the result is greater than 16-bit then extra bits are taken from left and added to the sum. Example, if sum is $(2479c)_{16}$, then we can do $2 + 479c = 479e$ to get sum
+    + The resulting sum is complemented and inserted to checksum field
+11. Source address : 32-bit field to store IPv4 address of source
+12. Destination address : 32-bit field to store IPv4 address of destination
+13. Options : it's size is between 0 bytes and 40 bytes. It is not required in a IPv4 datagram but is used for network testing and debugging. Without options field, a IPv4 datagram header is only 20 bytes
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-12-01%20185506.png @ 2023-12-01 18:57:01
+[[file:Network_Layer/2023-12-01_18-57-01_Screenshot 2023-12-01 185506.png]]
+
+**** Fragmentation
+Every router decapsulated the IPv4 datagram from frame it receives, processes it and then encapsulates it into a new frame. The formats and sizes of frames depend on the protcols used by the lower layers
+
+*_Maximum Transfer Unit (MTU)_*
+
+All data link layer protcols have their own frame format. Each format has a different maximum size of data field. So before we can only pass datagrams to data link layer, we need to make sure it is smaller than this limit. This limit is called the Maximum Transfer Unit (MTU).
+
+MTUs for some protocols in bytes are :
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-12-01%20192012.png @ 2023-12-01 19:20:17
+[[file:Network_Layer/2023-12-01_19-20-17_Screenshot 2023-12-01 192012.png]]
+
+The maximum size of IPv4 datagram is 65,535 bytes. However, we must divide datagram to make it possible to pass through the network. This is called fragmentation.
++ When datagram is fragmented, each fragment has its own header with all fields repeated except three
++ A fragmented datagram may get further fragmented as it travels through different networks multiple times
++ The reassembly of all the fragments is done only by the destination host.
+The host or router which fragments datagram needs to change three fields: flag, fragmentation offset and total length. The value of checksum is also recalculated (this is done regardless of fragmentation, to detect errors)
+
+*_Fields Related to Fragmentation_*
+
++ *Identification* : 16-bit field used to identify the datagram originating from the source.
+  + During communication, every datagram that leaves the source host has a unique identification
+  + A counter is intialized to a positive value before communication starts
+  + When IPv4 sends a datagram, it will copy the current value of the counter. Then increment the counter. This makes sure that Identification is unique thourghout communication
+  + When a datagram is fragmented, each fragment will get the same identification value, this will help destination in reassembling (since all fragments with same ID must assemble to one datagram)
++ *Flags* : 3-bit field.
+  + The first bit is reserved.
+  + The second bit is /do-not-fragment bit/. If it's value is 1, then datagram is never fragmented. If it is too big to travel, it is discarded and an ICMP error message is sent to source.
+  + The third bit is /more fragment bit/. If it's value is 1, then it means it is not the last fragment of the datagram; there are more fragments after this one. If it is 0, it means it is either last or only fragment
++ *Fragmentation offset* : 13-bit field which will store the relative position of this fragment with relation to data field. *Note* : the header is not accounted for the offset, only the data field is. /The value of offset is measured in units of 8-bytes words./
+/Example/, suppose data is of size 4000 bytes, and MTU is 1400 bytes.
++ The  data is 4000 bytes, i.e, it is $ceil (4000 \div 8) = 500$ 8-byte words. In general there are $ceil (x \div 8)$ 8-byte words in $x$ bytes of data.
++ The eight byte words are numbered from 0 to 499. 
++ The MTU is of size $floor (1400 \div 8) = 175$ 8-byte words. We floor here, since we don't want more than the MTU
++ So the fragements are
+  + First fragement has offset of $0 \times 175 = 0$
+  + Second fragment has offset of $1 \times 175 = 175$
+  + Third fragment has offset of $2 \times 175 = 350$
+  + In general, $n_{th}$ fragment has offset of $(n - 1) \times floor (MTU \div 8)$
+
+*** IPv6
+IPv4 is bad because
++ we are running out of IPv4 addresses
++ can't support real time audio and video
++ no encryption and authentication
+The adoption is slow for IPv6 because of developments such as classless addressing and NAT.
+
+The advantages of IPv6 are
+1. Larger address space
+2. Better header format
+3. New way to add options and new options
+4. allowance for easy extension
+5. support for resource allocation (for real time audio and video)
+6. more security
+**** Packet format
+Packets in IPv6 composed of mandatory base header followed by payload. The payload consists of two parts : the optional extension headers and data from upper layer.
+
+The base header is of 40 bytes, and extension headers + data from upper layer can go up to 65,535 bytes
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-12-01%20215944.png @ 2023-12-01 21:59:49
+[[file:Network_Layer/2023-12-01_21-59-49_Screenshot 2023-12-01 215944.png]]
+
+*Base Header*
+
+1. Version : 4-bit field defines the version number of IP. value is 6
+2. Priority : 4-bit field define priority of the packet. Unlike IPv4 packets, the priority in IPv6 is with respect to other packets from the same source. Values from 0 to 7 are used in /congestion-controlled traffic/ and values from 8 to 15 are used in /noncongestion-controlled traffic/
+   + If source can adapt itself to traffic slowdown, it is refferred to as congestion-controlled traffic. Example, when using TCP
+     1. value of 0 means /no specefic traffic/, so no priority is defined
+     2. value of 1 means /background data/, this means data is to be delivered in the background i.e, least priority
+     3. value of 2 means /unattended data traffic/, a little bit of delay is of little consequence. example is Email
+     4. value of 4 means /attended bulk data traffic/, used for protocols where user is waiting (attending) to receive data. like FTP and HTTP
+     5. value of 6 means /interactive traffic/, protocols such as TELNET have second highest priority
+     6. value of 7 means /control traffic/, routing protocols such as OSPF and RIP have highest priority
+ #+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-12-01%20222509.png @ 2023-12-01 22:25:13
+ [[file:Network_Layer/2023-12-01_22-25-13_Screenshot 2023-12-01 222509.png]]
+
+   + In noncongestion-controlled traffic there is mimimum delay. Discarding packets is not desirable. Retransmission is mostly impossible, because source does not adapt to congestion. Data with least redundancy (low-fidelity audio or video) is given priority over data with high redundancy (high-fidelity audio or video)
+     #+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-12-01%20222537.png @ 2023-12-01 22:25:41
+     [[file:Network_Layer/2023-12-01_22-25-41_Screenshot 2023-12-01 222537.png]]
+
+3. Flow label : 3-byte (24-bit) field provided for special handling of particular flow of data. A sequence of packets that needs special handling by routers is called /flow of packets/.
+   + Combination of source address and value of flow label defines a flow of packets
+   + A flow of packets will travel the same path, use same resources and have same kind of security
+   + This is useful to support real time audio and video
+4. Payload length : 16-bit field, it stores unsigned number that indicates total size of payload including extension headers and data from upper layer. /If size is greater than $2^{16} - 1$, it is set to 0 and jumbo payload option is used in hop-by-hop extension header/
+4. Next Header : 8-bits field that defines the type of the next header. /This field is used to chain multiple extension headers./
+4. Hop limit : 8-bit field that serves same purpose as TTL field in IPv4. Discards frame when hop limit reaches 0
+5. Source Address : the address to source machine of the packet
+6. Destination Address : the address to destination machine of the packet
+
+*_Extension Headers_*
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-12-01%20224513.png @ 2023-12-01 22:45:18
+[[file:Network_Layer/2023-12-01_22-45-17_Screenshot 2023-12-01 224513.png]]
+
+Each extension header can have a different size and adds some other option. Some of the common ones are
++ Hop-by-hop option : used when some information needs to be passed to all routers the packet visits. Only three defined thus far.
+  + Pad1 is for alignment purposes
+  + PadN is similar purpose but is used when 2 or more bytes need alignment
+  + /Jumbo payload/ options is used when payload is greater than 65,535 bytes
++ Fragmentation : in IPv6 only the source machine can fragment the packet. This is used when a packet is fragmented
+
+** Address Mapping
++ The physical address is a local address. It's jurisdriction is the local network. It is unique locally but not universally. Example, 48-bit MAC address
++ The logical address is required for host-to-host delivery on the internet
+So for delivery of packet, two levels of addressing are required. So we need to map physical addresses to logical addresses. We can have either a static mapping or a dynamic mapping
+
+Static mapping has a table that associates logical addresses with a physical address. The table is stored on each machine on the network. But static tables need to be updated periodically, so we can use dynamic mapping.
+*** Mapping Logical to Physical Address : ARP
+If a host or a router wants to know the physical address of some other device on network, whose logical address it knows, it sends an ARP query packet
++ /This query packet is broadcasted/ to all devices on network
++ This query packet contains the physical and IP address of the sender and IP address of receiver
++ Every host or router on network wil receive and process the ARP query packet, but only the intended recipient recognizes its own IP address and send back the ARP response
++ The response packet will contain the recipient's IP and physical address
++ /The response packet is unicast/
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-12-01%20235943.png @ 2023-12-01 23:59:52
+[[file:Network_Layer/2023-12-01_23-59-52_Screenshot 2023-12-01 235943.png]]
+**** Cache memory
+Using ARP is inefficient for every single packet sent between two systems
++ ARP reply is usually cached since normally several packets are sent to the same device
++ ARP reply are stored in cache for upto 20 to 30 minutes
++ Before sending an ARP request, the cache memory is always checked
+**** Packet Format
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-12-02%20000300.png @ 2023-12-02 00:03:07
+[[file:Network_Layer/2023-12-02_00-03-07_Screenshot 2023-12-02 000300.png]]
+
+1. Hardware Type : 16-bit field defines the data link layer protocol type. Example : ethernet is 1
+2. Protocol Type : 16-bit field defines the network layer protocol type. Example : IPv4 is 0x0800
+3. Hardware Length : 8-bit field, length of physical address in bytes. Example, ethernet is 6 (since MAC address is 48-bits)
+4. Protocol length : 8-bit field, length of the logical address in bytes. Example, IPv4 is 4
+5. Operation : 16-bit field, specifies what the sender of this frame is performing. /1 for request, 2 for reply/
+6. Sender hardware address : variable-length field, the physical address of device sending this frame
+7. Sender protocol address : variable-length field, the logical address of device sending this frame
+8. Target hardware address : variable-length field, the hardware address of device receiving this frame.
+   + For ARP query, this field is ignored
+   + For ARP reply, this field has the address of host from which the query originated
+9. Target Protocol address : variable-length field, of the receiver of this packet
+
+This packet is encapsulated directly into data link frame without any changes. As shown in the following ethernet frame.
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-12-02%20002155.png @ 2023-12-02 00:22:01
+[[file:Network_Layer/2023-12-02_00-22-01_Screenshot 2023-12-02 002155.png]]
+**** Proxy ARP
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-12-02%20003957.png @ 2023-12-02 00:40:02
+[[file:Network_Layer/2023-12-02_00-40-02_Screenshot 2023-12-02 003957.png]]
+
++ ARP only works on the local network
++ If we want to support ARP for another subnetwork, connected via a router we can use PARP
++ *The Proxy ARP router will give it's own physical address rather than one from subnet*
++ After it gets the IP packet, it sends it to appropriate host on subnetwork
+*** Mapping Physical to Logical Address : BOOTP and DHCP
+**** BOOTP
+The Bootstrap Protocol (BOOTP) is client/server protocol designed to provide physical address to logical address mapping.
++ BOOTP is an application layer protocol
++ Client and server can be on same or different networks
++ BOOTP uses UDP packets, and UDP packet are encapsulated in IP packet
+The operation is as follows
+
+*_Case 1 : Client and server on same network_*
+
+The client broadcasts a packet called "BOOTP request" and it is picked up by the BOOTP server, which replies with the following information
+1. The client's IP address, subnet mask, and default gateway address
+2. IP address and host name of BOOTP server
+3. IP address of the server that has boot image, which client needs to load. This server can be the same as the BOOTP server itself
+4. The client loads the image to configure and initialize the TCP/IP stack
+
+*_Case 2 : Client and server on different network_*
+
+Since BOOTP request is a broadcast, it cannot pass through a router. The router will discard the packet. To solve this problem, a relay agent is used
+1. The relay agent knows address of BOOTP server and listens for BOOTP request broadcasts
+2. When it receives the broadcast, it will encapsulate the message and send it to BOOTP server
+3. The relay agent also receives the reply and send it to the client
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-12-02%20012550.png @ 2023-12-02 01:25:54
+[[file:Network_Layer/2023-12-02_01-25-54_Screenshot 2023-12-02 012550.png]]
+
+**** DHCP
+BOOTP is not dynamic configuration protocol.
++ When it wants to give info to the client it uses a table which is manually filled by the administrator
++ This table is static and does not change, till modified by admin
+So we have Dynamic Host Configuration Protocol (DHCP) to provide static and dynamic address allocation
++ /For static allocation, DHCP acts as BOOTP does./ It is backwords compatible, so a BOOTP client can request address from a DHCP server. DHCP maintains a static database to maintain this backwards compatibility
++ /For dynamic allocation/, DHCP has a second database which has a pool of available IP addresses. This second databse is dynamic
+  + The DHCP server first checks it's static database. If physical address of client is found, it will give it the permanent IP address of the client
+  + If client is not in static databse, it will take an unused IP address from dynamic database and give client the temporary IP address for a limited time.
+    + When the time for lease of the address expires, the client either stops using the address or it must renew the lease
+    + The DHCP server can decide to either agree or disagree to renewal
+
+*** ICMP
+The IP protocol lacks two very important things
+1. It has no error-reporting mechanism
+2. It lacks mechanism for host and management queries
+The Internet Control Message Protocol (ICMP) is designed to compensate for both of these drawbacks
+**** Types of messages
+ICMP message can be divided into two broad categories : error-reporting messages and query messages.
++ error-reporting messages are to report problems a router or host may encounter when it processess an IP packet
++ query messages occur in pairs, some host or router has a query and it asks the question and specific information is recieved from another host. this is used when nodes want to discover their neighbours or learn about routers on network
+**** Message format
+An ICMP message has an 8-byte header and a variable size data section. The format is different for different types of messaages, but the first 4-bytes are common
+1. Type : 8-bits, defines the type of the message
+2. Code : 8-bits, defines the reason for the particular messaage type
+3. Checksum : 16-bits, in ICMP the checksum is calculated over the entire message (header and the data)
+   + Since we want 16-bits, we group the data into 16-bits i.e, 2 bytes
+   + We sum all of the grouped data, if sum is larger than 16-bits, then extra leftmost bits are taken and added to the sum. Example, if sum is $(2479c)_{16}$, then we can do $2 + 479c = 479e$ to get sum
+   + We complement the received sum in-order to get the checksum
+4. Data section : in error messages, this will carry information about the original packet that had the error. In query messages, it carries information based on type of query
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-12-02%20022217.png @ 2023-12-02 02:22:27
+[[file:Network_Layer/2023-12-02_02-22-27_Screenshot 2023-12-02 022217.png]]
+**** Error reporting
++ ICMP cannot correct errors, it simply reports them. Correction is left to higher-level protocols.
++ Error messages are sent to the source where the problematic packet came from, by reading the datagram.
+The datagrams for which no error messages are generated are
+1. No ICMP messages are generated for other ICMP error messages
+2. No ICMP messages are generated for fragmented datagram except the first one
+3. No ICMP messages generated for multicast address datagrams
+4. No ICMP messages for special addresses such as 127.0.0.0 or 0.0.0.0
+/The content of data field in error message ICMP is the IP header of the problematic frame along with first 8 bytes of it's data/
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-12-02%20133040.png @ 2023-12-02 13:30:54
+[[file:Network_Layer/2023-12-02_13-30-54_Screenshot 2023-12-02 133040.png]]
+
+Some of the types of error messages are
+
+*_Destination Unreachable_*
+
+When router can't route a datagram or host can't deliver a datagram, it will be discarded and destination-unreachable is sent
+
+*_Source Quench_*
+
+IP protocol does not have flow control, which creates congestion.
++ Routers and host have limited-size queues (buffers) to process datagrams, if datagrams are received faster than they are processed then buffer will overflow.
++ To avoid this, router or host will discard some of the datagrams
++ The source-quench message is sent to source to inform it that datagram was discarded and to slow down the sending process
+
+*_Time Exceeded_*
+
++ If there are errors in routing table, then packet can travel in a loop. In this case, the TTL field eventually becomes 0 and datagram is discarded. This message is sent back to source to inform it about this.
++ This message is also generated when not all fragments arrive at the destination within a time limit
+
+*_Parameter Problem_*
+
+If there is ambiguity of missing value in datagram header, then it is discarded and this message is sent to source
+
+*_Redirection_*
+
+During routing process, hosts use a static routing table and routers use dynamic routing table. Host use static routing table to reduce traffic that would increase if it's table is constantly updated.  However, this means it can send datagram to wrong router. In this case, router will send the datagram to the correct router, but it will also send a redirection message to the device which sent the datagram to wrong router. The device then fixes it's routing table
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-12-02%20132955.png @ 2023-12-02 13:29:59
+[[file:Network_Layer/2023-12-02_13-29-59_Screenshot 2023-12-02 132955.png]]
+
+**** Query messages
+Query messages can be used for diagnosing and debugging the network
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-12-02%20133547.png @ 2023-12-02 13:35:52
+[[file:Network_Layer/2023-12-02_13-35-52_Screenshot 2023-12-02 133547.png]]
+
+*_Echo Request and Reply_*
+
+These are messages for diagnostic purposes. The combination of echo-reply and echo-request messages tells whether two devices can communicate with each other at IP level
+
+*_Timestamp Request and Reply_*
+
+Two machines can use timestamp request and reply messages to determine the /round-trip time/ needed for IP datagram to travel. Also useful to synchronize clocks.
+
+*_Address-Mask Request and Reply_*
+
+A host may know it's IP address but not the mask.
++ To obtain the mask, it will send address-mask-request to a router on the LAN.
++ If it knows the address of router, it will unicast the message else it will broadcast
++ The router responds with address-mask-reply messaage
+
+*_Router Solicitation and Advertisement_*
+
+A host needs to know about routers on its network and if they are alive and working
++ Host broadcasts the router-soliciation message
++ Router or routers that recieve the message will broadcast their routing information using Router-advertisement message
++ This advertisement not only announces it's own info, but of all the routers on the network
+
+*** ICMPv6
+ICMP was modified for IPv6. The ARP and IGMP protocols were are combined in ICMPv6. Similar to ICMPv4, messages are of two types but we have more type of messages.
+**** Error messages
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-12-02%20141332.png @ 2023-12-02 14:13:37
+[[file:Network_Layer/2023-12-02_14-13-37_Screenshot 2023-12-02 141332.png]]
+
+One new type of error message was added in ICMPv6 and Source quench was removed
+
+*_Packet too big_*
+
+Since IPv6 does not fragment packet unless it's the source host. If packet is too big to travel through a network, it has to be discarded and this message is sent to source.
+**** Query messages
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-12-02%20141607.png @ 2023-12-02 14:16:12
+[[file:Network_Layer/2023-12-02_14-16-12_Screenshot 2023-12-02 141607.png]]
+
+*_Neighbour Solicitation and Advertisement_*
+
+In IPv6, ARP was eliminated, and its duties were included in ICMPv6. The process is still the same, but format of message is changed.
+
+*_Group membership_*
+
+IGMP is eliminated and its duties are given to the ICMPv6
+
+** Delivery
+The network layer supervises the handling of packets by the physical network. This is called delivery of packets.
+
+Delivery is of two types
+1. Direct Delivery : the final destination of packet is a host on same physical network as deliverer.
+   + There are two times this happens, either both host are on same network, or a router receives a packet from outside network which it will deliver to it's own network.
+   + The mask is used for direct delivery.
+   + The number of routers to hop for direct delivery is 0
+2. Indirect Delivery : when destination is not on same network, the packet is delivered indirectly
+   + Packet goes from router to router till it reaches the correct network
+   + Once it reaches the correct network, it is delivered finally by a direct delivery
+   + The number of routers hopped for indirect delivery is non-zero
+   + *NOTE* : last delivery of the packet is always direct
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-12-02%20145029.png @ 2023-12-02 14:50:35
+[[file:Network_Layer/2023-12-02_14-50-35_Screenshot 2023-12-02 145029.png]]
+
+** Forwarding
+Forwarding means to to place packet on the route to its destination by host or router. Forwarding is done when we need to do an indirect delivery i.e, a hop of network is required
++ For correct forwarding, it is required that host/router has a routing table
++ When host/router gets a packet that is not addressed to itself, it will forward it by looking up the routing table
++ However, having entry for every single host is impossible considering the size of the modern internet.
+*** Forwarding Techniques
+Several forwarding techinques are used to make size of routing tables mangable and handle security issues as well
+**** Next-Hop method vs Route Method
++ When routign tables hold all information of the complete route, it is called route method
++ When the routing tables will only hold the address of the next hop instead the information of the complete route, it is called the next-hop method
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-12-02%20171406.png @ 2023-12-02 17:14:12
+[[file:Network_Layer/2023-12-02_17-14-12_Screenshot 2023-12-02 171406.png]]
+
+**** Network-specific method vs Host-specific method
++ When we have an entry for every destination host connected to same physical network, it is called host-specific method
++ When we have a single entry, that defines the address of the destination network itself, it is called network-specific method
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202024-02-03%20232026.png @ 2024-02-03 23:20:43
+[[file:Network_Layer/2024-02-03_23-20-43_Screenshot 2024-02-03 232026.png]]
+
+**** Default method
+In the routing table, we have an entry called the /default entry/. So the destination does not match with any other entry of the table, we just take the default hop. /So instead of listing all networks on the entire Internet, we simply use the default entry/
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-12-02%20182449.png @ 2023-12-02 18:24:54
+[[file:Network_Layer/2023-12-02_18-24-54_Screenshot 2023-12-02 182449.png]]
+
+*** Forwarding Process
+We assume that hosts and routers are using classless addressing, classful addressing can be treated as special case of classless addressing.
+
++ The first address in the block will be treated as a special address called the *network address.*
+  + It will not be assigned to any of the device on the network.
+  + It is used by the routers to forward packets
++ The routing table needs one row of information for each block involved.
++ The table needs to be searched based on the network address (first address in the block)
++ The routing table also includes the mask of the network
++ The last thing to store is the interface (port) of the router to which the network connects
+
+Example, the configuration
+#+DOWNLOADED: file:E%3A/CN_Notes/Medium_Access_Control_Sublayer/Untitled-2023-12-02-2019.png @ 2023-12-02 21:26:20
+[[file:Network_Layer/2023-12-02_21-26-20_Untitled-2023-12-02-2019.png]]
+
+router R1 will have the corrosponding routing table
+| Mask    | Network Address |      Next Hop | Interface |
+|---------+-----------------+---------------+-----------|
+| /26     |   180.70.65.192 |               | m2        |
+| /25     |   180.70.65.128 |               | m0        |
+| /24     |      201.4.22.0 |               | m3        |
+| /22     |      201.4.16.0 |               | m1        |
+| /30     |     192.168.0.0 |    201.5.16.3 | m1        |
+| default |         default | 180.70.65.200 | m2        |
+
++ The first 4 rows have Next Hop empty, since the router does not send packet to another router, it can send them to destination itself
++ The entry for network $192.168.0.0/30$ has Next Hop entry $201.5.16.3$, since it needs to go to router with ip address of $201.5.16.3$ to hop to network $192.168.0.0/30$
++ The default entry assumes that packet wants to go to internet and sends it to router with IP $180.70.65.200$ to hop to internet
+*NOTE :* a router is an intersection of different networks. It is considered a part of all the networks it connects
+**** Address Aggregation
+When using classless addressing, number of routing table entries can increase considerably.
++ This is because classless addressing divides address space into manageable blocks
++ The larger the routing table is, the more time it takes to search the table. This affects performance
+To alliviate the problem address aggregation was designed
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-12-02%20222318.png @ 2023-12-02 22:23:24
+[[file:Network_Layer/2023-12-02_22-23-24_Screenshot 2023-12-02 222318.png]]
+
+In this example
++ R1 is connected to 4 organizations networks, each have 64 addresses. So it has a large routing table
++ R2 is somewhere far from R1, it has a small routing table since any packet with destination from $140.24.7.0$ to $140.24.7.255$ is sent to same interface m0
++ Here, R2 is aggregating all the networks into a single block
+**** Longest Mask Matching
+What if organization 4 from the address aggregation example is not connected to the router R1 directly. /But we can still aggregate block by using principle of longest mask matching./
++ This principle states that routing table is always sorted from longest mask to shortest mask
++ The network address will be matched from top to bottom
+This principle allows us to send packets for organization 4 to its own router R4, before it checks for other organizations router
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-12-02%20224053.png @ 2023-12-02 22:40:58
+[[file:Network_Layer/2023-12-02_22-40-58_Screenshot 2023-12-02 224053.png]]
+
+**** Hierarchical Routing
+To solve problems of large routing tables, we create a hierarchy of routing tables
++ So the home router will be at the bottom of hierarchy
++ Above it will be the local ISP routing table
++ Above it will be state ISP routing table
++ And so on.
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-12-02%20224613.png @ 2023-12-02 22:46:17
+[[file:Network_Layer/2023-12-02_22-46-17_Screenshot 2023-12-02 224613.png]]
+
+*_Geographical routing_*
+
+To decrease size of routing tables even further, we can extend hierarchical routing to include geographical routing
++ We assign block to large geographical portions
++ So there is a block for India, Europe, North America and so on.
+
+*** Routing Table
+The routing table can be either static or dynamic
+
+*_Static Routing table_*
+
+A static routing table contains information that is entered manually.
++ The admin will enter each destination into table manually
++ It is not updated automatically when there is change in Internet
++ This can be used for small networks or for troubleshooting
+
+*_Dynamic Routing table_*
+
+The dynamic routing table updates periodically by using a dynamic routing protocol such as RIP, OSPF or BGP. Whenever there is change in network, dynamic protocols update table of routers automatically
+**** Format of routing table
+Routing table need a minimum of 4 columns as we have seen, but some routing tables may have extra fields.
++ Minimum number of columns is 4
++ Number of columns is vendor-dependent
+Usually, three more columns are added to routing table
+1. Flags : this column will store flags that can be switched on/off. There are up to five flags. The five flags are
+   1. U (up) : indicates if router is up and running
+   2. G (gateway) : means that destination is in another network, so a hop is required (indirect delivery). Lack of this flag means it is direct delivery
+   3. H (host-specific) : specifies that entry is host-specific address and not network-specific
+   4. D (added by redirection) : indicates that this entry was added by a redirection message from ICMP
+   5. M (modified by redirection) : indicates that entry was modified by a redirection message
+2. Reference count : this field gives number of users of this route at the moment
+3. Use : shows number of packets transmitted through router to this destination
+
+** Unicast Routing protocols
+One of the ways in which dynamic routing protocols work is by trying to optimize some metric for the hops.
++ Simple protocols treat each hop as equal; so each hop only adds a single hop count. So RIP will try to reduce the hop count for a route.
++ Open Shortest Path First (OSPF) allow admin to assign costs for passing through a network. Example, if maximum throughput is desired then satellite link has lower metric than fiber-optic line.
+  + OSPF allows router to have multiple tables based on required type of service needed
++ Border Gateway Protocol (BGP) uses a policy set by admin to find paths
+*** Intra- and Interdomain Routing
+Today, internet is too large for one routing protocol to handle. So internet is divided into autonomous systems.
++ Autonomous System (AS) is a group of networks and routher under a single administration
++ Routing inside the AS is intradomain routing
++ Routing across different AS is interdomain routing
++ An autonomous system can choose one or more intradomain routing protocol at the same time
++ For interdomain routing only one routng protocol can be used at a time
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-12-02%20234332.png @ 2023-12-02 23:43:45
+[[file:Network_Layer/2023-12-02_23-43-45_Screenshot 2023-12-02 234332.png]]
+*** Distance Vector Routing
+In Distance Vector Routing, the least cost route is the route with minimum distance.
++ As name implies, each node maintains vector (table) of minimum distance to every other node
++ This protocol also uses next-hop method of routing. So the next node in route is also stored in the table
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-12-03%20000249.png @ 2023-12-03 00:02:58
+[[file:Network_Layer/2023-12-03_00-02-58_Screenshot 2023-12-03 000249.png]]
+
+*_Initialization_*
+
++ Each node will know how to reach it's neighbour
++ Nodes that are not in immediate neighbour are initially given cost of infinite (unreachable)
+
+*_Sharing_*
+
++ Neighbours share information with each other
++ They only send first two columns data (to and cost)
++ So if node A has marked node C as infinite, but receives a table from it's neighbour B which can reach C, it will update it's the entry with cost of (cost from A to B + cost from B to C) and till change Next field to B
+
+*_Updating_*
+
+Updating is done in three steps. Suppose a node B sent table to node A
+1. If B claims that C is $y$ away from it, and distance between A and B is $x$, then total distance is $x + y$
+2. The node A will set the distance to C as $x + y$ and next as B and store this info as new
+3. The node A will now compare new value with old
+   1. If next entry is now different, the one with smaller cost is selected, else old entry is kept
+   2. If next entry is still same, the  newer one is selected regardless of the cost. This is done because path may have changed and old route may not exist anymore
+**** When to share
+There are two times when table is sent to the neighbours : periodically and when change occurs
+1. Periodic update : A node sends its routing tables, normally every 30s in a periodic update
+2. Triggered update : a node sends its routing tables when there is a change in its routing table. This can happen in two cases
+   1. a node receives table from neighbour and changes its own table when updating
+   2. a node detects change in its neighbouring links
+**** Instability
+The distance vector routing is unstable. There are times when the data in the tables is wrong.
+
+*_Two-node loop instability_*
+
+Suppose we have the following configuraton
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-12-03%20012527.png @ 2023-12-03 01:25:34
+[[file:Network_Layer/2023-12-03_01-25-34_Screenshot 2023-12-03 012527.png]]
+
+Now suppose there is a failure between the link of X and A. The table in A is immediately updated to show that X is unreachable
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-12-03%20012638.png @ 2023-12-03 01:26:45
+[[file:Network_Layer/2023-12-03_01-26-45_Screenshot 2023-12-03 012638.png]]
+
+But before this new table is sent to B by A, the node B sends its table first. Now after reading table received from B, A will wrongly believe that a new path was found to X and will update its table
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-12-03%20012821.png @ 2023-12-03 01:28:26
+[[file:Network_Layer/2023-12-03_01-28-26_Screenshot 2023-12-03 012821.png]]
+
+Now B receives table from A and sees that there is some change in route, so it will update its own cost table
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-12-03%20013258.png @ 2023-12-03 01:33:03
+[[file:Network_Layer/2023-12-03_01-33-03_Screenshot 2023-12-03 013258.png]]
+
+This exchange will happen repeatedly till routing tables in A and B both become infinity and the routing tables are once again fixed.
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-12-03%20013358.png @ 2023-12-03 01:34:02
+[[file:Network_Layer/2023-12-03_01-34-02_Screenshot 2023-12-03 013358.png]]
+
+But between the time that they are couting to infitiy, the routing tables of both A an B are wrong i.e, they are instable. This is called the count to infinity problem.
+
+*_Solution to problem_*
+
+1. Defining infinity to be a small number means that this problem is fixed quickly. Therefore, most implementation set inifnity to 16
+2. *Split Horizon* : suppose A is giving table to B. Instead of giving all of it's entries to B, node A will leave the entries who have B in their Next column. This will make system stable after first update, both A and B will know that X is not reachable
+3. *Split Horizon and Poison Reverse* : normally distance vector protocol uses timer to know if node is no longer functioning.
+   + When timer runs out and it gets no table from a node, it removes the entry for it.
+   + But this creates a problem, if some node's entry is absent from received table it is not possible to know whether that node is non-functioning or was removed by split horizon.
+   + So rather than just omitting the entry via split horizon, we replace cost value with special number which tells that "Do not use this value". This is called Poison Reverse
+
+*_Three-node Instability_*
+
+While split horizon and poison reverse works for two-node instability, it won't work for three-node instability. So for the configuration
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-12-03%20014853.png @ 2023-12-03 01:49:01
+[[file:Network_Layer/2023-12-03_01-49-01_Screenshot 2023-12-03 014853.png]]
+
+Here, if X has a failure, there is a change that C will cause problem by exchaning table with B first and B thinking a path exists through C. Which is then told to A, who thinks path exists through B. It will still count to infinity in this case as well, so table will eventually become stable.
+**** RIP
+The routing information protocol (RIP) is used in autonomous systems. It is a very simple protocol based on distance vector routing
+1. The destination is another network, so To column is a network address
+2. The metric used by RIP is the number of networks (hops) to reach the destination. For this reason, metric in RIP is called hop count, i.e, Cost is Hop count
+3. Infinity is defined as 16, so RIP cannot have more than 15 hops
+4. The next-node column is the address of another router to which packet is sent in route
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-12-03%20015120.png @ 2023-12-03 01:51:25
+[[file:Network_Layer/2023-12-03_01-51-25_Screenshot 2023-12-03 015120.png]]
+
+*** Link State Routing
+Each node knows the complete topology of the entire list of nodes and links. Then it simply uses Dijkstra's algorithm to build the routing table. This topology info is dynamic, representing latest state of each node and each link. If there are changes, the topology must be updated.
++ Initially no node knows the complete topology
++ But it will have knowledge about it's links to it's neighbour nodes. This is called Link State Knowledge
++ So first step in this type of routing is building a complete topology using these Link State Knowledge
+**** Link State Packet (LSP)
+Each LSP will carry the following information
+1. node identity : the identity of node that created the LSP
+2. list of links : info it has about it's links and their costs
+3. age : prevents old LSPs from remaining in domain for too long
+4. sequence number : this is used to control flooding. Flooding is the process through which all the nodes get the LSPs of each other
+   1. The node creating the LSP sends a copy out to each interface
+   2. A node receives an LSP compares it with copy it may already have. If new LSP is older that it has, it discards it. If it is new it will:
+      1. Replace the old LSP with the new one
+      2. Send a copy of the new LSP to each interface, except the one from which younger one arrived
+
+New LSPs are generated on two occasions
++ When there is change in topology of domain
++ On a periodic basis : all LSPs expire are a set amount of time, therefore they are produced periodically
+**** Formation of shortest path tree
+In this step, each node uses Dijkstra's algorithm to get it's own since source shortest path table
+**** OSPF
+The Open Shortest Path First protocol is an intradomain routing protocol based on link state routing.
++ Rather than flooding the whole Autonomous System, OSPF will divide the AS into smaller areas
++ The flooding happens within these smaller areas
++ Special Area Border routers then collect the summary of the results of the areas and send it to other areas.
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-12-03%20024552.png @ 2023-12-03 02:45:58
+[[file:Network_Layer/2023-12-03_02-45-58_Screenshot 2023-12-03 024552.png]]
+
+*_Metric_*
+
+The OSPF protcol allows admin to assign cost called metric, to each route. The metric can be based on type of service (minimum delay, maximum througput, and so on). Routers can have multiple tables, each based on different metric
+
+*_Types of packets_*
+
+There are five different types of packets in OSPF:
+1. Hello packet : used to check reachability of neighbour's
+2. Database description : after sending hello packet to a router, it returns the database information about the topology
+3. Link state request (LSR) : sent by area router to obtain information about a specific route
+4. Link state update (LSU) : used by area routers to advertise the state of its links.
+5. Link state acknowledgement (LSA) : makes routing more reliable by forcing each router to send ACK on each link state update.
+   
+*_Types of Links_*
+
+In OSPF a connection is called a link. Four types of links have been deined
+1. Point-to-point : connects two routers without any other host or router in between.
+   
+   [[file:Network_Layer/2023-12-03_03-00-17_Screenshot 2023-12-03 030012.png]]
+   
+2. Transient link : a network with several routers attached to it. The data can enter through any of the routers and leave through any of the routers. Transient link can be of two types : unrealistic topology is when all routers are connected to each other, realistic topology is when there is a central designated router. In cases with unrealistic topology, OSPF elects a central designated router
+   #+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-12-03%20030210.png @ 2023-12-03 03:02:17
+   [[file:Network_Layer/2023-12-03_03-02-17_Screenshot 2023-12-03 030210.png]]
+
+3. Stub link : a network that is connected to only one router. The data packets enter through this single router and leave network through the single router. This is a special case of transient network. Here we can add a new designated router
+   #+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-12-03%20030621.png @ 2023-12-03 03:06:24
+   [[file:Network_Layer/2023-12-03_03-06-24_Screenshot 2023-12-03 030621.png]]
+
+4. Virtual link : this is created by admin when a link between two routers is broken. This is created using some other longer path that goes through several routers
+
+*_Graphical representation_*
+
+We represent the AS as a graph in OSPF, on which we apply the Dijkstra's algorithm to get shortest path
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-12-03%20031645.png @ 2023-12-03 03:17:46
+[[file:Network_Layer/2023-12-03_03-17-46_Screenshot 2023-12-03 031645.png]]
+*** Path Vector Routing
+Both Distance vector routing (RIP) and Link State Routing (OSPF) are not suitable when domain is large.
++ Distance Vector Routing is subject to instability
++ Link State Routing takes too many resources and creates heavy traffic because of flooding
+
+Path vector routing is similar to distance vector router.
++ The autonomous systems will have a special node called speaker node which represents the whole autonomous system
++ This speaker node will create  communicate with speaker nodes of other AS and exchange info with them
++ Unlike in distance vector routing, cost is not shared. Only the path is shared
+*NOTE :* path vector routing does not use next-hop method. It instead uses route-method for its routing tables
+
+*_Initialization_*
+
+Initially, each speaker node only knows about reachability of nodes inside it's autonomous system.
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-12-03%20121311.png @ 2023-12-03 12:13:17
+[[file:Network_Layer/2023-12-03_12-13-17_Screenshot 2023-12-03 121311.png]]
+
+*_Sharing_*
+
+Just as in distance vector routing, in path vector routing, speaker will share info with its neighbour AS speakers
+
+*_Updating_*
+
+When speaker receives two-column table from a neighbour, it updates its own table by adding nodes that are not in its own routing table. After a while of this, each AS will know how to reach another AS to get to any node
+
+For the above network, the stabilized table will be
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-12-03%20122621.png @ 2023-12-03 12:26:26
+[[file:Network_Layer/2023-12-03_12-26-26_Screenshot 2023-12-03 122621.png]]
+
+*_Loop Prevention_*
+
+Unlike distance vector router, since the routing tables store the complete path, there will never be loops in this system.
+
+*_Policy routing_*
+
+Policy routing can be done in path vector routing. These policies can be set by the admin. When a speaker receives the table from it's neighbour, it can check the path to see if it complies with the policy. If it does not comply with the policy, then that path is ignored.
+
+*_Optimum path_*
+
+We cannot define metrics like we do in Link State Routing. This is because each of the AS will be using a different protocol. But we can choose path with criteria such as, shortest path length, reliability, security, etc.
+**** Border Gateway Protocol (BGP)
+*_Types of autonomous systems_*
+
+Autonomous systems is of three types
+1. Stub AS : it has only a single connection to another AS.
+   + Hosts in stub AS receive data from hosts in other ASs
+   + Data traffic, cannot pass through stub AS, it is either source or sink
+   + Example, at home and small buildings
+2. Multihomed AS : it has more than one connction to other ASs, but is still either only a source of a sink for traffic.
+   + There is no transient traffic, i.e, traffic passing through it to other ASs
+   + Example, a large corporation with data coming from multiple sources
+3. Transit AS : it is a multihomed AS  which allows transient traffic through it
+   + Example, national and international ISPs
+
+*_BGP Sessions_*
+
+Exchange of routing information takes place in sessions. A session is connetion between two BGP routers only for exchanging routing info.
++ BGP uses TCP for sessions, therefore session is an application level program
++ Unlike normal TCP sessions, sessions for BGP can last for a long time. So BGP sessions are sometimes called semi-permanent connetions
++ The sessions used to exchange info between two speaker nodes are called External BGP sessions (E-BGP)
++ The sessions used to exchange info between routers inside the Autonomous Systems are called Internal BGP sessions (I-BGP)
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-12-03%20131031.png @ 2023-12-03 13:10:35
+[[file:Network_Layer/2023-12-03_13-10-35_Screenshot 2023-12-03 131031.png]]

@@ -1,0 +1,138 @@
+* Backtracking
+Backtracking algorithms are used for solving problems where we can verify partial solution like in constraint satisfaction problems
+
+*_Constraint Satisfaction Problems_*
+
+It is a type of problem, where each entry in the solution, or every state of the solution has to satisfy a set of constraints. Example, in sudoku every cell has the following constraints
++ The number in cell must be between 1-9
++ The number must be unique in the cell's row and column
++ The number must be unique in cell's square
+Using these two constraints, it's easy to test whether a number is correctly placed. So even if we are given a parital solution, i.e, a half filled in sudoku problem, we can check if it is currently correct or not
+** How to backtrack
+The backtracking method will think of the set of all states of solution in form of a tree
++ The root node will be the empty state, here no entries are made to the solution yet
++ Every child node has a single new guess for the correct entry from to it's parent
++ The backtracking algorithm will traverse this tree is Dept-first search (DFS) order
+  + Rather than going to the deepest node for each branch of the tree, we check partial solution of each node
+  + If partial solution of the node is correct, we continue to go deeper
+  + Else we will abandon the branch return to the parent
+
+The general pseudocode for a backtrack algorithm is
+#+begin_src python
+  def backtrack(currentNode):
+    """ if partial solution is wrong, return to parent """
+    if (not correct(currentNode)):
+      return
+
+    """ work on current node here
+    we test if we found a solution here """
+
+    """ go the children nodes """
+    for child in children(currentNode):
+      backtrack(child)
+#+end_src
+** n-Queen problem
+In this problem, we have to place $n$ queens on a $n \times n$ chessboard, such that no queen is threatening another queen
++ The root node will be an empty chessboard
++ Each $n^{th}$ child of a node will have a queen on the $n^{th}$ column
++ Every $n^{th}$ depth of tree will nodes with queen till the $n^{th}$ row
+Example, for a 4-queen problem, the search for a solution happens as shown in the following diagram
+#+DOWNLOADED: https://miro.medium.com/v2/resize:fit:4800/format:webp/1*89khR1bWFu0Tc0TY44_vFw.png @ 2023-12-11 21:44:59
+[[file:Backtracking/2023-12-11_21-44-59_189khR1bWFu0Tc0TY44_vFw.png]]
+
+The program to solve n-queen problem is
+#+begin_src C
+  void queen(int n) {
+    bool solved = false;
+    int current[n][n] = {0};
+
+    int row_num = -1;
+
+    // a function to test that current placement of queens is correct
+    // TODO : maybe implement this, we just need to check every row, column and diagonal
+    bool correct();
+
+    void backtrack() {
+      if (!correct()) return;
+      // if we correctly placed a queen on bottom most row
+      // then we have solved
+      if (row_num == (n - 1)) solved = true;
+      if (solved) return;
+
+      row_num++;
+      for (int col_num = 0; col_num < n; col_num++) {
+	if (solved) return;
+
+	// clean previous loops stuff
+	if(col_num != 0)
+	  current[row_num][col_num - 1] = 0;
+	
+	// place new queen, then recursively test
+	current[row_num][col_num] = 1;
+	backtrack();
+      }
+      row_num--;
+    }
+
+    backtrack();
+  }
+#+end_src
+
+** Graph coloring problem
+TODO
+** Hamiltonian Cylces
+A hamiltonian cycle is a cycle or loop which visits every vertex of the graph exactly once and returns to starting vertex. The constraints will be as follows
+1. There cannot be same node multiple times in the path
+2. There must be an edge from end of the path, to the start of the path
+For a graph with $n$ nodes, the backtracking algorithm will start an with initial node in the root
++ There will be $n$ child nodes, each of which will try adding the $n^{th}$ node of graph to the path
++ We will go to each child and check if the path is valid, if it is not valid we will return
++ After we have a path with all nodes, we will check if it is a loop else we will return
+#+begin_src c
+  void hamiltonian() {
+    // graph is something
+    graph = {};
+    bool solved = false;
+
+    // N is number of nodes in graph
+    int path[N] = {0};
+    size_t path_len = 0;
+
+    // TODO : function to check if the path is correct
+    void correct();
+
+    void backtrack(){
+      if(!correct()) return;
+      if(path_len == N){
+	// if there is edge from last to first node of path then solved
+	if(w(path[path_len - 1], path[0]) != INFINITY)
+	  solved = true;
+      }
+      if (solved) return;
+
+      path_len++;
+      for(int i = 1; i <= N; i++){
+	if (solved) return;
+	path[path_len - 1] = i;
+	backtrack();
+      }
+      path_len--;
+    }
+
+    backtrack();
+  }
+#+end_src
+** Sum-of-subsets
+TODO
+* Branch and Bound
+Branch and Bound method is a generalization of the backtracking algorithm.
++ It can be used to solve problems where partial solutions may not tell if we are approaching the correct solution, like in optimization problems
+  + That is, it can be used for problems where we can't check if a partial solution is correct
++ Since we can't check partial solutions, it uses a special bounding function to know when to backtrack from current branch
+Therefore, the main problem in branch and bound algorithms is using the appropriate bounding function
+** Travelling Salesman Problem
+We are given a list of cities, and distances between each pair of cities. Our goal is to find the shortest possible route which visits every city exactly once and returns to original city
+
+That is, we are looking for the smallest cost hamiltonian cycle in a graph
+*** Bounding function
+TODO

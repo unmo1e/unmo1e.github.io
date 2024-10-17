@@ -1,0 +1,314 @@
+* Greedy algorithm
+Greedy algorithms are algorithms that make best choice at the moment. These algorithms are usually used in optimization problems.
++ Unlike dynamic programming, were every possible combination is considered, greedy algorithms simple choose what looks the best. This means that the solution /may not be optimal for many problems./
++ The advantage is that /greedy algorithms have much better performance./
++ This does not mean that greedy algorithms never give optimal solutions. For a wide range of problems, simple greedy algorithms give the optimal solution.
++ A common trend in greedy algorithms is that all options are sorted, and then the top options are selected till limit of selections is reached
+** Activity-selection problem
+Suppose for a festival, we have a single stage and a set of activities (i.e, shows and performances). For each activity, we know what they want their starting time $s_i$ and finishing time $f_i$.
+
+Our goal is to get as many activities done on a single stage as possible (making this an optimization problem).
+*** Analyzing problem
+Since there is a single stage, we need to *make sure none of the selected activities collide.*
++ Two activities $i$ and $j$ are non-colliding if, either $s_i \ge f_j$ or $s_j \ge f_i$
+Example, let's take the example dataset
+| Activity name | Start time (s) | Finish time (f) |
+|---------------+----------------+-----------------|
+| $a_1$         |              5 |               9 |
+| $a_2$         |              1 |               2 |
+| $a_3$         |              3 |               4 |
+| $a_4$         |              0 |               6 |
+| $a_5$         |              5 |               7 |
+| $a_6$         |              8 |               9 |
+We can these activities on a timeline graph
+
+[[./imgs/Untitled-2023-10-08-1356.excalidraw.svg]]
+*** Greedy solution
+Since we want *to maximize the number of activities, we are greedy for activities that finish quick*
+1. Sort activities by ascending order of finishing time.
+2. Start from activity at the top
+   1. If activity can be selected (non-colliding with already selected activities), then select it
+   2. If can't be selected, leave the activity
+   3. Move onto the next activity in sorted list
+3. Repeat step 2 till we have checked every activity in list
+In our example dataset, after sorting we will get
+| Activity name | Start time (s) | Finish time (f) |
+|---------------+----------------+-----------------|
+| $a_2$         |              1 |               2 |
+| $a_3$         |              3 |               4 |
+| $a_4$         |              0 |               6 |
+| $a_5$         |              5 |               7 |
+| $a_1$         |              5 |               9 |
+| $a_6$         |              8 |               9 |
+Then we go through list,
++ $a_2$ can be selected since there are no other selected activities. Selected = $(a_2)$ 
++ $a_3$ can be selected since it does not collide with $a_2$. Selected = $(a_2, a_3)$
++ $a_4$ cannot be selected since it collides with $a_2$. Selected = $(a_2, a_3)$
++ $a_5$ can be selected since it does not collide with either $a_2$ or $a_3$. Selected = $(a_2, a_3, a_5)$
++ $a_1$ cannot be selected, it collides with $a_5$. Selected = $(a_2, a_3, a_5)$ 
++ $a_6$ can be selected, it does not collide with either $a_2$,$a_3$ or $a_5$. Selected = $(a_2, a_3, a_5, a_6)$ 
+The final timeline with all selected activities is
+
+[[./imgs/Untitled-2023-10-08-13561.excalidraw.svg]]
+** Job Scheduling with deadlines
+Suppose we are given a list of jobs with their deadlines and their profit. *Each job takes a unit of time*. We want to maximize our profits
+*** Greedy algorithm
+The algorithm *will use a Gantt chart* and works as follows
+1. Sort the jobs by profit in descending order
+2. Start with the first job in sorted list
+3. Start looking for empty position just before deadline, and look for empty spot backwards
+4. Go to the next job in sorted list and repeat step 3 till either all jobs jobs are checked or gantt chart is full
+*** Worked Example
+We will look at the problem using the example,
+| Job | Deadline | Profit |
+|-----+----------+--------|
+| J1  |        5 |    200 |
+| J2  |        3 |    180 |
+| J3  |        3 |    190 |
+| J4  |        2 |    300 |
+| J5  |        4 |    120 |
+| J6  |        2 |    100 |
+*We are greedy for maximum profit, therefore we sort in descending order by profit*
+
+So our table will become
+| Job | Deadline | Profit |
+|-----+----------+--------|
+| J4  |        2 |    300 |
+| J1  |        5 |    200 |
+| J3  |        3 |    190 |
+| J2  |        3 |    180 |
+| J5  |        4 |    120 |
+| J6  |        2 |    100 |
+The maximum deadline in our example is 5
+
+So gantt chart is
+#+BEGIN_SRC
+   0   1   2   3   4   5
+   |   |   |   |   |   |
+#+END_SRC
++ We can do job J4 and have position for it before 2
+#+BEGIN_SRC
+   0   1   2   3   4   5
+   |   |J4 |   |   |   |
+#+END_SRC
++ We can do job J1 and have position for it before 5
+#+BEGIN_SRC
+   0   1   2   3   4   5
+   |   |J4 |   |   |J1 |
+#+END_SRC
++ We can do job J3 and have position for it before 3
+#+BEGIN_SRC
+   0   1   2   3   4   5
+   |   |J4 |J3 |   |J1 |
+#+END_SRC
++ We can do job J2, the position before 3 and 2 is taken; but position before 1 is empty which we can use.
+#+BEGIN_SRC
+   0   1   2   3   4   5
+   |J2 |J4 |J3 |   |J1 |
+#+END_SRC
++ We can do job J5, the position before 4 is empty
+#+BEGIN_SRC
+   0   1   2   3   4   5
+   |J2 |J4 |J3 |J5 |J1 |
+#+END_SRC
++ We cannot do job J6, since it's deadline is 2 and all positions before 2 are taken
+
+Therefore, the final schedule is 
+#+BEGIN_SRC
+   0   1   2   3   4   5
+   |J2 |J4 |J3 |J5 |J1 |
+#+END_SRC
+** Fractional knapsack
+In the knapsack problem, we are given items with their weights and profits. We need to fill our knapsack (which has a weight limit), in a way that we get maximum possible profit.
+
+Knapsack problem is of two types
+1. Fractional knapsack => We can take a fraction of the item in our knapsack. So taking $1/2$ or $1/8$ or any fraction of item
+2. 0/1 knapsack => We cannot take fractions of item, so we either take the item ($1$), or leave the item ($0$)
+The 0/1 knapsack problem is more complex and requires dynamic programming to get optimal solution
+
+But, we can get optimal solution for fractional knapsack with greedy method
+*** Greedy algorithm
+The capacity of knapsack is $W$. The weights of items are $w_i$ and profits for each are $p_i$
+1. Compute the value-to-weight ratio, $\frac{p_i}{w_i}$ for each item $i$
+2. Sort by descending value-to-weight ratio
+3. Fill the items one by one, from top of list to bottom of list as many as possible
+4. Once we get to a item, which we cannot take completely, we take it's fraction $\left( \frac{\text{remaining capacity of knapsack}}{w_i} \right)$
+*** Worked example
+The weight capacity of our knapsack (W) is 60. The items are
+| Item | Weight | Value |
+|------+--------+-------|
+| I1   |      5 |    30 |
+| I2   |     10 |    40 |
+| I3   |     15 |    45 |
+| I4   |     22 |    77 |
+| I5   |     25 |    90 |
++ Calculate value-to-weight ratio's
+| Item | Weight | Value | Ratio |
+|------+--------+-------+-------|
+| I1   |      5 |    30 |     6 |
+| I2   |     10 |    40 |     4 |
+| I3   |     15 |    45 |     3 |
+| I4   |     22 |    77 |   3.5 |
+| I5   |     25 |    90 |   3.6 |
++ Sorting by value-to-weight ratio in descending order
+| Item | Weight | Value | Ratio |
+|------+--------+-------+-------|
+| I1   |      5 |    30 |     6 |
+| I2   |     10 |    40 |     4 |
+| I5   |     25 |    90 |   3.6 |
+| I4   |     22 |    77 |   3.5 |
+| I3   |     15 |    45 |     3 |
++ Take as many items as possible
+| Knapsack Capacity Remaining | Items in Knapsack |
+|-----------------------------+-------------------|
+|                          60 | None              |
+|                          55 | I1                |
+|                          45 | I1, I2            |
+|                          20 | I1, I2, I5        |
++ Knapsack has remaining capcity, but the weight of next item I4 is greater than the capacity. Therefore, we will take fraction of I4
+| Knapsack Capacity Remaining | Items in Knapsack              |
+|-----------------------------+--------------------------------|
+|                          60 | None                           |
+|                          55 | I1                             |
+|                          45 | I1, I2                         |
+|                          20 | I1, I2, I5                     |
+|                           0 | I1, I2, I5, $\frac{20}{22}$ I4 |
+Since items in knapsack are $\langle I1, I2, I5, \frac{20}{22} I4\rangle$, the total profit is
+
+$Profit = p_1 + p_2 + p_5 + \frac{20}{22} p_4$
+** Huffman coding
+Huffman coding is used to compress information. In paritcular, it is a simple lossless algorithm to compress 8-bit ASCII values, i.e text.
+
+On average huffman coding reduces size by half. The amount of compression that is done depends on how frequently characters appear in text.
+*** Encoding
+Encoding has two major steps
+1. Building a Huffman tree from input
+2. Traverse Huffman tree to assign codes to characters
+**** Building Huffman tree
+1. Find the frequency of all the characters that are in input (including spaces)
+2. Form nodes, where each node stores the character and it's frequency
+3. Put all nodes in a min-heap
+4. Take two nodes from the heap and make them child of a new node.
+   + The value of new node is the sum of values of it's two child nodes
+   + Put this new parent node back on the heap
+5. Repeat step 4 till heap has a single node remaining
+6. The last node in heap is the root of huffman tree
+
+Example, the input is "duke blue devils"
++ Frequencies of characters is => e:3, d:2, u:2, l:2, []:2, k:1, b:1, v:1, i:1, s:1 ([] denotes space)
++ Form nodes and sort them according to frequency 
+
+[[./imgs/Untitled-2023-10-08-1815.excalidraw.svg]]
+
++ Group smallest pair of nodes, put them under same parent and repeat till tree is formed
+
+[[./imgs/Untitled-2023-10-08-18151.excalidraw.svg]]
+
+Another example,
+
+#+DOWNLOADED: screenshot @ 2023-10-08 19:42:22
+[[file:Greedy_algorithm/2023-10-08_19-42-22_screenshot.png]]
+**** Traversing huffman tree to encode
+1. Assign all left edges value of $0$, and right edges value of $1$
+2. Traverse down to each leaf node
+3. The character at leaf node get's the encoding, of it's edges values concatnated (Note : encoding will be left-to-right when going top to down)
+[[./imgs/Untitled-2023-10-08-181.excalidraw.svg]]
+
+The encoding is
+| e  |  000 |
+| d  |  001 |
+| u  |  010 |
+| l  |  011 |
+| [] |  100 |
+| k  |  101 |
+| b  | 1100 |
+| v  | 1101 |
+| i  | 1110 |
+| s  | 1111 |
+"duke blue devils" will be encoded as
+\[ 001 | 010 | 101 | 000 | 100 | 1100 | 011 | 010 | 000 | 100 | 001 | 000 | 1101 | 1110 | 011 | 1111 \]
+Orignal size = 128bits
+\\
+Encoded size = 52bits
+\\
+Compression ratio = $\frac{128}{52}$
+*** Decoding
+For decoding we will use the same huffman tree.
+1. Start reading compressed message, traverse tree by matching bits of message with edge bit
+2. On reaching a leaf node, we have found the corresponding character.
+3. Go back to the root of the huffman tree and repeat till whole message is decoded
+So we read 001 and reach 'd' in huffman tree so we know first character is 'd'.
+\\
+Then we go back to root node and read 010 and know the next character is 'u'.
+\\
+We repeat this till we get the orignal message.
+** Minimum spanning trees
+The spanning tree of an undirected graph is a subgraph which is a tree that contains all of the nodes of the graph. A given graph can have multiple spanning trees.
+
+For a weighted undirected graph, the spanning tree the sum of whose edge costs is the minimum among all possible spanning trees is called the minimum spanning tree
+*** Kruskal's algorithm
+This algorithm works by adding safe edges (i.e, edges which won't form a cycle) to a growing spanning tree. For a graph $G = (V,E)$, it works as follows.
+
+*Simply put*, the algorithm is greedy for small weight edges. It will start selecting edges from smallest weight and only leave an edge if it is causing a cycle. Example
+
+TODO : Add images here
+
+**** Algorithm
+The formal algorithm is 
+1. Make $|V|$ sets, each one of these sets will contain a single vertex of the graph (we seperate all vertices into sets)
+2. Sort all the edges of the graph by their weight in increasing order
+3. Pick the smallest weight edge $(u,v)$ from sorted list
+4. Check if node $u$ and node $v$ are in the same set currently
+5. If they are not in the same set then merge the two sets which contain node $u$ and $v$
+6. Pick the next smallest weight edge $(u,v)$
+7. Repeat step 4 till only a single set is left
+**** Pseudocode
+TODO : Add image of graph from wikipedia
+
+The edge list in sorted order is
+#+begin_src python
+  edge_list = [ ['a','d',5], ['c','e',5], ['d','f',6],
+		['b','e',7], ['a','b',7], ['b','c',8],
+		['f','e',8], ['e','g',9], ['d','b',9],
+		['g','f',11], ['d','e',15] ]
+#+end_src
+The collection of sets, each with initially single vertex of the graph (along with helper functions to work on collection)
+#+begin_src python
+  sets = [['a'], ['b'], ['c'], ['d'],
+	  ['e'], ['f'], ['g']]
+
+  # returns the index of set which has given node
+  def set_id(c):
+      for i in range(len(sets)):
+	  if c in i:
+	      return i
+
+  # merge the two sets into a single set
+  def merge_sets(a,b):
+      for element in sets[b]:
+	  sets[a].append(element)
+      del sets[b]
+
+#+end_src
+Then the kruskal's algorithm will work as follows
+#+begin_src python
+  selected_edges = []
+
+  for edge in edge_list:
+      set_u = set_id(edge[0])
+      set_v = set_id(edge[1])
+      if set_u != set_v:
+	  selected_edges.append(edge)
+	  merge_sets(set_u,set_v)
+
+  print(selected_edges)
+#+end_src
+
+*** Prim's algorithm
+Prim's algorithm works by selecting smallest edges starting with an initial node
+
+Unlike kruskal's algorithm, we will start with an initial node and try to reach every other node of the graph by only selecting the smallest edges
+**** Algorithm
+TODO : later
+** Single source shortest path
+TODO : this is also in todo section

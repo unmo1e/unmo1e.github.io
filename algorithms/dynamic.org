@@ -1,0 +1,1033 @@
+* Dynamic Programming
+*Similar to divide and conquer*, dynamic programming also solves problems by combining solutions of smaller sub-problems.
+
+"Programming" in context of dynamic programming means *tabular method*, not writing code.
+
+In divide and conquer, the subproblems don't overlap and are solved independently. Whereas, in dynamic programming *subproblems overlap*, therefore subproblems also share subproblems.
+
+In dynamic programming, each *subproblem is only solved once and then its solution is stored in a table.*
+
+** Use and steps of dynamic programming
+Dynamic programming has four steps :
+1. Characterize the structure of optimal solution.
+2. Recursively define the value of optimal solution.
+3. Compute the value of optimal solution, typically done in bottom-up method.
+4. Construct the optimal solution from computed information.
+
+** Rod cutting (Simple example for dynamic programming)
+Suppose a factory buys long steel rods and cuts them into smaller steel rods, which it then sells. The cutting of rods costs no money.
+
+The price at which the rod is sold for based on length is given in table
+| length (inches) | price |
+|-----------------+-------|
+|               1 |     1 |
+|               2 |     5 |
+|               3 |     8 |
+|               4 |     9 |
+|               5 |    10 |
+|               6 |    17 |
+|               7 |    17 |
+|               8 |    20 |
+|               9 |    24 |
+|              10 |    30 |
+We are given a rod of *n* inches. We want to cut it in a way to increase the total price.
+
+Example, if we have a 4-inch rod, we can cut it to two 2-inch rods, making total price from
+\[ \text{4-inch} = 9 \]
+\[ \text{2-inch} + \text{2-inch} = 5 + 5 = 10 \]
+Therefore, increasing price.
+
+*** Analyzing problem
+If we have a rod of length $n$, it can be cut up in $2^{n-1}$ different ways (when we can only cut in lengths that are natural numbers).
+
+This is because for a rod of $n$ inches, we can decide to either cut or not cut every inch from the left end of rod.
+
+We will show cuts using +, example,
+\\
+10 = 5 + 5
+\\
+means that 10 inch rod is cut into two 5 inch rods.
+
+Now let's computete maximum revenue's $(r_i)$
+| length ($i$) | price ($p_i$) |
+|--------------+---------------|
+|            1 |             1 |
+|            2 |             5 |
+|            3 |             8 |
+|            4 |             9 |
+|            5 |            10 |
+|            6 |            17 |
+|            7 |            17 |
+|            8 |            20 |
+|            9 |            24 |
+|           10 |            30 |
+\[ r_1 = max(p_1) \]
+\[ r_2 = max(p_2, p_1 + p_1) \]
+\[ r_3 = max(p_3, p_1 + p_2, p_1 + p_1 + p_1) \]
+\[ r_4 = max(p_4, p_1 + p_3, p_2 + p_2, p_1 + p_1 + p_2, p_1 + p_1 + p_1 + p_1) \]
+\[ ......... \]
+\[ ......... \]
+But *we don't need to examine all the combination of different cuts*
++ For a rod of $n$ inches, suppose the first cut is at the $k$ inches, then the remaining rod is $n - k$ inches
++ The maximum revenue when first cut is at $k$ is $p_k + r_{n - k}$
++ $k$ is between $1$ and $n$. Therefore, the maximum revenue can be calculated using
+  \[ r_n = max(p_n + r_0, p_{n-1} + r_1, p_{n-2} + r_2 , ...... , p_1 + r_{n - 1}) \]
+  \[ r_n = max(p_i + r_{n-i} : 1 \le i \le n) \]
+
+*** Recursive solution
+If we don't use dynamic programming for this problem, we can use the recursive solution as
+#+BEGIN_SRC c
+  /* p is the price table, n is length of rod to cut */ 
+  int cut_rod(int p[], int n){
+    if(n == 0)
+      return 0;
+
+    int q = -1;
+    for (int i = 1; i <= n; i++){
+      q = max(q, p[i] + cut_rod(p, n - i));
+    }
+    return q;
+  }
+#+END_SRC
+
+**** Time complexity
+The time complexity can be calculated using the recursive relation
+\[ T(n) = 1 + \sum_{i=1}^n T(n - i) \]
+The solution to this is
+\[ T(n) = 2^n \]
+i.e, exponential time complexity.
+
+The reason for time complexity being so high is that the subproblems are solved multiple times.
+\\
+This can be seen in an example recursion tree for $n = 4$.
+[[./imgs/dynamic_rod_recursion_tree.jpg]]
+We can see that recursive method is working in $2^n$ time, because it checks all $2^{n-1}$ ways to cut a rod.
+*** Dynamic Programming Solutions
+In dynamic programming, our goal is to solve every subproblem only once. There are two ways to do this,
++ Top Down: Memoize recursive algorithm
++ Bottom Up: Figure out optimum order to fill the solution array
+In dynamic programming we store the solution to subproblems thus reducing time complexity. This increases the space complexity and hence is an example of *time memory trade-off*.
+*** Top Down Memoized Solution
+This solution will simply modify the recursive solution by adding an array or hash table to store the result of subproblems. Later it can simply check if subproblem was already solved and use the already computed result.
+
+#+BEGIN_SRC c
+  // wrapper function which user will call
+  int cut_rod_memoized(int p[], int n){
+    // initially, none of the subproblems are solved
+    int r[n + 1];
+    for(int i = 0; i <= n; i++){
+      r[i] = -1;
+    }
+
+    return cut_rod(p, n, r);
+  }
+
+  int cut_rod(int p[], int n, int r[]){
+    if(n == 0)
+      return 0;
+
+    // if r[n] was already computed, then return that
+    if(r[n] != -1)
+      return r[n];
+
+    int q = -1;
+    for (int i = 1; i <= n; i++){
+      q = max(q, p[i] + cut_rod(p, n - i));
+    }
+
+    // store r[n] for future reference
+    r[n] = q;
+    return q;
+  }
+#+END_SRC
+Rather than changing our function, *we simply memoize it to avoid solving subproblems again and again*.
+*** Bottom Up Solution
+In this method, we will start from the *smallest subproblem and work towards larger problem*. This is why this method is called bottom up method.
+
+The idea is that when we are working on a larger problem, the prerequisite smaller subproblems are already solved.
+#+BEGIN_SRC c
+  int botton_up_cut_rod(int p[], int n){
+    int r[n + 1];
+    r[0] = 0;
+    
+    for(int j = 1; j <= n; j++){
+      q = -1;
+      for(int i = 1; i <= j; i++){
+	q = max(q, p[i] + r[j - i]);
+      }
+      r[j] = q;
+    }
+
+    return r[n];
+  }
+#+END_SRC
++ In rod cutting, calculating any $r_n$ requires only smaller $r_j : j < n$ to be already solved.
++ We can work our way bottom up from $j = 1$ to $j = n$
+*** Running time of Top Down and Bottom Up Solutions
+Both top down and botton up require $\theta (n^2)$ time.
++ Bottom up : Nested loops, the inner most statement i.e, the max(q, p[i] + r[j - i]) runs $\frac{n(n-1)}{2}$ times
++ Top Down : Each subproblem is solved only once, subproblem of size 1 takes 1 iteration to solve. Subproblem of size 2 takes 2 iterations to solve. Similarly, subproblem of size n takes n iterations to solve. This forms the summation,
+  \[ \text{total number of iterations} = 1 + 2 + 3 + ... + n \]
+  \[ \text{total number of iterations} = \frac{n(n+1)}{2} \]
+The two methods of dynamic programming are actually *equivalent in time complexity* and either can be used.
+
+The *top down method does run slower* on actual machines *due to recursive procedure calls*.
+*** Reconstructing a solution
+These solutions give us the maximum revenue, but they tell about the pieces in which rod is to be cut.
+
+It is easy to get the solution by extending the bottom up solution
+#+BEGIN_SRC c
+  (int[], int[]) botton_up_cut_rod(int p[], int n){
+    int r[n + 1];
+    r[0] = 0;
+
+    // s[i] is the size of first
+    // piece for maximum revenue
+    // in a rod of i inches
+    int s[n+1];
+    s[0] = 0;
+
+    for(int j = 1; j <= n; j++){
+      q = -1;
+      for(int i = 1; i <= j; i++){
+	// this if statement does the same work as
+	// the max function
+	if ((p[i] + r[j - 1]) > q) {
+	  q = p[i] + r[j - i];
+	  // size of first piece for rod of
+	  // j inches will be i inches
+	  s[j] = i;
+	}
+      }
+      r[j] = q;
+    }
+
+    return (r, s);
+  }
+#+END_SRC
+Since we can get the size of first piece, we can get the size of all pieces by repeatedly chopping first piece.
+#+BEGIN_SRC c
+  void print_cut_rod_solution(int p[], int n){
+    int r[], s[] = botton_up_cut_rod(p,n);
+    while(n > 0){
+      printf("Chopped pice of size : %d \n", s[n]);
+      n = n - s[n];
+    }
+  }
+#+END_SRC
+** Subproblem graph
+In order to get the dynamic programming solution, we need to think about how subproblems depend on each other. The subproblem graph for a problem contains this information.
++ The subproblem graph is a directed graph
++ The vertices are used to represent the subproblems
++ A directed edge from node $i$ to $j$ means, the subproblem $i$ depends on result of subproblem $j$
+Example, for the rod cutting problem, the subproblem graph for $n = 4$ is,
+[[./imgs/IMG_20230926_151128.jpg]]
++ *We can think of subproblem graph as the "collapsed" version of recursion tree for the problem*
+The bottom-up dynamic problem method solves subproblem in the reverse topological sort of subproblem graph
+** Matrix-chain multiplication
+The algorithm to multiply two matrices is
+#+BEGIN_SRC cpp -n
+  Matrix matrix_multiply(Matrix a, Matrix b) {
+    if(a.cols != b.rows)
+      error("Incompatible dimensions");
+
+    Matrix c = new Matrix(a.rows, b.cols);
+    c = {0};
+
+    for(int i = 0; i < a.rows; a++)
+      for(int j = 0; j < b.cols; j++)
+	for(int k = 0; k < a.cols; k++)
+	  c[i,j] = c[i,j] + (a[i,k] * b[k,j]);
+  }
+#+END_SRC
+In matrix-chain multiplication, we are given a chain of matrices $\langle A_1, A_2, A_3, ... , A_n \rangle$ and we want to compute their product $A_1A_2A_3...A_n$
+
+*The number of times the statement at line number 11 (which does scalar multiplication) runs is*
+\[ a.rows \times a.cols \times b.cols \]
+
+Therefore, choosing different parenthesis can effect the number of scalar multiplications done to get final product.
+\\
+*Example*, if $\langle A_1, A_2, A_3 \rangle$ is the matrix-chain, and dimensions are $10 \times 100$, $100 \times 5$, and $5 \times 50$ respectively. /The number scalar multiplications for :/
++ $((A_1A_2)A_3)$, $10.100.5 = 5000$ times for $A_1A2$, and then $10.5.50 = 2500$ times for $(A_1A_2)A_3$, so a total of $5000 + 2500 = 7,500$ times
++ $(A_1(A_2A_3))$, $100.5.20 = 25000$ for $A_2A_3$, and and then $10.100.50 = 50000$ times for $A_1(A_2A_3)$, so a total of $50000 + 25000 = 75,000$ times
+So computing $((A_1A_2)A_3)$ is about 10 times faster than $(A_1(A_2A_3))$ in this case.
+
+Therefore, the matrix-chain multiplication problem is : *given a chain $\langle A_1, A_2, A_3, ... , A_n \rangle$ of matrices, fully paranthesize the product $A_1A_2A_3...A_n$ to minimize number of scalar multiplications*
+*** Counting number of paranthesis
+For $n$ matrices, the number of *possible paranthesizations is given by $(n-1)^{th}$ Catalan number.*
+
+The $n^{th}$ catalan number is
+\[ c_n = \frac{1}{n + 1} {2n \choose n} \]
+Asymptotically, the catalan numbers grow as
+\[ c_n ~ \frac{4^n}{n^{3/2} \pi} \]
+i.e, $O(4^n / n^{3/2})$
+/The number of possible paranthesizations is thus exponential of $n$, and brute-force method is not optimal/
+
+For $n$ matrices, the function for paranthesis is
+\[ P(n)=  \begin{cases} 1 & \text{, if $n=1$} \\
+\sum_{k=1}^{n-1}P(k)P(n-k) & \text{, if $n \ge 2$}  \end{cases} \]
+*** Solution
+The dynamic programming method will have 4 steps similar to rod-cutting problem
+**** Step 1 : Analyzing problem
+We will use the notation $A_{ij...k}$ to show product $A_iA_j...A_k$.
+The substructures are as follows:
++ Suppose for optimal paranthesization of $A_i...A_k$, we have to get product by dividing chain by some partition $p$, and then multiply $A_i...A_p$ and $A_{p+1}...A_k$
++ Similarly, optimal paranthesizations for $A_i...A_p$ and $A_{p+1}...A_k$ are calculated by breaking into smaller parititions
++ At each division step, we need to consider all possible values for $p$, since any one of them can be optimal
++ We will repeat this till chain is broken into single matrices (divde part of divide-and-conquer)
+Therefore, the minimum number of scalar multiplications is given by
+\[ m(i,j) = \begin{cases} 0 & \text{if $i = j$} \\
+{}^{\text{min}}_{i \le p < j} \Bigl( m(i,p) + m(p + 1, j) + A_{i}.rows \times A_{p}.cols \times A_{j}.rows \Bigr) & \text{if $i < j$} \end{cases} \]
+**** Step 2 : Creating recursive solution
+Now we will create the recursive divide and conquer solution for the problem.
+
+The minimum number of scalar multiplications for $A_i...A_j$ is given by $m(i,j)$, which is given by
+\[ m(i,j) = \begin{cases} 0 & \text{if $i = j$} \\
+{}^{\text{min}}_{i \le p < j} \Bigl( m(i,p) + m(p + 1, j) + A_{i}.rows \times A_{p}.cols \times A_{j}.rows \Bigr) & \text{if $i < j$} \end{cases} \]
+For a chain with $n$ matrices, we need to find $m(1,n)$
+#+BEGIN_SRC c
+  int min_scalar(size_t left, size_t right) {
+    if(left >= right)
+      return 0;
+
+    int min = (int) INFINITY;
+    for(int p = left; p < right; p++){
+      // check if current partition (p) is better than previous
+      int new_min = min_scalar(left, p) + min_scalar(p + 1, right) +
+		    (A[left].rows * A[p].cols *A[right].cols);
+
+      if(new_min < min)
+	min = new_min;
+    }
+
+    return min;
+  }
+#+END_SRC
+This algorithm will run in exponential time. Now we can use memoization for top down dynamic programming.
+**** Step 3 : Applying dynamic programming
+The *top down dynamic programming* using memoization is as follows
+#+BEGIN_SRC c
+  int m[n,n] = {(int) INFINITY};
+
+  int top_down_min_scalar(size_t left, size_t right) {
+    // if result is already calculated then use that
+    if(m[left,right] != INFINITY)
+      return m[left,right];
+
+    if(left >= right) {
+      // store result in m[,]
+      m[left,right] = 0;
+      return 0;
+    }
+
+    int min = (int) INFINITY;
+    for(int p = left; p < right; p++){
+      // check if current partition (p) is better than previous
+      int new_min = min_scalar(left, p) + min_scalar(p + 1, right) +
+	(A[left].rows * A[p].cols *A[right].cols);
+
+      if(new_min < min)
+	min = new_min;
+    }
+
+    // store calculated result in m[,]
+    m[left,right] = min;
+    return min;
+  }
+#+END_SRC
+We can also have *bottom up dynamic programming*, but for that we need to understand the subproblems graph. We can start by looking at the recursion tree. For $n = 4$, the recursion tree will be
+[[./imgs/Untitled-2023-09-24-1812.svg]]
+In this diagram [x,y] means values [left,right] and what it calls recursively
+
+The easiest way to get the subproblem graph from this tree is to simply use the adjacency list representation, all direct childs are in the adjacency list of the node.
+#+BEGIN_SRC python
+  graph = {
+      "0,0" : [],
+      "0,1" : ["0,0","1,1"],
+      "0,2" : ["0,0","0,1","1,2","2,2"],
+      "0,3" : ["0,0","0,1","0,2","1,3","2,3","3,3"],
+      "1,1" : [],
+      "1,2" : ["1,1","2,2"],
+      "1,3" : ["1,1","1,2","2,3","3,3"],
+      "2,2" : [],
+      "2,3" : ["2,2","3,3"],
+      "3,3" : [],
+  }
+#+END_SRC
+After topological sort, we will get the order
+#+BEGIN_SRC python
+  graph = {
+      "0,0" : [],
+      "1,1" : [],
+      "2,2" : [],
+      "3,3" : [],
+      "0,1" : ["0,0","1,1"],
+      "1,2" : ["1,1","2,2"],
+      "2,3" : ["2,2","3,3"],
+      "0,2" : ["0,0","0,1","1,2","2,2"],
+      "1,3" : ["1,1","1,2","2,3","3,3"],
+      "0,3" : ["0,0","0,1","0,2","1,3","2,3","3,3"],
+  }
+#+END_SRC
+We can see that the order for subproblems arrange them in a pyramid like pattern.
+
+[[./imgs/IMG_20230928_182449.jpg]]
+
+We solve subproblems from bottom layer to top of the pyramid
++ Notice how on ↗ direction diagonals have same [left,] value, and all ↖ diagonals have same [,right] value
++ The lowest level has all [i,i] values
++ These two properties can help us to quickly get the whole pyramid
+Knowing this pyramid is useful because many dynamic programming problems have a similar structure
+#+BEGIN_SRC c
+  int bottom_up_min_scalar(size_t n) {
+    int min[n,n] = { INFINITY };
+
+    for(int i = n; i > 0; i--){
+      for(int j = 0; j < i; j++){
+	size_t left = j;
+	size_t right = left + (n - i);
+
+	for(int p = left; p < right; p++){
+	  int new_min = min[left,p] + min[p+1,right]
+	    + A[left].rows * A[p].cols * A[right].cols;
+	  if(new_min < min[left,right])
+	    min[left,right] = new_min;
+	}
+      }
+    }
+
+    return min[left,right];
+  }
+#+END_SRC
+**** Step 4 : Constructing a solution
+Similar to rod cutting problem, we can reconstruct a solution by storing the location of optimal partition of chain. In our case, we will store the location of optimal paritition in an array sol[,].
+\\
+/The sol[,] needs to be updated everytime we update the dynamic programming table./ (in step 3, dynamic programming table is m[,] for top-down and min[,] for bottom-up)
+
+Storing sol[,] for *top-down implementation*
+#+BEGIN_SRC c
+  int m[n,n] = {(int) INFINITY};
+  int sol[n,n] = {0};
+
+  int top_down_min_scalar(size_t left, size_t right) {
+    // if result is already calculated then use that
+    if(m[left,right] != INFINITY)
+      return m[left,right];
+
+    if(left >= right) {
+      // store result in m[,] and update sol[,]
+      m[left,right] = 0;
+      sol[left,right] = left;
+      return 0;
+    }
+
+    int min = (int) INFINITY;
+    for(int p = left; p < right; p++){
+      // check if current partition (p) is better than previous
+      int new_min = min_scalar(left, p) + min_scalar(p + 1, right) +
+	(A[left].rows * A[p].cols *A[right].cols);
+
+      if(new_min < min){
+	min = new_min;
+	// since min changed, update sol[,]
+	sol[left,right] = p;
+      }
+    }
+
+    // store calculated result in m[,]
+    m[left,right] = min;
+    return min;
+  }
+#+END_SRC
+Storing sol[,] for *bottom-up implementation*
+#+BEGIN_SRC c
+  int bottom_up_min_scalar(size_t n) {
+    int min[n,n] = { INFINITY };
+    int sol[n,n] = {0};
+
+    for(int i = n; i > 0; i--){
+      for(int j = 0; j < i; j++){
+	size_t left = j;
+	size_t right = left + (n - i);
+
+	for(int p = left; p < right; p++){
+	  int new_min = min[left,p] + min[p+1,right]
+	    + A[left].rows * A[p].cols * A[right].cols;
+
+	  if(new_min < min[left,right]){
+	    // store min[,] and update sol[,]
+	    min[left,right] = new_min;
+	    sol[left,right] = p;
+	  }
+	}
+      }
+    }
+
+    return min[left,right];
+  }
+#+END_SRC
+*After we have dynamic programming table and solutions table, we can reconstruct our solution.*
+#+BEGIN_SRC c
+  void print_solution(int min[,], int sol[,],
+		      size_t left, size_t right) {
+    if(left <= right)
+      return;
+
+    int p = sol[left,right];
+    printf("%d \n", p);
+    print_solution(min, sol, left, p);
+    print_solution(min, sol, p+1, right);
+  }
+#+END_SRC
+This will print the series of partition locations, which can be used to determine the matrix multiplication order
+** Longest common subsequence
+In order to get the longest subsequence, we need to first see the difference between substring and subsequence.
+*** Substring vs Subsequence
+A subsequence is a broader generalization of substrings. In substring, the matching characters are in-order and consecutive. But *in a subsequence, the matching characters need to be in order but not in consecutive manner.*
+
+Therefore, every substring is a subsequence but not all subsequences are substrings
+
+[[./imgs/IMG_20231007_212317.jpg]]
+
+[[./imgs/IMG_20231007_212424.jpg]]
+*** Analyzing problem
+Suppose two strings are $X = \langle x_1, x_2 ... x_m \rangle$ and $Y = \langle y_1, y_2 ... y_n \rangle$.
+\\
+We assume the longest subsequence is $Z = \langle z_1, z_2 ... z_k \rangle$
++ If $x_m = y_n$, then $z_k = x_m$ and the remaining $Z_{k-1}$ is LCS of $X_{m-1}$ and $Y_{n-1}$
++ If $x_m != y_n$ then $z_k != x_m$ and $z_k != y_m$. The LCS of $Z$ is either LCS of $X$ and $Y_{n-1}$; or it the the LCS of $X_{m-1}$ and $Y$, based on which one is longer
++ The LCS of with either $X_0$ or $Y_0$ is empty string as well
+Therefore, to get the longest subsequence we will similarly store it in m[,]
+
+Using our analysis we can say that 
+#+BEGIN_SRC
+         { 0                        ; if i or j == 0
+m[i,j] = { m[i-1,j-1] + 1           ; if x_i == y_j
+         { max{m[i,j-1], m[i-1,j]}  ; if x_i != y_j
+#+END_SRC
+For $X = \langle x_1, x_2 ... x_m \rangle$ and $Y = \langle y_1, y_2 ... y_n \rangle$, we need to find m[m,n]
+*** Recursive solution
+#+BEGIN_SRC c
+  // i and j are sizes of X and Y respectively
+  int LCS(string X, int i, string Y,int j){
+    // if lendth of either X or Y is zero, then LCS is 0
+    if(i == 0 || j == 0)
+      return 0;
+
+    // if last character's match,
+    // the length of LCS is 1 + LCS(X[:-1], Y[:-1])
+    if(X[i] == Y[j])
+      return LCS(X, i-1, Y, j-1) + 1;
+    // else it is either LCS(X[:-1],Y) or LCS(X,Y[:-1])
+    else
+      return max(LCS(X, i-1, Y, j), LCS(X, i, Y, j-1));
+  }
+#+END_SRC
+*** Applying Dynamic Programming
+
+*Top-down solution*
+
+We can use memoization to get top-down dynamic programming solution. As usual this is very simple since we only need to store already calculated results in an array and then return them if they are already calculated
+#+BEGIN_SRC c
+  int m[X.len, Y.len] = {(int) INFINITY};
+  void LCS(string X, int i, string Y,int j){
+    if(m[i,j] != INFINITY)
+      return m[i,j];
+
+    if(i == 0 || j == 0){
+      m[i,j] = 0;
+      return 0;
+    }
+    
+    if(X[i] == Y[j]){
+      m[i,j] = LCS(X, i-1, Y, j-1) + 1;
+      return m[i,j];
+    }else{
+      m[i,j] = max(LCS(X, i-1, Y, j), LCS(X, i, Y, j-1));
+      return m[i,j];
+    }
+  }  
+#+END_SRC
+
+*Bottom-up solution*
+
+For bottom-up dynamic programming, let's consider example with $X = \langle x_1, x_2, x_3, x_4 \rangle$ and $Y = \langle y_1, y_2, y_3 \rangle$. We will cosider the worst case scenario, i.e, no matching characters in $X$ and $Y$
+
+[[./imgs/Untitled-2023-10-08-1048.excalidraw.svg]]
+
+From graph, we know that after all $(i,0)$ and $(0,j)$, we need to solve in following order 
+\\
+(1,1) => (1,2) => (1,3) => (1,4)
+\\
+Then,
+\\
+(2,1) => (2,2) => (2,3) => (2,4)
+\\
+(3,1) => (3,2) => (3,3) => (3,4)
+
+In general, we need to follow order
+\\
+(1,1) => (1,2) => (1,3) ... => (1,n)
+\\
+(2,1) => (2,2) => (2,3) ... => (2,n)
+\\
+(3,1) => (3,2) => (3,3) ... => (3,n)
+\\
+.............
+\\
+(m,1) => (m,2) => (m,3) ... => (m,n)
+
+Therefore, bottom up solution is
+#+BEGIN_SRC c
+  void LCS(string X, string Y){
+    int m[X.len, Y.len];
+    for(int i = 0; i < X.len; i++)
+      m[i,0] = 0;
+    for(int j = 0; j < Y.len; j++)
+      m[0,j] = 0;
+
+    for(int i = 0; i < X.len; i++){
+      for(int j = 0; j < Y.len; j++){
+	if(X[i] == Y[j])
+	  m[i,j] = m[i-1,j-1] + 1;
+	else if (m[i, j-1] > m[i - 1, j])
+	  m[i,j] = m[i, j-1];
+	else
+	  m[i,j] = m[i - 1, j];
+      }
+    }
+  }
+#+END_SRC
+*** Constructing solution
+In order to get the LCS, we are using
+#+BEGIN_SRC
+           { LCS(i-1,j-1) + 1 ; if x_i == y_j
+LCS(i,j) = { LCS(i, j - 1)    ; if LCS(i, j - 1).len > LCS(i - 1, j).len
+           { LCS(i - 1, j)    ; if LCS(i, j - 1).len < LCS(i - 1, j).len
+#+END_SRC
++ So to construct $LCS(i,j)$, we need to store which of the following three was used to calculate the maximum length LCS
++ For cases where $X_i == Y_j$, we also store the character which matched. This is one of the character of our matched subsequence $Z$ (read Anlayzing problem section for more info)
+So, we store solution as
+#+BEGIN_SRC c
+  typedef struct solution solution;
+  struct solution {
+    char matched_char;
+    size_t next_row;
+    size_t next_column;
+  };
+#+END_SRC
+**** Storing solution in top-down
+#+begin_src c
+  int m[X.len, Y.len] = {(int) INFINITY};
+  solution sol[X.len, Y.len];
+  void LCS(string X, int i, string Y,int j){
+    if(m[i,j] != INFINITY)
+      return m[i,j];
+
+    if(i == 0 || j == 0){
+      m[i,j] = 0;
+      sol[i,j] = (solution) {
+	.next_row = INFINITY, .next_col = INFINITY,
+	.matched_char = '\0' };
+      return 0;
+    }
+
+    if(X[i] == Y[j]){
+      m[i,j] = LCS(X, i-1, Y, j-1) + 1;
+      sol[i,j] = (solution) { .next_row = (i - 1), .next_col = (j - 1),
+			      .matched_char = X[i] };
+      return m[i,j];
+    }else{
+      m[i - 1, j] = LCS(X, i-1, Y, j);
+      m[i, j - 1] = LCS(X, i, Y, j - 1);
+
+      if(m[i - 1, j] > m[i, j - 1]){
+	m[i,j] = m[i - 1, j];
+	sol[i,j] = (solution) { .next_row = (i - 1), .next_col = j,
+				.matched_char = '\0' };
+      }else{
+	m[i,j] = m[i, j - 1];
+	sol[i,j] = (solution) { .next_row = i, .next_col = (j - 1),
+				.matched_char = '\0' };
+      }
+
+      return m[i,j];
+    }
+  }  
+#+end_src
+**** Storing solution in bottom-up
+#+begin_src c
+  void LCS(string X, string Y){
+    int m[X.len, Y.len];
+    solution sol[X.len, Y.len];
+    for(int i = 0; i < X.len; i++){
+      m[i,0] = 0;
+      sol[i,0] = (solution) { .next_row = INFINITY, .next_col = INFINITY,
+			      .matched_char = '\0' };
+    }
+
+    for(int j = 0; j < Y.len; j++){
+      m[0,j] = 0;
+      sol[0,j] = (solution) { .next_row = INFINITY, .next_col = INFINITY,
+			      .matched_char = '\0' };
+    }
+
+    for(int i = 0; i < X.len; i++){
+      for(int j = 0; j < Y.len; j++){
+	if(X[i] == Y[j]){
+	  m[i,j] = m[i-1,j-1] + 1;
+	  sol[i,j] = (solution) { .next_row = (i - 1), .next_col = (j - 1),
+				  .matched_char = X[i] };
+	}else if (m[i, j-1] > m[i - 1, j]){
+	  m[i,j] = m[i, j-1];
+	  sol[i,j] = (solution) { .next_row = i, .next_col = (j - 1),
+				  .matched_char = '\0' };
+	}else{
+	  m[i,j] = m[i - 1, j];
+	  sol[i,j] = (solution) { .next_row = (i - 1), .next_col = j,
+				  .matched_char = '\0' };
+	}
+      }
+    }
+  }
+#+end_src
+
+**** Printing solution
+Now we can simply follow the stored solution to get our string
+#+begin_src c
+  void print_subsequence(size_t i, size_t j) {
+    // if having a matched char, print it
+    if(sol[i,j].matched_char != '\0')
+      printf("%c", sol[i,j].matched_char);
+
+    // if not at end, print subsequence further
+    if(sol[i,j].next_row != INFINITY)
+      print_subsequence(sol[i,j].next_row, sol[i,j].next_row);
+  }
+#+end_src
++ Note : this will print subsequence in reverse order
+*** More compact way to store solution
+The previous method to store solution uses three fields for each cell of sol[,] matrix. But the data can be in a more compact manner
++ We will ues a single char for each cell of sol[,]
+#+begin_src c
+  char sol[X.len, Y.len];
+#+end_src
++ If $X_i == Y_j$, then we can store char '↖', showing that next cell is up-left in sol[,] table. The matched character will simply be $X[i]$
++ If $m[i, j - 1] < m[i - 1, j]$, then we store char '←', showing that next cell is to the left of current in sol[,] table
++ If $m[i, j - 1] > m[i - 1, j]$, then we store char '↑', showing that next cell is to the top of current in sol[,] table
++ For $i == 0\ and\ j == 0$, we can store char '✗', showing that we are at the end
+#+begin_src c
+  {
+    for(i == 0 or j == 0){
+      m[i,j] = 0;
+      sol[i,j] = '✗';
+    }
+
+    if(X[i] == Y[j]){
+      m[i,j] = m[i-1,j-1] + 1;
+      sol[i,j] = '↖';
+    }else if (m[i, j - 1] < m[i - 1, j]){
+      m[i,j] = m[i - 1, j];
+      sol[i,j] = '←';
+    }else{
+      m[i,j] = m[i, j - 1];
+      sol[i,j] = '↑';
+    }
+  }
+#+end_src
+
+Now, we can simply print solution by simply inferring the meaning of these arrows
+#+BEGIN_SRC c
+  void print_subsequence(size_t i, size_t j) {
+    // if having a matched char, print it
+    if(sol[i,j] == '↖')
+      printf("%c", X[i]);
+
+    // if not at end, print subsequence further
+    if(sol[i,j] == '←')
+      print_subsequence(i - 1, j);
+    else if(sol[i,j] == '↑')
+      print_subsequence(i, j - 1);
+  }
+#+END_SRC
+# TODO : maybe add one of those fancy table representation of sol[,] and m[,] table combined
+
+** 0/1 knapsack problem
+# TODO : explanation of problem
+*** Analyzing problem
+Suppose the items are stored in struct
+#+BEGIN_SRC c
+  struct item {
+    int profit;
+    int weight;
+  };
+#+END_SRC
+and the function is
+#+begin_src c
+  // n is the number of items
+  // W is the maximum capacity of knapsack
+  int knapsack(struct item items[], int n, int W);
+#+end_src
++ If either number of items $n$ is 0 or capacity of knapsack $W$ is 0, then maximum profit is also 0
++ For each $n^{th}$ item, we need to consider both cases in which we include and when we exclude the $n^{th}$ item.
++ In case, $items[n].weight > W$, we have no choice but to exclude the item
+Thus the complete formula is for maximum profit m[n,W] is
+\[ m[n,W] = \begin{cases} 0 & \text{,if $n = 0$ or $W = 0$}  \\ m[n - 1, W] & \text{,if $item[n].weight > W$} \\ \mathbf{max \Bigl (} m[n - 1, W]  \  \mathbf{,} \ p_n + m[n - 1, W - w_n] \mathbf{\Bigr )} & \text{,if $item[n].weight \le W$} \end{cases} \]
+Here $w_n$ is weight of $n^{th}$ item and $p_n$ is profit of $n^{th}$ item
+*** Recursive solution
+The recursive solution for 0/1 knapsack is
+#+BEGIN_SRC c
+  // W is capacity of knapsack
+  // n is number of items
+  int knapsack(struct item items[], int n, int W) {
+    if(n == 0 || W <= 0)
+      return 0;
+
+    if(items[n].weight > W)
+      return knapsack(items, n - 1, W);
+    else
+      return max( // exclude the item
+		  knapsack(items, n - 1, W),
+		  // include the item
+		  items[n].profit + knapsack(items, n - 1, W - items[n].weight));
+  }
+#+END_SRC
+*** Applying Dynamic Programming
+
+*Top-down solution*
+
+As ever, the top-down solution using memoization is going to be simpler to apply to the existing recursive solution.
+#+begin_src c
+  int m[n + 1, w + 1] = {INFINITY};
+  int knapsack(struct item items[], int n, int W) {
+    // return memoized solution
+    if(m[n, W] != INFINITY)
+      return m[n, W];
+
+    // base cases
+    if(n == 0 || W <= 0){
+      if (W < 0) W = 0;
+      m[n, W] = 0;
+      return m[n,W];
+    }
+
+    // if weight of n_th item is greater than capacity W
+    int on_exclude = knapsack(items, n - 1, W);
+    if(items[n].weight > W){
+      m[n,W] = on_exclude;
+      return m[n,W];
+    }
+
+    // else check max on both include and excluding n_th item
+    int on_include = items[n].profit
+      + knapsack(items, n - 1, W - items[n].weight);
+    if(on_exclude > on_include)
+      m[n, W] = on_exclude;
+    else
+      m[n, W] = on_include;
+
+    return m[n, W];
+  }
+#+end_src
+
+*Bottom-up solution*
+
+Using the formula for calculating any $m[n,W]$, if we arrange all n's for row labels and al W's for column of dynamic programming table. We can see that for a cell in the table, all previous rows are calculated and that
++ For a given cell $m[n,W]$, the cell $m[n - 1, W]$ i.e, the cell to the top of current needs to be solved
++ For cell $m[n,W]$, the cell $m[n - 1, W - item[n].weight]$ needs to be solved, $n - 1$ means row to the top but the $W - item[n].weight$ will depend on the item. So we consider previous row is already solved.
+/So we need to move from left-to-right and top-to-bottom if n's label row and W's label column./
+
+The traversal is done in this sequence
+
+(1,1), (1,2), (1,3) .... (1,W),
+\\
+(2,1), (2,2), (2,3) .... (2,W),
+\\
+(3,1), (3,2), (3,3) .... (3,W),
+\\
+....
+\\
+(n,1), (n,2), (n,3) .... (n,W),
+
+#+begin_src c
+  int knapsack(struct item items[], int n, int W) {
+    int m[n+1,W+1];
+
+    // base cases
+    for(int i = 0; i <= n; i++)
+      m[i,0] = 0;
+    for(int i = 0; i <= W; i++)
+      m[0,i] = 0;
+
+    // filling dynamic programming table
+    for(int i = 1; i <= n; i++){
+      for(int j = 1; j <= W; j++){
+	// here i is the current element
+	// and j is the current capacity
+
+	// if weight of current item is greater than capacity
+	int on_exclude = m[i - 1, j];
+	if(items[i].weight > j){
+	  m[i,j] = on_exclude;
+	  continue;
+	}
+
+	// else check max on both include and excluding n_th item
+	int on_include = items[i].profit + m[i - 1, j - items[i].weight];
+	if(on_include > on _exclude)
+	  m[i,j] = on_include;
+	else
+	  m[i,j] = on_exclude;
+      }
+    }
+
+    return m[n, W];
+  }
+#+end_src
+
+*** Constructing solution
+# TODO : maybe add sol[,] in code implementation here (probably not needed)
+In order to construct solution, we will store for every calculated $m[n,W]$ it's associated $sol[n,W]$ which will store whether the item $n$ was included or excluded
++ If $m[n,W]$ has $n$ included, then we will store $sol[n,W]$ as $1$
++ If $m[n,W]$ has $n$ excluded, then we will store $sol[n,W]$ as $0$
++ For base cases $sol[n,W]$ (i.e, n = 0 or W = 0) we will store $-1$
+Then the solution is printed as
+#+begin_src c
+  void print_solution(struct item items[], int sol[],
+		      int n, int W){
+    if(n == 0 || W <= 0)
+      return;
+    printf("Item no : %d Included : %d \n", n, sol[n,W]);
+
+    // if n was included for solution
+    if(sol[n,W] == 1)
+      print_solution(n - 1, W - items[n].weight);
+    // else n was not included for solution
+    else
+      print_solution(n - 1, W);
+  }
+#+end_src
+
+** Floyd-Warshall algorithm
+# TODO : Intro to algorithm and what is does
+# TODO : Detecting negetive weight cycles (if any of the diagonal element in sp[,] is negative there is a negative weight cycle)
+*** Analyzing problem
+Suppose a graph has $N$ nodes which are labeled $1,2,3,...,N$. The function which tells the cost of shortest path between any two nodes $i$ and $j$ is $sp(i,j,k)$ when only nodes in set ${1,2,...,k}$ are used to construct the path
++ If $k = 0$, then the set of allowed nodes in path is $\{ \}$, therefore the shortest path is simply given by $sp(i,j,0) = w(i,j)$. Here, $w(i,j)$ is weight of edge between $i$ and $j$ if it exists else it is $\infty$. *Also $w(i,i) = 0$.*
++ For some arbitrary value of $k$
+  + If shortest path from $i$ to $j$ does not contain node $k$, then the shortest path cost is $sp(i,j,k-1)$
+  + If shortest path from $i$ to $j$ contains the node $k$, then the shortest path cost is $sp(i,k,k-1) + sp(k,j,k-1)$. Because the shortest path from node $i$ to $j$ can be broken into two paths. One from node $i$ to $k$ and another from $k$ to $j$
+Therefore the recursive funtion for cost of shortest path is
+\[ sp(i,j,k) = \begin{cases} w(i,j) & \text{if $k = 0$} \\ min \Bigl \{  sp(i,j,k-1), \Bigl ( sp(i,k,k-1) + sp(k,j,k-1) \Bigr ) \Bigr \} & \text{if $k \ne 0$}  \end{cases} \]
+For graph with $N$ nodes, we want to find $sp(i,j,N)$ for all pairs of $(i,j)$ in the graph
+*** Recursive solution
+The recurisve solution is given by
+#+begin_src c
+  int sp(int i,int j,int k){
+    if(k == 0){
+      if(i == j) return 0;
+      else return w(i,j);
+    }
+
+    int sp_without_k = sp(i,j,k-1);
+    int sp_with_k = sp(i,k,k-1) + sp(k,j,k-1);
+
+    if(sp_with_k < sp_without_k)
+      return sp_with_k;
+    else
+      return sp_without_k;
+  }
+#+end_src
+*** Dynamic Programming
+The top-down dynamic programming will simply memoize the above recursive program.
+
+For bottom-up dynamic programming, we can see that
++ Base case is $k = 0$
++ For any $k$, $k-1$ needs to be solved
+Therefore, *we will solve in order $k = 0,1,2,...,N$*
+#+begin_src c
+  void shortes_path(){
+    int sp[N+1,N+1];
+
+    // for k = 0
+    for(int i = 1; i <= N; i++){
+      for(int j = 1; j <= N; j++){
+	sp[i,j] = w(i,j);
+      }
+    }
+
+    // all sp[i,i] should be 0
+    for(int i = 1; i <= N; i++){
+      sp[i,i] = 0;
+    }
+
+    // for k = 1,2,..,N
+    for(int k = 1; k <= N, k++){
+      for(int i = 1; i <= N; i++){
+	for(int j = 1; j <= N; j++){
+	  int sp_without_k = sp[i,j,k-1];
+	  int sp_with_k = sp[i,k,k-1] + sp[k,j,k-1];
+
+	  if(sp_with_k < sp_without_k)
+	    sp[i,j,k] = sp_with_k;
+	  else
+	    sp[i,j,k] = sp_without_k;
+	}
+      }
+    }
+  }
+#+end_src
+*** Reconstructing path (solution)
+Inorder to reconstruct the path, for every pair of node $i$ and $j$, we will store the node that appears just before $j$ in the path from $i$ to $j$
++ If *$i = j$ or $k = 0$*, we will store *$sol[i,j] = i$*
++ When $k$ is some other arbitrary value
+  + If *$sp[i,j,k]$ does not use $k$*, then we *don't need to update $sol[,]$*. That is we can do $sol[i,j] = sol[i,j]$
+  + If *$sp[i,j,k]$ uses the node $k$*, we will need to update $sol[,]$. *The solution is updated to $sol[i,j] = sol[k,j]$*. This is because we are now using the path between $k$ and $j$ for new shortest path.
+The example storing the $sol[,]$ matrix is
+#+begin_src c
+  void shortes_path(){
+    int sp[N+1,N+1];
+    int sol[N+1,N+1];
+
+    // for k = 0
+    for(int i = 1; i <= N; i++){
+      for(int j = 1; j <= N; j++){
+	sp[i,j] = w(i,j);
+	sol[i,j] = i;
+      }
+    }
+
+    // all sp[i,i] should be 0
+    for(int i = 1; i <= N; i++){
+      sp[i,i] = 0;
+      sol[i,i] = i;
+    }
+
+    // for k = 1,2,..,N
+    for(int k = 1; k <= N, k++){
+      for(int i = 1; i <= N; i++){
+	for(int j = 1; j <= N; j++){
+	  int sp_without_k = sp[i,j,k-1];
+	  int sp_with_k = sp[i,k,k-1] + sp[k,j,k-1];
+
+	  if(sp_with_k < sp_without_k){
+	    sp[i,j,k] = sp_with_k;
+	    sol[i,j] = sol[k,j];
+	  }else{
+	    sp[i,j,k] = sp_without_k;
+	  }
+	}
+      }
+    }
+  }
+#+end_src
+The algorithm to then print the path is simple
+#+begin_src c
+  void print_path(int i, int j, int sol[,]){
+    printf("%d <- ", j);
+    do{
+      printf("%d <- ", sol[i,j]);
+      j = sol[i,j];
+    }while(sol[i,j] != i);
+  }
+#+end_src

@@ -1,0 +1,17 @@
+#+TITLE: Algorithms
+#+AUTHOR: Anmol Nawani
+#+OPTIONS: H:4
+#+html_head: <link rel="stylesheet" href="src/org.css">
+
+#+INCLUDE: "./lectures/1.org" :minlevel 1
+#+INCLUDE: "./lectures/2.org" :minlevel 1
+#+INCLUDE: "./lectures/3.org" :minlevel 1
+#+INCLUDE: "./lectures/4.org" :minlevel 1
+#+INCLUDE: "./lectures/5.org" :minlevel 1
+#+INCLUDE: "./lectures/6.org" :minlevel 1
+#+INCLUDE: "./lectures/7.org" :minlevel 1
+#+INCLUDE: "./lectures/8.org" :minlevel 1
+
+#+INCLUDE: "./dynamic.org" :minlevel 1
+#+INCLUDE: "./greedy.org" :minlevel 1
+#+INCLUDE: "backtracking_branch_bound.org" :minlevel 1

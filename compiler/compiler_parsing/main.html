@@ -1,0 +1,2144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2024-10-06 Sun 19:20 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Compiler Design</title>
+<meta name="author" content="Anmol Nawani" />
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+</style>
+<link rel="stylesheet" href="src/org.css">
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        displayAlign: "center",
+        displayIndent: "0em",
+
+        "HTML-CSS": { scale: 100,
+                        linebreaks: { automatic: "false" },
+                        webFont: "TeX"
+                       },
+        SVG: {scale: 100,
+              linebreaks: { automatic: "false" },
+              font: "TeX"},
+        NativeMML: {scale: 100},
+        TeX: { equationNumbers: {autoNumber: "AMS"},
+               MultLineWidth: "85%",
+               TagSide: "right",
+               TagIndent: ".8em"
+             }
+});
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
+</head>
+<body>
+<div id="content" class="content">
+<h1 class="title">Compiler Design</h1>
+<div id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org72c4097">1. Language Processors</a>
+<ul>
+<li><a href="#org2fe02d3">1.1. Programs required for executable</a></li>
+<li><a href="#org454e690">1.2. Structure of a compiler</a>
+<ul>
+<li><a href="#orgf12e0c4">1.2.1. Lexical Analysis</a></li>
+<li><a href="#orgaec2806">1.2.2. Syntax Analysis</a></li>
+<li><a href="#org41c9cec">1.2.3. Semantic Analysis</a></li>
+<li><a href="#org3ba1546">1.2.4. Intermediate Code Generation</a></li>
+<li><a href="#org2fd8ca9">1.2.5. Code optimizations</a></li>
+<li><a href="#org45bcb7f">1.2.6. Code generation</a></li>
+</ul>
+</li>
+<li><a href="#org5da2104">1.3. Classification of Languages</a></li>
+</ul>
+</li>
+<li><a href="#orgcf62001">2. Lexical Analysis</a>
+<ul>
+<li><a href="#org4a0b5cf">2.1. Input Buffering</a>
+<ul>
+<li><a href="#org379bc06">2.1.1. Two-Buffer arrangement</a></li>
+</ul>
+</li>
+<li><a href="#org16f11de">2.2. Regular Expressions</a>
+<ul>
+<li><a href="#org3f70f2a">2.2.1. Properties of regular expressions</a></li>
+<li><a href="#org871682b">2.2.2. Regular definitions</a></li>
+<li><a href="#orgadbf7e0">2.2.3. Extensions to regular expressions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org6de5f0d">3. Syntax Analysis (Parsing)</a>
+<ul>
+<li><a href="#org7060a96">3.1. Context-free grammers</a>
+<ul>
+<li><a href="#org2d1f1af">3.1.1. Rightmost derivations</a></li>
+<li><a href="#orgaa75b9c">3.1.2. Leftmost derivations</a></li>
+<li><a href="#org51c35e1">3.1.3. Ambiguity</a></li>
+<li><a href="#orgf058608">3.1.4. Eliminating Ambiguity</a></li>
+<li><a href="#orge8ab58e">3.1.5. Elimination of Left Recursion</a>
+<ul>
+<li><a href="#org8b38c38">3.1.5.1. Eliminating direct left recursion</a></li>
+<li><a href="#org0964d02">3.1.5.2. Eliminating all left recursion</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org453d982">3.2. FIRST and FOLLOW functions</a>
+<ul>
+<li><a href="#org2ee4e4f">3.2.1. FIRST function</a>
+<ul>
+<li><a href="#orgf80f90c">3.2.1.1. If \(X\) is a terminal</a></li>
+<li><a href="#orgd513ada">3.2.1.2. If \(X\) is a non-terminal</a></li>
+<li><a href="#org0dc4397">3.2.1.3. For string \(X_1 X_2 ... X_n\) of terminals and non-terminals</a></li>
+</ul>
+</li>
+<li><a href="#org203c536">3.2.2. FOLLOW function</a></li>
+</ul>
+</li>
+<li><a href="#org0e2e5c2">3.3. Top-Down Parsing</a>
+<ul>
+<li><a href="#orgdaecc06">3.3.1. Recursive descent parser</a></li>
+<li><a href="#org4b35079">3.3.2. LL(1) Grammars</a></li>
+<li><a href="#org9d8aea5">3.3.3. Parsing Table</a></li>
+<li><a href="#orgd5e7b99">3.3.4. Nonrecursive Predictive Parsing</a></li>
+</ul>
+</li>
+<li><a href="#org620a081">3.4. Bottom-Up Parsing</a>
+<ul>
+<li><a href="#orgd6cfd24">3.4.1. Reduction</a></li>
+<li><a href="#org876a721">3.4.2. Handle Pruning</a></li>
+<li><a href="#orgfde109a">3.4.3. Shift-reduce parsing</a></li>
+<li><a href="#orge963004">3.4.4. Conflicts during shift-reduce parsing</a>
+<ul>
+<li><a href="#org7083a5b">3.4.4.1. shift/reduce conflict</a></li>
+<li><a href="#org5b4cdcd">3.4.4.2. reduce/reduce conflict</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org5aa6011">3.5. LR(0) parser</a>
+<ul>
+<li><a href="#org384b199">3.5.1. Items and LR(0) automata</a>
+<ul>
+<li><a href="#org936b4ed">3.5.1.1. LR(0) collection</a></li>
+<li><a href="#orgd54c339">3.5.1.2. LR(0) automata</a></li>
+</ul>
+</li>
+<li><a href="#org90226f0">3.5.2. LR(0) table and LR-parsing algorithm</a>
+<ul>
+<li><a href="#orgcbabf5c">3.5.2.1. GOTO table</a></li>
+<li><a href="#org32c2782">3.5.2.2. ACTION table</a></li>
+<li><a href="#orgdae9eeb">3.5.2.3. LR-parsing algorithm</a></li>
+</ul>
+</li>
+<li><a href="#org62f9eee">3.5.3. Viable Prefixes</a>
+<ul>
+<li><a href="#org2e2c5d6">3.5.3.1. Central theorem of LR-parsing</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orga9a9306">3.6. SLR Parser</a>
+<ul>
+<li>
+<ul>
+<li><a href="#orgad26e3c">3.6.0.1. GOTO table</a></li>
+<li><a href="#org0281b84">3.6.0.2. ACTION table</a></li>
+<li><a href="#orge153982">3.6.0.3. The Parsing Algorithm</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orge06b623">3.7. More Powerful LR Parsers</a>
+<ul>
+<li><a href="#org0572386">3.7.1. Canonical LR(1) items</a>
+<ul>
+<li><a href="#orga1404d7">3.7.1.1. Viable prefix</a></li>
+<li><a href="#orgecaea90">3.7.1.2. Constructing LR(1) sets of items</a></li>
+</ul>
+</li>
+<li><a href="#org4df7ad3">3.7.2. LALR parsing tables</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org72c4097" class="outline-2">
+<h2 id="org72c4097"><span class="section-number-2">1.</span> Language Processors</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+Programming Languages are human readable and can't be executed by a machine. Therefore, we need to process them in some form to execute a program written in a programming language. A language processor is of two broad categories
+</p>
+<ul class="org-ul">
+<li><p>
+<b>Compiler</b> : A compiler converts the source program written in a programming language to a target program which is executable by the machine.
+</p>
+
+<div id="org0f60c12" class="figure">
+<p><img src="Language_Processors/2023-12-13_13-19-58_Untitled-2023-12-13-1318.png" alt="2023-12-13_13-19-58_Untitled-2023-12-13-1318.png" />
+</p>
+</div>
+
+<p>
+This target program is then executed by the user, who can provide input to this program.
+</p>
+
+<div id="org0ade69c" class="figure">
+<p><img src="Language_Processors/2023-12-13_13-23-07_Untitled-2023-12-13-1318.png" alt="2023-12-13_13-23-07_Untitled-2023-12-13-1318.png" />
+</p>
+</div></li>
+<li><p>
+<b>Interpreter</b> : An interpreter does not generate a target program. It will take the source code and the input from the user and executes it, seemingly without producing target machine's code. The interpreter actually may convert the source code to a byte code or even to machine code (usually via Just-In-Time compilers).
+</p>
+
+<div id="org5c3292e" class="figure">
+<p><img src="Language_Processors/2023-12-13_13-27-39_Untitled-2023-12-13-1318.png" alt="2023-12-13_13-27-39_Untitled-2023-12-13-1318.png" />
+</p>
+</div>
+
+<p>
+Programs using interpreters are usually slower in execution than compiled programs. But interpreters can usually have better runtime diagnostics than a compiled language.
+</p></li>
+<li><b>Hybrids</b> : Some languages like Java have a hybrid approach. The java compiler first converts the Java source code into bytecode. This bytecode can't be run on an actual machine. Instead it is then given to a virtual machine, called Java Virtual Machine which will interpret the bytecode.</li>
+</ul>
+</div>
+<div id="outline-container-org2fe02d3" class="outline-3">
+<h3 id="org2fe02d3"><span class="section-number-3">1.1.</span> Programs required for executable</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+When using a compiler, it often doesn't directly convert source code to an executable form. There are various steps that are taken to convert a source program to an actual executable program. A compiler is one of the working components, but the other parts are
+</p>
+<ul class="org-ul">
+<li>Preprocessor : rather than having a single source file, we often divide program into seperate source files. The preprocessor will collect all of these source files before feeding them to compiler. Preprocessor also handles the macros.</li>
+<li>Compiler : the preprocessor then gives the modified source code to compiler. While some compilers can generate machine code directly, some compilers may not actually produce machine code. They will instead generate assembly code which is easier to generate</li>
+<li>Assembler : the assembler is another type of compiler, it is a special name for a compiler which can convert assembly code to machine code.</li>
+<li>Linker/Loader : the whole program is often not in a single executable. Programs depend on system libraries and modules. The linker resolves the external memory addresses to libraries and modules and loader is responsible for loading libraries in memory when program is running.</li>
+</ul>
+
+<div id="orgd66d65d" class="figure">
+<p><img src="Language_Processors/2023-12-13_14-24-14_Untitled-2023-12-13-1318.png" alt="2023-12-13_14-24-14_Untitled-2023-12-13-1318.png" />
+</p>
+</div>
+
+<p>
+We will only look at the compiler portion of this whole language processing system
+</p>
+</div>
+</div>
+<div id="outline-container-org454e690" class="outline-3">
+<h3 id="org454e690"><span class="section-number-3">1.2.</span> Structure of a compiler</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+A compiler will have two primary parts : analysis and synthesis
+</p>
+<ul class="org-ul">
+<li>Analysis : the analysis uses a predefined context-free grammer of the programming language to convert it to an <i>Intermediate Representation (IR)</i>. If the analysis finds that code is syntactically or semantically wrong, then it will tell the programmer by error messages. Along with the IR, it also stores data in a <i>symbol table</i>. The symbol table along with IR is used by the synthesis part of compiler. The analysis portion is called the frontend of a compiler</li>
+<li>Synthesis : the synthesis portion of compiler will use the IR and symbol table to generate the target code. It produces optimized code by optimizing the IR. Optimization is a major part of the compiler, the optimization is of two types. The machine independent optimization will optimize the IR which it gets from the frontend of compiler. The machine dependent optimization will optimize the machine code which is obtained after code generator has converted IR to machine code. The synthesis part of compiler is called backend of the compiler</li>
+</ul>
+</div>
+<div id="outline-container-orgf12e0c4" class="outline-4">
+<h4 id="orgf12e0c4"><span class="section-number-4">1.2.1.</span> Lexical Analysis</h4>
+<div class="outline-text-4" id="text-1-2-1">
+<p>
+The lexical analyzer called the lexer or scanner, takes the source code and converts in to a list of meaningful atoms called lexemes. A lexeme is the smallest unit of the source code which is meaningful to a compiler. Types of lexemes includes all the operators, keywords, identifiers, literals, and other symbols used by language (like parenthesis, braces, commas, dot, semicolon etc.)
+</p>
+
+<p>
+A lexeme is stored in the form of a token as
+</p>
+
+<p>
+\[ \langle \text{token-name}, \text{attribute-value} \rangle \]
+</p>
+
+<p>
+The attribute-value is the entry for that token in the symbol table. This information is needed for code generation. Example, suppose the source code is
+</p>
+<div class="org-src-container">
+<pre class="src src-ruby">position = initial + rate * 60
+</pre>
+</div>
+<p>
+This has seven lexemes
+</p>
+<ol class="org-ol">
+<li>position is a lexeme, which is an identifier. This is stored in the form of token \(\langle identifier, position\rangle\). It can be stored in memory as \(\langle id, 1 \rangle\) where 1 is it's location on the symbol table</li>
+<li>= is a lexeme. But we don't need to store a seperate attribute-value for this, since = symbol can be used to identify it uniquely unlike identifiers which can have any name. We can store it as \(\langle equal, = \rangle\), but often we only show this as \(\langle = \rangle\)</li>
+<li>initial is another identifier, which in form of token is \(\langle identifier, initial \rangle\) and is stored in symbol table using \(\langle id, 2 \rangle\)</li>
+<li>+ is only single character lexeme. Similar to equals, we will store is as \(\langle + \rangle\)</li>
+<li>rate is an identifier, therefore we store it in symbol table as \(\langle id, 3\rangle\)</li>
+<li>* is a single character lexeme, so it is stored as \(\langle * \rangle\)</li>
+<li>60 is a literal. Similar to how + and * can be used to identify them uniquely, we can also identify literals in code uniquely. So token can be shown as \(\langle literal, 60 \rangle\) and stored as \(\langle 60 \rangle\). For languages with strong type checkings, we may even store the supposed type of the literal. So, 60 maybe stored as \(\langle \text{int-literal}, 60 \rangle\)</li>
+</ol>
+<p>
+The final symbol table for this piece of code will be
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">attribute-value</th>
+<th scope="col" class="org-left">scope</th>
+<th scope="col" class="org-left">type</th>
+<th scope="col" class="org-left">&#x2026;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">position</td>
+<td class="org-left">&#x2026;</td>
+<td class="org-left">&#x2026;</td>
+<td class="org-left">&#x2026;</td>
+</tr>
+
+<tr>
+<td class="org-left">initial</td>
+<td class="org-left">&#x2026;</td>
+<td class="org-left">&#x2026;</td>
+<td class="org-left">&#x2026;</td>
+</tr>
+
+<tr>
+<td class="org-left">rate</td>
+<td class="org-left">&#x2026;</td>
+<td class="org-left">&#x2026;</td>
+<td class="org-left">&#x2026;</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+And the lexemes are grouped into tokens as
+</p>
+
+<p>
+\[ \langle id, 1\rangle \langle = \rangle  \langle id, 2\rangle  \langle + \rangle  \langle id, 3\rangle \langle * \rangle  \langle 60 \rangle \]
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgaec2806" class="outline-4">
+<h4 id="orgaec2806"><span class="section-number-4">1.2.2.</span> Syntax Analysis</h4>
+<div class="outline-text-4" id="text-1-2-2">
+<p>
+The tokens we get from lexical analysis are then arranged in form of a tree, called the Abstract Syntax Tree (AST). These trees are formed by a process called parsing, which is done by parsers. These parsers use context-free grammers in order to make the AST.
+</p>
+<ul class="org-ul">
+<li>The inner nodes of tree are the operators</li>
+<li>The leaf nodes of tree are arguments for the operators</li>
+</ul>
+
+<div id="org1908115" class="figure">
+<p><img src="Language_Processors/2023-12-13_20-09-28_Untitled-2023-12-13-1318.png" alt="2023-12-13_20-09-28_Untitled-2023-12-13-1318.png" />
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org41c9cec" class="outline-4">
+<h4 id="org41c9cec"><span class="section-number-4">1.2.3.</span> Semantic Analysis</h4>
+<div class="outline-text-4" id="text-1-2-3">
+<p>
+The syntax tree is checked by a semantic analyzer to check if it follows all the rules defined by the language. This is the place where type checking is done and implicit conversions are done. If the syntax tree is not correct, then it will give programmer a messaage informing that went wrong.
+</p>
+</div>
+</div>
+<div id="outline-container-org3ba1546" class="outline-4">
+<h4 id="org3ba1546"><span class="section-number-4">1.2.4.</span> Intermediate Code Generation</h4>
+<div class="outline-text-4" id="text-1-2-4">
+<p>
+While we can simply generate target code at this point (which transpilers will do). When making a langauge, we often want it to work on multiple platforms. To achieve this, rather than convert to machine code or assembly code that works on a single machine, we generte a machine-like intermediate code. The requirements for good intermediate code is that it is easy to generate and easy to map to actual machine code. We usually use a three-address code, it is assembly language like instructions with every instruction having only 3 operands.
+</p>
+
+<p>
+Example, for our code we can have the following instructions
+</p>
+<div class="org-src-container">
+<pre class="src src-ruby">t1 = 60
+t2 = id3 * t1
+t3 = id2 + t2
+id1 = t3
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org2fd8ca9" class="outline-4">
+<h4 id="org2fd8ca9"><span class="section-number-4">1.2.5.</span> Code optimizations</h4>
+<div class="outline-text-4" id="text-1-2-5">
+<p>
+The machine independent code optimization is done on the Intermediate Code that we produced in the previous step. The optimization can be done to increase speed, reduce space, reduce number of instruction etc.
+</p>
+
+<p>
+For our example, we can reduce the number of instruction by optimizing
+</p>
+<div class="org-src-container">
+<pre class="src src-ruby">t1 = id3 * 60
+id1 = id2 + t1
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org45bcb7f" class="outline-4">
+<h4 id="org45bcb7f"><span class="section-number-4">1.2.6.</span> Code generation</h4>
+<div class="outline-text-4" id="text-1-2-6">
+<p>
+The optimized intermediate code from the previous step is converted to equivalent machine code. This machine code is usually assembly for the platform. The storage allocation such as stack and heap are also initialized here. The type of storage allocation needed will depend on the type language. Example, C needs both a stack and a heap, but Forth only needs a stack.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org5da2104" class="outline-3">
+<h3 id="org5da2104"><span class="section-number-3">1.3.</span> Classification of Languages</h3>
+<div class="outline-text-3" id="text-1-3">
+<p>
+Classification by generation is done as
+</p>
+<ol class="org-ol">
+<li>First Generation of Languages refer to machine code</li>
+<li>Second Generation of Languages refer to assembly code</li>
+<li>Third Generation of Languages refer to higher level langauges such as C, C++, Java, Lisp and C#</li>
+<li>Fourth Generation of Languages are domain specific languages such as SQL for database queries, Postscript for documents and NOMAD for report generation</li>
+<li>Fifth Generation of Languages refers to logic-based and constraint-based languages like Prolog and OPS5</li>
+</ol>
+
+<p>
+Another classification is between declarative and imperitive languages
+</p>
+<ol class="org-ol">
+<li>Imperitive languages use imperitive instructions for what the program needs to do. The program goes through program statement after statement executing them in-order. The programmer needs to give specific instructions to get the necessary results.</li>
+<li>Declarative languages don't have statements. Instead we use declarations that declare what needs to be done. Functionl programming languages such as haskell and logic langauges such as Prolog are declarative</li>
+</ol>
+
+<p>
+Some other types of langauges classification are
+</p>
+<ul class="org-ul">
+<li>Von-neumann language are programming languages based on the von-neumann architechture, example C and Fortran</li>
+<li>Scripting languages are interpreted languages that are usually used to automate, customize and "glue" computations. Most operating systems come with a default scripting language, like bash on most linux systems, zsh on macOS and powershell on windows. These langauges help automate tedious tasks on these systems</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgcf62001" class="outline-2">
+<h2 id="orgcf62001"><span class="section-number-2">2.</span> Lexical Analysis</h2>
+<div class="outline-text-2" id="text-2">
+<ul class="org-ul">
+<li><p>
+A <i>token</i> is a 2-tuple of a name and an attribute (The attribute is often optional)
+</p>
+
+<p>
+\[ \langle name, attribute \rangle \]
+</p></li>
+
+<li>A <i>pattern</i> describes the different forms a token can take in code. Keywords are always the same sequence of characters, whereas identifiers can be any other sequence of characters (with extra rules like they can't start with a digit). The pattern is what is matched to identify token.</li>
+<li>A <i>lexeme</i> is a sequence of characters in the source code which matches a pattern. It is usually stored as the attribute of a token</li>
+</ul>
+</div>
+<div id="outline-container-org4a0b5cf" class="outline-3">
+<h3 id="org4a0b5cf"><span class="section-number-3">2.1.</span> Input Buffering</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+Suppse our lexer sees the symbol \(<\), rather than simply declare it as a \(\langle \text{less than}, < \rangle\) token. It needs to look forward to check whether it is \(<=\), in which case it would be a \(\langle \text{less than equal}, <= \rangle\) token.
+</p>
+
+<p>
+Similarly, on seeing characters \(if\), it can't simply declare it as \(\langle keyword ,if \rangle\). Because it could be an identifier \(ifx\) in which case token was actually \(\langle identifier , ifx \rangle\)
+</p>
+
+<p>
+Therefore, we need to buffer input to a lexer, so that it can look ahead at the input source code and make correct decisions
+</p>
+</div>
+<div id="outline-container-org379bc06" class="outline-4">
+<h4 id="org379bc06"><span class="section-number-4">2.1.1.</span> Two-Buffer arrangement</h4>
+<div class="outline-text-4" id="text-2-1-1">
+<p>
+We use two buffers for look ahead. Each buffer is of same size \(N\) (usually we use 4096 bytes for a single buffer).
+</p>
+<ul class="org-ul">
+<li>Two pointers are used, a <i>lexemeBegin</i> pointer to the start of current lexeme and a <i>forward</i> pointer which moves forward till a pattern is matched and we get the complete lexeme</li>
+<li>When advancing <i>forward</i> we test whether we have reached the end of one of the buffer, in which case the other buffer is reloaded with next part of source code.</li>
+<li>So a maximum lexeme of size \(2N\) is allowed in this configuration, any larger size lexeme will overwrite a buffer and cause problems</li>
+<li>Usually at the end of both buffers we put a <i>sentinal</i> which tells us that we reached end of that buffer. In C it is usually the \0 symbol, in other languages we use the EOF for this purpose</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org16f11de" class="outline-3">
+<h3 id="org16f11de"><span class="section-number-3">2.2.</span> Regular Expressions</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+We will use regular expressions to match lexemes. We use regular expression from automata theory, not those which are used in programming usually
+</p>
+
+<p>
+So regular expression
+</p>
+
+<p>
+\[ letter (letter \cup digit)* \]
+</p>
+
+<p>
+can match every legal identifier in C. Here \(letter\) is standin for all letters a-z, A-Z and underscore. Similarly \(digit\) is standin for all digits 0-9
+</p>
+
+<p>
+Rather than using a \(\cup\) we may also use \(|\) symbol. This will shorten the above regular expression to
+</p>
+
+<p>
+\[ letter (letter | digit)* \]
+</p>
+</div>
+<div id="outline-container-org3f70f2a" class="outline-4">
+<h4 id="org3f70f2a"><span class="section-number-4">2.2.1.</span> Properties of regular expressions</h4>
+<div class="outline-text-4" id="text-2-2-1">
+<p>
+Some properties that help when working with regular expressions are
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">LAW</th>
+<th scope="col" class="org-left">DESCRIPTION</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">\(r \mid s = s \mid r\)</td>
+<td class="org-left">\(\mid\) is commutative</td>
+</tr>
+
+<tr>
+<td class="org-left">\(r \mid (s \mid t) = (r \mid s) \mid t\)</td>
+<td class="org-left">\(\mid\) is associative</td>
+</tr>
+
+<tr>
+<td class="org-left">\(r(st) = (rs)t\)</td>
+<td class="org-left">concatnation is associative</td>
+</tr>
+
+<tr>
+<td class="org-left">\(r(s \mid t) = rs \mid rt\)</td>
+<td class="org-left">concatnation distributes over \(\mid\)</td>
+</tr>
+
+<tr>
+<td class="org-left">\((r \mid t)s = rs \mid ts\)</td>
+<td class="org-left">concatnation distributes over \(\mid\)</td>
+</tr>
+
+<tr>
+<td class="org-left">\(\epsilon r = r \epsilon = r\)</td>
+<td class="org-left">\(\epsilon\) is identify for concatnation</td>
+</tr>
+
+<tr>
+<td class="org-left">\(r* = (r \mid \epsilon)*\)</td>
+<td class="org-left">\(\epsilon\) is always in closure</td>
+</tr>
+
+<tr>
+<td class="org-left">\(r** = r*\)</td>
+<td class="org-left">closure is idempotent</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="outline-container-org871682b" class="outline-4">
+<h4 id="org871682b"><span class="section-number-4">2.2.2.</span> Regular definitions</h4>
+<div class="outline-text-4" id="text-2-2-2">
+<p>
+Rather than writing large regular expressions, we will break a single regular expression into smaller definitions
+</p>
+
+<p>
+The complete regular expression for previous example for matching all valid C identifiers will be
+</p>
+
+<p>
+\[ A|B|...|Z|a|b|...|z|\_ (A|B|...|Z|a|b|...|z|_|0|1|...|9)* \]
+</p>
+
+<p>
+But, we will break it into smaller <i>regular definitions</i> as
+</p>
+
+<p>
+\[ letter \rightarrow (A|B|...|Z|a|b|...|z|\_) \]
+\[ digit \rightarrow (0|1|...|9) \]
+\[ id \rightarrow letter (letter | digit)* \]
+</p>
+
+<p>
+Another example is regular definitions to match all floats, including the floats in E notation. This is done as follows
+</p>
+
+<p>
+\[ digit \rightarrow (0|1|...|9) \]
+\[ digits \rightarrow digit\ digit* \]
+\[ optionalFraction \rightarrow .\ digits\ | \epsilon\]
+\[ optionalExponent \rightarrow (E(+|-| \epsilon )\ digits) | \epsilon \]
+\[ number \rightarrow digits\ optionalFraction\ optionalExponent \]
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgadbf7e0" class="outline-4">
+<h4 id="orgadbf7e0"><span class="section-number-4">2.2.3.</span> Extensions to regular expressions</h4>
+<div class="outline-text-4" id="text-2-2-3">
+<p>
+There are three common extensions to regular expressions
+</p>
+<ul class="org-ul">
+<li>Operator \(+\) is used to match one or more instances, rather than the usual zero or more matched by \(*\). This is called the positive closure. \(r+\) is equivalent to \(rr*\) or \(r*r\)</li>
+<li>Operator \(?\) is used to mathc zero or one instance. So \(r?\) is equivalent to \(r|\epsilon\)</li>
+<li>Character classes are used to match from a group of characters. \([ a_1 a_2 a_3 ... a_i ]\) is equivalent to \(a_1|a_2|a_3|...|a_i\)</li>
+</ul>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">NAME</th>
+<th scope="col" class="org-left">OPERATOR</th>
+<th scope="col" class="org-left">MATCHES</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">Kleene closure</td>
+<td class="org-left">*</td>
+<td class="org-left">Zero or more instances</td>
+</tr>
+
+<tr>
+<td class="org-left">Positive closure</td>
+<td class="org-left">+</td>
+<td class="org-left">One or more instances</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">?</td>
+<td class="org-left">Zero or one instance</td>
+</tr>
+
+<tr>
+<td class="org-left">Character classes</td>
+<td class="org-left">\([ a_1 a_2 ... a_i ]\)</td>
+<td class="org-left">\(a_1\mid a_2\mid ... \mid a_i\)</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org6de5f0d" class="outline-2">
+<h2 id="org6de5f0d"><span class="section-number-2">3.</span> Syntax Analysis (Parsing)</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+Parsers can be divided into three categories : universal, top-down and bottom-up. Universal parsers such as CYK can parse any context-free grammer. Whereas top-down and bottom-up grammer only parse a subset of all context-free grammers, usually LL and LR grammers. But we usually only use top-down and bottom-up parsers for compilers since universal parsers are very slow and LL/LR grammers are sufficient for syntax analysis.
+</p>
+</div>
+<div id="outline-container-org7060a96" class="outline-3">
+<h3 id="org7060a96"><span class="section-number-3">3.1.</span> Context-free grammers</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+A derivation in a CFG is shown by
+</p>
+
+<p>
+\[ S \overset{*}\Rightarrow \alpha \]
+</p>
+
+<p>
+Here, \(\alpha\) is an indermediate in the derivation and is called a <i>sentinal</i>
+</p>
+</div>
+<div id="outline-container-org2d1f1af" class="outline-4">
+<h4 id="org2d1f1af"><span class="section-number-4">3.1.1.</span> Rightmost derivations</h4>
+<div class="outline-text-4" id="text-3-1-1">
+<p>
+When deriving sentinals, if we always select the rightmost terminal for next step in derivation, it is called <i>rightmost derivations</i> also called <i>cannonical derivations</i>
+</p>
+
+<p>
+\[ S \overset{*}{\underset{rm} \Rightarrow} \alpha \]
+</p>
+
+<p>
+Here, \(\alpha\) is the final derived string. We can show steps of rightmost derivations by writing rm under the arrow. An example is,
+</p>
+
+<p>
+\[ S \underset{rm}\Rightarrow ABC \underset{rm}\Rightarrow ABcD \underset{rm}\Rightarrow ABcd \underset{rm}\Rightarrow Abcd \underset{rm}\Rightarrow abcd \]
+</p>
+</div>
+</div>
+<div id="outline-container-orgaa75b9c" class="outline-4">
+<h4 id="orgaa75b9c"><span class="section-number-4">3.1.2.</span> Leftmost derivations</h4>
+<div class="outline-text-4" id="text-3-1-2">
+<p>
+In leftmost derivation, we will always choose the leftmost non-terminal to replace during the derivation process.
+</p>
+
+<p>
+\[ S \overset{*}{\underset{lm} \Rightarrow} \alpha \]
+</p>
+
+<p>
+The same example we saw before is derived using leftmost derivatives as
+</p>
+
+<p>
+\[ S \underset{lm}\Rightarrow ABC \underset{lm}\Rightarrow aBC \underset{lm}\Rightarrow abC \underset{lm}\Rightarrow abcD \underset{lm}\Rightarrow abcd \]
+</p>
+</div>
+</div>
+
+<div id="outline-container-org51c35e1" class="outline-4">
+<h4 id="org51c35e1"><span class="section-number-4">3.1.3.</span> Ambiguity</h4>
+<div class="outline-text-4" id="text-3-1-3">
+<p>
+A context-free grammer is said to be ambiguous if there exists two different parse trees for the same final derived string. This means that there is some other set of steps that could have been taken during derivation to reach the same string. Example, for the grammer
+</p>
+
+<p>
+\[ E \rightarrow E + E | E * E | (E) | id \]
+</p>
+
+<p>
+For the final sentence \(id + id * id\), there exist two distinct leftmost derivations
+</p>
+
+<p>
+\[ E \underset{lm}\Rightarrow E + E \underset{lm}\Rightarrow id + E \underset{lm}\Rightarrow id + E * E \underset{lm}\Rightarrow id + id * E \underset{lm}\Rightarrow id + id * id \]
+</p>
+
+<p>
+and
+</p>
+
+<p>
+\[ E \underset{lm}\Rightarrow E * E \underset{lm}\Rightarrow E + E * E \underset{lm}\Rightarrow id + E * E \underset{lm}\Rightarrow id + id * E \underset{lm}\Rightarrow id + id * id \]
+</p>
+
+<p>
+This gives two different parse trees
+</p>
+
+<div id="org4bafb1a" class="figure">
+<p><img src="Syntax_Analysis_(Parsing)/2023-12-21_17-35-36_Untitled-2023-12-13-1318.png" alt="2023-12-21_17-35-36_Untitled-2023-12-13-1318.png" />
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgf058608" class="outline-4">
+<h4 id="orgf058608"><span class="section-number-4">3.1.4.</span> Eliminating Ambiguity</h4>
+<div class="outline-text-4" id="text-3-1-4">
+<p>
+There is no guaranteed algorithm that can remove all ambiguity from a grammer. But if we find a ambiguity in our grammer, we can remove it by hand.
+</p>
+
+<p>
+Let's take the previous example; we know that for the above we want the first parse tree only since * has a higher precedance than the + operator. The following modified grammer will remove ambiguity.
+</p>
+
+<p>
+\[ E \rightarrow E + T  | T \]
+\[ T \rightarrow T * F | F \]
+\[ F \rightarrow id | (E) \]
+</p>
+
+<p>
+This will lead to a single parse tree for sentence \(id + id * id\)
+</p>
+
+<div id="org1f59c01" class="figure">
+<p><img src="Syntax_Analysis_(Parsing)/2023-12-21_20-27-25_Untitled-2023-12-13-1318.png" alt="2023-12-21_20-27-25_Untitled-2023-12-13-1318.png" />
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orge8ab58e" class="outline-4">
+<h4 id="orge8ab58e"><span class="section-number-4">3.1.5.</span> Elimination of Left Recursion</h4>
+<div class="outline-text-4" id="text-3-1-5">
+<p>
+A grammer is left recursive is
+</p>
+
+<p>
+\[ A \overset{+}\Rightarrow A \alpha \]
+</p>
+
+<ul class="org-ul">
+<li>\(\alpha\) is some combination of variables and terminals.</li>
+<li>The + stands for one or more derivation steps (rather than *, which means zero or more derivation steps)</li>
+<li>We need to eliminate left recursion when using top-down parsing. Since top-down parsing does not support left recursion in the grammer</li>
+</ul>
+</div>
+<div id="outline-container-org8b38c38" class="outline-5">
+<h5 id="org8b38c38"><span class="section-number-5">3.1.5.1.</span> Eliminating direct left recursion</h5>
+<div class="outline-text-5" id="text-3-1-5-1">
+<p>
+If there is a rule of type
+</p>
+
+<p>
+\[ A \rightarrow A \alpha \]
+</p>
+
+<p>
+in the grammer, we say that the grammer has direct left recursion. The procedure to remove direct left recursion is simple. For every nonterminal \(A\) with a direct left recursion rule do the following :
+</p>
+
+<p>
+Group all productions of \(A\) to following form
+</p>
+
+<p>
+\[ A \rightarrow A \alpha_{1} |  A \alpha_{2} | ... | A \alpha_{m} | \beta_{1} | \beta_{2} | ... | \beta_{n} \]
+</p>
+
+<p>
+Replace these \(A\) productions with
+</p>
+
+<p>
+\[ A \rightarrow \beta_{1} A' | \beta_{2} A' | ... | \beta_{n} A'\]
+\[ A' \rightarrow \alpha_{1} A' | \alpha_{2} A' | ... | \alpha_{m} A' \]
+</p>
+</div>
+</div>
+
+<div id="outline-container-org0964d02" class="outline-5">
+<h5 id="org0964d02"><span class="section-number-5">3.1.5.2.</span> Eliminating all left recursion</h5>
+<div class="outline-text-5" id="text-3-1-5-2">
+<p>
+After eliminating all direct left recursion, there may still be indirect left recursion. The algorithm to eliminate all left recursions is as follows
+</p>
+<ul class="org-ul">
+<li>The nonterminals are \(A_1, A_2, ... , A_n\)</li>
+<li>for every i from 1 to n
+<ul class="org-ul">
+<li>for every j from 1 to (i - 1)
+<ul class="org-ul">
+<li>if there is a production of type \(A_i \rightarrow A_j \gamma\), replace it by \(A_i \rightarrow \delta_1 \gamma | \delta_2 \gamma | ... | \delta_k \gamma\), where the productions for \(A_j\) currently are \(A_j \rightarrow \delta_1 | \delta_2 | ... | \delta_k\)</li>
+</ul></li>
+<li>eliminate all immediate left recursion using process from previous section</li>
+</ul></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org453d982" class="outline-3">
+<h3 id="org453d982"><span class="section-number-3">3.2.</span> FIRST and FOLLOW functions</h3>
+<div class="outline-text-3" id="text-3-2">
+<p>
+These two functions are used in both top-down parsing and bottom-up parsing.
+</p>
+<ul class="org-ul">
+<li>for top-down parsing, they are usually to predict which production to choose next</li>
+<li>these functions can be used for panic-mode error recovery for synchronizing</li>
+</ul>
+</div>
+<div id="outline-container-org2ee4e4f" class="outline-4">
+<h4 id="org2ee4e4f"><span class="section-number-4">3.2.1.</span> FIRST function</h4>
+<div class="outline-text-4" id="text-3-2-1">
+<p>
+\(FIRST(\alpha)\) is a function that will take input \(\alpha\) which is either a terminals or non-terminals and returns a set of terminals. The set of terminals is the first terminal in strings that can be derived from \(\alpha\)
+\[ FIRST(\alpha) = \{ x : \alpha \overset{*}\Rightarrow x \beta \} \]
+Here, \(\beta\) is a string of terminals or \(\epsilon\)
+</p>
+
+<p>
+The algorithm to compute \(FIRST(X)\) is as follows
+</p>
+</div>
+
+<div id="outline-container-orgf80f90c" class="outline-5">
+<h5 id="orgf80f90c"><span class="section-number-5">3.2.1.1.</span> If \(X\) is a terminal</h5>
+<div class="outline-text-5" id="text-3-2-1-1">
+<p>
+If \(X\) is a terminal, then \(FIRST(X) = \{X\}\)
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgd513ada" class="outline-5">
+<h5 id="orgd513ada"><span class="section-number-5">3.2.1.2.</span> If \(X\) is a non-terminal</h5>
+<div class="outline-text-5" id="text-3-2-1-2">
+<p>
+IF \(X\) is a non-terminal then
+</p>
+<ol class="org-ol">
+<li>For all productions \(X \rightarrow Y_1 Y_2 ... Y_n\) add \(FIRST(Y_1)\) to the set of \(FIRST(X)\)</li>
+<li>If for some production \(X \rightarrow Y_1 Y_2 ... Y_n\), \(Y_1 \overset{*}\Rightarrow \epsilon\) then we also need to add \(FIRST(Y_2)\) to set of \(FIRST(X)\). Similarly, if \(Y_2 \overset{*}\Rightarrow \epsilon\) then we also add \(FIRST(Y_3)\) to \(FIRST(X)\) and so on.</li>
+<li>IF \(X \overset{*}\Rightarrow \epsilon\) then add \(\epsilon\) to \(FIRST(X)\)</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-org0dc4397" class="outline-5">
+<h5 id="org0dc4397"><span class="section-number-5">3.2.1.3.</span> For string \(X_1 X_2 ... X_n\) of terminals and non-terminals</h5>
+<div class="outline-text-5" id="text-3-2-1-3">
+<p>
+We can also define \(FIRST(X_1 X_2 ... X_n)\) where each \(X_i\) can be a terminal or non-terminal.
+</p>
+<ol class="org-ol">
+<li>\(FIRST(X_1 X_2 ... X_n) = FIRST(X_1)\)</li>
+<li>If \(X_1 \overset{*}\Rightarrow \epsilon\), then we also need to add \(FIRST(X_2)\) to result. Similarly, if \(X_2 \overset{*}\Rightarrow \epsilon\) then we need to add \(FIRST(X_3)\) to result and so on.</li>
+</ol>
+</div>
+</div>
+</div>
+<div id="outline-container-org203c536" class="outline-4">
+<h4 id="org203c536"><span class="section-number-4">3.2.2.</span> FOLLOW function</h4>
+<div class="outline-text-4" id="text-3-2-2">
+<p>
+The \(FOLLOW(A)\) excepts a non-terminal \(A\), and returns a set of terminals that appear immediately to the right of this terminal in sentinals (sentinals are intermediate forms during derivation).
+</p>
+
+<p>
+The algorithm to compute \(FOLLOW(A)\) is as follows
+</p>
+<ul class="org-ul">
+<li>For start variable \(S\), \(FOLLOW(S) = \{💲\}\). The $ is called the input right endmarker</li>
+<li>For a production of type \(A \rightarrow \alpha B \beta\), then \(FOLLOW(B) = FIRST(\beta) - {\epsilon}\)
+<ul class="org-ul">
+<li>If \(\epsilon \in FIRST(\beta)\) for the production \(A \rightarrow \alpha B \beta\), then \(FOLLOW(B) = FOLLOW(A)\)</li>
+</ul></li>
+<li>For a production of type \(A \rightarrow \alpha B\), then \(FOLLOW(B) = FOLLOW(A)\)</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-org0e2e5c2" class="outline-3">
+<h3 id="org0e2e5c2"><span class="section-number-3">3.3.</span> Top-Down Parsing</h3>
+<div class="outline-text-3" id="text-3-3">
+<p>
+A common technique for top-down parsing is recursive descent parsing.
+</p>
+<ul class="org-ul">
+<li>The recursive descent parser can parse a grammer which does not have left recursion</li>
+<li>The recursive descent parser may need to backtrack to get the correct parse tree</li>
+<li>A predictive parser is a top-down parser which does not need to backtrack
+<ul class="org-ul">
+<li>The class of grammers that can be parsed by a predictive parser by look \(k\) symbols ahead is called an \(LL(k)\) parser</li>
+</ul></li>
+</ul>
+</div>
+<div id="outline-container-orgdaecc06" class="outline-4">
+<h4 id="orgdaecc06"><span class="section-number-4">3.3.1.</span> Recursive descent parser</h4>
+<div class="outline-text-4" id="text-3-3-1">
+<p>
+In recursive-descent parser, we have a procedure for each non-terminal in the grammer. This procedure will know all of the productions of the grammer.
+</p>
+<ul class="org-ul">
+<li>It will choose a production and check if the first symbol in the RHS of production is a terminal or non-terminal.</li>
+<li>If it is a non-terminal, it will call the procedure for that non-terminal</li>
+<li>If it is a terminal, it will try to match it with current input symbol.
+<ul class="org-ul">
+<li>If input symbol matches current symbol, then we move the current symbol pointer forwards</li>
+<li>If input symbol does not match,  we need to backtrack and select some other production</li>
+</ul></li>
+</ul>
+<p>
+If we go through all the production via backtracking, we can conclude that the input does not belong to our grammer.
+</p>
+
+<p>
+For some general context-free grammers this can cause a lot of backtracking making this parser very inefficient. But for programming languages, we usually make grammers that won't cause significant backtracking.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org4b35079" class="outline-4">
+<h4 id="org4b35079"><span class="section-number-4">3.3.2.</span> LL(1) Grammars</h4>
+<div class="outline-text-4" id="text-3-3-2">
+<p>
+The LL(1) grammer is the grammer which can be parsed by a recursive descent (predictive) parser.
+</p>
+<ul class="org-ul">
+<li>The first L stands for scanning left to right</li>
+<li>The second L stands for leftmost derivation</li>
+<li>The (1) stands for the amount of lookahead to make parsing decision on each step</li>
+</ul>
+
+<p>
+A grammer is LL(1) if for any production of type \(A \rightarrow \alpha | \beta\). i.e, for every pair of productions for a given non-terminal
+</p>
+<ol class="org-ol">
+<li>\(FIRST(\alpha)\) and \(FIRST(\beta)\) are disjoint, i.e, \(FIRST(\alpha) \cap FIRST(\beta) = \phi\)</li>
+<li>If \(\epsilon\) is in \(FIRST(\beta)\), then \(FIRST(\alpha)\) and \(FOLLOW(A)\) are disjoint, i.e, if \(\epsilon \in FIRST(\beta)\), then \(FIRST(\alpha) \cap FOLLOW(A) = \phi\)</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-org9d8aea5" class="outline-4">
+<h4 id="org9d8aea5"><span class="section-number-4">3.3.3.</span> Parsing Table</h4>
+<div class="outline-text-4" id="text-3-3-3">
+<p>
+We can create a parsing table using the FIRST and FOLLOW functions. The algorithm for a parsing table \(M\) is as follows
+</p>
+<ul class="org-ul">
+<li>For every production \(A \rightarrow \alpha\)
+<ul class="org-ul">
+<li>For each terminal \(a\) in \(FIRST(\alpha)\),
+<ul class="org-ul">
+<li>If \(a \ne \epsilon\) add production \(A \rightarrow \alpha\) to \(M[A,a]\)</li>
+<li>If \(a = \epsilon\), for every terminal \(b\) in \(FOLLOW(A)\)
+<ul class="org-ul">
+<li>add \(A \rightarrow \alpha\) to \(M[A,b]\)</li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+
+<p>
+If a grammer is LL(1) this will put only a single rule in each cell of the parsing table. Using this parsing table, we can get first rule by \(M[S,a]\) where \(a\) is the first symbol in input. Then we can keep matching and moving forward
+</p>
+</div>
+</div>
+<div id="outline-container-orgd5e7b99" class="outline-4">
+<h4 id="orgd5e7b99"><span class="section-number-4">3.3.4.</span> Nonrecursive Predictive Parsing</h4>
+<div class="outline-text-4" id="text-3-3-4">
+<p>
+Using the parsing table, we can parse LL(1) grammer without recursion. For this we use a stack to parse the input tokens list. The algorithm works as follows
+</p>
+<pre class="example">
+a = first symbol of token list
+X = top element of stack (don't push out of stack)
+
+while stack is not empty {
+  /* token was matched */
+  if ( X = a ) {
+    pop(stack)
+    a = next symbol of token list
+  }
+
+  /* could not match token */
+  else if (X is terminal) {
+    error()
+  }
+
+  /* parsing error */
+  else if (M[X,a] is empty) {
+    error()
+  }
+
+  /* output the next production to apply */
+  else if (M[X,a] is a production X -&gt; Y1 Y2 Y3 ... Yk) {
+    print the production (X -&gt; Y1 Y2 Y3 ... Yk)
+    pop(stack)
+    push Yk Y{k-1} ... Y1 to stack with Y1 on top
+  }
+
+  X = top element of stack (don't push out of stack)
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org620a081" class="outline-3">
+<h3 id="org620a081"><span class="section-number-3">3.4.</span> Bottom-Up Parsing</h3>
+<div class="outline-text-3" id="text-3-4">
+<p>
+A common method of bottom-up parsing is shift reduce parsing. The class of grammers for which we can build a shift-reduce parser are called LR grammers.
+</p>
+</div>
+<div id="outline-container-orgd6cfd24" class="outline-4">
+<h4 id="orgd6cfd24"><span class="section-number-4">3.4.1.</span> Reduction</h4>
+<div class="outline-text-4" id="text-3-4-1">
+<p>
+In every reduction step, we will take leftmost current symbols (terminal or non-terminal) from input and replace with a non-terminal using one of the productions.
+</p>
+
+<p>
+A reduction step is the reverse of a derivation step that must have been taken to derive the string we got as input.
+</p>
+
+<p>
+If the derivation was a rightmost derivation, then the parsing be left-to-right for the input.
+</p>
+
+<p>
+The shift reduce parsing will start at the input string and work it's way backwards to the start variable through reduction steps.
+</p>
+
+<p>
+Example,
+\[ id * id \rightarrow F * id \rightarrow T * id \rightarrow T * F \rightarrow T \rightarrow S \]
+</p>
+</div>
+</div>
+<div id="outline-container-org876a721" class="outline-4">
+<h4 id="org876a721"><span class="section-number-4">3.4.2.</span> Handle Pruning</h4>
+<div class="outline-text-4" id="text-3-4-2">
+<p>
+The handle is a substring of symbols (terminals or non-terminals) in the sentinal form that matches the RHS of one of the production.
+</p>
+
+<p>
+Here, we are adding subscripts to the tokens id for clarity when parsing input string \(id_1 * id_2\)
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">RIGHT SENTINAL FORM</th>
+<th scope="col" class="org-left">HANDLE</th>
+<th scope="col" class="org-left">REDUCING PRODUCTION</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">\(id_1 * id_2\)</td>
+<td class="org-left">\(id_1\)</td>
+<td class="org-left">F -&gt; id</td>
+</tr>
+
+<tr>
+<td class="org-left">\(F * id_2\)</td>
+<td class="org-left">F</td>
+<td class="org-left">T -&gt; F</td>
+</tr>
+
+<tr>
+<td class="org-left">\(T * id_2\)</td>
+<td class="org-left">\(id_2\)</td>
+<td class="org-left">F -&gt; id</td>
+</tr>
+
+<tr>
+<td class="org-left">T * F</td>
+<td class="org-left">T * F</td>
+<td class="org-left">T -&gt; T * F</td>
+</tr>
+
+<tr>
+<td class="org-left">T</td>
+<td class="org-left">T</td>
+<td class="org-left">E -&gt; T</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+Formally, if \(S \overset{*}{\underset{rm}\Rightarrow} \alpha A w \underset{rm}\Rightarrow \alpha \beta w\). Then production \(A \rightarrow \beta\) in position following \(\alpha\) is called the handle.
+</p>
+<ul class="org-ul">
+<li>Here, \(w\) is only a string of terminals since we are doing a rightmost derivation.</li>
+<li>So for a given right-sentinal form \(\gamma\), we can match a \(\beta\) substring where we have a production in grammer \(A \rightarrow \beta\)</li>
+<li>So to reconstruct previous right-sentinal form \(\gamma_n\) of a derivation, we need to find the handle \(\beta_n\) for a relevant production \(A \rightarrow \beta_n\)</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgfde109a" class="outline-4">
+<h4 id="orgfde109a"><span class="section-number-4">3.4.3.</span> Shift-reduce parsing</h4>
+<div class="outline-text-4" id="text-3-4-3">
+<p>
+For shift-reduce parsing, we a stack and a input buffer. The input buffer holds the input string and stack holds the grammar symbols.
+</p>
+
+<p>
+Initially, the input buffer contains the whole input in form of tokens. The shift operation will move a single token from input buffer to the top of stack.
+</p>
+
+<p>
+The handle will always appear at the top of the stack. Till we are able to find a handle, we will do the shift operation. After a handle is matched, we will do the reduce operation
+</p>
+
+<p>
+For our example \(id_1 * id_2\), the shift reduce parser does following steps
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">STACK</th>
+<th scope="col" class="org-left">INPUT</th>
+<th scope="col" class="org-left">ACTION</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">\(id_1 * id_2\)</td>
+<td class="org-left">shift</td>
+</tr>
+
+<tr>
+<td class="org-left">\(id_1\)</td>
+<td class="org-left">\(id_1 * id_2\)</td>
+<td class="org-left">reduce by F -&gt; id</td>
+</tr>
+
+<tr>
+<td class="org-left">F</td>
+<td class="org-left">\(* id_2\)</td>
+<td class="org-left">reduce by T -&gt; F</td>
+</tr>
+
+<tr>
+<td class="org-left">T</td>
+<td class="org-left">\(* id_2\)</td>
+<td class="org-left">shift</td>
+</tr>
+
+<tr>
+<td class="org-left">T *</td>
+<td class="org-left">\(id_2\)</td>
+<td class="org-left">shift</td>
+</tr>
+
+<tr>
+<td class="org-left">\(T * id_2\)</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">reduce by F -&gt; id</td>
+</tr>
+
+<tr>
+<td class="org-left">\(T * F\)</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">reduce by T -&gt; T * F</td>
+</tr>
+
+<tr>
+<td class="org-left">T</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">reduce by E -&gt; T</td>
+</tr>
+
+<tr>
+<td class="org-left">E</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">accept</td>
+</tr>
+</tbody>
+</table>
+<p>
+Therefore, we can have four operations a shift-reduce parser can do
+</p>
+<ol class="org-ol">
+<li>Shift : shift input symbol to top of stack</li>
+<li>Reduce : reduce the top of the stack using one of the productions</li>
+<li>Accept : announce successful parsing</li>
+<li>Error : a syntax error occurred</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-orge963004" class="outline-4">
+<h4 id="orge963004"><span class="section-number-4">3.4.4.</span> Conflicts during shift-reduce parsing</h4>
+<div class="outline-text-4" id="text-3-4-4">
+<p>
+There can be two types of coflicts that happen in a shift-reduce parser.
+</p>
+<ol class="org-ol">
+<li>The shift/reduce conflict, where we cannot decide if we need to shift or to reduce</li>
+<li>The reduce/reduce conflicts, where we cannot decide if there are multiple candidate productions and we can't decide which one to use for reduce operation</li>
+</ol>
+<p>
+<b>Grammers in which these conflicts can occur are non-LR grammers</b>.
+</p>
+</div>
+<div id="outline-container-org7083a5b" class="outline-5">
+<h5 id="org7083a5b"><span class="section-number-5">3.4.4.1.</span> shift/reduce conflict</h5>
+<div class="outline-text-5" id="text-3-4-4-1">
+<p>
+All ambiguous grammers are non-LR grammers. Suppose we have a langauge with dangling-else to chain if-else as shown in following grammar
+</p>
+
+
+<p>
+stmt -&gt; <b>if</b> expr <b>then</b> stmt
+</p>
+
+<p>
+stmt -&gt; <b>if</b> expr <b>then</b> stmt <b>else</b> stmt
+</p>
+
+<p>
+stmt -&gt; <b>other</b>
+</p>
+
+
+<p>
+<b>Highlighted</b> words are the terminals here.
+</p>
+
+<p>
+Suppose our shift-reduce parser is in configuration
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">STACK</th>
+<th scope="col" class="org-left">INPUT</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left"><b>if</b> expr <b>then</b> stmt</td>
+<td class="org-left"><b>else</b> &#x2026;.</td>
+</tr>
+</tbody>
+</table>
+<ul class="org-ul">
+<li>Here, depending on what is after <b>else</b> in the input we may need to do a reduce operation</li>
+<li>But since there is a production that matches current stack content. It could be the handle</li>
+</ul>
+<p>
+Since both shift and reduce are valid next operations, this is a shift/reduce conflict
+</p>
+
+<p>
+<b>Note</b> : we have ways to parse certain ambiguous grammers, such as this if-then-else grammer. We choose shifting over reducing in this grammer to parse it correctly. We do this since if-then-else are common in languages.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org5b4cdcd" class="outline-5">
+<h5 id="org5b4cdcd"><span class="section-number-5">3.4.4.2.</span> reduce/reduce conflict</h5>
+<div class="outline-text-5" id="text-3-4-4-2">
+<p>
+Suppose our stack content is \(\alpha\) and we have two productions \(A \rightarrow \alpha\) and \(B \rightarrow \alpha\). We don't know which of the production is the correct handle. This is a reduce/reduce conflict
+</p>
+
+<p>
+The reduce/reduce conflict is resolved by increasing the lookahead of the parsar
+</p>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org5aa6011" class="outline-3">
+<h3 id="org5aa6011"><span class="section-number-3">3.5.</span> LR(0) parser</h3>
+<div class="outline-text-3" id="text-3-5">
+<p>
+A simple LR(k) parser uses k lookahead symbols.
+</p>
+<ul class="org-ul">
+<li>L stands for left-to-right scanning</li>
+<li>R stands for rightmost derivation tree</li>
+<li>k is the number of lookahead</li>
+</ul>
+<p>
+For most practical languages we use \(k \le 1\). We generally study LR(1) parsers only.
+</p>
+
+<p>
+<b>Why LR parser over LL parsers</b>
+</p>
+
+<ul class="org-ul">
+<li>LR parsing methods detect syntactic error as soon as possible in a left-to-right scan</li>
+<li>LR grammar are a proper superset of LL grammar</li>
+</ul>
+</div>
+<div id="outline-container-org384b199" class="outline-4">
+<h4 id="org384b199"><span class="section-number-4">3.5.1.</span> Items and LR(0) automata</h4>
+<div class="outline-text-4" id="text-3-5-1">
+<p>
+An LR parser makes shift/reduce decisions by maintaining states to keep track of where we are in the parsing process.
+</p>
+<ul class="org-ul">
+<li>We keep track of states using an automata called LR automata</li>
+<li>The states are the set of items. Items are productions with a dot at some position in the body.</li>
+</ul>
+<p>
+Example, the production A -&gt; XYZ has four items
+</p>
+<ul class="org-ul">
+<li>A -&gt; .XYZ</li>
+<li>A -&gt; X.YZ</li>
+<li>A -&gt; XY.Z</li>
+<li>A -&gt; XYZ.</li>
+</ul>
+<p>
+The production A -&gt; \(\epsilon\) has a single item
+</p>
+<ul class="org-ul">
+<li>A -&gt; .</li>
+</ul>
+
+<p>
+The item A -&gt; X.YZ means that we have read X and hope to see YZ next in input
+</p>
+
+<p>
+The item A -&gt; XYZ. means that XYZ is read and maybe it's time to reduce
+</p>
+</div>
+<div id="outline-container-org936b4ed" class="outline-5">
+<h5 id="org936b4ed"><span class="section-number-5">3.5.1.1.</span> LR(0) collection</h5>
+<div class="outline-text-5" id="text-3-5-1-1">
+<p>
+The collection of LR(0) items, called canonical LR(0) collection are basis for constructing a DFA that are used to make parsing decisions.
+</p>
+
+<p>
+To construct LR(0) collection for a grammar, we first convert given grammar to an augmented grammar. Then we use two funtions CLOSURE and GOTO.
+</p>
+
+<p>
+<b>Augmented grammar</b>
+</p>
+
+<p>
+If we have a grammar \(G\), with the start symbol \(S\). We define augmented grammar \(G'\) with a new start symbol \(S'\)
+</p>
+
+<p>
+We will add a single new production in \(G'\) which is \(S' \rightarrow S\). This is useful to indicate to parser when it should stop
+</p>
+
+<p>
+Acceptance in parser occurs when and only when the parser is about to reduce \(S' \rightarrow S\)
+</p>
+
+<p>
+<b>CLOSURE of Item Sets</b>
+</p>
+
+<p>
+Suppose we have a set of item I, then the CLOSURE(I) is given as folows
+</p>
+<ol class="org-ol">
+<li>add every item in I to CLOSURE(I)</li>
+<li>If \(A \rightarrow \alpha . B \beta\) is in CLOSURE(I) and \(B \rightarrow \gamma\) is a production, add \(B \rightarrow . \gamma\) to CLOSURE(I). Apply this rule till no new items are added to CLOSURE(I). Here, adding \(B \rightarrow . \gamma\) means we add all B-productions (with . at start) to CLOSURE(I)</li>
+</ol>
+
+<p>
+Suppose we have the grammar
+</p>
+<ul class="org-ul">
+<li>E -&gt; E + T | T</li>
+<li>T -&gt; T * F | F</li>
+<li>F -&gt; <b>(</b> E <b>)</b> | <b>id</b></li>
+</ul>
+
+<p>
+Then, it's augmented grammar is
+</p>
+<ul class="org-ul">
+<li>E' -&gt; E</li>
+<li>E -&gt; E + T | T</li>
+<li>T -&gt; T * F | F</li>
+<li>F -&gt; <b>(</b> E <b>)</b> | <b>id</b></li>
+</ul>
+
+<p>
+If I is a items set \(I = \{ E' \rightarrow . E \}\). Then CLOSURE(I) is calculated as follows
+</p>
+<ul class="org-ul">
+<li>Initially \(CLOSURE(I) = \{ E' \rightarrow . E \}\)</li>
+<li>Since we have \(E\) after . in production \(E' \rightarrow . E\), we add productions \(\{E \rightarrow . E + T ,\ E \rightarrow . T \}\)</li>
+<li>Since we have \(T\) after . in production \(E \rightarrow . T\), we add productions \(\{ T \rightarrow . T * F,\ T \rightarrow . F \}\)</li>
+<li>Now we have \(F\) after . in production \(T \rightarrow . F\), we need to add productions \(\{ F \rightarrow . (E) ,\ F \rightarrow . id\}\)</li>
+</ul>
+<p>
+Therefore, CLOSURE(I) contains following productions
+</p>
+<ul class="org-ul">
+<li>E' -&gt; . E</li>
+<li>E -&gt; . E + T</li>
+<li>E -&gt; . T</li>
+<li>T -&gt; . T * F</li>
+<li>T -&gt; . F</li>
+<li>F -&gt; . <b>(</b> E <b>)</b></li>
+<li>F -&gt; . <b>id</b></li>
+</ul>
+
+<p>
+<b>GOTO function</b>
+</p>
+
+<p>
+The second useful functin is GOTO(I,X), where I is a set of items and X is a grammar symbol. This function will give us transitions for the LR(0) automata
+</p>
+
+<p>
+The method to compute GOTO(I,X) is as follows
+</p>
+<ul class="org-ul">
+<li>For every item \(q\) in set I
+<ul class="org-ul">
+<li>If X is to the immediate right of the dot
+<ul class="org-ul">
+<li>Move . one position to right and add closure of this new item to GOTO(I,X)</li>
+</ul></li>
+</ul></li>
+</ul>
+
+<p>
+So GOTO(I,X) is { CLOSURE(\(A \rightarrow \alpha X . \beta\)) } for all items in I such that \(A \rightarrow \alpha . X \beta\) is in set I
+</p>
+
+<p>
+Example,
+GOTO({ E -&gt; E + .T , T-&gt; .T * F , T -&gt; .F }, T)
+</p>
+<ul class="org-ul">
+<li>Here, two productions in set have T after the dot (.), they are \(E \rightarrow E + \cdot T\) and \(T \rightarrow \cdot T * F\)</li>
+<li>Therefore, the GOTO is equal to CLOSURE({ \(E \rightarrow E + T \cdot\) , \(T \rightarrow T \cdot * F\)})</li>
+</ul>
+
+<p>
+So, GOTO({ E -&gt; E + .T , T-&gt; .T * F , T -&gt; .F }, T) = CLOSURE({ \(E \rightarrow E + T \cdot\) , \(T \rightarrow T \cdot * F\)})
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgd54c339" class="outline-5">
+<h5 id="orgd54c339"><span class="section-number-5">3.5.1.2.</span> LR(0) automata</h5>
+<div class="outline-text-5" id="text-3-5-1-2">
+<p>
+Also called the goto graph, this is the DFA which is used by the parser to make parsing decisions.
+</p>
+
+<p>
+The automata is created as follows
+</p>
+<ol class="org-ol">
+<li>The start state \(I_0\) of this automata is a set of items CLOSURE({\(S' \rightarrow \cdot S\)}), where \(S' \rightarrow S\) is first production for our augmented grammar</li>
+<li>For each state \(I\)
+<ul class="org-ul">
+<li>For each grammar symbol \(X\)
+<ul class="org-ul">
+<li><p>
+If GOTO(I, X) is not empty and not already in automata, add new state GOTO(I,X) in automata. The transition is marked by X and it is a between states I and new state GOTO(I,X).
+</p>
+
+<p>
+The transition is \(I \overset{X}\rightarrow GOTO(I,X)\)
+</p></li>
+</ul></li>
+</ul></li>
+<li>Repeat step 2 till there are no new states added to automata</li>
+</ol>
+
+<p>
+For our grammar 
+</p>
+<ul class="org-ul">
+<li>E' -&gt; E</li>
+<li>E -&gt; E + T | T</li>
+<li>T -&gt; T * F | F</li>
+<li>F -&gt; <b>(</b> E <b>)</b> | <b>id</b></li>
+</ul>
+
+<p>
+The automata is
+</p>
+
+<div id="orgd22a110" class="figure">
+<p><img src="Syntax_Analysis_(Parsing)/2023-12-30_03-18-04_Screenshot 2023-12-30 031755.png" alt="2023-12-30_03-18-04_Screenshot 2023-12-30 031755.png" />
+</p>
+</div>
+
+<p>
+<b>NOTE</b> : The accept is always from the state with item \(S' \rightarrow S \cdot\), where \(S' \rightarrow S\) is the first production of our augmented grammar. Also the $ shows that there is no more input ahead
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org90226f0" class="outline-4">
+<h4 id="org90226f0"><span class="section-number-4">3.5.2.</span> LR(0) table and LR-parsing algorithm</h4>
+<div class="outline-text-4" id="text-3-5-2">
+<p>
+We first need an LR-parsing table to use the parser. An LR-parsing table has two parts
+</p>
+<ol class="org-ol">
+<li>ACTION, which takes a state \(i\) and a terminal \(a\), and gives one of the four actions
+<ol class="org-ol">
+<li>SHIFT j : this will shift terminal \(a\) to the symbols stack and change state from i to j</li>
+<li>REDUCED A \(\rightarrow beta\) : reduce \(\beta\) from top of symbols stack to A</li>
+<li>ACCEPT : accept input and finish parsing</li>
+<li>ERROR : error in the input, does not belong to grammar</li>
+</ol></li>
+<li>GOTO, is the same function that we used for making the LR(0) automata. But for the table, rather than storing GOTO(I,X) for all grammar symbol X, we only store X that are non-terminals of our non-augmented grammar</li>
+</ol>
+</div>
+<div id="outline-container-orgcbabf5c" class="outline-5">
+<h5 id="orgcbabf5c"><span class="section-number-5">3.5.2.1.</span> GOTO table</h5>
+<div class="outline-text-5" id="text-3-5-2-1">
+<p>
+So, the GOTO for parsing table for our grammar
+</p>
+<ul class="org-ul">
+<li>E -&gt; E + T | T</li>
+<li>T -&gt; T * F | F</li>
+<li>F -&gt; <b>(</b> E <b>)</b> | <b>id</b></li>
+</ul>
+
+<div id="orgb8267a9" class="figure">
+<p><img src="Syntax_Analysis_(Parsing)/2023-12-30_22-02-03_Untitled-2023-12-13-1318.png" alt="2023-12-30_22-02-03_Untitled-2023-12-13-1318.png" />
+</p>
+</div>
+
+<p>
+This table is filled using the LR(0) automata that we built earlier. for every state, we check if it has transitions using a non-terminal to another state, otherwise we leave it empty
+</p>
+</div>
+</div>
+<div id="outline-container-org32c2782" class="outline-5">
+<h5 id="org32c2782"><span class="section-number-5">3.5.2.2.</span> ACTION table</h5>
+<div class="outline-text-5" id="text-3-5-2-2">
+<p>
+The parsing action ACTION(i,a) are determined as follows
+</p>
+<ol class="org-ol">
+<li>If \(A \rightarrow \alpha \cdot a \beta\) is in \(I_i\) and GOTO(\(I_i\),a) = \(I_j\) then ACTION(i,a) = SHIFT j
+<ul class="org-ul">
+<li><b>NOTE</b> : this can be filled directly by looking at LR(0) automata by seeing the transition from states over terminals</li>
+<li>The <b>transitions over non-terminals are GOTO</b> and <b>transitions over terminals are SHIFT</b></li>
+</ul></li>
+<li>If \(A \rightarrow \alpha \cdot\) is in \(I_i\), then complete row \(i\) is REDUCE \(A \rightarrow \alpha\)</li>
+<li>If \(S' \rightarrow S \cdot\) is in \(I_i\), then ACTION(i,$) = ACCEPT</li>
+<li>If none of the three conditions above are satisfied, it is an error</li>
+</ol>
+<p>
+If there are multiple possible actions for a single (i,a) pair using the above rules, the grammar is not LR(0)
+</p>
+
+<p>
+Using the above rules, we can fill the whole ACTION(i,a) table for all terminals a and states i
+</p>
+
+<p>
+The ACTION table for our grammar is
+</p>
+
+<ul class="org-ul">
+<li>\(s_i\) means operation SHIFT i</li>
+<li>\(r_i\) means operation REDUCE \(i^{th}\) production of current state</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgdae9eeb" class="outline-5">
+<h5 id="orgdae9eeb"><span class="section-number-5">3.5.2.3.</span> LR-parsing algorithm</h5>
+<div class="outline-text-5" id="text-3-5-2-3">
+<p>
+For the LR-parsing algorithm, we use two stacks, one for storing the states and another for symbols
+</p>
+
+<p>
+We show the current state of the LR-parser as
+\[ (s_0 s_1 ... s_m \ ,\ \ a_i a_(i+1) ... a_n ) \]
+Here, \(a_i a_(i+1) ... a_n\) is the remaining input (not shifted to symbols stack yet)
+</p>
+
+<p>
+The state \((s_0 s_1 ... s_m \ ,\  \ a_i a_(i+1) ... a_n )\) corrosponds to right-sentinal form \(X_1 X_2 ... X_m a_i a_(i+1) ... a_n\)
+</p>
+
+<p>
+The algorithm for LR-parsing given a parsing table is
+</p>
+
+<p>
+If the current state is \((s_0 s_1 ... s_m \ ,\  \ a_i a_(i+1) ... a_n )\)
+</p>
+<ol class="org-ol">
+<li>If ACTION(\(s_m\), \(a_i\)) = SHIFT \(s_x\), then shift another symbol from input to the symbols stack and change the state of parser to \((s_0 s_1 ... s_m s_x \ ,\ \ a_(i+1) ... a_n )\)</li>
+<li>If ACTION(\(s_m\), \(a_i\)) = reduce \(A \rightarrow \beta\), then apply reduce on symbols stack and change configuration to \((s_0 s_1 ... s_{m-r} s_x \ ,\ \ a_i a_(i+1) ... a_n )\), here, \(GOTO(s_{m-r},A) = s_x\)</li>
+</ol>
+
+<p>
+<b>NOTE</b> : The initial state of the parser is \((s_0 \ ,\  \ a_0 a_1 ... a_n )\). That is, whole input is not currently shifted and we start on initial state \(s_0\)
+</p>
+
+<p>
+All LR-parsing algorithm use this same process, the only difference is in the parsing table
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org62f9eee" class="outline-4">
+<h4 id="org62f9eee"><span class="section-number-4">3.5.3.</span> Viable Prefixes</h4>
+<div class="outline-text-4" id="text-3-5-3">
+<p>
+The LR(0) automata can be used to make a LR(0) table since the automata has property of recognizing viable prefixes.
+</p>
+
+<p>
+The stack content is always a collection some prefix of one of the possible handle. These prefixes that can appear on the stack are called viable prefixes.
+</p>
+
+<p>
+Example, for the grammar
+</p>
+<ul class="org-ul">
+<li>E -&gt; E + T | T</li>
+<li>T -&gt; T * F | F</li>
+<li>F -&gt; <b>(</b> E <b>)</b> | <b>id</b></li>
+</ul>
+<p>
+<b>(</b> E <b>)</b> is a handle, therefore { (, ( E } are viable prefixes. Since they call can appear on the symbols stack.
+</p>
+
+<ul class="org-ul">
+<li>It is not necessary that valid prefix always appear at the symbols stack. After shifting { ( E } , parser may shift { T * } to the stack. Which means there are two valid prefixes in our stack now { ( E T * }</li>
+<li>The symbols stack always only contains of valid prefixes</li>
+<li>Parser can never shift over a complete handle. So parser will never shift new symbol over a <b>(</b> E <b>)</b> Therefore, <b>(</b> E <b>)</b> is a non-viable prefix.</li>
+</ul>
+<p>
+An item \(A \rightarrow \beta_1 \cdot \beta_2\) is said to be valid item for a viable prefix \(\alpha \beta_1\), if there is a derivation \(S' \overset{*}{\underset{rm}\Rightarrow} \alpha A w \underset{rm}\Rightarrow \alpha \beta_1 \beta_2 w\)
+</p>
+</div>
+<div id="outline-container-org2e2c5d6" class="outline-5">
+<h5 id="org2e2c5d6"><span class="section-number-5">3.5.3.1.</span> Central theorem of LR-parsing</h5>
+<div class="outline-text-5" id="text-3-5-3-1">
+<p>
+For an arbitrary viable prefix \(\gamma\), the set of valid items is the state in LR(0) automata which we reach then following path labeled by \(\gamma\) starting from the initial state. So if \(\gamma = ABC\), we take transition A, then B and lastly C, and state we end on is the set of valid items
+</p>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orga9a9306" class="outline-3">
+<h3 id="orga9a9306"><span class="section-number-3">3.6.</span> SLR Parser</h3>
+<div class="outline-text-3" id="text-3-6">
+<p>
+In both, reduce-reduce and shift-reduce conflicts; the main cause of the conflict is the shift operation. The SLR parser is more powerful than LR(0). It uses the <b>FOLLOW</b> operation to avoid some of these conflicts.
+</p>
+
+<p>
+The <i>only difference between LR(0) and SLR</i> is where the reduce actions are placed in the table.
+</p>
+
+<p>
+Suppose we have the grammar
+</p>
+<ul class="org-ul">
+<li>E -&gt; E + T | T</li>
+<li>T -&gt; T * F | F</li>
+<li>F -&gt; <b>(</b> E <b>)</b> | <b>id</b></li>
+</ul>
+
+<p>
+For our grammar, the automata is
+</p>
+
+<div id="org10e496f" class="figure">
+<p><img src="Syntax_Analysis_(Parsing)/2023-12-30_03-18-04_Screenshot 2023-12-30 031755.png" alt="2023-12-30_03-18-04_Screenshot 2023-12-30 031755.png" />
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgad26e3c" class="outline-5">
+<h5 id="orgad26e3c"><span class="section-number-5">3.6.0.1.</span> GOTO table</h5>
+<div class="outline-text-5" id="text-3-6-0-1">
+<p>
+So, the GOTO for parsing table for our grammar is filled using the LR(0) automata. Procedure is same as it is for LR(0) parser.
+</p>
+
+<div id="orgcd49605" class="figure">
+<p><img src="Syntax_Analysis_(Parsing)/2023-12-30_22-02-03_Untitled-2023-12-13-1318.png" alt="2023-12-30_22-02-03_Untitled-2023-12-13-1318.png" />
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org0281b84" class="outline-5">
+<h5 id="org0281b84"><span class="section-number-5">3.6.0.2.</span> ACTION table</h5>
+<div class="outline-text-5" id="text-3-6-0-2">
+<p>
+The whole ACTION table is filled in same way as LR(0) parser <i>except the reduce operation</i>
+The parsing action ACTION(i,a) are determined as follows
+</p>
+<ol class="org-ol">
+<li>If \(A \rightarrow \alpha \cdot a \beta\) is in \(I_i\) and GOTO(\(I_i\),a) = \(I_j\) then ACTION(i,a) = SHIFT j
+<ul class="org-ul">
+<li><b>NOTE</b> : this can be filled directly by looking at LR(0) automata by seeing the transition from states over terminals</li>
+<li>The <b>transitions over non-terminals are GOTO</b> and <b>transitions over terminals are SHIFT</b></li>
+</ul></li>
+<li>If \(A \rightarrow \alpha \cdot\) is in \(I_i\), then
+<ul class="org-ul">
+<li>for every token 'a' in FOLLOW(A) we add ACTION(i,a) = REDUCE \(A \rightarrow \alpha\)</li>
+</ul></li>
+<li>If \(S' \rightarrow S \cdot\) is in \(I_i\), then ACTION(i,$) = ACCEPT</li>
+<li>If none of the three conditions above are satisfied, it is an error</li>
+</ol>
+<p>
+If there are multiple possible actions for a single (i,a) pair using the above rules, the grammar is not LR(0)
+</p>
+
+<p>
+Using the above rules, we can fill the whole ACTION(i,a) table for all terminals a and states i
+</p>
+
+<p>
+The ACTION table for our grammar is
+</p>
+
+
+<div id="orgbc637b4" class="figure">
+<p><img src="Syntax_Analysis_(Parsing)/2023-12-30_23-11-57_Screenshot 2023-12-30 231151.png" alt="2023-12-30_23-11-57_Screenshot 2023-12-30 231151.png" />
+</p>
+</div>
+
+<ul class="org-ul">
+<li>\(s_i\) means operation SHIFT i</li>
+<li>\(r_i\) means operation REDUCE \(i^{th}\) production of current state</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orge153982" class="outline-5">
+<h5 id="orge153982"><span class="section-number-5">3.6.0.3.</span> The Parsing Algorithm</h5>
+<div class="outline-text-5" id="text-3-6-0-3">
+<p>
+Once we have the table, the parsing algorithm is same for all the LR parsers. LR(0), SLR, CLR and LALR all use the same algorithm; only difference is the table which they produce.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orge06b623" class="outline-3">
+<h3 id="orge06b623"><span class="section-number-3">3.7.</span> More Powerful LR Parsers</h3>
+<div class="outline-text-3" id="text-3-7">
+<p>
+There are two different LR parsing techniques that are more powerful that LR(0)
+</p>
+<ol class="org-ol">
+<li>canonical-LR or just "LR" method makes full use of the lookahead symbols. This method uses a very large set of items called LR(1) items</li>
+<li>lookahead-LR or LALR, which is based on LR(0) items has fewer states. But we introduce lookaheads into LR(0) items to handle more grammars</li>
+</ol>
+</div>
+<div id="outline-container-org0572386" class="outline-4">
+<h4 id="org0572386"><span class="section-number-4">3.7.1.</span> Canonical LR(1) items</h4>
+<div class="outline-text-4" id="text-3-7-1">
+<p>
+In a LR(1) item, along with the production with a dot, we also store a terminal symbol. So LR(1) items have two components, example \([ A \rightarrow \alpha \cdot \beta \ ,\  a ]\). The \(a\) is the lookahead of the item.
+</p>
+<ul class="org-ul">
+<li>For an item of type \([ A \rightarrow \alpha \cdot \beta \ ,\ a ]\) and \(\beta \ne \epsilon\) i.e, where dot is not at the rightmost position, the lookahead is not used</li>
+<li>For item \([ A \rightarrow \alpha \cdot \ ,\ a ]\), this item represents a reduction by the production \(A \rightarrow \alpha\) if and only if the next input symbol is \(a\)</li>
+</ul>
+<p>
+So unlike LR(0) items, for LR(1) item we only reduce if the next input symbol matches the lookahead
+</p>
+</div>
+<div id="outline-container-orga1404d7" class="outline-5">
+<h5 id="orga1404d7"><span class="section-number-5">3.7.1.1.</span> Viable prefix</h5>
+<div class="outline-text-5" id="text-3-7-1-1">
+<p>
+LR(1) item \([X \rightarrow \alpha \cdot \beta \ ,\ x]\) is valid for a viable prefix \(\delta \alpha\), if
+</p>
+<ul class="org-ul">
+<li>there is a derivation \(S \overset{*}{\underset{rm}\Rightarrow} \delta X w \underset{rm}\Rightarrow \delta \alpha \beta w\)</li>
+<li>\(w\) starts with symbol \(x\); or if \(w\) is \(\epsilon\) and \(x\) is rightend marker $</li>
+</ul>
+
+<p>
+Example, for the grammar
+<br />
+S -&gt; BB
+<br />
+B -&gt; aB | b
+<br />
+</p>
+<ul class="org-ul">
+<li>If LR(1) item is \([ B \rightarrow a \cdot B \ ,\  a ]\)  to show that \(aaa\) is a viable prefix, first we get that \(X = B\), \(\alpha = a\), \(\beta = B\), \(x = a\) so the derivation needs to be
+\[ S \overset{*}{\underset{rm}\Rightarrow} \delta B w  \underset{rm}\Rightarrow \delta a B w \]
+there exists a suitable derivation with \(\delta = aa\) and \(w = ab\),
+\[ S \overset{*}{\underset{rm}\Rightarrow} aaBab  \underset{rm}\Rightarrow aaaBab \]
+Therefore, \(\delta \alpha = aaa\) is a viable prefix</li>
+</ul>
+
+
+<ul class="org-ul">
+<li>If item is [ B \(\rightarrow\) a \(\cdot\) B , $ ] and we need to show that Baa is viable prefix, we first find that A = B, \(\alpha = a\), \(\beta = B\) and x = $. Since x = $, we also know that \(w = \epsilon\). hence, derivation must be
+\[ S \overset{*}{\underset{rm}\Rightarrow} \delta B  \underset{rm}\Rightarrow \delta a B \]
+And for \(\delta = Ba\), we have derivation
+\[ S \overset{*}{\underset{rm}\Rightarrow} B a B  \underset{rm}\Rightarrow B a a B \]
+Therefore, \(\delta \alpha = Baa\) is a viable prefix</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgecaea90" class="outline-5">
+<h5 id="orgecaea90"><span class="section-number-5">3.7.1.2.</span> Constructing LR(1) sets of items</h5>
+<div class="outline-text-5" id="text-3-7-1-2">
+<p>
+TODO
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org4df7ad3" class="outline-4">
+<h4 id="org4df7ad3"><span class="section-number-4">3.7.2.</span> LALR parsing tables</h4>
+<div class="outline-text-4" id="text-3-7-2">
+<p>
+TODO
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Anmol Nawani</p>
+<p class="date">Created: 2024-10-06 Sun 19:20</p>
+<p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

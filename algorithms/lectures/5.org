@@ -1,0 +1,234 @@
+* Tree method for time complexity of recursive algorithms
+Tree method is used when there are multiple recursive calls in our recurrance relation. Example,
+\[ T(n) = T(n/5) + T(4n/5) + f(n) \]
+Here, one call is T(n/5) and another is T(4n/5). So we can't apply master's theorem. So we create a tree of recursive calls which is used to calculate time complexity.
+The first node, i.e the root node is T(n) and the tree is formed by the child nodes being the calls made by the parent nodes. Example, let's consider the recurrance relation
+\[ T(n) = T(n/5) + T(4n/5) + f(n) \]
+
+#+BEGIN_SRC
+      +-----T(n/5)
+T(n)--+
+      +-----T(4n/5)
+#+END_SRC
+
+Since T(n) calls T(n/5) and  T(4n/5), the graph for that is shown as drawn above. Now using recurrance relation, we can say that T(n/5) will call T(n/5^2) and T(4n/5^2). Also, T(4n/5) will call T(4n/5^2) and T(4^2 n/ 5^2).
+
+#+BEGIN_SRC
+                    +--T(n/5^2)
+      +-----T(n/5)--+
+      +             +--T(4n/5^2)
+T(n)--+
+      +             +--T(4n/5^2)
+      +-----T(4n/5)-+
+                    +--T(4^2 n/5^2)
+#+END_SRC
+
+Suppose we draw this graph for an unknown number of levels.
+
+#+BEGIN_SRC
+                    +--T(n/5^2)- - - - - - -  etc.
+      +-----T(n/5)--+
+      +             +--T(4n/5^2) - - - - - - - - - etc.
+T(n)--+
+      +             +--T(4n/5^2) - - - - - -  - - - etc.
+      +-----T(4n/5)-+
+                    +--T(4^2 n/5^2)- - - - - - etc.
+#+END_SRC
+
+We will now replace T()'s  with the *cost of the call*. The cost of the call is *f(n)*, i.e, the time taken other than that caused by the recursive calls.
+
+#+BEGIN_SRC
+                    +--f(n/5^2)- - - - - - -  etc.
+      +-----f(n/5)--+
+      +             +--f(4n/5^2) - - - - - - - - - etc.
+f(n)--+
+      +             +--f(4n/5^2) - - - - - -  - - - etc.
+      +-----f(4n/5)-+
+                    +--f(4^2 n/5^2)- - - - - - etc.
+#+END_SRC
+
+In our example, *let's assume f(n) = n*, therfore,
+
+#+BEGIN_SRC
+                    +--  n/5^2 - - - - - - -  etc.
+      +-----  n/5 --+
+      +             +-- 4n/5^2  - - - - - - - - - etc.
+  n --+
+      +             +--  4n/5^2  - - - - - -  - - -etc.
+      +-----  4n/5 -+
+                    +--  4^2 n/5^2 - - - - - -  etc.
+#+END_SRC
+
+Now we can get cost of each level.
+
+#+BEGIN_SRC
+                           +--  n/5^2 - - - - - - -  etc.
+             +-----  n/5 --+
+             +             +-- 4n/5^2  - - - - - - - - - etc.
+         n --+
+             +             +--  4n/5^2  - - - - - -  - - -etc.
+             +----- 4n/5 --+
+                           +--  4^2 n/5^2 - - - - - -  etc.
+
+       
+Sum :    n         n/5         n/25                      
+                  +4n/5       +4n/25
+                              +4n/25
+                              +16n/25
+       .....      .....       ......
+         n          n           n
+#+END_SRC
+
+Since sum on all levels is n, we can say that Total time taken is
+\[ T(n) = \Sigma \ (cost\ of\ level_i) \]
+
+Now we need to find the longest branch in the tree. If we follow the pattern of expanding tree in a sequence as shown, then the longest branch is *always on one of the extreme ends of the tree*. So for our example, if tree has *(k+1)* levels, then our branch is either (n/5^k) of (4^k n/5^k). Consider the terminating condition is, $T(a) = C$. Then we will calculate value of k by equating the longest branch as, 
+\[ \frac{n}{5^k} = a \]
+\[ k = log_5 (n/a) \]
+Also,
+\[ \frac{4^k n}{5^k} = a \]
+\[ k = log_{5/4} n/a \]
+
+So, we have two possible values of k, 
+\[ k = log_{5/4}(n/a),\ log_5 (n/a) \]
+
+Now, we can say that, 
+\[ T(n) = \sum_{i=1}^{k+1} \ (cost\ of\ level_i) \]
+Since in our example, cost of every level is *n*.
+\[ T(n) = n.(k+1) \]
+Putting values of k,
+\[ T(n) = n.(log_{5/4}(n/a) + 1) \]
+or
+\[ T(n) = n.(log_{5}(n/a) + 1) \]
+
+Of the two possible time complexities, we consider the one with higher growth rate in the big-oh notation.
+
+** Avoiding tree method
+The tree method as mentioned is mainly used when we have multiple recursive calls with different factors. But when using the big-oh notation (O). We can avoid tree method in favour of the master's theorem by converting recursive call with smaller factor to larger. This works since big-oh calculates worst case. Let's take our previous example
+\[ T(n) = T(n/5) + T(4n/5) + f(n) \]
+Since T(n) is an increasing function. We can say that
+\[ T(n/5) < T(4n/5)  \]
+So we can replace smaller one and approximate our equation to,
+\[ T(n) = T(4n/5) + T(4n/5) + f(n) \]
+\[ T(n) = 2.T(4n/5) + f(n) \]
+
+Now, our recurrance relation is in a form where we can apply the mater's theorem.
+
+* Space complexity
+The amount of memory used by the algorithm to execute and produce the result for a given input size is space complexity. Similar to time complexity, when comparing two algorithms space complexity is usually represented as the growth rate of memory used with respect to input size. The space complexity includes
++ *Input space* : The amount of memory used by the inputs to the algorithm.
++ *Auxiliary space* : The amount of memory used during the execution of the algorithm, excluding the input space.
+
+*NOTE* : /Space complexity by definition includes both input space and auxiliary space, but when comparing algorithms the input space is often ignored. This is because two algorithms that solve the same problem will have same input space based on input size (Example, when comparing two sorting algorithms, the input space will be same because both get a list as an input). So from this point on, refering to space complexity, we are actually talking about *Auxiliary Space Complexity*, which is space complexity but only considering the auxiliary space/.
+
+** Auxiliary space complexity
+
+The space complexity when we disregard the input space is the auxiliary space complexity, so we basically treat algorithm as if it's input space is zero. Auxiliary space complexity is more useful when comparing algorithms because the algorithms which are working towards same result will have the same input space, Example, the sorting algorithms will all have the input space of the list, so it is not a metric we can use to compare algorithms. So from here, when we calculate space complexity, we are trying to calculate auxiliary space complexity and sometimes just refer to it as space complexity.
+
+* Calculating auxiliary space complexity
+There are two parameters that affect space complexity,
++ *Data space* : The memory taken by the variables in the algorithm. So allocating new memory during runtime of the algorithm is what forms the data space. The space which was allocated for the input space is not considered a part of the data space.
++ *Code Execution Space* : The memory taken by the instructions themselves is called code execution space. Unless we have recursion, the code execution space remains constant since the instructions don't change during runtime of the algorithm. When using recursion, the instructions are loaded again and again in memory, thus increasing code execution space.
+
+** Data Space used
+The data space used by the algorithm depends on what data structures it uses to solve the problem. Example,
+
+#+BEGIN_SRC C
+  /* Input size of n */
+  void algorithms(int n){
+    /* Creating an array of whose size depends on input size */
+    int data[n];
+
+    for(int i = 0; i < n; i++){
+      int x = data[i];
+      // Work on data
+    }
+  }
+#+END_SRC
+
+Here, we create an array of size *n*, so the increase in allocated space increases with the input size. So the space complexity is, *$\theta (n)$*.
+\\
++ Another example,
+
+#+BEGIN_SRC C
+  /* Input size of n */
+  void algorithms(int n){
+    /* Creating a matrix sized n*n of whose size depends on input size */
+    int data[n][n];
+
+    for(int i = 0; i < n; i++){
+      for(int j = 0; j < n; j++){
+	int x = data[i][j];
+	// Work on data
+      }
+    }
+  }
+#+END_SRC
+
+Here, we create a matrix of size *n*n*, so the increase in allocated space increases with the input size by $n^2$. So the space complexity is, *$\theta (n^2)$*.
+
++ If we use a node based data structure like linked list or trees, then we can show space complexity as the number of nodes used by algorithm based on input size, (if all nodes are of equal size).
++ Space complexity of the hash map is considered *O(n)* where *n* is the number of entries in the hash map.
+
+** Code Execution space in recursive algorithm
+When we use recursion, the function calls are stored in the stack. This means that code execution space will increase. A single function call has fixed (constant) space it takes in the memory. So to get space complexity, *we need to know how many function calls occur in the longest branch of the function call tree*.
+
++ *NOTE* : Space complexity *only depends on the longest branch* of the function calls tree.
++ /*The tree is made the same way we make it in the tree method for calculating time complexity of recursive algorithms*/
+  
+This is because at any given time, the stack will store only a single branch.
+
++ Example,
+
+#+BEGIN_SRC C
+  int func(int n){
+    if(n == 1 || n == 0)
+      return 1;
+    else
+      return n * func(n - 1);
+  }
+#+END_SRC
+
+To calculate space complexity we can use the tree method. But rather than when calculating time complexity, we will count the number of function calls using the tree.
+We will do this by drawing tree of what function calls will look like for given input size *n*.
+\\
+The tree for *k+1* levels is,
+
+#+BEGIN_SRC
+  func(n)--func(n-1)--func(n-2)--.....--func(n-k)
+#+END_SRC
+
+This tree only has a single branch. To get the number of levels for a branch, we put the terminating condition at the extreme branches of the tree. Here, the terminating condition is func(1), therefore, we will put $func(1) = func(n-k)$, i.e,
+\[ 1 = n - k \]
+\[ k + 1 = n \]
+
+So the number of levels is $n$. Therefore, space complexity is *$\theta (n)$*
+
++ Another example,
+
+#+BEGIN_SRC c
+  void func(int n){
+    if(n/2 <= 1)
+      return n;
+    func(n/2);
+    func(n/2);
+  }
+#+END_SRC
+
+Drawing the tree for *k+1* levels.
+#+BEGIN_SRC
+                          +--func(n/2^2)- - - - - - -  func(n/2^k)
+         +-----func(n/2)--+
+         +                +--func(n/2^2) - - - - - - - - - func(n/2^k)
+func(n)--+
+         +               +--func(n/2^2) - - - - - -  - - - func(n/2^k)
+         +-----func(n/2)-+
+                         +--func(n/2^2)- - - - - - func(n/2^k)
+#+END_SRC
+
++ /*As we know from the tree method, the two extreme branches of the tree will always be the longest ones.*/
+
+Both the extreme branches have the same call which here is func(n/2^k). To get the number of levels for a branch, we put the terminating condition at the extreme branches of the tree. Here, the terminating condition is func(2), therefore, we will put $func(2) = func(n/2^k)$, i.e,
+\[ 2 = \frac{n}{2^k} \]
+\[ k + 1 = log_2n \]
+Number of levels is $log_2n$. Therefore, space complexity is *$\theta (log_2n)$.*

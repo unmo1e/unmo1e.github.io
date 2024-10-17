@@ -1,0 +1,389 @@
+* Divide and Conquer algorithms
+Divide and conquer is a problem solving strategy. In divide and conquer algorithms, we solve problem recursively applying three steps :
++ *Divide* : Problem is divided into smaller problems that are instances of same problem.
++ *Conquer* : If subproblems are large, divide and solve them recursivly. If subproblem is small enough then solve it in a straightforward method
++ *Combine* : combine the solutions of subproblems into the solution for the original problem.
+
+*Example*,
+1. Binary search
+2. Quick sort
+3. Merge sort
+4. Strassen's matrix multiplication
+
+* Searching for element in array
+** Straight forward approach for searching (*Linear Search*)
+
+#+BEGIN_SRC C
+  int linear_search(int *array, int n, int x){
+    for(int i = 0; i < n; i++){
+      if(array[i] == x){
+	printf("Found at index : %d", i);
+	return i;
+      }
+    }
+    return -1;
+  }
+#+END_SRC
+
+Recursive approach
+
+#+BEGIN_SRC C
+  // call this function with index = 0
+  int linear_search(int array[], int item, int index){
+    if( index >= len(array) )
+      return -1;
+    else if (array[index] == item)
+      return index;
+    else
+      return linear_search(array, item, index + 1);
+  }
+#+END_SRC
+
+*Recursive time complexity* : $T(n) = T(n-1) + 1$
+
++ *Best Case* : The element to search is the first element of the array. So we need to do a single comparision. Therefore, time complexity will be constant *O(1)*.
+\\
++ *Worst Case* : The element to search is the last element of the array. So we need to do *n* comparisions for the array of size n. Therefore, time complexity is *O(n)*.
+\\
++ *Average Case* : For calculating the average case, we need to consider the average number of comparisions done over all possible cases. 
+
+#+ATTR_HTML: :frame border :rules all
+| Position of element to search (x) | Number of comparisions done |
+|-----------------------------------+-----------------------------|
+| 0                                 | 1                           |
+| 1                                 | 2                           |
+| 2                                 | 3                           |
+| .                                 | .                           |
+| .                                 | .                           |
+| .                                 | .                           |
+| n-1                               | n                           |
+| ....................              | ....................        |
+| Sum                               | $\frac{n(n+1)}{2}$          |
+|-----------------------------------+-----------------------------|
+
+\[ \text{Average number of comparisions} = \frac{ \text{Sum of number of comparisions of all cases} }{ \text{Total number of cases.} } \]
+\[ \text{Average number of comparisions} = \frac{n(n+1)}{2} \div n \]
+\[ \text{Average number of comparisions} = \frac{n+1}{2} \]
+\[ \text{Time complexity in average case} = O(n) \]
+
+** Divide and conquer approach (*Binary search*)
+
+The binary search algorithm works on an array which is sorted. In this algorithm we:
+1. Check the middle element of the array, return the index if element found.
+2. If element > array[mid], then our element is in the right part of the array, else it is in the left part of the array.
+3. Get the mid element of the left/right sub-array
+4. Repeat this process of division to subarray's and comparing the middle element till our required element is found.
+
+The divide and conquer algorithm works as,
+\\
+Suppose binarySearch(array, left, right, key), left and right are indicies of left and right of subarray. key is the element we have to search.
++ *Divide part* : calculate mid index as mid = left + (right - left) /2 or (left + right) / 2. If array[mid] == key, return the value of mid.
++ *Conquer part* : if array[mid] > key, then key must not be in right half. So we search for key in left half, so we will recursively call binarySearch(array, left, mid - 1, key). Similarly, if array[mid] < key, then key must not be in left half. So we search for key in right half, so recursively call binarySearch(array, mid + 1, right, key).
++ *Combine part* : Since the binarySearch function will either return -1 or the index of the key, there is no need to combine the solutions of the subproblems.
+
+[[./imgs/binary-search.jpg]]
+
+#+BEGIN_SRC C
+  int binary_search(int *array, int n, int x){
+    int low = 0;
+    int high = n;
+
+    int mid = (low + high) / 2;
+
+    while(low <= high){
+      mid = (low + high) / 2;
+      if (x == array[mid]){
+	return mid;
+      }else if (x < array[mid]){
+	low = low;
+	high = mid - 1;
+      }else{
+	low = mid + 1;
+	high = high;
+      }
+    }
+
+    return -1;
+  }
+#+END_SRC
+
+Recursive approach:
+
+#+BEGIN_SRC C
+  int binary_search(int *array, int left, int right, int x){
+    if(left > right)
+      return -1;
+
+    int mid = (left + right) / 2;
+    // or we can use mid = left + (right - left) / 2, this will avoid int overflow when array has more elements.
+    
+    if (x == array[mid])
+      return mid;
+    else if (x < array[mid])
+      return binary_search(array, left, mid - 1, x);
+    else
+      return binary_search(array, mid + 1, right, x);
+  }
+#+END_SRC
+ 
+*Recursive time complexity* : $T(n) = T(n/2) + 1$
+
++ *Best Case* : Time complexity = O(1)
++ *Average Case* : Time complexity = O(log n)
++ *Worst Case* : Time complexity = O(log n)
+
+/Binary search is better for sorted arrays and linear search is better for sorted arrays./
+\\
+/Another way to visualize binary search is using the binary tree./
+
+* Max and Min element from array
+** Straightforward approach
+#+BEGIN_SRC C
+  struc min_max {int min; int max;}
+  min_max(int array[]){
+    int max = array[0];
+    int min = array[0];
+
+    for(int i = 0; i < len(array); i++){
+      if(array[i] > max)
+	max = array[i];
+      else if(array[i] < min)
+	min = array[i];
+    }
+
+    return (struct min_max) {min, max};
+  }
+#+END_SRC
+
++ *Best case* : array is sorted in ascending order. Number of comparisions is $n-1$. Time complexity is $O(n)$.
++ *Worst case* : array is sorted in descending order. Number of comparisions is $2.(n-1)$. Time complexity is $O(n)$.
++ *Average case* : array can we arranged in n! ways, this makes calculating number of comparisions in the average case hard and it is somewhat unnecessary, so it is skiped. Time complexity is $O(n)$
+
+** Divide and conquer approach
+Suppose the function is MinMax(array, left, right) which will return a tuple (min, max). We will divide the array in the middle, mid = (left + right) / 2. The left array will be array[left:mid] and right aray will be array[mid+1:right]
++ *Divide part* : Divide the array into left array and right array. If array has only single element then both min and max are that single element, if array has two elements then compare the two and the bigger element is max and other is min.
++ *Conquer part* : Recursively get the min and max of left and right array, leftMinMax = MinMax(array, left, mid)  and rightMinMax = MinMax(array, mid + 1, right).
++ *Combine part* : If leftMinMax[0] > rightMinmax[0], then min = righMinMax[0], else min = leftMinMax[0]. Similarly, if leftMinMax[1] > rightMinMax[1], then max = leftMinMax[1], else max = rightMinMax[1].
+
+#+BEGIN_SRC python
+  # Will return (min, max)
+  def minmax(array, left, right):
+      if left == right:       # Single element in array
+	  return (array[left], array[left])
+      elif left + 1 == right: # Two elements in array
+	  if array[left] > array[right]:
+	      return (array[right], array[left])
+	  else:
+	      return (array[left], array[right])
+      else:                  # More than two elements
+	  mid = (left + right) / 2
+	  minimum, maximum = 0, 0
+	  leftMinMax = minmax(array, left, mid)
+	  rightMinMax = minmax(array, mid + 1, right)
+
+	  # Combining result of the minimum from left and right subarray's
+	  if leftMinMax[0] > rightMinMax[0]:
+	      minimum = rightMinMax[0]
+	  else:
+	      minimum = leftMinMax[0]
+
+	  # Combining result of the maximum from left and right subarray's
+	  if leftMinMax[1] > rightMinMax[1]:
+	      maximum = leftMinMax[1]
+	  else:
+	      maximum = rightMinMax[1]
+	  
+	  return (minimum, maximum)
+
+#+END_SRC
+
++ Time complexity
+We are dividing the problem into two parts of approximately, and it takes two comparisions on each part. Let's consider a comparision takes unit time. Then time complexity is
+\[ T(n) = T(n/2) + T(n/2) + 2 \]
+\[ T(n) = 2.T(n/2) + 2 \]
+The recurrance terminated if single element in array with zero comparisions, i.e, $T(1) = 0$, or when two elements with single comparision $T(2) = 1$.
+\\
+/Now we can use the *master's theorem* or *tree method* to solve for time complexity./
+\[ T(n) = \theta (n) \]
+
++ Space complexity
+For space complexity, we need to find the longest branch of the recursion tree. Since both recursive calls are same sized, and the factor is (1/2), for *k+1* levels, function call will be func(n/2^k), and terminating condition is func(2)
+\[ func(2) = func(n/2^k) \]
+\[ 2 = \frac{n}{2^k} \]
+\[ k + 1 = log_2n \]
+Since longest branch has $log_2n$ nodes, the space complexity is $O(log_2n)$.
+
++ Number of comparisions
+In every case i.e, average, best and worst cases, *the number of comparisions in this algorithm is same*.
+\[ \text{Total number of comparisions} = \frac{3n}{2} - 2 \]
+If n is not a power of 2, we will round the number of comparision up.
+
+** Efficient single loop approach (Increment by 2)
+
+In this algorithm we will compare pairs of numbers from the array. It works on the idea that the larger number of the two in pair can be the maximum number and smaller one can be the minimum one. So after comparing the pair, we can simply test from maximum from the bigger of two an minimum from smaller of two. This brings number of comparisions to check two numbers in array from 4 (when we increment by 1) to 3 (when we increment by 2).
+
+#+BEGIN_SRC python
+def min_max(array):
+    (minimum, maximum) = (array[0], array[0])
+    i = 1
+    while i < len(array):
+        if i + 1 == len(array):  # don't check i+1, it's out of bounds, break the loop after checking a[i]
+            if array[i] > maximum:
+                maximum = array[i]
+            elif array[i] < minimum:
+                minimum = array[i]
+            break
+
+        if array[i] > array[i + 1]:
+            # check possibility that array[i] is maximum and array[i+1] is minimum
+            if array[i] > maximum:
+                maximum = array[i]
+            if array[i + 1] < minimum:
+                minimum = array[i + 1]
+        else:
+            # check possibility that array[i+1] is maximum and array[i] is minimum
+            if array[i + 1] > maximum:
+                maximum = array[i + 1]
+            if array[i] < minimum:
+                minimum = array[i]
+
+        i += 2
+    return (minimum, maximum)
+#+END_SRC
+
++ Time complexity = O(n)
++ Space complexity = O(1)
++ Total number of comparisions =
+  \[ \text{If n is odd},  \frac{3(n-1)}{2} \]
+  \[ \text{If n is even}, \frac{3n}{2} - 2 \]
+
+* Square matrix multiplication
+
+Matrix multiplication algorithms taken from here: 
+[[https://www.cs.mcgill.ca/~pnguyen/251F09/matrix-mult.pdf]]
+
+** Straight forward method
+
+#+BEGIN_SRC C
+  /* This will calculate A X B and store it in C. */
+  #define N 3
+
+  int main(){
+    int A[N][N] = {
+      {1,2,3},
+      {4,5,6},
+      {7,8,9} };
+
+    int B[N][N] = {
+      {10,20,30},
+      {40,50,60},
+      {70,80,90} };
+
+    int C[N][N];
+
+    for(int i = 0; i < N; i++){
+      for(int j = 0; j < N; j++){
+	C[i][j] = 0;
+	for(int k = 0; k < N; k++){
+	  C[i][j] += A[i][k] * B[k][j];
+	}
+      }
+    }
+
+    return 0;
+  }
+#+END_SRC
+
+Time complexity is $O(n^3)$
+
+** Divide and conquer approach
+The divide and conquer algorithm only works for a square matrix whose size is n X n, where n is a power of 2. The algorithm works as follows.
+
+#+BEGIN_SRC
+  MatrixMul(A, B, n):
+    If n == 2 {
+      return A X B
+    }else{
+      Break A into four parts A_11, A_12, A_21, A_22, where A = [[ A_11, A_12],
+                                                                 [ A_21, A_22]]
+  
+      Break B into four parts B_11, B_12, B_21, B_22, where B = [[ B_11, B_12],
+                                                                 [ B_21, B_22]]
+
+      C_11 = MatrixMul(A_11, B_11, n/2) + MatrixMul(A_12, B_21, n/2)
+      C_12 = MatrixMul(A_11, B_12, n/2) + MatrixMul(A_12, B_22, n/2)
+      C_21 = MatrixMul(A_21, B_11, n/2) + MatrixMul(A_22, B_21, n/2)
+      C_22 = MatrixMul(A_21, B_12, n/2) + MatrixMul(A_22, B_22, n/2)
+  
+      C = [[ C_11, C_12],
+           [ C_21, C_22]]
+  
+      return C
+    }
+#+END_SRC
+
+The addition of matricies of size (n X n) takes time $\theta (n^2)$, therefore, for computation of C_11 will take time of $\theta \left( \left( \frac{n}{2} \right)^2 \right)$, which is equals to $\theta \left( \frac{n^2}{4} \right)$. Therefore, computation time of C_11, C_12, C_21 and C_22 combined will be $\theta \left( 4 \frac{n^2}{4} \right)$, which is equals to $\theta (n^2)$.
+\\
+There are 8 recursive calls in this function with MatrixMul(n/2), therefore, time complexity will be
+\[ T(n) = 8T(n/2) + \theta (n^2) \]
+Using the *master's theorem*
+\[ T(n) = \theta (n^{log_28}) \]
+\[ T(n) = \theta (n^3) \]
+
+** Strassen's algorithm
+
+Another, more efficient divide and conquer algorithm for matrix multiplication. This algorithm also only works on square matrices with n being a power of 2. This algorithm is based on the observation that, for $A \times B = C$. We can calculate $C_{11}, C_{12}, C_{21} \text{ and } C_{22}$ as,
+
+\[ C_{11} = P_5 + P_4 - P_2 + P_6 \]
+\[ C_{12} = P_1 + P_2 \]
+\[ C_{21} = P_3 + P_4 \]
+\[ C_{22} = P_1 + P _5 - P_3 - P_7 \]
+Where,
+\[ P_1 = A_{11} \times (B_{12} - B_{22}) \]
+\[ P_2 = (A_{11} + A_{12}) \times B_{22} \]
+\[ P_3 = (A_{21} + A_{22}) \times B_{11} \]
+\[ P_4 = A_{22} X (B_{21} - B_{11}) \]
+\[ P_5 = (A_{11} + A_{22}) \times (B_{11} + B_{22}) \]
+\[ P_6 = (A_{12} - A_{22}) \times (B_{21} + B_{22}) \]
+\[ P_7 = (A_{11} - A_{21}) \times (B_{11} + B_{12}) \]
+This reduces number of recursion calls from 8 to 7.
+
+#+BEGIN_SRC
+Strassen(A, B, n):
+  If n == 2 {
+    return A X B
+  }
+  Else{
+    Break A into four parts A_11, A_12, A_21, A_22, where A = [[ A_11, A_12],
+                                                               [ A_21, A_22]]
+  
+    Break B into four parts B_11, B_12, B_21, B_22, where B = [[ B_11, B_12],
+                                                               [ B_21, B_22]]
+    P_1 = Strassen(A_11, B_12 - B_22, n/2)
+    P_2 = Strassen(A_11 + A_12, B_22, n/2)
+    P_3 = Strassen(A_21 + A_22, B_11, n/2)
+    P_4 = Strassen(A_22, B_21 - B_11, n/2)
+    P_5 = Strassen(A_11 + A_22, B_11 + B_22, n/2)
+    P_6 = Strassen(A_12 - A_22, B_21 + B_22, n/2)
+    P_7 = Strassen(A_11 - A_21, B_11 + B_12, n/2)
+    C_11 = P_5 + P_4 - P_2 + P_6
+    C_12 = P_1 + P_2
+    C_21 = P_3 + P_4
+    C_22 = P_1 + P_5 - P_3 - P_7
+    C = [[ C_11, C_12],
+         [ C_21, C_22]]
+    return C
+  }
+#+END_SRC
+
+This algorithm uses 18 matrix addition operations. So our computation time for that is $\theta \left(18\left( \frac{n}{2} \right)^2 \right)$ which is equal to $\theta (4.5 n^2)$ which is equal to $\theta (n^2)$.
+\\
+There are 7 recursive calls in this function which are Strassen(n/2), therefore, time complexity is
+\[ T(n) = 7T(n/2) + \theta (n^2) \]
+Using the master's theorem
+\[ T(n) = \theta (n^{log_27}) \]
+\[ T(n) = \theta (n^{2.807}) \]
+
+
++ /*NOTE* : The divide and conquer approach and strassen's algorithm typically use n == 1 as their terminating condition since for multipliying 1 X 1 matrices, we only need to calculate product of the single element they contain, that product is thus the single element of our resultant 1 X 1 matrix./
+

@@ -1,0 +1,364 @@
+* Transport Layer
++ Transport layer has three protocols : UDP, TCP and SCTP
++ The transport layer does process-to-process delivery
+  + UDP is simplest of the three
+  + TCP is a complex transport layer protocol but more relibale than UDP
+  + SCTP is protocol for multihomed, multistream applications such as multimedia
+
+| Layer           | Delivery                    |
+|-----------------+-----------------------------|
+| Data Link Layer | Node-to-Node delivery       |
+| Network Layer   | Host-to-Host delivery       |
+| Transport Layer | Process-to-Process delivery |
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202024-10-15%20234219.png @ 2024-10-15 23:42:47
+[[file:Transport_Layer/2024-10-15_23-42-47_Screenshot 2024-10-15 234219.png]]
+
+Both source and destination host will have multiple processes running on them, so need mechanism to deliver to correct processes
+
+** Client/Server Paradigm
+Most common way to achieve process-to-process communication is throught client/server paradigm.
+
++ We give same name to both server and client.
+  + Eg, when fetching daytime info, we need Daytime client process and Daytime server process
++ OS today are both multiprocessing and multiuser.
+  + So host may also be running multiple server programs and/or multiple client programs
+
+For process-to-process delivery we have following terms
+1. Local host
+2. Local process
+3. Remote host
+4. Remote process
+
+*** Addressing
+Data Link Layer uses MAC address for delivery. Network layer uses IP address for delivery. Similarly, at transport layer we need a way to identify the correct process
+
++ at transport layer, we use *port number for addressing*.
++ the port number is *unsigned 16-bit* number
++ transport layer at client chooses a random port number, this is called the *ephemeral port number*
+  + they are ephemeral because they are short-lived; only assigned for single session
+  + range of ephemeral port depends on OS, but IANA defines range 49,152 to 65,535
+  + also called dynamic ports, private ports or client ports
++ server port cannot be chosen randomly, server will use a defined *well-known port number*
+  + if port at server is random, then client won't know the port number to use (we could send a custom packet to get port number of required service, but that is unnecessary overhead)
+  + some example of well known ports are, port 80 for HTTP, port 53 for DNS, port 13 for daytime, etc.
+
+**** IANA Ranges
+The Internet Assigned Number Authority has divided ports to three ranges
++ Well-known ports : range 0 to 1023 are assigned and controlled by IANA
++ Registered ports : ranges 1024 to 49,151 are not assigned or controlled by IANA. They can be registered with IANA by other entities/organizations upon application
++ Dynamic ports : ranges 49,152 to 65,535; can be used by any process, ephemeral ports are chosen from this range
+
+**** Socket Addresses
+
+Process-to-process delivery needs two addresses, IP address and port number. The /combination of IP address and port number/ is called socket address.
+
+Client socket address defines client process uniquely and server socket address defines server process uniquely
+
+So transport layer protocols work using socket addresses. The four pieces of information (2 IP addr and 2 port no) are part of the IP header and transport layer protocol header
+
++ IP header contains IP address
++ TCP or UDP header contains port numbers
+
+*** Multiplexing and Demultiplexing
+We can do multiplexing and demultiplexing at the transport layer
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202024-10-16%20013854.png @ 2024-10-16 01:39:08
+[[file:Transport_Layer/2024-10-16_01-39-08_Screenshot 2024-10-16 013854.png]]
+
+_*Multiplexing*_
+
+There may be multiple processes that need to send packets. However, there is only single transport layer protocol at a time between client and server.
+
++ This is many-to-one relationship
++ Protocol accepts messages from different processes, differentiated by port numbers
++ After adding header, transport layer passes packets to network layer
+
+_*Demultiplexing*_
+
++ The relationship is one-to-many
++ Transport layer recieves a datagram from network layer
++ After error checking and stripping header, it delivers each message to appropriate process based on port number
+
+*** Connectionless vs Connection-Oriented service
+Transport layer protocol can either be connecionless or connection-oriented
+
+_*Connectionless Service*_
+
++ no need for connection establishment or release
++ packets not numbered; they may be delayed or arrive out of sequence
++ no acknowledgment; example of protocol UDP
+
+_*Connection-Oriented Service*_
+
++ connection needs to be established between sender and receiver; it also needs to be released after data is transferred
++ packets are numbered and in order
++ acknowledgments are given for each packet; example of protcol is TCP and SCTP
+
+*** Reliable vs Unreliable
+The service can be reliable or unreliable. If application layer program needs reliability we will need to use reliable protocol at the transport layer.
+
++ Reliable protocol will make sure all packets are delivered process-to-process without loss
+  + This is slower and complex service
+  + Will have both flow and error control
+  + A reliable protocol is connection-oriented to communicate if packets are delivered correctly
++ Unreliable protcol will try to deliver packets as quickly as possible, but there is no guarentee of correct delivery
+  + The protocol will be kept simple and fast
+  + Does not have flow or error control
+  + This is connectionless so that packets can be delivered quick
+
+**** Why have reliability on transport layer?
+If data link layer is reliable, why do we need reliability on transport layer?
+
+This is because data link layer is reliable only for node-to-node delivery.
+
+If link is bad between the path of the two hosts, network layer will just drop the packets (/best effort delivery/). Therefore, reliability needs to be implemented on the transport layer.
+
+*** Three Protocols
+TCP/IP protocol suite specifies two protocols TCP and UDP.
+
++ UDP is simpler connectionless, unreliable and fast protocol
++ TCP is connection-oriented, reliable and slow protocol
+
+A new protocol SCTP was later added to the suite
+
+** User Datagram Protocol (UDP)
+This protocol is connectionless, unreliable and fast. The goal is to add as little on top of IP expect provide process-to-process communication. It performs very limited error checking
+
+Very simple protocol with minimum overhead. If process wants to send small message without care for reliability, it can use UDP
+
+Sending packets with UDP requires way less interaction than TCP or SCTP
+
+*** Well-known ports of UDP
+Some well-known ports that support UDP are given. Some of these ports can be used by both UDP and TCP.
+
+| Port | Protocol   | Description                               |
+|------+------------+-------------------------------------------|
+|    7 | ECHO       | Echoes a received datagram back to sender |
+|    9 | Discard    | Discards datagram that is received        |
+|   11 | Users      | Active Users                              |
+|   13 | Daytime    | Returns date and time                     |
+|   17 | Quote      | Returns a quote of the day                |
+|   53 | Nameserver | Domain Name Service                       |
+
+*** User Datagram
+UDP packets are called datagrams. They have fixed-size *header of 8 bytes (64bits)*
+
+The UDP header has only 4 fields each of 16bit
+1. *Source port number* : port number used by the source process. It is 16 bits long.
+   + if source is client it is a ephemeral port
+   + if source is server it is a well-known port
+2. *Destination port number* : port number of the destination. It is 16 bits long.
+   + if destination is server it is well-known port
+   + if destination is client it is an ephemeral port (server needs to remember port no. from the request)
+3. *Length* : it is length of datagram in bytes. it is 16bits long
+   + is size of header plus data
+   + although 16 bit means maximum of 65,535 bytes; an actual UDP datagram stores less as IP datagram also has maximum length of 65,535 bytes
+   + so maximum data length is 65,507 bytes in IPv4
+
+  This field is not necessary; since IP datagram also defines total length of datagram and well as of IP header. We can subtract the two to get UDP length
+
+  #+BEGIN_QUOTE
+  UDP length = IP length - IP header's length
+  #+END_QUOTE
+
+  However, we include the length in UDP header since IP software will drop the header before handing it to transport layer. Forcing network layer to calculate UDP length to pass it means coupling responsibilities (and we want to seperate responsibilities)
+4. *Checksum* : this field is used for error detection over entire datagram (header plus data). It is 16bits long. The method to calculate checksum is different than for IP aand ICMP
+
+*** Checksum
+The checksum includes three sections for UDP : pseudoheader, UDP header and data from application layer
+ 
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202024-10-16%20125414.png @ 2024-10-16 12:54:23
+[[file:Transport_Layer/2024-10-16_12-54-23_Screenshot 2024-10-16 125414.png]]
+
+The pseudoheader is made up of some fields of the IP header.
+
+_*Need of pseudoheader*_
+
+If it is not included, then the user datagram may arrive safe and sound. However, IP header is corrupted, it may be delivered to wrong host.
+
+The protocol needs to be included so that application knows packet is UDP /(set protocol to 17)/ since same port can receive TCP and UDP packets
+
+_*Checksum is optional*_
+
+In UDP, the inclusion of checksum in datagram is optional. /If no checksum is calculated, the value is all 1s in field./
+
+After adding pseudoheader, the calculation of checksum is same
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202024-10-16%20131451.png @ 2024-10-16 13:15:00
+[[file:Transport_Layer/2024-10-16_13-15-00_Screenshot 2024-10-16 131451.png]]
+
+*** UDP Operation
+Some concepts  relating to operation of UDP are
+
+_*Connecionless Service*_
+
+UDP is a connectionless service. Each datagram is independent. There is no relationship between them. Even if the source and destination is same.
+
+They are also not numbered in any way. No connection establishment or termination, so packets can take any path.
+
+So process /cannot give stream of data to UDP and expect it to chop them/. Every UDP request must be small enough to fit in a single packet
+
+_*Flow and Error Control*_
+
+There is no flow control and receiver may overflow. There is no error control except for detection using a checksum.
+
+Both receiver and sender won't know if message was lost or duplicated. If receiver detects error, it will silently discard the datagram
+
+_*Encapsulation and Decapsulation*_
+
+UDP protocol encapsulates and decapsulates message in IP datagram
+
+_*Queuing*_
+
+In UDP, queues are associated with ports. Some implementations create both incoming and outgoing queue; but some only implement an incoming queue
+
+If process wants to communicate to multiple other processes, then the outgoing queue is necessary.
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202024-10-16%20133454.png @ 2024-10-16 13:35:02
+[[file:Transport_Layer/2024-10-16_13-35-02_Screenshot 2024-10-16 133454.png]]
+
++ At client side, when process starts, it requests a port number and initializes the queues
+  + client can send messages to outgoing queues by using well-known source ports
+  + UDP takes messages from queue one-by-one attaches header to them and hands them to network layer for delivery
+  + this queue can overflow, if an overflow happens the OS will ask client to wait before sending more messages
+  + When a message arrives, UDP checks if incoming queue is initialized, if it is then message is placed there
+  + if not incoming queue is initialized then UDP discards the datagram and uses ICMP to send a /port unreachable/ to where packet came from
+  + this incoming queue can overflow, if this happens UDP drops the datagram and asks for /port unreachable/ to be sent
++ At server side, mechanism for creating queues is different
+  + server places its incoming and outgoing queues on a well-known port
+  + both queues remain open as long as server is running
+  + when packet arrives, UDP checks if there is queue on the destination port
+  + if there is no such queue, UDP discards datagram and ICMP sends /port unreachable/
+  + if incoming queue overflows, datagram discarded and send port unreachable
+  + server responds to client by placing messages on outgoing queue
+  + if outgoing queue overflows, OS will ask server to wait
+
+*** Use of UDP
++ suitable for simple request-response communication
++ suitable for processes with internal flow and error control, example TFTP (Trivial File Transfer Protocol) includes flow and error control, so it can use UDP
++ multicasting capability is embedded in UDP software but not in TCP
++ can be used for Routing Information Protocol (RIP)
+
+** Transmission Control Protocol (TCP)
+Connection-oriented protocol; it creates virtual connection to send data. Has flow and error control mechanisms at transport level
+
+*** Well-known ports of TCP
+Some well-known ports used by TCP are
+
+| Port | Protocol | Description                   |
+|------+----------+-------------------------------|
+|    7 | Echo     | Echoes a datagram             |
+|    9 | Discard  | Discards datagram             |
+|   13 | Daytime  | Returns date and time         |
+|   25 | SMTP     | Simple Mail Transfer Protocol |
+|   53 | DNS      | Domain Name Server            |
+|   67 | BOOTP    | Bootstrap Protocol            |
+|   80 | HTTP     | Hypertext Transfer Protocol   |
+
+*** Stream Delivery Service
+Unlike UDP which cannot handle stream of data. TCP is stream-oriented protocol.
+
+TCP creates an environment where it seems that two processes are connected by an imaginary "tube" that carries data.
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202024-10-16%20164059.png @ 2024-10-16 16:41:13
+[[file:Transport_Layer/2024-10-16_16-41-12_Screenshot 2024-10-16 164059.png]]
+
+_*Sending and Receiving Buffers*_
+
+Because, sending and receiving processes may not write or read data at same speed; TCP uses buffers for storage.
+
+There are two buffers : sending buffers and receiving buffers, one for each direction. These buffers are necessary for flow and error control
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202024-10-16%20164910.png @ 2024-10-16 16:49:20
+[[file:Transport_Layer/2024-10-16_16-49-20_Screenshot 2024-10-16 164910.png]]
+
+These buffers can be implemented using circular arrays as shown. These buffers are usually hundreds or thousands of bytes, depending on implementation.
+
+It is not necessary for both buffers to be of same size.
+
+The sender buffer has three sections :
++ white section is empty and can be filled by process
++ blue secion holds bytes that have been sent but not acknowledged
+  + after bytes in this section are acknowledged, we can free them to be used by process again in the white section
++ the pink section has bytes that are not yet sent
+
+The reciever buffer is simpler:
++ white area contains empty chambers to be filled by bytes recieved
++ pink section section contains bytes that can be read by the process
+  + after the byte is read, it is recycled and added back to white section
+
+_*Segments*_
+
+The IP layer cannot send data as stream of bytes. Therefore, TCP groups number of bytes together into a packet called segment.
+
+TCP adds a header to each segment and delivers it to IP layer for transmission. These segments may be received  out of order, lost or corrupted; but by using the headers they can be resent.
+
+TCP will recombine the segments before passing them to application. The process is unaware of the segments and recieves stream of data.
+
+These segments are not necessarily the same size.
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202024-10-16%20172507.png @ 2024-10-16 17:25:33
+[[file:Transport_Layer/2024-10-16_17-25-33_Screenshot 2024-10-16 172507.png]]
+
+_*Full-Duplex Communication*_
+
+TCP offers full-duplex service, in which data can flow in both directions at same time. Each TCP will have sending and recieving buffers in this case and segments move in both directions
+
+_*Connection-orientied service*_
+
+Before communication starts
+1. two TCPs establish a connection between them
+2. Data is exchanged in both directions
+3. Connection is terminated
+
+TCP creates a stream-oriented environment where it has reponsibility to deliver bytes in order, even when segments arrive out of order (or don't arrive at all).
+
+_*Reliable service*_
+
+TCP is reliable service. It uses acknowledgement mechanism to check the safe and sound arrival of data.
+
+*** Features
+To fullfil it's promises, TCP requires certain features
+
+**** Numbering System
+There are two fields in segment header of TCP. A sequence number and acknowledgement number. These two fields refer to the byte number and not segment number
+
+_*Byte Number*_
+
+TCP numbers the bytes rather than segments. Numbering is independent in each direction. The numbering does not start at 0. Instead it generates a random number between 0 and $2^{32} - 1$ for the number of first byte
+
+Example, if random number chosen is 1057 and total bytes to be sent are 6000 bytes, they are numbered from 1058 to 7057. (the number 1057 is used by special segment for establishing connection)
+
+This is used for flow and error control.
+
+_*Sequence Number*_
+
+After bytes have been numbered, TCP assigns sequence number to each segment that is sent. The sequence no. for each segment is the no. of the first byte carried in that segment
+
+Example, if file is 5000 bytes. The first byte is numbered 10001. If each segment carries 1000 bytes, then we will send file in five segments
++ Segment 1 : Sequence Number 10,001 (byte range : 10,001 to 11,000)
++ Segment 2 : Sequence Number 11,001 (byte range : 11,001 to 12,000)
++ Segment 3 : Sequence Number 12,001 (byte range : 12,001 to 13,000)
++ Segment 4 : Sequence Number 13,001 (byte range : 13,001 to 14,000)
++ Segment 5 : Sequence Number 14,001 (byte range : 14,001 to 15,000)
+
+#+BEGIN_QUOTE
+The value in sequence number field of segment is the number of the first data byte in that segment.
+#+END_QUOTE
+
++ If a segment carries combination of data and control info (piggy-backing) it uses sequence number
++ If segment does not carry data, it does not define a sequence number.
+  + The exception to this rule is segments used for connection establishment, termination and abortion.
+  + Each of these consume a segment number as if they were carrying 1 byte of data; so we call it a phony byte
+  + Example, if randomly generated number is $x$, then first byte is numbered $x + 1$ and the $x$ is considered a phony byte used to open connection
+
+_*Acknowledgment Number*_
+
+In TCP connection is full duplex; after connection is established, both can send and recieve data at same time.
+
+Both parties will choose a different random number to start. So when a package is received we need to acknowledge it, either by piggy-backing or standalone acknowledgement
+
+The acknowledgement is the /next byte number that the reciever expects/. So it will take the number of last byte that was recieved and adds 1 to it and sends that as acknowledgement.
+
+The acknowledgement number is cumulative. So if one party recieves 5643 as acknowledgement, we can say all bytes numbered till 5642 have been delivered 

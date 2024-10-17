@@ -1,0 +1,723 @@
+#+TITLE: Compilers
+#+OPTIONS: H:4
+#+html_head: <link rel="stylesheet" href="src/org.css">
+
+* Syntax-Directed Translation and Syntax-Directed Definition
+We have two different ways of having semantic specifications for translation of our source code
+1. Syntax-directed definitions (SDD)
+2. Syntax-directed translation Schemes (SDT)
+
+A syntax-directed definition specifies the values of attributes by associating semantic rules with each production.
+
+Example of SDD is,
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202024-06-01%20005405.png @ 2024-06-01 00:54:10
+[[file:Syntax-Directed_Translation/2024-06-01_00-54-10_Screenshot 2024-06-01 005405.png]]
+
+The semantic actions (SDTs) are embedded within the productions using curly braces. They are formed as nodes in the tree itself, and are executed while traversing the tree
+
+Example of SDT is,
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202024-06-01%20005547.png @ 2024-06-01 00:55:53
+[[file:Syntax-Directed_Translation/2024-06-01_00-55-53_Screenshot 2024-06-01 005547.png]]
+
++ SDDs are more readable and useful for specifications
++ SDTs are more efficient during translation of tree
+
+** SDD
+A syntax-directed definition (SDD) has a semantic rule with production. With every node we also have attributes. If node is $X$ and attribute name is $a$, we represent value of attribute as $X.a$
+
+We have two kinds of attributes
+1. Synthesized attribute for nonterminal $A$ at node $N$ is defined by /semantic rule at the the node itself./
+   + It uses the attributes of current node and child node to compute it
+   + Computed at current node $N$ itself
+2. Inherited attribute for nonterminal $B$ at node $N$ is defined by /semantic rule at it's parent/
+   + It uses attributes of current node, parent node and siblings
+   + Computed at parent node of $N$ and then inherited
+
+*Terminals can have synthesized attributes, but not inherited attributes*
++ The synthesized attributes are /given to it by lexer (not parser)/
++ There are /no semantic rules in SDD for computing attributes for a terminal/
+
+Example of complete SDD is
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202024-06-01%20021612.png @ 2024-06-01 02:16:20
+[[file:Syntax-Directed_Translation/2024-06-01_02-16-20_Screenshot 2024-06-01 021612.png]]
+
+The /lexval/ attribute is given to token by lexer to the digit token. This SDD will evaluate expressions and store its value in expression nodes.
+
++ An SDD with only synthesized attributes is called *S-attributed*
++ In S-attributed SDD, each rule computes attributes for node from children
++ An S-attributed SDD can be implemented in conjunction with parser
+
+NOTE : An SDD with no side-effects is called an /attribute grammar/
+*** Evaluating SDD at nodes
+A translator does not need to have a tree, but it's useful to visualize a tree. A parser tree, showing values of attributes is called *annotated parse tree*
+
++ Before evaluating any attribute, we need to evaluate other attributes it depends on
++ For S-attributed SDDs, we always attribute of children before it's parent
+  + So order of evaluation is bottom-up, so we can use postorder traversal of tree
++ SDDs with both inherited and synthesized attrs, a fixed order that always works is not guarenteed
+  + There can also be circular dependencies, making evaluation impossible. Example,
+    #+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202024-06-03%20030058.png @ 2024-06-03 03:01:06
+    [[file:Syntax-Directed_Translation/2024-06-03_03-01-06_Screenshot 2024-06-03 030058.png]]
+    
+    Here, $A.s$ and $B.i$ have circular dependencies. These circular dependencies are computationally difficult to detect (even if $P = NP$, it still cannot be solved in polynomial-time)
+  + Inherited attributes are useful for grammars that were designed for parsing, rather than translation
+*** Use of inherited attributes in top-down grammars
+*Inherited attributes are useful for grammars that were designed for parsing, rather than translation* like top-down grammars
+
+Example,
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202024-06-03%20040216.png @ 2024-06-03 04:02:23
+[[file:Syntax-Directed_Translation/2024-06-03_04-02-23_Screenshot 2024-06-03 040216.png]]
+
+Here, $T'$ is made to inherit the value of $F$, which is it's left number. In this SDD, we basically give inherited values to right branch of tree, calculation is done on rightmost child and then we finally set value to value synthesized on child.
++ left operand is inherited by right node
++ single calculations are done in the inherited attributes
++ final value accumalates on right subtree and is sent upwards (using synthesized attributes)
+
+*** Evaluation order for SDD
+Dependency graphs can be used for determining order of evaluation. We also define two important classes of SDDs
++ S-attributed SDDs
++ L-attributed SDDs
+**** Dependency graphs
+Suppose we have an SDD, where $A.b$ is defined in terms of $X.c$ (i.e, $A.b = X.c$), then arrow goes from $X.c$ to $A.b$
+
+Suppose grammar with SDD is
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202024-06-03%20040216.png @ 2024-06-03 04:02:23
+[[file:Syntax-Directed_Translation/2024-06-03_04-02-23_Screenshot 2024-06-03 040216.png]]
+
+and the parse tree is
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202024-06-03%20225704.png @ 2024-06-03 22:57:09
+[[file:Syntax-Directed_Translation/2024-06-03_22-57-09_Screenshot 2024-06-03 225704.png]]
+
+Then the dependency graph is
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202024-06-03%20225810.png @ 2024-06-03 22:58:15
+[[file:Syntax-Directed_Translation/2024-06-03_22-58-15_Screenshot 2024-06-03 225810.png]]
+
+The numbers in dependency graph shows one possible order of evaluation
++ Number 1 and 2 are /lexvals/
++ Number 3 and 4 are /val/ associated with node $F$
++ Number 5 and 6 values from $F$ being used in node $T'$ for calculation via inherited attributes
++ Number 7 and 8 are synthesized attributes, used to hold calculated values
++ Number 9 is final node with computed value
+NOTE : For dependency graph, each of the number is an independent node (so number 5 and number 8 are not part of same node, but two different nodes on the dependency graph)
+
+The order of evaluation can be found by doing a topological sort. *If there is a cycle in the dependency graph, then there is no way to evaluate the SDD*
+
++ The dependency graph of an S-Attributed SDD will never have a cycle. It can always to evluated bottom-up, like in postorder traversal. 
++ *S-attributed SDDs pair well with bottom-up parsers like LR parsers*, since the order in which they find matching rules is same as the evaluation order for S-attributed SDDs
+**** L-Attributed SDDs
+L-attributed definitions are another class of SDDs, these also guarentee an order of evaluation
+
+In an L-attributed definition, every attribute is either
+1. Synthesized, or
+2. Inherited, but must only make use
+   + Either attributes of parent or
+   + attribute of only left siblings
+
+The "L" in L-attributed SDDs stands for left siblings.
+
+So, if rule is
+
+$A \rightarrow X_1 X_2 ... X_n$
+
+and inherited attribute is for some $X_i$, then we can only use attributes of $A$ and attributes of $X_1 X_2 ... X_{i - 1}$
+
+We can also use attributes of $X_i$ itself, but we need to make sure there are no cycles
+
+Our previous example definitions were L-Attributed
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202024-06-03%20040216.png @ 2024-06-03 04:02:23
+[[file:Syntax-Directed_Translation/2024-06-03_04-02-23_Screenshot 2024-06-03 040216.png]]
+
+Here, every attribute depends on either parent or left sibling. There is also, $T'.syn = T'.inh$ for production 3. But it does not cause cycles so its fine.
+
+**** Side effects
+SDDs with no side effects are called, *attribute grammars*. They allow for any evaluation order as long as it is a topological sort of the dependency graph.
+
+For SDDs with side effects, we need to make sure the side effects don't cause problems for order of evaluation. We control side effects one of following ways
++ Permit /incidental side effects/ that do not effect the attribute evaluation order. So permit side effects which produce correct result regardless of chosen order; based on any possible topological sort
++ Constraint the allowed evaluation orders. So we choose from a limited set from all possible topological sorts. We only choose evaluation orders which produce correct result
+
+** Applications of SDDs
+One of the applications of SDDs is to convert the parse tree into a cleaner syntax tree. This tree will remove unused information which is needed for parsing and leave only useful information
+
+SDDs can also convert a list of productions to syntax tree. This is useful when using LR parsers, which produce a set of productions which form the parse rather than outputting a tree.
+
+*** Construction of Syntax Tree
+We will use two constructors to create nodes and form a tree
++ $Leaf(type, val)$, will take the type of the leaf node and the lexical value of the leaf node
++ $Node(op, c_1, c_2, ..., c_k)$ will take the operator which the node represents and list of children of node $c_1, c_2, ..., c_k$
+We will construct syntax tree for a grammar with two binary operators (- and +). 
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202024-06-04%20190928.png @ 2024-06-04 19:09:35
+[[file:Syntax-Directed_Translation_and_Syntax-Directed_Definition/2024-06-04_19-09-35_Screenshot 2024-06-04 190928.png]]
+
+This is S-attributed SDD, so it will form the syntax tree in bottom-up order.
+
+For productions 3 and 4 we don't create new nodes, these productions are needed for correct structure of parse tree, but are not useful in later stages.
+
+The extra nodes for leafs in parse tree like "+" and "-" are also not in syntax tree. This means syntax tree is smaller than parse tree and easier to work on.
+
+The following diagram shows conversion of input $a - 4 + c$ to syntax tree
++ dotted lines show parse tree
++ dashed lines show the value of attributes in parse tree
++ solid lines show the syntax tree
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202024-06-04%20195423.png @ 2024-06-04 19:54:28
+[[file:Syntax-Directed_Translation_and_Syntax-Directed_Definition/2024-06-04_19-54-28_Screenshot 2024-06-04 195423.png]]
+
+*** Handling array types using SDDs
+Suppose we have a type $int[2][3]$, this is read as "array of 2 arrays of 3 integers". The expression for arrays is suppose $array(num, type)$, $num$ is number of elements and $type$ type of array.
+
+So our example, $int[2][3]$ is given as $array(2, array(3, int))$
+
+To produce this result from our input string of $int[2][3]$, we can use SDDs
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202024-06-05%20020945.png @ 2024-06-05 02:09:52
+[[file:Syntax-Directed_Translation_and_Syntax-Directed_Definition/2024-06-05_02-09-52_Screenshot 2024-06-05 020945.png]]
+
+$B$ is the base type and $C$ is the optional array syntax after that.
++ $T.t$ is final type expression
++ $C.b$ is base type of the array
++ $C.t$ is type of the array
+We send base $C.b$ down the tree, till we reach the end with final production.
+
+At end production, we return type $C.t$ as base type $C.b$ We then convert the input to type expression while moving up
+
+The example for intput $int[2][3]$ is
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202024-06-05%20021421.png @ 2024-06-05 02:14:27
+[[file:Syntax-Directed_Translation_and_Syntax-Directed_Definition/2024-06-05_02-14-27_Screenshot 2024-06-05 021421.png]]
+
+** SDT
+A syntax-directed translation scheme (SDT) is CFG with program fragments embedded within the production bodies called semantic actions
+
+These semantic actions can appear at any position at the RHS of production (not just the end of production).
+
+We place curly brackets '{' '}' around the semantic actions
+
+SDT have a fixed order of evaluation rather than SDDs. We first build the parse tree, then we traverse it in DFS order, left to right (a preorder traversal).
+
+*** Postfix SDTs (S-attributed SDDs to SDTs)
+SDTs where all semantic actions are the end of the production are called Postfix SDTs.
+
+The S-attributed SDDs can be directly converted to SDTs by taking the actions and embedding them at end.
+
+So our S-attributed SDD
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202024-06-05%20034212.png @ 2024-06-05 03:42:17
+[[file:Syntax-Directed_Translation_and_Syntax-Directed_Definition/2024-06-05_03-42-17_Screenshot 2024-06-05 034212.png]]
+
+can be directly converted to
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202024-06-05%20034257.png @ 2024-06-05 03:43:02
+[[file:Syntax-Directed_Translation_and_Syntax-Directed_Definition/2024-06-05_03-43-02_Screenshot 2024-06-05 034257.png]]
+
+The only difference in the SDT is that rather than storing result in  $L.val$, we are directly printing it.
+
+Postfix SDDs can be evaluated as we are doing LR-parsing. Every time we pop a non-terminal from the stack of symbols in the parser, we will calculate the attributes of new non-terminal we are about to push.
+
+*** SDT's with actions at any position
+An action can be placed at any position in within the body of production. This action is done when all the left siblings are traversed.
+
+But some SDTs can't be evaluated during parsing. Example, the SDT that converts infix expressions to prefix
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202024-06-05%20145041.png @ 2024-06-05 14:50:46
+[[file:Syntax-Directed_Translation_and_Syntax-Directed_Definition/2024-06-05_14-50-46_Screenshot 2024-06-05 145041.png]]
+
+It is impossible to implement this SDT as we are parsing. We will have to do a second pass to evaluate it properly.
+
+These SDTs can be implemented as follows
+1. Parse the input, ignoring all actions and create parse tree
+2. Attach actions to the nodes as childs
+3. Perform preorder traversal
+
+So suppose our input is $3 * 5 + 4$
+
+The initial parse tree is drawn with solid lines. Dashed lines show the actions we attached later
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202024-06-05%20145530.png @ 2024-06-05 14:55:35
+[[file:Syntax-Directed_Translation_and_Syntax-Directed_Definition/2024-06-05_14-55-35_Screenshot 2024-06-05 145530.png]]
+
+The preorder traversal of this tree will now print prefix expression $+ * 3\ 5\ 4$
+
+*** Eliminating left recursion with SDTs
+Suppose we have created productions with SDTs, but they can't be parsed top-down because of left recursion
+
+If /only the order in which semantic actions are evaluated is necessary/, then we follow the same steps to remove left recursion and /*treat actions as if they were terminal symbols*/
+
+To eliminate left recursion for with attributes to evaluate, we can't use this method. If the actions are S-attributed and we have postfix SDT, then we remove left recursion as follows
+
+Suppose our productions are
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202024-06-05%20224154.png @ 2024-06-05 22:42:01
+[[file:Syntax-Directed_Translation_and_Syntax-Directed_Definition/2024-06-05_22-42-01_Screenshot 2024-06-05 224154.png]]
+
+If we ignore the actions, we can convert this grammar to
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202024-06-05%20224422.png @ 2024-06-05 22:44:28
+[[file:Syntax-Directed_Translation_and_Syntax-Directed_Definition/2024-06-05_22-44-28_Screenshot 2024-06-05 224422.png]]
+
+Since $R$ is the variable we added, we will have two new attributes for $R$. A inherited attribute $R.i$ and synthesized attribute $R.s$.
+
+The $R.i$ is copied down the tree, till we reach the production $R \rightarrow \epsilon$. Here, we set $R.s = R.i$ and send synthesized value up.
+
+The converted SDT is
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202024-06-05%20232421.png @ 2024-06-05 23:24:28
+[[file:Syntax-Directed_Translation_and_Syntax-Directed_Definition/2024-06-05_23-24-28_Screenshot 2024-06-05 232421.png]]
+
+*** L-attributed SDDs to SDTs
+The rules for turning an L-attributed SDD into an SDT are
+1. Embed action that computes inherited attributes for a nonterminal A immediately before occurance of A in production body.
+   + If several inherited attributes are to be computed, attach them in order so that attrs. needed first are computed first
+2. Embed actions for synthesized attributes at the end of body of production
+#+TODO : Add example of conversion
+
+** Implementing L-attributed SDDs and SDTs
+Since most translation applications can be done using L-attributed definitions, we will look at how we can implement them in an efficient manner.
+
+The two methods we already know which depend on parse tree are
+1. Build parse tree and /make annotated parse tree/ for L-attributed SDDs. This method uses dependency graphs to get order in which to evaluate attributes
+2. Build parse tree, /attach actions and execute actions in preorder/ for L-attributed SDTs.
+
+But this section will work on how to implement the L-attributed SDDs and SDTS *alongside parsing to improve efficiency*
+
+#+TODO : Don't know if this section is really necessary, skipping for now
+
+* Intermediate-Code Generation
+The work of the front end ends after it generates the intermediate code. This is given to back end to convert to target language.
+
+Ideally, the details of the source language are only in the front-end. This allows same back end to be used for multiple languages (like in llvm).
+
+So if we make $m$ different front-ends and $n$ different back-ends. Then we have total of $m \times n$ total compilers.
+
+So our front-end has following steps
+1. Lexing/Parsing
+2. Static checker
+3. Intermediate code generator
+
+In this section we will study static checking and intermediate code generation.
+
+The intermediate representation varies from compiler to compiler. We may use either
+1. Syntax trees, or
+2. Three-address code
+
+** Syntax Trees
+Nodes in syntax tree represent high level constructs of program. The children of nodes are components of the constructs.
+
+*** Directed Acyclic Graphs for Expressions
+A directed acyclic graph (DAG) will identify the /common subexpressions/ in the expression.
+
+Similar to normal syntax trees, a DAG has leaves corresponding to atomic operands and interior nodes are operators.
+
+The difference is that *if node N in a DAG has more than one parent then N is a common subexpression*.
+
+Thus, DAG is /more compact/ (less nodes than syntax tree) and gives important clues regarding /generation of efficient code/
+
+Example, for the expression
+
+\[ a + a * ( b - c ) + ( b - c ) * d \]
+
+the DAG is
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202024-06-06%20233618.png @ 2024-06-06 23:36:26
+[[file:Intermediate-Code_Generation/2024-06-06_23-36-26_Screenshot 2024-06-06 233618.png]]
+
+We can convert a syntax tree to DAG using same SDD, but later we will combine the nodes that already exist (nodes with same children and label)
+
+Since the SDD for syntax tree is
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202024-06-07%20000442.png @ 2024-06-07 00:04:55
+[[file:Intermediate-Code_Generation/2024-06-07_00-04-55_Screenshot 2024-06-07 000442.png]]
+
+The steps for conversion is
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202024-06-07%20000527.png @ 2024-06-07 00:05:32
+[[file:Intermediate-Code_Generation/2024-06-07_00-05-32_Screenshot 2024-06-07 000527.png]]
+
+Notice how $p_2$ had same arguments as $p_1$, so we made $p_2$ point to $p_1$.
+
+We will do the same for every node going down the node creation list and merge them.
+
+*** Value-Number Method for DAG construction
+Syntax tree or DAG can be stored as an array of records. Each record represents a single node.
+
+We can refer to other nodes by the indicies of the array. So first field is operator and two fields for indicies to other records. Leaf nodes have label and single value field.
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202024-06-07%20002414.png @ 2024-06-07 00:24:21
+[[file:Intermediate-Code_Generation/2024-06-07_00-24-21_Screenshot 2024-06-07 002414.png]]
+
+So every node has a integer value, this value is called /*value number*/ for the node.
+
+So in above example, $+$ node has value number of 3, left child contains value number of 1 and right contains value number of 2
+
+The value-number method for constructing nodes works as follows. Everytime we need to make a new node, we use function $create(label\ op, value\ l,\ value\ r)$.
+
+Search array of records for node with matching label, l and r values.
++ If we find such records already, return it's index value
++ Else append the new record in array and return index to the new record (as value number)
+
+Now we can use the same SDD, but replace constructors with $create$ function. 
+
+We can make this algorithm more efficient by using dictionary instead of a simple array.
+
+** Three-Address Code
+In three-address code, there is atmost one operator on right side of instruction. So an expression like
+\[ x + y * z \]
+will be translated to three-address instructions as
+\[ t_1 = y * z \]
+\[ t_2 = x + t_1 \]
+Here, $t_1$ and $t_2$ are temporary names created by compiler. Unraveling of expressions and nested flow-of-control statements makes 3-address code /desiarable for code-generation and optimization./
+
+Three-address code is a linearized representation of a DAG
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202024-06-07%20011354.png @ 2024-06-07 01:14:00
+[[file:Intermediate-Code_Generation/2024-06-07_01-14-00_Screenshot 2024-06-07 011354.png]]
+
+*** Addresses and Instructions
+Three-address codes are formed of two concepts: addresses and instructions.
+
+An address can be one of the following
++ /name/ : names or identifiers that appear in our source-program. The source name is replaced by pointer to its symbol-table entry. Example, $a$, $b$, $c$ and $d$ in above figure are names
++ /constant/ : constants are operands that have fixed value. Example, $42$ or $6.71$
++ /compiler-generated temporary/ : this is especially useful in optimizing compilers. Example, $t_1$, $t_2$, $t_3$ etc. in above figure are temporary compiler-generated
+
+Symbolic labels are used by instructions to alter flow of control. Some common three-address instructions are
+1. assignment instructions with binary operators. $x = y\ op\ z$, where /op/ is operator and /x/, /y/ and /z/ are addresses
+2. assignment instructions with unary operators. $x = op\ y$, where /op/ is operator such as negation or type casting
+3. copy instruction $x = y$. /x/ is assigned value of /y/
+4. unconditional jump $goto\ L$. The instruction with label /L/ is next to be executed
+5. conditional jump $if\ x\ goto\ L$ and $if\ not\ x\ goto\ L$. Jump if /x/ is true and false respectively. Otherwise, continues as usual
+6. conditional jumps of type $if\ x\ rop\ y\ goto\ L$, here /rop/ is /relational operator/ (<, ==, >=, etc). This will combine expressions /x/ and /y/
+7. procedure calls and returns are implemented as follows: /param x/ for parameters; and /call p,n/ for procedures and /y = call p,n/ for function calls and /return y/. So our procedure call of $p(x_1, x_2, ..., x_n)$ is converted to
+   \[ param\ x_1 \]
+   \[ param\ x_2 \]
+   \[ ... \]
+   \[ param\ x_n \]
+   \[ call\ p,n\]
+   + /p/ is the name of procedure in call instruction
+   + /n/ is number of parameters in call instruction
+     + The /n/ is *not redundant, because calls can be nested*
+8. indexed copy instructions of form $x = y[i]$ and $x[i] = y$
+9. address and pointer assignment of form $x = &y$, $x = *y$ and $*x = y$.
+   + $x = &y$ sets r-value of /x/ to be location (l-value) of /y/
+   + $x = *y$ assumes /y/ is an expression with an l-value and /x/ is pointer name or temporary
+   + $*x = y$ sets r-value of object pointed to by /x/ to r-value of /y/
+
+The following statement
+
+do i = i + 1; while (a[i] < v);
+
+can be converted to either of two ways
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202024-06-08%20001520.png @ 2024-06-08 00:15:26
+[[file:Intermediate-Code_Generation/2024-06-08_00-15-26_Screenshot 2024-06-08 001520.png]]
+
+(a) shows the use of symbolic numbers for jumps and (b) shows use of instruction numbers for jump
+
+The choice of allowable instructions is an important issue in design of a language. It must be rich enough to implement instructions in source.
+
+Having few instructions that are close to machine instructions makes it easier to implement on target machine.
+
+However, if frontend generates long sequences of instructions, then optimizer and code generator have to work harder.
+
+*** Quadruples
+Three-address instructions specify the type of instructions allowed. But they don't specify how these will be represented in data structures.
+
+We have three different data structures to represent IR (IR is intermediate representation)
+1. Quadruples
+2. Triples
+3. Indirect Triples
+
+A quadruple has /4 fields/ : these are $op$, $arg_1$, $arg_2$ and $result$. So for instruction $x = y + z$, the quadruple is $\langle +, y , z, x \rangle$. Ways to represent special instructions are
+1. unary operations like $x = minus\ y$ and assignment (copy instruction) $x = y$ don't use $arg_2$ field
+2. $param$ uses neither $arg_2$ nor $result$
+3. jumps (both conditional and unconditional) put /target label in $result$/ field
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202024-06-11%20013613.png @ 2024-06-11 01:36:19
+[[file:Intermediate-Code_Generation/2024-06-11_01-36-19_Screenshot 2024-06-11 013613.png]]
+
+In above figure, we use identifiers like $a$, $b$ and $c$ for readability; actual quadruples store pointers to symbol table.
+
+*** Triples
+A triple has only 3 fields $op$, $arg_1$ and $arg_2$. This is possible because usually, we have temporary in the $result$ field when using quads.
+
+And when there isn't a temporary in $result$ field, we are usually doing an assignment (copy instruction). So we can treat $=$ as the operator.
+
+In triples, the *temporary is implicit based on index of triple.* When referencing other temporaries in instructions, we just place the index number.
+
+So our quadruple
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202024-06-11%20020211.png @ 2024-06-11 02:02:16
+[[file:Intermediate-Code_Generation/2024-06-11_02-02-16_Screenshot 2024-06-11 020211.png]]
+
+is equivalent to triple
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202024-06-11%20020243.png @ 2024-06-11 02:02:48
+[[file:Intermediate-Code_Generation/2024-06-11_02-02-48_Screenshot 2024-06-11 020243.png]]
+
+Notice how when referring to temporary /$t_1$ in the quad, we will refer to index $(0)$ in the triple./
+
+Indexed operations like $x[i] = y$ require two entries in triple structure. An entry for $x$ and $i$ and another for $y$. Similarly, $x = y[i]$ is also implemented using two instructions; $t = y[i]$ and $x = t$, where $t$ is the implicit temporary.
+
++ *NOTE* : DAG representation and triples are equivalent (/only for expressions not control flow/)
+
+*** Quadruples vs Triples (and Indirect triples)
++ Triples take less memory than quadruples to store. 
++ Quadruples are better for optimizations
+  + Compiler can move instruction that computes some temporary without changing any other instruction
+  + In triples, since temporary are represented by index; compiler needs to update all references to index in other instructions when moving
+
+The solution to get flexibility of quadruples while using triples is to use indirect triples. Indirect triples consist of a list of pointers to triples rather than list of triples.
+
+Now compiler can move instructions by changing the pointer list, this won't effect the triples themselves.
+
+*** Static Single-Assignment Form
+SSA is an intermediate representation that facilitates certain optimizations. Two aspects distinguish SSA from 3-address code are
+1. all assignments in SSA are to variables with distinct names (every variable is static and has single-assignment)
+2. for variables with two distict paths based on control flow, we use $\phi$-function to combine definitions of variable
+
+Example of tree-address code vs SSA is
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202024-06-11%20031359.png @ 2024-06-11 03:14:05
+[[file:Intermediate-Code_Generation/2024-06-11_03-14-05_Screenshot 2024-06-11 031359.png]]
+
+Suppose the 3-address code is
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202024-06-11%20031438.png @ 2024-06-11 03:14:43
+[[file:Intermediate-Code_Generation/2024-06-11_03-14-43_Screenshot 2024-06-11 031438.png]]
+
+Here, $x$ has two different values based on control flow. So, we make /each $x$ a seperate variable in SSA, then combine using $\phi$/. This is converted to
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202024-06-11%20031613.png @ 2024-06-11 03:16:19
+[[file:Intermediate-Code_Generation/2024-06-11_03-16-19_Screenshot 2024-06-11 031613.png]]
+
+** Control Flow
+The translation of control flow depends on boolean expressions. Boolean expressions are used for two purposes
+1. Alter flow of control
+2. Compute logical values
+*** Boolean Expressions
+Boolean expressions are composed of boolean operators (denoted by &&, || and ! in C, for AND, OR, and NOT) applied to boolean variables.
+
+We can also have arthematic expressions of the form $E_1\ rel\ E_2$, where $E_1$, $E_2$ are normal expressions and $rel$ is a relational operator (like <, <=, ==, !=, etc.)
+
+So boolean expressions are generated by grammar
+\[ B \rightarrow B\ ||\ B \]
+\[ B \rightarrow B\ \&\&\ B \]
+\[ B \rightarrow !B \]
+\[ B \rightarrow ( B ) \]
+\[ B \rightarrow E\ rel\ E \]
+\[ B \rightarrow true \]
+\[ B \rightarrow false \]
+
+Operators || and && are left-associative; and || has lowest precedence, then && then !
+
+If $B_1\ ||\ B_2$, if $B_1$ is true, then entire expression is true. Similarly if in $B_1\ \&\&\ B_2$, $B_1$ is false, then entire expression is false.
+
+Therefore, in a binary boolean expressions, we may not do a complete evaluation. If one of the boolean expression has some side effects (like function that changes global value), unexpected results may be obtained.
+
+*** Short-Circuit Code
+In short-circuit (or jumping) code, the boolean operators &&, ||  and ! translates to jumps.
+
+Example, the statement
+
+if (x < 100 || x > 200 && x != y) x = 0;
+
+this is translated to
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202024-06-12%20174959.png @ 2024-06-12 17:50:04
+[[file:Intermediate-Code_Generation/2024-06-12_17-50-04_Screenshot 2024-06-12 174959.png]]
+
+*** Flow-of-control Statements
+An example grammar for control flow is
+
+\[ S \rightarrow if\ ( B )\ S_1 \]
+\[ S \rightarrow if\ ( B )\ S_1\ else\ S_2 \]
+\[ S \rightarrow while\ ( B )\ S_1 \]
+
+Here, $B$ is a boolean expression and $S$ is statement.
+
+We will use SDDs for this translation and the code will be stored in attributes $B.code$ and $S.code$ as strings.
+
+The grammar for if statements
+\[ S \rightarrow if\ ( B )\ S_1 \]
+
+will have *$B.code$* followed by *$S_1.code$* in the IR. We use /inherited attributes for labels for jumps/ : we have *$B.true$* and *$B.false$*
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202024-06-15%20015514.png @ 2024-06-15 01:55:20
+[[file:Intermediate-Code_Generation/2024-06-15_01-55-20_Screenshot 2024-06-15 015514.png]]
+
+To have an if-else, we also have inherited attribute *$S.next$* denoting a label for instruction immediately after $S.code$ in IR.
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202024-06-15%20015902.png @ 2024-06-15 01:59:07
+[[file:Intermediate-Code_Generation/2024-06-15_01-59-07_Screenshot 2024-06-15 015902.png]]
+
+Finally, for while loop, we create a label at the beginning of the loop.
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202024-06-15%20015948.png @ 2024-06-15 01:59:55
+[[file:Intermediate-Code_Generation/2024-06-15_01-59-55_Screenshot 2024-06-15 015948.png]]
+
+#+TODO: Missing the SDD for converting boolean expressions and statements to code. Also missing backpatching.
+#+TODO: This thing too hard for me, skipping for now (will come back later if important)
+
+* Run-time environments
+During execution of the program, we need to manage memory in a way that can accurately implement the abstractions. For this we use run-time environments. The most common way to manage memory are stack allocation and heap management.
+
+Memory allocation is called /static allocation/ if it can be made by looking at the text of the program, most fixed sized variables are therefore allocated using static allocation. 
+
+Conversely, if the size of some data is determined at run-time, then we need to do /dynamic allocation/ at run-time. So data structures that grow and shrink in size usually use dynamic allocations (like dynamic arrays, linked lists, trees etc.)
+
+So for memory allocations we use the combination of following strategies
+1. *Stack storage* stores the local static data on the stack. This is called the "run-time stack"
+2. *Heap storage* is for data that outlives procedure calls and it is allocated on the heap. Memory is obtained from the heap but needs to be returned (freed) when we are done.
+
+/Garbage collection/ enables run-time detection of useless data elements and allows us to not worry about manually freeing the heap memory.
+
+** Stack Allocation of Space
+All languages that support procedures/functions manage the run-time memory using the stack. When a procedure is called, space for it's variables is pushed on the stack. When we return from procedure, we will pop the data off the stack.
+
+Using stack allows us to compile procedures in a way that relative addresses of global variables is always the same, regardless of sequence of procedure calls.
+
+*** Activation trees
+We can visualize the procedure calls or activations in form of trees. An example of the visualizing this is when using quicksort.
+
+Suppose we have following functions
+1. $m()$ is the main function
+2. $r()$ will put elements in the array
+3. $p(left, right)$ will partition the subarray from left to right index
+4. $q(left, right)$ is quicksort of subarray from left to right index
+
+Then if we have 9 elements in the array, the activation tree will be
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202024-06-29%20022750.png @ 2024-06-29 02:28:02
+[[file:Run-time_environments/2024-06-29_02-28-02_Screenshot 2024-06-29 022750.png]]
+
+Each node in this tree represents an activation of the procedure. The root node is usually the main node (representing activation of main function).
+
+The activations happen from left to right. So in our example $m()$ first calls $r()$ then calls $q(1,9)$. Also, the traversal is depth-first. More specificallye
+1. Sequence of /procedure calls/ is /preorder traversal/ of activation tree
+2. Sequence of /returns/ is /postorder traversal/ of activation tree
+3. If control is currently with node $N$, then the activations currently open (live) are that of $N$ and it's ancestors
+4. The order in which activations are called is along path to $N$, and return in the reverse order
+
+*** Activation Records
+Procedure calls and returns are managed by a run-time stack called /control stack/. Each activation has an /activation record/ (or /frame/) on the control stack.
+
+The contents of activation record depends on the language being implemented. The most common fields are
+1. *Temporary values*, such as those from evaluation of expressions
+2. *Local data*, belonging to procedure whose activation record this is
+3. *Saved machine status*, storing info about state of machine before the procedure call. This includes the /return address/ (value of Program Counter, to which procedure returns) and contents of registers that need to be restored when return occurs
+4. *Access link*, is used to locate data found elsewhere, e.g, in another activation record
+5. *Control link*, points to activation record of the caller
+6. *Returned value*, space is given for the return value of the called function
+7. *Actual parameters* field which stores the parameters used by the calling procedure. Commonly, these are /placed in the registers/ but we show them in record to be completely general
+
+*** Calling Sequences
++ /Calling sequences/ is code that allocates activation records on the stack and enters information into the record fields
++ /Return sequences/ is code that restores state of machine after the called procedure is done
+
+Usually code is divided between caller and the procedure it calls (callee). There is no strict division of tasks between caller and callee. It depends on target language, system and operating system.
+
+Suppose, we call a function $n$ times. If code is given to caller, it will generte target code $n$ different times. But, given to callee it will only generate once. So ideally, we want our code to be with callee. But giving all code to callee is not possible (cause callee can't know everything).
+
+1. Values communicated between caller and callee are generally at beginning of callee's activation record (since they are usually closest to caller in memory that way).
+   + This way caller can compute values for parameters and place them on top of it's own record.
+   + This allows use of variadic procedures as well (callee knows to put return value and parameters appear below it in memory)
+2. Fixed-length items are placed in the middle
+   + this includes /control link, access link, and machine status field/
+   + if we standardize machine's state info, then debuggers have easier time
+3. Variable sized items are placed at end of record.
+4. The top of the stack is usually placed at the start of variable sized data.
+
+The following figure shows *stack that grows downwards* (like it does in memory)
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202024-07-06%20022537.png @ 2024-07-06 02:25:53
+[[file:Run-time_environments/2024-07-06_02-25-53_Screenshot 2024-07-06 022537.png]]
+
+An example of responsibility division is shown in figure. It is /*not necessary that all languages follows the same division*/
+
+Here division works as follows in order of evaluation
+1. Caller evaluates actual parameters
+2. Caller stores the return address and old value of /top/ variable into callee's record
+3. Callee updates the value of /top/ variable
+4. Callee saves current register values and other info
+5. Callee initializes it's own local data and execution begins
+
+Work in order for return sequence is
+1. Callee places return value next to parameters
+2. Callee restores /top/ and other registers, and then branches to return address
+3. Caller knows position of retured value relative to the /top/
+
+In variadic functions, caller knows size of parameters at compile time. But callee code has to check it when it is executed. So caller has to provide extra info about number of parameters (usually placed next to status field)
+*** Variable-Length Data on Stack
+In most modern languages, we don't have variable sized allocations on stack. Instead we do an allocation on the heap and then store reference (which is constant size) on the stack.
+
+However, it is possible to have variable sized allocation on stack (like VLAs in C99). We may want to put variable sized array on stack to avoid the cost of garbage collection.
+
+But to have a variable allocation on stack /we require the size to be provided as one of the arguments to procedure./
+
+The variable sized arrays are not part of activation record, they are at the end of activation record. When we execute the procedure, we will look at the sizes of allocation and thus can get offset to the arrays.
+
+The code to compute these offsets can be generated at compile time, thus allocations can be done at runtime.
+
+
+#+TODO : Skipped section 7.3 (Nonlocal Data on Stack) doesn't seem necessary
+** Heap management
+Heap manages data that is stored indefinitely unitl program explicitly deletes it. Unlike local data on the stack, which becomes inaccessible when procedure ends, the heap data is independent of procedures lifetimes.
+
+The heap allocation requires a /memory manager/ which serves as an interface between our application and OS (so that our application can request more memory).
+
+*** The Memory Manager
+The memory manager has two basic functions
+1. /Allocation/ : a chunk of contiguos heap memory of requested size is provided.
+   + Satisfies request using free space in the heap
+   + If not enough free space on heap, it will make more space on heap by getting consecutive bytes of virtual memory from OS
+   + If space is non available on system, it must return information without changing it
+2. /Deallocation/ : returns deallocated space back to free space on the heap. Memory managers *usually don't return memory to the OS* only save it on heap for later
+
+Memory management would be way simpler if either
+1. All allocations were of same size, or
+2. Storage was released pretictably (only FIFO like queue of LIFO like stack)
+But most languages can't meet both criteria and general allocations are necessary.
+
+*Properties of good memory manager are*
+1. /Space Efficiency/ : minimize total heap space needed by program. Achieved by *minimizing fragmentation*
+2. /Program Efficiency/ : placing data in a way that it is fast for program to retrieve it. Achieved by *increasing locality* of data.
+3. /Low Overhead/ : allocations and deallocations are frequent, it is important that these operations are efficient. Minimize overhead by decreasing fraction of execution time spent on allocations and deallocations
+*** The Memory hierarchy
+Memory management must be done with awareness of memory hierarchy. In the hierarchy access to different parts can vary from nanoseconds to milliseconds.
+
+We don't have storage that has nanoseconds of access time and also gigabytes of storage. Usually the smaller memory has faster access time.
+
+So we arrange storage in hierarchy
++ Smaller and faster memory is "closer" to the CPU
++ Larger and slower memory is "further away" from CPU
+For data access, CPU starts from closest memory (i.e, the fastest one) and on a miss moves to larger and slower memory.
+
+Between disk and main memory, data is transferred in blocks know as pages, typically between 4K and 64K in size.
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202024-07-11%20022830.png @ 2024-07-11 02:28:45
+[[file:Run-time_environments/2024-07-11_02-28-45_Screenshot 2024-07-11 022830.png]]
+
+*** Locality
+Programs usually have high degree of locality, since most time is spent on relatively small fraction of code and small fraction of data.
+
+A program has *temporal locality* if memory locations it access are likely to be accessed again. A program has *spatial locality* if memory around the accessed location is likely to be accessed.
+
+The conventional wisdom is that program spends 90% of time on 10% of code because
++ Programs are built using many libraries, only a small fraction of which is use at any time
++ A vast majority of code (like error handling code) is usually never executed
++ Most time is spent in loops and recursions
+So we will /place most common instructions in fast-but-small memory/ to lower the average memory-access time.
+
+Both data and instruction access show temporal and spatial locality. Data-access usually has more variance than instruction-access (i.e, /instruction access show more locality/)
+
+Since we can't tell what instructions are repeated most just by looking at code; we dynamically adjust instructions in fastest storage to hold latest instructions
+
+**** Optimizations
+The policy to keep most recent instructions in cache tends to work well. This works well for temporal locality
+
+When an instruction is executed, there is high probability that next instruction is also executed. This is an example of spatial locality. 
+
+To improve spatial locality, we try to keep instructions in a single block (sequence of instructions executed sequentially) on the same page, or same cache line. Example, instructions of same loop; or same branch in a if-else
+
+We can also improve locality by /changing the layout of data./ For example, a program which does computation on 2D matrix should layout the matrix based on type of traversal (row-major or column-major) to increase locality
+
+*** Reducing Fragmentation
+At beginning of program execution heap is empty. When we do allocations, that space is used. But when we deallocate, empty patches of space are left in-between allocated memory.
+
+These empty spaces in-between allocated memory after deallocation are called *holes* and having too many of these small holes in heap is called *fragmentation*.
+
+We need to combine these small holes to larger holes to avoid fragmentation.
+
+Fragmentation may lead to a situation where we have enough free space in the heap, but not enough contiguos space to complete a request
+

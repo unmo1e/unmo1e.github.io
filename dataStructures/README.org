@@ -1,0 +1,4 @@
+* Basic data structures
+Notes for basic data structures taught in B.Tech.
+
+Currently does not include stacks, queues and linked lists.

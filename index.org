@@ -1,0 +1,6 @@
+#+Title: GATE Notes
+
++ [[./algorithms/main.html][Algorithms]]
++ [[./dataStructures/main.html][Data Structures]]
++ [[./computerNetworks/main.html][Computer Networks]]
++ [[./compiler/main.html][Compilers]]

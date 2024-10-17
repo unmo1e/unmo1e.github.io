@@ -1,0 +1,236 @@
+* Physical Layer
+The lowest layer of the TCP/IP model. It describes the standard for the physical connections between nodes. It only views the data as a stream of bits and is concerned with transmission of bits without error.
+@@html:<hr />@@
+** Transmission Media
+The transmission medium is the physical path between the transmitter and receiver i.e, the channel through which data is sent from one place to another.
+
+Transmission media is broadly classified into two types
+1. Guided media (wired)
+2. Unguided media (wireless)
+*** Guided Media
+Also referred to as wired or Bounded transmission media.
+@@html:<hr />@@
+** Data and signals
+
+*** Bandwidth and maximum data rate
+*Bandwidth is the measure of carrying capacity of a medium*. There are two ways to define bandwidth.
++ When working on the physical layer, *bandwidth can be seen as the maximum frequency of the signals* that can travel in the medium. It is measured in Hertz (Hz)
++ In other context, bandwidth is the *maximum possible data transfer rate of the medium*. It is measured in bits per second (bps).
+These two ways to define bandwidth are linked and are not actually different ideas.
+
+The reason for this difference of Hz and bps measurements is that the *maximum frequency of medium is something that only the physical layer is concerned with.* In every other layer, we only care about how much data can be transferred. Therefore, *unless we are working on physical layer, bandwidth is the maximum data transfer rate of the medium.*
+**** Maximum data transfer rate for noiseless wires
+Suppose our analog signal has $V$ different levels. Then for a noiseless wire with bandwidth of $B$, the maximum data rate is
+\[ \text{maximum data rate} = 2\ B\ log_2V \text{ bits/sec} \]
+Example, a noiseless 3-kHz channel cannot transmit binary signal (two levels) at rate 6000 bps.
+**** Maximum data transfer rate for noisy wires
+But the noiseless wire is an ideal case, which is not possible in real wires. Amount of noise is measured using ratio of signal power to noise power called *SNR (Signal-to-Noise Ratio)*. $S$ denotes signal power and $N$ denotes noise power.
+\[ SNR = \frac{S}{N} \]
+The ratio is expressed on a log scale as
+\[ SNR_{dB} = 10\ log_{10} (S/N) \text{ dB} \]
+The unit of $SNR_{dB}$ is *decibals (dB)*
+
+Using SNR, the maximum data rate in a noisy medium is
+\[ \text{maximum data rate} = B\ log_2(1 + S/N) \text{ bits/sec} \]
+*Example*, suppose $SNR_{dB}$ is of 40 dB and bandwidth is 1MHz. Then, using formula for SNR, $S/N$ is $10^4$. Therefore, the maximum data rate is
+\[ \text{maximum data rate} = 1\ log_2 (10^4) \text{ Mbps}\]
+\[ \text{maximum data rate} = 13.288 \text{ Mbps} \]
+@@html:<hr />@@
+** Digital-to-digital conversion
+Digital-to-digital conversion refers to converting digital data into digital signals. The way to convert digital data to digital signals is called *line coding*
+
+Block coding and scrambling are done along with line coding but are not always necessary. They are used under specific conditions that depend on channel.
+[[./imgs/Untitled-2023-09-28-1310.png]]
+*** Line coding
+Encoding digital data to digital signals is called line coding. Based on the number of levels used, we have three types of line coding
+1. *Unipolar* : a single voltage level i.e, a single polarity is used to represent data. Uses a single voltage and idle line.
+2. *Polar* : two polarities i.e, voltage levels are used to represent data. Two voltages and idle line is used
+3. *Bipolar* : uses three possible voltage levels. Usually shown by negative, positive and zero.
+There are also Multilevel and Multitransition line codings but they are not within the scope of discussion. We only focus on these three
+**** Unipolar NRZ
+[[./imgs/unipolar_nrz.png]]
+**** Polar NRZ
+[[./imgs/polar_nrz.png]]
+**** Polar RZ
+[[./imgs/polar_rz.png]]
+**** Biphase
+[[./imgs/biphase.png]]
+**** AMI and pseudoternary
+[[./imgs/bipolar.png]]
+**** Summary of line codes
+TODO: This table is very very wrong, fix this
+| Category | Scheme  | Bandwidth | Synchronization | Has DC component |
+|----------+---------+-----------+-----------------+------------------|
+| Unipolar | NRZ     | B = N/2   | No              | Yes              |
+| Polar    | NRZ-L   | B = N/2   | No              | Yes              |
+| Polar    | NRZ-I   | B = N/2   | No              | Yes              |
+| Polar    | Biphase | B = N     | Yes             | No               |
+| Bipolar  | AMI     | B = N/2   | No              | Yes              |
+@@html:<hr />@@
+*** Block coding
+TODO : Here
+*** Scrambling
+TODO : Here
+** Network Topology
+The arrangement of nodes and links in a computer network is called network topology. There are various types of topologies
+
+*** Point-to-Point
+It is the simplest connection with two nodes and a single link between them.
+
+#+DOWNLOADED: screenshot @ 2023-10-21 15:39:47
+[[file:Physical_Layer/2023-10-21_15-39-47_screenshot.png]]
+*** Daisy chaining
+Also called linear topology, the nodes are connected in a series. Message will follows the whole chain till it reaches the destination. If a link fails in this topology, it is hard to find it, therefore it is not good for large networks.
+
+#+DOWNLOADED: screenshot @ 2023-10-21 15:41:06
+[[file:Physical_Layer/2023-10-21_15-41-06_screenshot.png]]
+*** Mesh topology
+Every node is connected to another node through a direct link. In mesh topology, we use AHCP (Ad Hoc Configuration Protocol) and DHCP (Dynamic Host Configuration Protocol).
+
+So every node is connected to every other node directly connected through a link. So if there are $N$ nodes, then the each node has $(N - 1)$ links.
+
+If there are $N$ nodes, then in a mesh topology, the total number of links will be
+\[ \text{number of links in mesh topology : } \frac{N(N - 1)}{2} \]
+\[ \text{where } N \text{ is the number of nodes} \]
+
+Advantages of mesh topology are
++ communication is fast between any pair of nodes
++ data transfer is reliable since there are dedicated links between all nodes
++ since every pair of node has dedicated link, this provides security and privacy
++ the network is more robust single a failure of single device won't break the network
+
+Drawbacks of mesh topology are
++ installation is hard, since each link needs to be configured
++ excessive amount of cables and channels are required to connect all nodes
++ the cost of maintanance is very high
+
+Mesh topology is of two types
+1. *Full mesh topology* : it is the traditional mesh topology, where every node is connected with other node thus every node has $(N - 1)$ connections.
+2. *Partial mesh topology* : a more practical implementation where it is not necessary to connect all nodes to one another. Only channels with high amount of traffic are connected. This is not the traditional way to implement mesh topology.
+
+#+DOWNLOADED: screenshot @ 2023-10-21 15:44:08
+[[file:Physical_Layer/2023-10-21_15-44-08_screenshot.png]]
+*** Star topology
+All nodes are connected to a central node (called the hub) through links. Hubs are not communication endpoints, their function is to forward packets across all ports. The hubs can either be passive in nature or active.
+
+Active hubs repeat and strengthen incoming transmissions, while passive hubs simply serve as a point of connectivity. Active hubs are also referred to as *repeaters*.
+
+Advantages of star topology are
++ only $N$ links are required to connect $N$ nodes to a network
++ each device will need only one port
++ if one link fails, it won't affect other links
++ cost effictive
+
+Drawback of star topology are
++ if the hub fails, then whole network is down
++ performace is dependant on the hubs
+
+#+DOWNLOADED: screenshot @ 2023-10-21 15:47:17
+[[file:Physical_Layer/2023-10-21_15-47-17_screenshot.png]]
+
+*** Bus topology
+In bus topology, all the nodes are connected to a single backbone line. This backbone is bi-directional, there are lines from node to backbone called droplines. This topology is not robust, since if backbone is damaged, the whole network is down.
+
+In this topology, various MAC protocols are followed like TDMA, Pure Aloha, CDMA, etc.
+
+Advantages of Bus topology
++ there is only a single link and $N$ drop lines required
++ reduces the cost for installation
++ CSMA is the most common method for this topology
+
+Drawbacks
++ if backbone fails, then whole network is down
++ this topology can't handle heavy traffic
++ adding new nodes slows the network
++ security is very lower
+
+#+DOWNLOADED: screenshot @ 2023-10-21 15:51:02
+[[file:Physical_Layer/2023-10-21_15-51-02_screenshot.png]]
+
+*** Ring topology
+A daisy chain in a closed circular loop is called a ring topology. The most common method for communication in this topology is token passing. A *token* is a frame which is circulated around the network. The token is passed from one node to another till it reaches its destination.
+
+Advantages
++ better for traffic than bus topology
++ cheap to install and expand
+
+Disadvantages
++ single node failure can cause entire network to fail
++ troubleshooting is difficult
++ the topology is not secure
+
+#+DOWNLOADED: screenshot @ 2023-10-21 15:52:50
+[[file:Physical_Layer/2023-10-21_15-52-50_screenshot.png]]
+
+*** Tree topology
+Also called a star-bus topology. It can be seen as multiple star topologies connected via a backbone like in bus topology. Tree topology is hierarchical and there are parent and child star networks. It uses protocols like DHCP and SAC. The backbone is like the truck of the tree and various star networks branch out from it.
+
+The hubs connected directly to main backbone are central hubs. The hubs connected to other hubs are child hubs. This makes this topology very flexible.
+
+Advantages
++ allows networks to prioritize different computers
++ new nodes are easy to add
++ error detection and error correction is easy
+
+Drawbacks
++ if backbone fails the entire network is down. If a parent hub fails, then all the connected child network is down
++ cost of maintanance is high
++ reconfiguration is hard
+
+#+DOWNLOADED: https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/TreeTopology.png/900px-TreeTopology.png @ 2023-10-21 15:54:51
+[[file:Physical_Layer/2023-10-21_15-54-51_900px-TreeTopology.png]]
+*** Hybrid topology
+A hybrid topology is when a network combines two or more topologies in a way that does not resemble standard topologies.
+
+Advantages
++ this is very flexible
++ size of network can be easily expanded
+
+Disadvantages
++ it is challenging to design and maintain
++ the infrastructure needs specialization to maintain
+@@html:<hr />@@
+
+** Switching
+Two different switching techniques are used by networks.
++ *Circuit switching* : the switching used in traditional telephone systems
++ *Packet switching* : the switching used in IP technology
+This section will only provide brief introduction with relation to physical layer. Switching is later discussed in network layer.
+*** Circuit switching
+When a telephone call is placed, the switching equipment looks for a *single path* from sender to receiver and maintains it for the duration of the communication. This technique of having a direct physical connection is called *circuit switching*.
+
+In early days of telephone, connection was made by operator by plugging jumper cables into input and output sockets. Automatic circuit switching was invented by Almon B. Strowger. For nearly a 100 years, the automatic circuit switching equipment used worldwide was known as Strowger gear.
+
+The parts of path between telephone may in fact be microwave or fibre or any other type of medium. There are thousand of calls multiplexed on parts of links.
+
+The main property of circuit switching is that *there is a single path for the whole duration of communication.* Therefore, it needs to set up and end-to-end path before any data can be sent. The bandwidth required for communication is also reserved before data is sent.
+
+Since there is a reserved path, *once setup is complete the only dealy for data is propogation time for signals*. Also once path is reserved, there is no danger of congestion. Of course the *conjestion can be felt before connection is established, as it may take a while due to switching or trunk capacity.*
+*** Packet switching
+In contrast to circuit switching, there is *no need to set up dedicated path in advance. Packet switching is analogous to sending data in form of series of letters using postal system*.
+
+Each packet will travel independently of others and can choose any path to reach destination in the network. It is *up to routers* to use store-and-forward transmission to send each packet on its way towards the destination. Since every packet travels independently, they may arrive out of order.
+
+Packet-switching networks place *tight upper limit on the packet sizes*. This ensures that *no single user can monopolize any transmission line for long*, so that network can handle interactive traffic. It also reduces delay since first packet of a long message can be forwarded before second is fully formed. However, there is more delay than circuit switching. In ciruit switching, bits can flow continuously without anything ever being stored and forwarded later.
+
+Since bandwidth is not reserved, packets may have to wait to be forwarded, this introduces *queuing delay* and congestion. On the other hand, we don't have to wait to establish a connection. Therefore, in circuit switching (during setup) and packet switching (packets are travelling) congestion occurs at different times.
+
+Packet switching does not waster bandwidth which is limited resource. *Packet switching is also more fault tolerant*, in fact that was why packet switching was chosen for internet. If some switches go down, packets can travel around them.
+
+These differences in the types of switching also leads to the difference in which billing is usually done for both networks. With circuit switching main load factors are distance and time of communication, therefore billing is done for how long connection is established (talktime on phone calles). Whereas in packet switching main load factor is how much traffic is added to network by a user, therefore billing is done based on how much data is transferred by user.
+
+The *difference between circuit and packet switching* is
+|--------------------------------+------------------+-----------------|
+| Item                           | Circuit switched | Packet switched |
+|--------------------------------+------------------+-----------------|
+| Call Setup                     | Required         | Not needed      |
+| Dedicated Physical Path        | Yes              | No              |
+| Whole data follows same path   | Yes              | No              |
+| Data arrives in order          | Yes              | No              |
+| Is a switch crash fatal        | Yes              | No              |
+| Bandwidth available            | Fixed            | Dynamic         |
+| Time of possible congestion    | At setup         | On every packet |
+| Potentially wasted bandwidth   | Yes              | No              |
+| Store-and-forward transmission | No               | Yes             |
+| Billing                        | Per minute       | Per Byte        |
+|--------------------------------+------------------+-----------------|

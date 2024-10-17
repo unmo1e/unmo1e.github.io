@@ -1,0 +1,475 @@
+* Selection sort
+It is an inplace sorting technique. In this algorithm, we will get the minimum element from the array, then we swap it to the first position. Now we will get the minimum from array[1:] and place it in index 1. Similarly, we get minimum from array[2:] and then place it on index 2. We do till we get minimum from array[len(array) - 2:] and place minimum on index [len(array) - 2].
+
+#+BEGIN_SRC C
+  void selection_sort(int array[]){
+    for( int i = 0; i < len(array)-2 ; i++ ) {
+      /* Get the minimum index from the sub-array [i:] */
+      int min_index = i;
+      for( int j = i+1; j < len(array) - 1; j++ )
+	if (array[j] < array[min_index]) { min_index = j; }
+
+      /* Swap the min_index with it's position at start of sub-array */
+      array[i], array[min_index] = array[min_index], array[i];
+    }
+  }
+#+END_SRC
+
+** Time complexity
+
+The total number of comparisions is,
+\[ \text{Total number of comparisions} = (n -1) + (n-2) + (n-3) + ... + (1) \]
+\[ \text{Total number of comparisions} = \frac{n(n-1)}{2} \]
+For this algorithm, number of comparisions are same in best, average and worst case.
+Therefore the time complexity in all cases is, \[ \text{Time complexity} = \theta (n) \]
+
++ Recurrance time complexity : $T(n) = T(n-1) + n - 1$
+
+* Insertion sort
+It is an inplace sorting algorithm.
++ In this algorithm, we first divide array into two sections. Initially, the left section has a single element and right section has all the other elements. Therefore, the left part is sorted and right part is unsorted.
++ We call the leftmost element of the right section the key.
++ Now, we insert the key in it's correct position, in left section.
++ As commanly known, for insertion operation we need to shift elements. So we shift elements in the left section.
+
+#+BEGIN_SRC C
+  void insertion_sort ( int array[] ) {
+    for( int i = 1; i < len(array); i++ ) {
+      /* Key is the first element of the right section of array */
+      int key = array[j];
+      int j = i - 1;
+
+      /* Shift till we find the correct position of the key in the left section */
+      while ( j > 0 && array[j] > key ) {
+	array[j + 1] = array[j];
+	j -= 1;
+      }
+      /* Insert key in it's correct position */
+      array[j+1] = key;
+    }
+  }
+#+END_SRC
+
+** Time complexity
+
+*Best Case* : The best case is when input array is already sorted. In this case, we do *(n-1)* comparisions and no swaps. The time complexity will be $\theta (n)$
+\\
+*Worst Case* : The worst case is when input array is is descending order when we need to sort in ascending order and vice versa (basically reverse of sorted). The number of comparisions is
+\\
+\[ [1 + 2 + 3 + .. + (n-1)] = \frac{n(n-1)}{2} \]
+\\
+The number of element shift operations is
+\\
+\[ [1 + 2 + 3 + .. + (n-1)] =  \frac{n(n-1)}{2} \]
+\\
+Total time complexity becomes $\theta \left( 2 \frac{n(n-1)}{2} \right)$, which is simplified to $\theta (n^2)$.
+
++ *NOTE* : Rather than using *linear search* to find the position of key in the left (sorted) section, we can use *binary search* to reduce number of comparisions.
+
+* Inversion in array
+The inversion of array is the measure of how close array is from being sorted.
+\\
+For an ascending sort, it is the amount of element pairs such that array[i] > array[j] and i < j OR IN OTHER WORDS array[i] < array[j]  and i > j.
++ For *ascending sort*, we can simply look at the number of elements to left of the given element that are smaller.
+  
+| Array      | 10 | 6 | 12 | 8 | 3 | 1 |
+| Inversions |  4 | 2 |  3 | 2 | 1 | 0 |
+
+Total number of inversions = (4+2+3+2+1+0) = 12
+
++ For *descending sort*, we can simply look at the number of elements to the left of the given element that are larger.
+
+| Array      | 10 | 6 | 12 | 8 | 3 | 1 |
+| Inversions |  1 | 2 |  0 | 0 | 0 | 0 |
+
+Total number of inversions = 1 + 2 = 3
+
++ For an array of size *n*
+\[ \text{Maximum possible number of inversions} = \frac{n(n-1)}{2} \]
+\[ \text{Minimum possible number of inversions} = 0 \]
+
+** Relation between time complexity of insertion sort and inversion
+If the inversion of an array is f(n), then the time complexity of the insertion sort will be $\theta (n + f(n))$.
+
+* Quick sort
+It is a divide and conquer technique. It uses a partition algorithm which will choose an element from array, then place all smaller elements to it's left and larger to it's right. Then we can take these two parts of the array and recursively place all elements in correct position. For ease, the element chosen by the partition algorithm is either leftmost or rightmost element.
+
+#+BEGIN_SRC C
+  void quick_sort(int array[], int low, int high){
+    if(low < high){
+      int x = partition(array, low, high);
+      quick_sort(array, low, x-1);
+      quick_sort(array, x+1, high);
+    }
+  }
+#+END_SRC
+
+As we can see, the main component of this algorithm is the partition algorithm.
+
+** Lomuto partition
+The partition algorithm will work as follows:
+
+#+BEGIN_SRC C
+  /* Will return the index where the array is partitioned */
+  int partition(int array[], int low, int high){
+    int pivot = array[high];
+    /* This will point to the element greater than pivot */
+    int i = low;
+
+    for(int j = low; j < high; j++){
+      if(array[j] <= pivot){
+	array[i], array[j] = array[j], array[i];
+	i += 1;
+      }
+    }
+
+    array[i+1], array[high] = array[high], array[i+1];
+    return (i + 1);
+  }
+#+END_SRC
+
++ Time complexity
+For an array of size *n*, the number ofcomparisions done by this algorithm is always *n - 1*. Therefore, the time complexity of this partition algorithm is,
+\[ T(n) = \theta (n) \]
+
+** Time complexity of quicksort
+In quick sort, we don't have a fixed recursive relation. The recursive relations differ for different cases.
++ *Best Case* : The partition algorithm always divides the array to two equal parts. In this case, the recursive relation becomes
+  \[ T(n) = 2T(n/2) + \theta (n) \]
+  Where, $\theta (n)$ is the time complexity for creating partition.
+  \\
+  Using the master's theorem.
+  \[ T(n) = \theta( n.log(n) ) \]
+
++ *Worst Case* : The partition algorithm always creates the partition at one of the extreme positions of the array. This creates a single partition with *n-1* elements. Therefore, the quicksort algorithm has to be called on the remaining *n-1* elements of the array.
+  \[ T(n) = T(n-1) + \theta (n) \]
+  Again, $\theta (n)$ is the time complexity for creating partition.
+  \\
+  Using master's theorem
+  \[ T(n) = \theta (n^2) \]
+
++ *Average Case* : The average case is closer to the best case in quick sort rather than to the worst case.
+\\
+To get the average case, we will *consider a recursive function for number of comparisions* $C(n)$.
+\\
+For the function $C(n)$, there are $n-1$ comparisions for the partition algorithm.
+\\
+Now, suppose that the index of partition is *i*.
+\\
+This will create two recursive comparisions $C(i)$ and $C(n-i-1)$.
+\\
+*i* can be any number between *0* and *n-1*, with each case being equally probable. So the average number of comparisions for $C(n)$ will be
+\[ \frac{1}{n} \sum_{i=0}^{n-1} \left( C(i) + C(n-i-1) \right) \]
+Therefore, total number of comparisions for input size *n* will be,
+\[ C(n) = \left(  n-1  \right) + \frac{1}{n} \sum_{i=0}^{n-1} \left( C(i) + C(n-i-1) \right) \]
+Solving the above recurrance relation will give us,
+\[ C(n) \approx 2\ n\ ln(n) \]
+\[ C(n) \approx 1.39\ n\ log_2(n) \]
+Therefore, the time complexity in average case becomes,
+\[ T(n) = \theta (n\ log_2(n)) \]
+
+** Number of comparisions
+The number of comparisions in quick sort for,
++ Worst Case : \[ \text{Number of comparisions} = \frac{n(n-1)}{2} \]
+
+* Merging two sorted arrays (2-Way Merge)
+Suppose we have two arrays that are already sorted. The first array has *n* elements and the second array has *m* elements.
+\\
+The way to merge them is to compare the elements in a sequence between the two arrays. We first add a pointer to start of both arrays. The element pointed by the pointers are compared and the smaller one is added to our new array. Then we move pointer on that array forward. These comparisions are repeated until we reach the end of one of the array. At this point, we can simply append all the elements of the remaining array.
+
+#+BEGIN_SRC C
+  int *merge(int a[], int n, int b[], int m){
+    int *c = malloc((m+n) * sizeof(int));
+    int i = 0; int j = 0;
+    int k = 0;
+
+    while (i !=  n && j != m) {
+      if ( a[i] > b[j] ) { c[k++] = b[j++]; } else { c[k++] = a[i++]; };
+    }
+
+    while (i != n) {
+      c[k++] = a[i++];
+    }
+
+    while (j != m) {
+      c[k++] = b[j++];
+    }
+
+    return c;
+  }
+#+END_SRC
+
++ The maximum number of comparisions to merge the arrays is (m + n - 1).
++ The minimum number of comparisions to merge the arrays is either *m* or *n*. Depending of which one is smaller.
+
+* Merging k sorted arrays (k-way merge)
+k-way merge algorithms take k different sorted arrays and merge them into a single single array. The algorithm is same as that in two way merge except we need to get the smallest element from the pointer on k array's and then move it's corresponding pointer.
+
+* Merge sort
+Merge sort is a pure divide and conquer algorithm. In this sorting algorithm, we merge the sorted sub-arrays till we get a final sorted array.\\
+The algorithm will work as follows :
+1. Divide the array of n elements into *n* subarrays, each having one element.
+2. Repeatdly merge the subarrays to form merged subarrays of larger sizes until there is one list remaining.
+
+For divide and conquer steps: 
++ *Divide* : Divide the array from the middle into two equal sizes.
++ *Conquer* : Call merge sort recursively on the two subarrays
++ *Combine* : Merge the sorted array 
+
+The algorithm works as follows (this isn't real c code)
+#+BEGIN_SRC C
+  // A function that will merge two sorted arrays
+  int[] merge(int first[], int second[]);
+
+  int[] merge_sort(int array[], int left, int right){
+    if(left < right){
+      int mid = (left + right) / 2;
+      int sorted_first[] = merge_sort(array[], left, mid);
+      int sorted_second[] = merge_sort(array[], mid + 1, right);
+
+      return merge(sorted_first, sorted_second);
+    }
+  }
+#+END_SRC
+
+This algorithm is often used in languages which have great support for linked lists, for example lisp and haskell. For more traditional c-like languages, often quicksort is easier to implement.
+\\
+An implementation in C language is as follows.
+
+#+BEGIN_SRC C
+  // buffer is memory of size equal to or bigger than size of array
+  // buffer is used when merging the arrays
+  void merge_sort(int array[], int left, int right, int buffer[]){
+    if(left < right){
+      // Divide part
+      int mid = ( left + right ) / 2;
+
+      // Conquer part
+      merge_sort(array,left, mid, buffer);
+      merge_sort(array, mid + 1, right, buffer);
+
+      // Combine part : Merges the two sorted parts
+      int i = left; int j = mid + 1; int k = 0;
+      while( i != (mid+1) && j != (right+1) ){
+	if(array[i] < array[j]) { buffer[k++] = array[i++];  } else { buffer[k++] = array[j++]; }
+      }
+
+      while(i != (mid+1))
+	buffer[k++] = array[i++];
+
+      while(j != (right+1))
+	buffer[k++] = array[j++];
+
+      for(int x = left; x <= right; x++)
+	array[x] = buffer[x - left];
+    }
+  }
+#+END_SRC
+
+** Time complexity
+Unlike quick sort, *the recurrance relation is same for merge sort in all cases.*
+\\
+Since divide part divides array into two equal sizes, the input size is halfed (i.e, *T(n/2)* ).
+\\
+In conquer part, there are two calls so *2.T(n/2)* is added to time complexity.
+\\
+The cost for merging two arrays of size n/2 each is either *n-1* of *n/2*. That is to say that time complexity to merge two arrays of size n/2 each is always $\theta (n)$. Thus, the final recurrance relation is
+\[ T(n) = 2.T(n/2) + \theta (n) \]
+Using the master's theorem.
+\[ T(n) = \theta (n.log_2n) \]
+
+** Space complexity
+As we can see in the C code, the space complexity is $\theta (n)$
+
+* Stable and unstable sorting algorithms
+We call sorting algorithms unstable or stable on the basis of whether they change order of equal values.
++ *Stable sorting algorithm* : a sorting algorithm that preserves the order of the elements with equal values.
++ *Unstable sorting algorithm* : a sorting algorithm that does not preserve the order of the elements with equal values.
+  \\
+This is of importance when we store data in pairs of keys and values and then sort data using the keys. So we may want to preserve the order in which the entries where added.
+\\
+Example, suppose we add (key, value) pairs as:
+#+BEGIN_SRC
+  (2, v1), (1, v2), (3, v3), (1, v1), (2, v4), (3, v2)
+#+END_SRC
+
+Now, if we sort using the keys a sorting algorithm which is stabe will preserve the order of elements with equal keys. So output is always
+#+BEGIN_SRC
+  (1, v2), (1, v1), (2,v1), (2, v4), (3, v3), (3, v2)
+#+END_SRC
+i.e, the *order of keys with same values is preserved*.
+\\
+Whereas an unstable sorting algorithm will sort without preserving the order of key values.
+
+* Non-comparitive sorting algorithms
+Sorting algorithms which do not use comparisions to sort elements are called non-comparitive sorting algorithms. These tend to be faster than comparitive sorting algorithms.
+
+** Counting sort
++ Counting sort *only works on integer arrays*
++ Couting sort only works if *all elements of array are non-negative*, i.e, elements are only allowed to be in range [0,k] .
+
+#+BEGIN_SRC c
+  //* The input array is sorted and result is stored in output array *//
+  //* max is the largest element of the array *//
+  void counting_sort(int input[], int max ,int output[]){
+    // count array should have a size greater than or equal to (max + 1)
+    int count[max + 1];
+    // initialize count array to zero, can also use memset
+    for(int i = 0; i < max+1; i++) count[i] = 0;
+
+    // i from 0 to len(array) - 1
+    // this loop stores number of elements equal to i in count array
+    for(int i = 0; i < len(input); i++)
+      count[input[i]] = count[input[i]] + 1;
+
+    // i from 1 to max
+    // this loop stores number of elements less that or equal to i in count array
+    // i.e, it calculates cumulative frequency
+    for(int i = 1; i <= max; i++)
+      count[i] = count[i] + count[i - 1];
+
+    // i from len(array) - 1 to 0
+    for(int i = len(array) - 1; i >= 0; i--){
+      count[input[i]] = count[input[i]] - 1;
+      output[count[input[i]]] = input[i];
+    }
+  }
+#+END_SRC
+
++ *Time complexity* : Since there are only simple loops and arithmetic operations, we can get time complexity by considering the number of times loops are executed.
+
+  \[ \text{Number of times loops are executed} = n + (max - 1) + n \]
+  \[ \text{Where, } n = len(array) \text{ i.e, the input size} \]
+
+  Therefore,
+  \[ \text{Number of times loops are executed} = 2n + max - 1 \]
+  \[ \text{Time complexity} = \theta (n + max) \]
+
+** Radix sort
+In radix sort, we sort using the digits, from least significant digit (lsd) to most significant digit (msd). In other words, we sort digits from right to left. The algorithm used to sort digits *should be a stable sorting algorithm*.
+
+[[./imgs/radix-sort.png]]
+
+For the following example, we will use the bubble sort since it is the easiest to implement. But, for best performance, *radix sort is paired with counting sort*.
+
+#+BEGIN_SRC c
+  // d = 0, will return digit at unit's place
+  // d = 1, will return digit at ten's place
+  // and so on.
+  int get_digit(int n, int d){
+    assert(d >= 0);
+    int place = (int) pow(10, d);
+    int digit = (n / place) % 10;
+    return digit;
+  }
+
+  // bubble sort the array for only digits of the given place
+  // d = 0, unit's place
+  // d = 1, ten's place
+  // and so on.
+  void bubble_sort_digit(int array[], int d){
+    for(int i = len(array); i >= 1; i--){
+      for(int j = 0; j < i; j++){
+	if(get_digit(array[j], d) > get_digit(array[j + 1], d))
+	  array[j], array[j + 1] = array[j + 1], array[j];
+      }
+    }
+  }
+
+  void radix_sort(int array[], int no_of_digits){
+    for(int i = 0; i < no_of_digits ; i++){
+      bubble_sort_digit(array, i );
+    }
+  }
+#+END_SRC
+
++ *Time complexity* : \[ \text{Time Complexity} = \theta (d.(n + max)) \]
+  Where, *d = number of digits in max elemet*, and
+  \\
+  radix sort is paired with counting sort.
+
+** Bucket sort
+Counting sort only works for non-negative integers. Bucket sort is a generalization of counting sort. If we know the range of the elements in the array, we can sort them using bucket sort. In bucket sort, we distribute the elements into buckets (collections of elements). Each bucket will hold elements of different ranges. Then, we can either sort elements in the buckets using some other sorting algorithm or by using bucket sort algorithm recursively.
+\\
+Bucket sort works as follows:
+1. Set up empty buckets
+2. *Scatter* the elements into buckets based on different ranges.
+3. *Sort* elements in non-empty buckets.
+4. *Gather* the elements from buckets and place in orignal array.
+
+| [[./imgs/Bucket_sort_1.svg  ]] | *Elements are distributed among bins*                                       |
+| [[./imgs/Bucket_sort_2.svg]]   | *Then, elements are sorted within each bin and then result is concatenated* |
+
+To get the ranges of the buckets, we can use the smallest (min) and biggest (max) element of the array.
+\\
+The number of elements in each bucket will be,
+
+\[ \text{Range of each bucket} (r) = \frac{(\text{max} - \text{min} + 1)}{ \text{number of buckets}} \]
+
+Then, the ranges of buckets will be,
++ (min + 0.r) <==> (min + 1.r - 1)
++ (min + 1.r) <==> (min + 2.r - 1)
++ (min + 2.r) <==> (min + 3.r - 1)
++ (min + 3.r) <==> (min + 4.r - 1)
++ *etc.*
+
+Then, we can get the bucket number to which we add any array[i] as,
+\[ \text{bucket index} =  \frac{ \text{array[i]} - \text{min} }{ r } \]
+Where,
+\[ r = \frac{(\text{max} - \text{min} + 1)}{ \text{number of buckets}} \]
+
+
+#+BEGIN_SRC c
+  void bucket_sort(int array[], size_t n, int min, int max, int number_of_buckets, int output[]){
+    // a bucket will have capacity of [ (max - min + 1) / number_of_buckets ] elements
+    Vector<int> buckets[number_of_buckets];
+    int r = (max - min + 1) / number_of_buckets;
+
+    // if (max - min + 1) < number_of_buckets, then r could be 0.
+    // in this case, just set r to 1
+    if(r <= 0) r = 1;
+
+    for(int i = 0; i < n; i++){
+      // put array[i] in bucket number (array[i] - min) / r
+      buckets[ (array[i] - min) / r].put(array[i]);
+    }
+
+    // sort elements of buckets and append to final output array
+    for(int i = 0; i < number_of_buckets; i++){
+      buckets[i].sort();
+      output.append(bucket[i]);
+    }
+  }
+#+END_SRC
+
+*** Time complexity
+The time complexity in bucket sort is affected by what sorting algorithm will be used to sort elements in a bucket.
+\\
+We also have to add the time complexities for initializing the buckets. Suppose there are k buckets, then the time to initialize then is $\theta (k)$.
+\\
+Also the scattering of elements in buckets will take $\theta (n)$ time.
+
++ *Worst Case* : Worst case for bucket sort is if all the *elements are in the same bucket*. In this case, the *time complexity is the same as the time complexity of the sorting algorithm used* plus the time to scatter elements and initialize buckets. Therfore,
+  \[ \text{Time complexity} = \theta (n + k + f(n) ) \]
+  Where, $f(n)$ is the time complexity of the sorting algorithm and *k* is the number of buckets.
+  \\
+  \\
+  \\
++ *Best Case & Average Case* : Best case for bucket sort is if elements are equally distributed. Then, all buckets will have $n/k$ elements. The time taken to sort single bucket will become f(n/k) and the time taken to sort k buckets will be,
+  \[ \text{time to sort all buckets} = k \times f \left( \frac{n}{k} \right) \]
+  Suppose we were using insertion sort, then
+  \[ \text{for insertion sort} : f(n) = n^2 \]
+  \[ f \left( \frac{n}{k} \right) = \frac{n^2}{k^2} \]
+  Therefore,
+  \[ \text{time to sort all buckets} = \frac{n^2}{k} \]
+
+  So, total time have time added to initialize buckets and also scatter elements.
+
+  \[ \text{Time complexity} = \theta ( n + k + \frac{n^2}{k} ) \]
+
+  This is considered the time complexity for average case.
+  For best case, we consider the number of buckets is approximately equal to number of elements.
+  \[ k \approx n \]
+
+  Therefore, in best case,
+  \[ \text{Time complexity} = \theta (n) \]

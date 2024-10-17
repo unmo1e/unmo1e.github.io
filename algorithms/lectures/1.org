@@ -1,0 +1,66 @@
+* Data structure and Algorithm
++ A *data structure* is a particular way of storing and organizing data. The purpose is to effectively access and modify data effictively.
++ A procedure to solve a specific problem is called *Algorithm*.
+
+During programming we use data structures and algorithms that work on that data.
+
+* Characteristics of Algorithms
+An algorithm has follwing characteristics.
++ *Input* : Zero or more quantities are externally supplied to algorithm.
++ *Output* : An algorithm should produce atleast one output.
++ *Finiteness* : The algorithm should terminate after a finite number of steps. It should not run infinitely.
++ *Definiteness* : Algorithm should be clear and unambiguous. All instructions of an algorithm must have a single meaning.
++ *Effectiveness* : Algorithm must be made using very basic and simple operations that a computer can do.
++ *Language Independance* : A algorithm is language independent and can be implemented in any programming language.
+
+* Behaviour of algorithm
+The behaviour of an algorithm is the analysis of the algorithm on basis of *Time* and *Space*.
++ *Time complexity* : Amount of time required to run the algorithm.
++ *Space complexity* : Amount of space (memory) required to execute the algorithm.
+
+The behaviour of algorithm can be used to compare two algorithms which solve the same problem.
+\\
+The preference is traditionally/usually given to better time complexity. But we may need to give preference to better space complexity based on needs.
+
+** Best, Worst and Average Cases
+The input size tells us the size of the input given to algorithm. Based on the size of input, the time/storage usage of the algorithm changes. *Example*, an array with larger input size (more elements) will taken more time to sort.
++ Best Case : The lowest time/storage usage for the given input size.
++ Worst Case : The highest time/storage usage for the given input size.
++ Average Case : The average time/storage usage for the given input size.
+
+** Bounds of algorithm
+Since algorithms are finite, they have *bounded time* taken and *bounded space* taken. Bounded is short for boundries, so they have a minimum and maximum time/space taken. These bounds are upper bound and lower bound.
++ Upper Bound : The maximum amount of space/time taken by the algorithm is the upper bound. It is shown as a function of worst cases of time/storage usage over all the possible input sizes.
++ Lower Bound : The minimum amount of space/time taken by the algorithm is the lower bound. It is shown as a function of best cases of time/storage usage over all the possible input sizes.
+
+* Asymptotic Notations
+
+** Big-Oh Notation [O]
++ The Big Oh notation is used to define the upper bound of an algorithm.
++ Given a non negative funtion f(n) and other non negative funtion g(n), we say that $f(n) = O(g(n)$ if there exists a positive number $n_0$ and a positive constant $c$, such that \[ f(n) \le c.g(n) \ \ \forall n \ge n_0  \]
++ So if growth rate of g(n) is greater than or equal to growth rate of f(n), then $f(n) = O(g(n))$.
+  
+** Omega Notation [ $\Omega$ ]
++ It is used to shown the lower bound of the algorithm. 
++ For any positive integer $n_0$ and a positive constant $c$, we say that, $f(n) = \Omega (g(n))$ if \[ f(n) \ge c.g(n) \ \ \forall n \ge n_0 \]
++ So growth rate of $g(n)$ should be less than or equal to growth rate of $f(n)$
+
+*Note* : If $f(n) = O(g(n))$ then $g(n) = \Omega (f(n))$
+
+** Theta Notation [ $\theta$ ]
++ If is used to provide the asymptotic *equal bound*.
++ $f(n) = \theta (g(n))$ if there exists a positive integer $n_0$ and a positive constants $c_1$ and $c_2$ such that \[ c_1 . g(n) \le f(n) \le c_2 . g(n) \ \ \forall n \ge n_0 \]
++ So the growth rate of $f(n)$ and $g(n)$ should be equal.
+
+*Note* : So if $f(n) = O(g(n))$ and $f(n) = \Omega (g(n))$, then $f(n) = \theta (g(n))$
+
+** Little-Oh Notation [o]
++ The little o notation defines the strict upper bound of an algorithm.
++ We say that $f(n) = o(g(n))$ if there exists positive integer $n_0$ and positive constant $c$ such that, \[ f(n) < c.g(n) \ \ \forall n \ge n_0 \]
++ Notice how condition is <, rather than $\le$ which is used in Big-Oh. So growth rate of $g(n)$ is strictly  greater than that of $f(n)$.
+
+** Little-Omega Notation [ $\omega$ ]
++ The little omega notation defines the strict lower bound of an algorithm.
++ We say that $f(n) = \omega (g(n))$ if there exists positive integer $n_0$ and positive constant $c$ such that, \[ f(n) > c.g(n) \ \ \forall n \ge n_0 \]
++ Notice how condition is >, rather than $\ge$ which is used in Big-Omega. So growth rate of $g(n)$ is strictly less than that of $f(n)$.
+

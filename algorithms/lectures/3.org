@@ -1,0 +1,144 @@
+* Calculating time complexity of algorithm
+
+We will look at three types of situations
++ Sequential instructions
++ Iterative instructions
++ Recursive instructions
+
+** Sequential instructions
+A sequential set of instructions are instructions in a sequence without iterations and recursions. It is a simple block of instructions with no branches. A sequential set of instructions has *time complexity of O(1)*, i.e., it has *constant time complexity*.
+
+** Iterative instructions
+A set of instructions in a loop. Iterative instructions can have different complexities based on how many iterations occurs depending on input size. 
+
++ For fixed number of iterations (number of iterations known at compile time i.e. independant of the input size), the time complexity is constant, O(1). Example for(int i = 0; i < 100; i++) { ... } will always have 100 iterations, so constant time complexity.
++ For n number of iterations ( n is the input size ), the time complexity is O(n). Example, a loop for(int i = 0; i < n; i++){ ... } will have n iterations where n is the input size, so complexity is O(n). Loop for(int i = 0; i < n/2; i++){...} also has time complexity O(n) because n/2 iterations are done by loop and 1/2 is constant thus not in big-oh notation.
++ For a loop like for(int i = 1; i <= n; i = i*2){...} the value of i is update as *=2, so the number of iterations will be $log_2 (n)$. Therefore, the time complexity is $O(log_2 (n))$.
++ For a loop like for(int i = n; i > 1; i = i/2){...} the value of i is update as *=2, so the number of iterations will be $log_2 (n)$. Therefore, the time complexity is $O(log_2 (n))$.
+
+*_Nested Loops_*
+\\
++ If *inner loop iterator doesn't depend on outer loop*, the complexity of the inner loop is multiplied by the number of times outer loop runs to get the time complexity For example, suppose we have loop as 
+
+#+BEGIN_SRC C
+for(int i = 0; i < n; i++){
+  ...
+  for(int j = 0; j < n; j *= 2){
+    ...
+  }
+  ...
+}
+#+END_SRC
+
+Here, the outer loop will *n* times and the inner loop will run *log(n)* times. Therefore, the total number of time statements in the inner loop run is n.log(n) times.
+Thus the time complexity is *O(n.log(n))*.
+
++ If *inner loop and outer loop are related*, then complexities have to be computed using sums. Example, we have loop
+
+#+BEGIN_SRC C
+for(int i = 0; i <= n; i++){
+  ...
+  for(int j = 0; j <= i; j++){
+    ...
+  }
+  ...
+}
+#+END_SRC
+
+Here the outer loop will run *n* times, so i goes from *0 to n*. The number of times inner loop runs is j, which depends on *i*. 
+
+#+ATTR_HTML: :frame border :rules all
+| Value of i | Number of times inner loop runs |
+|------------+---------------------------------|
+| 0          | 0                               |
+| 1          | 1                               |
+| 2          | 2                               |
+| .          | .                               |
+| .          | .                               |
+| .          | .                               |
+| n          | n                               |
+|------------+---------------------------------|
+
+So the total number of times inner loop runs = $1+2+3+....+n$
+\\
+total number of times inner loop runs = $\frac{n.(n+1)}{2}$
+\\
+total number of times inner loop runs = $\frac{n^2}{2} + \frac{n}{2}$
+\\
+*/Therefore, time complexity is/* $O(\frac{n^2}{2} + \frac{n}{2}) = O(n^2)$
+\\
+*Another example,*
+\\
+Suppose we have loop
+#+BEGIN_SRC C
+for(int i = 1; i <= n; i++){
+  ...
+  for(int j = 1; j <= i; j *= 2){
+    ...
+  }
+  ...
+}
+#+END_SRC
+
+The outer loop will run n times with i from *1 to n*, and inner will run log(i) times.
+
+#+ATTR_HTML: :frame border :rules all
+| Value of i | Number of times inner loop runs |
+|------------+---------------------------------|
+| 1          | log(1)                          |
+| 2          | log(2)                          |
+| 3          | log(3)                          |
+| .          | .                               |
+| .          | .                               |
+| .          | .                               |
+| n          | log(n)                          |
+|------------+---------------------------------|
+
+Thus, total number of times the inner loop runs is $log(1) + log(2) + log(3) + ... + log(n)$.
+\\
+total number of times inner loop runs = $log(1.2.3...n)$
+\\
+total number of times inner loop runs = $log(n!)$
+\\
+Using */Stirling's approximation/*, we know that $log(n!) = n.log(n) - n + 1$
+\\
+total number of times inner loop runs = $n.log(n) - n + 1$
+\\
+Time complexity = $O(n.log(n))$
+
+** An example for time complexities of nested loops
+Suppose a loop,
+#+BEGIN_SRC C
+for(int i = 1; i <= n; i *= 2){
+  ...
+  for(int j = 1; j <= i; j *= 2){
+    ...
+  }
+  ...
+}
+#+END_SRC
+Here, outer loop will run *log(n)* times. Let's consider for some given n, it runs *k* times, i.e, let 
+\[ k = log(n) \]
+
+The inner loop will run *log(i)* times, so number of loops with changing values of i is
+
+#+ATTR_HTML: :frame border :rules all
+| Value of i | Number of times inner loop runs |
+|------------+---------------------------------|
+| 1          | log(1)                          |
+| 2^1        | log(2)                          |
+| 2^2        | 2.log(2)                        |
+| 2^3        | 3.log(2)                        |
+| .          | .                               |
+| .          | .                               |
+| .          | .                               |
+| 2^{k-1}    | (k-1).log(2)                    |
+|------------+---------------------------------|
+
+So the total number of times inner loop runs is $log(1) + log(2) + 2.log(2) + 3.log(2) + ... + (k-1).log(2)$
+\[ \text{number of times inner loop runs} = log(1) + log(2).[1+2+3+...+(k-1)] \]
+\[ \text{number of times inner loop runs} = log(1) + log(2). \frac{(k-1).k}{2} \]
+\[ \text{number of times inner loop runs} = log(1) + log(2). \frac{k^2}{2} - \frac{k}{2} \]
+Putting value $k = log(n)$
+\[ \text{number of times inner loop runs} = log(1) + log(2). \frac{log^2(n)}{2} - \frac{log(n)}{2} \]
+\[ \text{Time complexity} = O(log^2(n)) \]

@@ -1,0 +1,23 @@
+* Transmission delay
+\[ T_t = \frac{D}{B} \]
+\[ \text{$D$ = Data size to transmit} \]
+\[ \text{$B$ = Bandwidth of link} \]
+* Propogation delay
+\[ T_p = \frac{d}{s} \]
+\[ \text{$d$ = distance of link} \]
+\[ \text{$s$ = wave propogation speed} \]
+* Total time for a cycle (frame transmission and it's acknowledgement)
+\[ \text{Total cycle time of Stop and Wait ARQ} = T_t(data) + T_p(data) + T_t(acknowledgement) + T_p(acknowledgement) \]
+/Since acknowledgement are very small in size, their transmission delay is neglected/
+\[ \text{Total cycle time of Stop and Wait ARQ} = T_t + 2 T_p \]
+* Effictive bandwidth / Throughput
+Actual bits sent per second (actual as in data bits, not considering acknowledgments and headers)
+\[ Throughput = \frac{D}{\text{Total cycle time}} \]
+Here $D$ is data size
+\[ Throughtput = Efficiency \times Bandwidth \]
+Bandwidth of the channel and effective bandwidth relation
+* Capacity of link
+In data link layer, capacity of link is the maximum possible number of bits in the link
+\[ Capacity = Bandwidth \times T_p\]
+For full duplex
+\[ Capacity = 2 \times Bandwidth \times T_p \]

@@ -1,0 +1,523 @@
+* Medium Access Control Sublayer
+The data link layer assumes that the user has complete control over the data link. But in reality, the same link is used by multiple devices on both end. These are referred to as *broadcast channels, or multiaccess channels*
+
+The medium access control sublayer has protocols which decide the device which has control over the medium currently. This sublayer is extremely important for LANs specially, where multiple devices are on same channel (example, wifi).
+
+Note: technically, the MAC sublayer is below the data link layer. So it is between physical layer and data link layer
+
+*Functions of MAC sublayer :*
+
++ provide abstraction of physical layer to upper layers
++ resolve addressing in the LAN
++ multiple access resolution in multiaccess channels
++ collission resolution
+
+*Collision :*
+
+If two frames are transmitted simultaneously, they overlap and resulting data is garbaled. This is called a *collision*. Resolving collisions is also the duty of MAC sublayer
+
+*MAC Address :*
+
+MAC address is a unique identifier alloted to Network Interface Card (NIC) of each device. It is used as address for transmission within the LAN (Example, there are multiple devices connected to same WiFi, the MAC address is used for addressing the devices)
++ MAC addresses are hardcoded or hardwired into the NIC from the manufacturer, it can't be changed
++ comprises of six groups of two hexadecimal digits, Example, 00:0A:89:5B:F0:11
+** Multiple Access Protocols
+A single channel can be in use by multiple devices, and they may transmit a frame to channel at same time. If two frames are transmitted simultaneously, they overlap and resulting data is garbaled; this is called collision. To avoid collisions, we need protocols that tell devices when to transmit a frame, these protocols are called Multiple Access Protocols
+
+The protocols used for multiple access are divided into three parts
+#+DOWNLOADED: screenshot @ 2023-10-21 22:01:10
+[[file:Medium_Access_Control_Sublayer/2023-10-21_22-01-10_screenshot.png]]
+*** ALOHA
+The first ALOHA system has made at University of Hawaii. There are two versions of ALOHA : Pure ALOHA treats time to be continuous, i.e, the devices can start sending packet at any time. Slotted ALOHA divides time into discrete slots into which all frames are fitted
+
+**** Pure ALOHA
+The pure ALOHA protocol is the original ALOHA system. It uses acknowledgements in order to detect collissions. Suppose two sender's transmit packet at the same time and they collide
++ On the receiver's side the checksums (error detecting codes) will fail. So they won't transmit any acknowledgements
++ After the timeout on sender's machines, if they both retransmit again, the collision will happen again
++ To avoid this, every sender will wait for a random ($T_B$) time before it can try retransmission. This is called /back-off time./
++ The number of times the retransmission fails is store in the variable $K$
++ If $K$ ever becomes greater than some $K_{max}$, we will abort the whole process to try later
+
+#+DOWNLOADED: screenshot @ 2023-10-22 00:36:36
+[[file:Medium_Access_Control_Sublayer/2023-10-22_00-36-36_screenshot.png]]
+
+We usually calculate $T_B$ as $T_B = R \times T_p$ or $T_B = R \times T_t$, where $R$ is some random number between $0$ and $2^k - 1$. $T_p$ is propogation delay and $T_t$ is the transmission delay, so either one of them is used. This method is named /binary exponential back-off/.
+
+$K_{max}$ is most commonly chosen as 15
+
+*NOTE :* In ALOHA systems, transmission delay $T_t$, is also sometimes called frame transmission time $T_f$
+
+*Performace of Pure ALOHA :*
+
++ Transmission delay (time to transmit one frame) is $T_t$
++ Average number of transmissions in time $T_t$ is $G$
+Suppose a packet starts transmission at any time $t$. If we want this packet to complete transmission without collision, no other packet should start transmission between $(t - T_t)$ and $(t + T_t)$.
+
+This is shown by the following diagram
+
+#+DOWNLOADED: screenshot @ 2023-10-22 10:57:42
+[[file:Medium_Access_Control_Sublayer/2023-10-22_10-57-42_screenshot.png]]
+
+Therefore, the vulnerable time for transmission is
+\[ \text{vulnerable time} = (t + T_t) - (t - T_t) = 2T_t \]
+Since average number of packets in time $T_t$ is $G$, the number of packets in time $2T_t$ is $2G$
+
+Using the poisson distribution, the probability of $k$ frames in time period of $2T_t$ is
+\[ P(k) = \frac{(2G)^k e^{-2G}}{k!} \]
+Collission won't occur when $P(0)$, therefore the probability of zero collissions is
+\[ P(0) = e^{-2G} \]
+
+The throughput is given by $S = G \times P(0)$. So /throughput for a pure ALOHA system/
+\[ S = G \times e^{-2G} \]
+Where, $G$ is the average number of frames in transmission time $T_t$ and $S$ is throughput
+
+**** Slotted ALOHA
+The slotted ALOHA was made to increase the throughput of the pure ALOHA system.
++ Time is divided into discrete slots of size $T_t$
++ A frame can only start transmission at the start of the time slot and has to finish transmission before end of time slot
++ This decreases the vulnerable time window to only within the time slot of $T_t$
+Using our previous calculations, in time slot $T_t$, the average number of frames generated is $G$
+
+So within the vulnerable window of $T_t$, the probability of $k$ frames is
+\[ P(k) = \frac{G^k e^{-G}}{k!} \]
+and the probability of no collissions is
+\[ P(0) = e^{-G} \]
+
+Therefore, the /throughput of slotted ALOHA is/
+\[ S = G \times P(0) \]
+\[ S = G \times e^{-G} \]
+Where, $G$ is the average number of frames in transmission time $T_t$ and $S$ is throughput
+The comparision of throughputs for pure ALOHA and slotted ALOHA system is
+
+#+DOWNLOADED: screenshot @ 2023-10-22 11:20:23
+[[file:Medium_Access_Control_Sublayer/2023-10-22_11-20-23_screenshot.png]]
+*** Carrier Sense Multiple Access Protocols (CSMA/CD)
+Carrier Sense means that node can sense whether the channel is already being used by some other node. Therefore, it will only try to transmit a frame if channel is not already in use. This reduces the number of possible collissions.
++ Though CSMA reduces the possibility of a collision, it cannot eliminate it. /The possibility of collision still exists due to propogation delay/
+After a node senses that channel is idle, we still need some way or method to tell if a node should use it or not
+
+*1-persistent method :*
+
+The 1-persistent method is the simplest method.
++ The channel is continuously being sensed by all the nodes that want to transmit
++ As soon as a node finds that channel is idle, it will immediately try to transmit
++ But this method /has high chance of collission/ since multiple nodes may try to transmit as soon as channel is idle
+
+*No Persistent method :*
+
+In no persistent method, 
++ The channel is not being continuously sensed by all nodes that want to transmit
++ Node will check if the channel is idle, if it is idle it will try to transmit the frame
++ If it is not idle, the node will /wait for random amount of time/
+Since it is unlikely that two nodes will wait the same amount of time, the chance of collision is reduced. But the no persistent method /reduces efficiency, since there may be times when channel is idle but no node is using it./
+
+*p-persistent method :*
+
+This method is used in slotted channels (transmission can start only at start of a time slot).
++ The channel is sensed at the start of a time slot, /one of the two cases will occur/
+  + /If channel is idle/, frame will be transmitted with probability $p$. Otherwise, retry transmission at the start of next time slot
+  + /If channel is busy/, act as if collision occured and wait for back-off time
+**** Minimum frame size for CSMA and Efficiency, Throughput
+In order for CSMA to work, the minimum size of a frame is given as
+\[ \text{lenght of packet} \ge 2 \times T_p \times Bandwidth \]
+\[ \text{lenght of packet} \ge \text{Bandwidth-Delay Product} \]
+The efficiency is given by
+\[ Efficiency = \frac{1}{e^{2a} + a + 1} = \frac{1}{1 + 6.44a} \]
+where, $a = \frac{T_p}{T_t}$
+\[ Throughput = Efficiency \times Bandwidth \]
+
+TODO : these probably need more explanation
+*** CSMA with Collision Avoidance (CSMA/CA)
+Because CSMA do not completely avoid collisions, it would be better for bandwidth if stations could quickly detect a collision and stop transmission. This is known as CSMA with Collision Detection and is the /basis for classic Ethernet/.
++ Collision detection is an *analog process*
++ The station's *hardware* must listen to the channel while it is transmitting. That is the station will transmit and listen to the signal at the same time
++ If the signal it reads back different from the signal it is putting out, a collision has occured
++ Since the signal that is transmitted and that read are to be compared, they must not have a huge difference in signal strength. This is what makes /Collision Detection harder for wireless mediums/
+In CSMA/CA protocol, we have three distinct periods of time
++ Transmission period : The period during which one of the station is transmitting is called the transmission period
++ Idle period / Inter frame space : The period during which no transmission happens and no station want to transmit frames. Therefore, it is the period in which all the stations are quiet. /Inter Frame Space/ is the idle time that is inserted everytime between contention period and transmission period, this helps avoid collisions in case some station is taking abnormal pause for transmitting a frame
++ Contention period : The period during which channel is idle and one or more nodes / stations want to transmit frames is called the contention period. During the contention period, the *stations will send a very small dummy frame to check if they can "seize" the line*
+**** Contention window / Contention slots
+The contention period is divided into multiple windows or slots. At the start of each slot, the stations that want to transmit will try to seize the line
++ The size of the contention window depends on the minimum time taken to detect a collision.
++ Since the dummy frame used to check if it is same to seize channel, the transmission delay $T_t$ is negligable during contention period i.e, $T_t = 0$
++ Suppose the two farthest stations $A$ and $B$ want to transmit. Assume the propogation delay between them is $T_p$
+  + $A$ transmits the dummy frame at some time $t_0$.
+  + Suppose at an instant just before $t_0 + T_p$, $B$ transmits the dummy frame
+  + The collision happens just before the station $B$, therefore it stops transmission immediately
+  + But the noise from collision will take $T_p$ time to return to station $A$
+  + Therefore *station needs to wait atleast for time $2T_p$ before it can seize the channel*
+Therefore, the size of contention slot is
+\[ \text{size of contention slot} \ge 2 \times T_p \]
+TODO : image for CSMA/CA
+*** Reservation
+In this method, a node / station needs to make a reservation before sending data. This protocol has two period : a reservation interval and data transmission interval.
++ Suppose there are $8$ stations on the channel, then there will be $8$ slots in the reservation interval. In general if there are $N$ stations, the reservation interval has $N$ slots
++ Each station is allowed to book a reservation for itself within it's time slot during reservation interval. If it misses the chance to book a reservation, it must wait till the next reservation interval for it's next slot
++ All stations that sucessfully got a reservation get to transmit a frame during the data transmission period. They will transmit the frame in order in which slots are booked
+
+#+DOWNLOADED: screenshot @ 2023-10-29 18:35:24
+[[file:Medium_Access_Control_Sublayer/2023-10-29_18-35-24_screenshot.png]]
+
+*Performace*
+
+During the reservation interval, the very first station (station $0$) has to wait for $N -1$ slots before transmission period begins. For last station, it has to wait $0$ slots and so on.
++ Therefore the stations $0,1,2...N-1$ have to wait $N-1,N-2,...,0$ slots respectively before transmission period
++ Therefore, on average evey station waits for $N$ slots. If a slot is of time teriod $s$, the average time each slot waits during reservation is $s \times N$
+Suppose the size of a frame is $d$
++ For /low loads/ the efficiency of channel is $\frac{d}{d+sN}$, we usually consider $s = 1$ then /efficiency is $\frac{d}{d+N}$/
++ For /high loads/ the /efficiency is $\frac{d}{d+1}$/
+
+*** Polling
+In polling, the channel has a *primary station*. All the frames have to pass through the primary station.
+Suppose station $A$ wants to transmit a frame to the station $B$
++ The frame goes from station $A$ to primary station during a *poll*
++ The frame is then sent from primary station to the station $B$ by *select*
+**** Poll
+The primary station sequentially sends a POLL frame to all the other stations.
++ If the station receiving POLL doesn't need to transmit a frame, it will send a "poll reject" frame (NACK) to primary station
++ If the station receiving POLL wants to transmit a frame, it will send a data frame. The primary station sends back ACK on receiving the data frame
+
+#+DOWNLOADED: screenshot @ 2023-10-29 20:41:44
+[[file:Medium_Access_Control_Sublayer/2023-10-29_20-41-44_screenshot.png]]
+
+**** Select
+After primary station receives a frame, it will transfer it to destination station via a select (SEL)
++ The primary station sends select frame (SEL) to the destination station
++ The destination station sends back an ACK, accepting the data frame
++ The primary station then sends the data frame
++ When received successfully, the destination will return the ACK to primary station
+
+#+DOWNLOADED: screenshot @ 2023-10-29 20:44:49
+[[file:Medium_Access_Control_Sublayer/2023-10-29_20-44-49_screenshot.png]]
+
+**** Efficiency
+Suppose polling on average is taking time $T_{poll}$ and on average transmission of data is taking time $T_t$. Then,
+\[ Efficiency = \frac{T_t}{T_t + T_{poll}} \]
+
+*** Token Passing
+Token passing is common in ring topologies though it is not exclusive to them. In other topologies we can form a logical ring to emulate rings.
++ This protocol uses a small frame called a *token* to give control to transmit to the stations
++ The token is passed in a ring in a pre-defined direction
++ If the station that currently holds the token has some frames queued to transmit, it will transmit them
++ Else the token is passed to it's successor in the ring
+
+#+DOWNLOADED: screenshot @ 2023-10-29 23:29:47
+[[file:Medium_Access_Control_Sublayer/2023-10-29_23-29-47_screenshot.png]]
+
+*Logical Ring*
+
+In case the topology is not a ring topology, we can simply have a logical ring.
++ In the logical ring, each node will have a successor and a predecessor
++ After a node has completed transmission, it can pass the token to the successor node
+For example, a bus topology in which every node knows it's predecessor and successor's address can form a logical ring to pass token. This protocol is called *token bus*. This bus ring topology was previously standardized in IEEE 802.4 (now depricated)
+#+DOWNLOADED: screenshot @ 2023-10-29 23:35:23
+[[file:Medium_Access_Control_Sublayer/2023-10-29_23-35-23_screenshot.png]]
+
+*Performance*
+
+# Unverified (possibly misinformation)
+\[ Delay (\alpha) = \frac{T_p}{N \times T_t} \]
+\[ Throughput (S) = \begin{cases} \frac{1}{1 + \alpha} & \text{if $T_p < T_t$} \\ \frac{T_t}{T_p + \alpha T_t} & \text{if $T_p > T_t$} \end{cases} \]
+
+** Ethernet
+There are two types of ethernet : *classic ethernet* also called standard ethernet, which uses the multiple access protocols; and *switched ethernet*, which uses devices called switches
+
+#+DOWNLOADED: screenshot @ 2023-10-30 22:13:17
+[[file:Medium_Access_Control_Sublayer/2023-10-30_22-13-17_screenshot.png]]
+*** Standard Ethernet : MAC sublayer
+The MAC sublayer of classic ethernet governs the access method. The MAC layer is also responsible for framing of data in the classic Ethernet
+**** Frame Format
+A frame in classic ethernet frame contains seven fields :
+1. Preamble (7 bytes) : The first field of frame is 7 bytes (56 bits) of alternating 0's and 1's (each byte is $10101010$). The preamble is added at physical layer and is not formally part of the frame. It alters receiving system that frame is coming and to /synchronize input timing/
+2. Start Frame Delimiter (SFD) (1 byte) : Signals the start of frame. It is the last chance for station to synchronize. It's value is $10101011$, i.e, last two bits are $1$ and rest is same as preamble byte
+3. Destination Address (DA) (6 bytes) : The physical address (MAC address) of the destination station
+4. Source Address (SA) (6 bytes) : The MAC address of the source station
+5. Length or type (2 bytes) : in original ethernet, this field was used to define upper-layer protocols using MAC frame. In IEEE ethernet, this field is used to store length of data
+6. Data : this field carries data from upper-layers. Minimum size is 46 bytes and maximum is 1500 bytes. If data from upper layers is less than 46 bytes, it is padded. /The lower limit exists for correct operation of CSMA/CD/. The upper limit is for two reasons
+   + historically, memory was expensive so upper limit ensured low memory usage of stations
+   + the maximum length restricts single station from monopolizing the shared medium
+7. CRC (4 bytes) : the error detection information. It is CRC-32 of data field
+
+#+DOWNLOADED: screenshot @ 2023-10-31 22:54:42
+[[file:Medium_Access_Control_Sublayer/2023-10-31_22-54-42_screenshot.png]]
+**** Addressing
+Every station has it's own network interface card (NIC) with a unique MAC address. It is a 6-byte (48-bits) physical address. It is written with each byte in hexadecimal notation seperated by a colon. The six fields are called six octats
+\\
+Example, 06:01:02:01:2C:4B
+
+A source address is always unicast, since a frame has to originate from a single machine. But the destation of a frame can be multiple stations. In this case, the destination frame is a multicast address.
++ A unicast destination address means the frame is sent to a single destination station.
+  + The relationship between sender and receiver is one-to-one.
+  + If LSB of first byte in MAC address is 0, it is unicast address. (i.e, first octat number is even)
++ A multicast destination address means the frame is sent to multiple destination station.
+  + The relationship between sender and receiver is one-to-many.
+  + If LSB of first byte in MAC address is 1, it is a multicast address (i.e, first octat number is odd)
+
+#+DOWNLOADED: screenshot @ 2023-10-31 23:19:13
+[[file:Medium_Access_Control_Sublayer/2023-10-31_23-19-13_screenshot.png]]
+
+The *broadcast address is FF:FF:FF:FF*
++ it is a special case of multicast address
++ the recipients are all of the stations on the LAN
+**** Access method : CSMA/CD
+Standard ethernet uses I-persistent CSMA/CD. The time given to a slot is given by slot time
+
+slot time = round-trip time + time required to send jam sequence
+
+The slot time can be calculated as
+
+\[\text{slot time} = \frac{\text{packet size}}{\text{speed of NIC}} \]
+
+For standard ethernet, the packet size is 512 bits and speed is 10-Mbps. So slot time is
+\[ \text{slot time} = \frac{512 bits}{10^7 bps} secs\]
+\[ \text{slot time} = 51.2 \mu s \]
+The maximum length between two stations is calculated as
+\[ \text{max length} = \text{propogation speed} \times \frac{\text{slot time}}{2}\]
+The propogation speed is $2 \times 10^{8} m/s$ in most mediums, therefore the max length is
+\[ \text{max length} = 2 \times 10^{8} \times \frac{51.2 \times 10^{-6}}{2} m =  5120 m\]
+But /due to delay times in repeaters and interfaces/, the laximum length is reduced to only
+\[ \text{max length} = 2500 m \]
+
+*** Standard Ethernet : Physical Layer
+For standard ethernet, physical layer implementation is different; the four most common are discussed here
++ 10Base5 : Bus topology, Thick coaxial cable
++ 10Base2 : Bus topology, Thin coaxial cable
++ 10Base-T : Star topology, Unshielded Twisted Pair (UTP) wire
++ 10Base-F : Star topology, Fiber
+All standard ethernet use basebad at 10-Mbps. *The line coding used is Manchester scheme.*
+**** 10Base5 : Thick Ethernet
+Called thick ethernet or thicknet. It uses a bus topology
++ Name comes from size of cable, which is size of garden hose and too stiff to bend
++ Uses an external transeiver (transmitter/receiver) via a tap cable to the thick cable
++ 10 stands for speed 10Mbps. The 5 stands for maximum length of the coaxial cable which is 500m
++ Collisions occur only within the thick coaxial cable
+**** 10Base2 : Thin Ethernet
+Also called cheapernet, since it is more affordable. It also uses a bus topology
++ The cable is flexible and much thinner
++ Transceiver is part of the NIC
++ 10 stands for speed 10Mbps. The 2 stands for maximum length of coaxial cable which is 185m (very close to 200m)
++ Collisions occur only within the backbone of bus topology
+**** 10Base-T : Twisted-Pair Ethernet
+It uses a physical star topology
++ All stations are connected to a HUB
++ Two twisted-pair cables are needed per station (one for sending and one for receiving)
++ The maximum length of a twisted-pair wire is 100m
++ Collisions happen in the HUB
+**** 10Base-F : Fiber Ethernet
+It also uses a star topology
++ All stations are connected to HUB
++ Two optical fiber cables are needed per station (one for sending and one for receiving)
++ The maximum length can go upto 2000m
+In summary, the different physical layer implementations are
+# Probably replace due to copy right
+
+#+DOWNLOADED: screenshot @ 2023-11-01 00:56:41
+[[file:Medium_Access_Control_Sublayer/2023-11-01_00-56-41_screenshot.png]]
+
+*** Switched Ethernet / Bridged Ethernet
++ The bridged ethernet uses the same MAC sublayer protocols, so /frame format and access method is the same./
+**** Bridges
+A bridge is a layer 2 switch (i.e, it works on 2 layers; physical and data link layer). A hub is a simple physical connection of the wires, whereas /within a switch, packet switching is done./
++ The packet received by hub is forwarded to every station connected to the hub
++ The packet received by switch is forwarded only to the station to which frame is addressed
+  + The switch reads the MAC address of the frame to determine which port to send the frame to
+
+[[./Medium_Access_Control_Sublayer/Untitled-2023-11-17-1853.png]]
+
++ Since the bridge only forwards packets to the needed port, it /reduces the collision domain/ to only between the bridge and the station
++ Every port in a layer 2 switch is equivalent to a seperate LAN. So /layer 2 switch (bridge) is used to connect different LANs/
+**** Using N-port bridge
+A layer 2 switch with N ports is called an N-port bridge.
++ Using only bridges in our LAN allows us to achieve faster speeds since bandwidth is not divided
+Example, if there are 6 stations and bandwidth is 12mbps, then if we use HUB to connect the six stations each one will get bandwidth $12/6 = 2mbps$. But if we use a switch to connect the stations, each will get the complete bandwidth of $12mbps$ since each station has a seperate collission domain
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-11-17%20200910.png @ 2023-11-17 20:10:24
+[[file:Medium_Access_Control_Sublayer/2023-11-17_20-10-24_Screenshot 2023-11-17 200910.png]]
+
+**** Full-duplex switched ethernet
+This is the fastest ethernet solution. It uses N-port bridges to connect the stations. Also the connections between the stations and the layer 2 switch is full-duplex
++ Since every path a packet can travel has a seperate domain, there is /no need for CSMA/CD/ i.e, there is /no need for Access Control Protocols/
+															#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-11-17%20201408.png @ 2023-11-17 20:14:16
+[[file:Medium_Access_Control_Sublayer/2023-11-17_20-14-16_Screenshot 2023-11-17 201408.png]]
+
+*** Fast Ethernet
+IEEE created Fast Ethernet under 802.3u.
++ It is backward compatible with standard ethernet
+  + It uses the *same MAC sublayer protocols*, this was one of the main goals when making fast ethernet
+  + So minimum and maximum frame size, frame formats and MAC addresses are all same
+  + The only difference is in the physical layer
++ It's speed is 100Mbps
++ The physical topology differes from standard ethernet
+  + *Bus topology is not supported, only star topology is supported*
+  + If there are only two stations, they can be connected point-to-point
+
+*Autonegotiation*
+
+Since fast ethernet needed to be backwards compatible, it introduced feature called autonegotiation
++ This feature allows two devices to negotiate the *mode of data transfer (half-duplex or full-duplex)*; and *the data rate (10Mbps or 100Mbps)*
++ This allows incompatible devices, (one using standard ethernet and another using fast ethernet) to form connection
+**** Implementations of Fast Ethernet
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-11-18%20002340.png @ 2023-11-18 00:24:04
+[[file:Medium_Access_Control_Sublayer/2023-11-18_00-24-04_Screenshot 2023-11-18 002340.png]]
+
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-11-18%20002611.png @ 2023-11-18 00:26:25
+[[file:Medium_Access_Control_Sublayer/2023-11-18_00-26-25_Screenshot 2023-11-18 002611.png]]
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-11-18%20002450.png @ 2023-11-18 00:25:00
+[[file:Medium_Access_Control_Sublayer/2023-11-18_00-25-00_Screenshot 2023-11-18 002450.png]]
+
+*** Gigabit Ethernet
+IEEE commitee calls it 802.3ab. The /physical layer is same as the Fast ethernet/
+**** MAC sublayer
+Similar to fast ethernet, at first IEEE tried to keep MAC sublayer untouched. But to reach speed of 1Gbps, this was not possible. So for Gigabit ethernet, changes were done to MAC sublayer. Most Gigabit Ethernet work in Full-duplex but some implementations have been defined for half-duplex. /Autonegotiation is supported in gigabit-ethernet/ 
+
+*Full-Duplex Mode*
+
+In this mode, CSMA/CD is not used because of lack of possible collisions. The length of wire is determined by signal attenuation in cable. Therefore, /no change from standard ethernet MAC sublayer is done for full-duplex mode/. 
+
+*Half-Duplex Mode*
+
+Gigabit ethernet can be used in half-duplex but is extremely rare to do so. The MAC sublayer needs to be changed in order to accomadate half-duplex mode. In half-duplex mode HUBs are used, therefore CSMA/CD needs to be used. There are /three additions for half-duplex in gigabit ethernet/
+1. *Traditional* => The minimum frame length is same as standard ethernet (512bits). But since speed is 100 times faster, the length is also 100 times less. So length of wire is 25m 
+2. *Carrier Extension* => The minimum length of frame is increased to (4096bits). Since frame size is increase 8 times, the length of wire also increases by 8 times. This increases the length of wire to 200m. But /if frame is smaller, the station needs to pad it./
+3. *Frame bursting* => This is used when we are using carrier extension. Carrier extension is very expensive (bandwidth-wise) for smaller frames. So rather than padding a single small frame, multiple data frames are concatnated before being sent to the line.
+**** Implementations of Gigabit Ethernet
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-11-18%20005856.png @ 2023-11-18 00:59:03
+[[file:Medium_Access_Control_Sublayer/2023-11-18_00-59-03_Screenshot 2023-11-18 005856.png]]
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-11-18%20005917.png @ 2023-11-18 00:59:23
+[[file:Medium_Access_Control_Sublayer/2023-11-18_00-59-23_Screenshot 2023-11-18 005917.png]]
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-11-18%20005933.png @ 2023-11-18 00:59:39
+[[file:Medium_Access_Control_Sublayer/2023-11-18_00-59-39_Screenshot 2023-11-18 005933.png]]
+*** Ten-Gigabit Ethernet
++ Uses same frame format and frame sizes
++ /Only full-duplex mode is supported/. Therefore, CSMA/CD is no longer part of design
++ Uses scrambling and 64B/66B encoding
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-11-18%20011436.png @ 2023-11-18 01:14:44
+[[file:Medium_Access_Control_Sublayer/2023-11-18_01-14-44_Screenshot 2023-11-18 011436.png]]
+** Connecting devices
+Connecting devices can be divided into five different categories based on which layer they operate
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-11-18%20132943.png @ 2023-11-18 13:30:09
+[[file:Medium_Access_Control_Sublayer/2023-11-18_13-30-09_Screenshot 2023-11-18 132943.png]]
+
+1. Passive hubs work below the physical layer
+2. Repeater and Active hubs work on the physical layer
+3. Bridges and two-layer switches work on data link layer and physical layer
+4. Routers and three-layer switches work on network layer, data link layer and physical layer
+5. Gateways work on all layers
+*** Passive Hubs
+A passive hub is just a connector. It connects the wires coming from different branches. It doesn't make any changes to the signal it gets
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-11-18%20133838.png @ 2023-11-18 13:38:46
+[[file:Medium_Access_Control_Sublayer/2023-11-18_13-38-46_Screenshot 2023-11-18 133838.png]]
+
+*** Repeaters and Active Hubs
+These devices work on the physical layers.
++ Signals in a medium can only travel a finite distance, based on signal strength
++ Repeaters and Active Hubs take the /signal and regenerate them/. This can be used to increase the possible length of wire in LANs i.e, if maxium range for wire is 25m and station is 50m away, we can place a repeater in middle and use two wires to connect the station
+*** Bridges
+This device works on both physical and data link layer.
++ Bridge read the physical (MAC) address contained in the frame and send frame to only the destination station
++ Therefore each port connection to a port is a seperate collission domain
++ This ability of a bridge to send frame to only a single port avoiding collission is called /filtering/
+*** Transparent Bridges
+A transparent bridge is a bridge which does not require any additional configuration i.e, we don't need to fill the forwarding table which stores which port have which MAC addresses manually.
++ The stations are completely unaware of the transparent bridge, i.e, it can be removed or added to network without extra configuration
+A transparent bridge /must meet three criteria/
+1. Frames must be forwarded from station to another correctly
+2. Forwarding table is automatically made by learning frame movements in network
+3. Loops in network must be prevented
+**** Learning
+Earlier bridges had static forwarding table, and were entered manually. The transparent bridges on other hand have learning capacbility by monitoring flow of frames
+1. Suppose a frame is received by switch which is going from station A to station B
+2. If bridge doesn't have entry for station A, it can read it the frame header to get it's MAC address. This is then stored for later use in the table
+3. If bridge doesn't have entry for station B, it sends the frame to every station (this is called flooding the network)
+**** Avoiding Loops
+Transparent bridges work fine if there are no loops. But sytem admins like to have redundant bridges to make network more reliable. But these redundant bridges create loops
++ Loops interfere with learning process of transparent bridges
++ To solve looping problem, *bridges use spanning tree algorithms to create loopless topology*. Since bridges can't change physical topology themselves, they create a logical topology in form of a spanning tree
++ Minimum spanning tree algorithms are used to make performance better in network, by selecting the fastest bridges
++ Bridges use special packets called bridge protocol data units (BPDUs), to create and update spanning tree
+But spanning trees aren't the only solution. /Some transparent bridges use source routing instead of spanning tree/
++ The routing is done by source station, (and to small extent, by destination station).
++ The stations define bridges that frame must visit
++ The source station thus first needs to get locations of bridges using special frames
+*Source routing is used with Token Ring LANs*
+*** Switches
+Switches are multiport transparent bridges. Since they have multiple ports, each port is bufferred so that a single line is not flooded with frames
++ Switches don't divide bandwidth of network among ports (unlike normal HUBs)
++ Frames are buffered in queue, if multiple frames are to be on same line
++ Some switches also implement security features
+Switches are of two types
+1. Store-and-Forward Switching : this method of switching data packets receives a packet, checks for errors and then forwards packet only when the whole packet has arrived at the switch
+2. Cut-through switching : this method does not process packet at all, as soon as it can read the destination address field, it will send the packet on the correct port without waiting for whole packet to arrive
+*** Routers (Three-layer switches)
+These are three-layer device which route packets based on their logical address. Routers are usually used to connect LANs to the WANs like the internet
++ The routing tables are updated dynamically
++ Network layer contains the protocols to update these routing tables
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-11-24%20235944.png @ 2023-11-25 00:00:02
+[[file:Medium_Access_Control_Sublayer/2023-11-25_00-00-02_Screenshot 2023-11-24 235944.png]]
+*** Gateway
+These devices work on all five layer of Internet or all seven layers of OSI model (i.e, they work on all layers of network models)
++ They can read and interpret the application messages
++ They can be used to connect different network models (like OSI with TCP/IP model network)
++ Since they can interpret application messages, they are used for security and filtering unwanted messages
+** Backbone networks and Virtual LANs
+*** Backbone networks
+Networks where several networks are connected using a sigle backbone network
+**** Bus backbone
+Used to connect different buildings of organization
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-11-25%20001031.png @ 2023-11-25 00:10:35
+[[file:Medium_Access_Control_Sublayer/2023-11-25_00-10-35_Screenshot 2023-11-25 001031.png]]
+
+**** Star backbone
+Also called /collapsed or switched backbone/. The backbone of the network is just a single switch
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-11-25%20001145.png @ 2023-11-25 00:11:49
+[[file:Medium_Access_Control_Sublayer/2023-11-25_00-11-49_Screenshot 2023-11-25 001145.png]]
+
+**** Connecting remote LANs
+In this type of backbone network, the point-to-point bridges are used to connect the different LANs. Each LAN will have it's own bridge which is connected point-to-point to backbone
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-11-25%20001327.png @ 2023-11-25 00:13:31
+[[file:Medium_Access_Control_Sublayer/2023-11-25_00-13-31_Screenshot 2023-11-25 001327.png]]
+
+*** Virtual LANs
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-11-25%20001637.png @ 2023-11-25 00:17:57
+[[file:Medium_Access_Control_Sublayer/2023-11-25_00-17-57_Screenshot 2023-11-25 001637.png]]
+
+*VLANs are software that run of the switch*
++ VLANs divide network into logical LANs, instead of physical seperate networks.
++ Each VLAN can thus act as a workgroup for an organization
++ This means that stations can be moved to different workgroups without having to rewire the physical networks
++ This is useful when messages need to be broadcasted to a paritcular workgroup
++ Moving people form one workgroup to another is also easier
+
+**** Membership in VLANs
+A VLAN software may use one or more following characteristics to divide VLANs
+1. Port Numbers : The ports of the switch can be used to define which stations connected to which port of switch are in which VLAN
+2. MAC Addresses
+3. IP Addresses
+4. Multicast IP Addresses (more about these later in network layer)
+
+**** Configuration
+The configuration can be of three types
+1. Manual configuration : administrator needs to enter characteristics for the VLAN software
+2. Automatic configuration : admin can define certain criteria (like station names, project IDs or user IDs) to automatically connect or disconnect stations from VLAN
+3. Semiautomatic configuration : initialization done manually and migrations done automatically
+
+**** Communication between switches
+When using backbone network, the VLAN software running on backbone switch needs to known membership of stations in other switches. Following methods are used to get this info
++ Table Maintenance : In this method, when a station sends broadcast frame to its group members, the switches will record station membership in bottom-up fashion. These recorded tables are passed around
++ Frame tagging : an external header is attached to frame that defines the destination VLAN, this is the frame tag. It is used by receiving switches to determine VLANs to be receiving broadcast messages
+IEEE standard uses the frame tagging for VLANs in backbone networks

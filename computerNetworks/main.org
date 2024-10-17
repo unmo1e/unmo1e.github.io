@@ -1,0 +1,191 @@
+# TITLE, AUTHOR, DATE and UID are required for epub export
+#+TITLE: Computer Networks
+#+AUTHOR: Anmol Nawani
+#+UID: https://git.lomna.xyz
+#+OPTIONS: H:4
+#+html_head: <link rel="stylesheet" href="src/org.css">
+
+@@html:<hr />@@
+* Introduction
+A computer network is collection of two or more computers that can communicate with each other.
+
+Computer networks have two basic building blocks
+1. *Nodes* : these are devices that are connected to the network. They can either be network redistribution points or communication endpoints. Example of nodes are computers, routers, switches and other devices on the network.
+2. *Links* : these are the connections between nodes. It includes the type of connectivity (wired or wireless) and the protocols that are used for communication between the nodes.
+Computer networks are made of protocols which allow us to send data through links between nodes.
+** Types of computer networks
+Computer networks can fall under two broad categories
+1. *Client-Server Architecture* : in this architecture a communicating node can either be a server or a client. The client sends requests to the server, the server fulfills that request and sends a response. There are multiple clients connected to the same server.
+2. *Peer-to-Peer* : in this architecture there is no central server, tasks are divided amongst the nodes. Each node has the same set of capabilities and responsibilities.
+@@html:<hr />@@
+* Unique Identifiers of Computer Network
+In order to establish communication between two nodes, we need to identify the nodes. This is done by using unique identifiers given to devices on a network.
+** Hostname
+A hostname is a human readable label that is assigned to a device on the network. On the internet, a hostname is a domain name which has been assigned to a host computer. It is useful to identify devices on a local network.
+** IP Address
+Also known as the logical address, every device to which a direct communication can be established will have a unique IP address. Interned Assigned Numbers Authority (IANA) assigns and manages ip addresses globally. Previously, ipv4 (version 4) was used and was an address of 32 bits, hence there are $2^{32}$ unique ipv4 addresses. Because there are limited number of ipv4 addresses, we are running out of them. A new version of ip addresses ipv6 is now implemented. It has addresses of size 128 bits.
+** MAC Address
+Stands for Media Access Control Address. It is also known as the physical address. Every Network Interface Card (NIC) is assigned a unique identifier. These are assigned by the manufacturer and cannot be changed. The length of a MAC address is 48 bits.
+@@html:<hr />@@
+** Ports
+A single system has multiple connections and network applications running. A port is a logical channel through which data can be sent or recieved. A port number is always associated with a network address such as an IP address so that we can identify the device whose port was referenced. The unique combination of ip address and port number together is called a *socket*, example 192.168.0.1:8000
+\\
+The ip address and port number are seperated by a colon (:)
+
+The ports are divided into three categories.
+
+#+ATTR_HTML: :rules all
+| Port Type        | Range         |
+|------------------+---------------|
+| Well known ports | 0 - 1023      |
+| Registered ports | 1024 - 49151  |
+| Dynamic ports    | 49152 - 65535 |
+
++ The ports from 0 through 1023 are called well-known ports or system ports. They are used by system processes to provide widely used network services. Example, port 20 is for FTP and 80 is for HTTP.
+
++ Ports in the range from 1024 to 49151 are user or registered ports. These ports can be freely used by the user. Unlike system ports, most OS will allow applications to use these ports without superuser privelages.
+
++ Ports in range 49152 to 65535 are dynamic ports or private ports. They are also called ephemeral ports, because they are used for very short period of time. The TCP, UDP and SCTP typically use ephemeral port for client end of communication. The allocation of ephemeral port is temporary and only valid for short duration of communication session.
+
+@@html:<hr />@@
+* Network Models
+A network model defines a way to organize a system's functions and features. It also defines it's structure and protocols.
+
+In order to assign functionality to different parts of a network, these models are organized into layered structure. Each layer has a set of functions to perform. Protocols are created to handle functions in each layer. So each layer will have it's own collection of protocols which is called a /protocol suite/.
+
+There are a few guiding principles for creating layers in a network model, such as
++ Not creating too many layers, as it may lead to unneccessary complexity.
++ Reduce the number of interactions between the layers
++ Collect similar functions and seperating fundamentally different functions in different layers
++ Indentify whether the function of layer is based on hardware or software.
+
+Lower layers are linked with hardware whereas, the upper layers are linked with software.
+
+There have been many network models, many of them are no longer used. IBM's SNA model, Apple's AppleTalk and IPX/SPX model are all no longer in use. They were phased out by the popular and most commonly used model today, the TCP/IP model.
+@@html:<hr />@@
+** OSI Model
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-12-03%20165347.png @ 2023-12-03 16:54:07
+[[file:Network_Models/2023-12-03_16-54-07_Screenshot 2023-12-03 165347.png]]
+
+The OSI model is used as a reference model. This means that it is used to provide building blocks for other network models and compare other network models to improve connectivity and consistency.
+
+The OSI model has 7 layers. Each layer has different functionality. The principles applied for the 7 layers are
+1. A layer should be created where a different abstraction is needed
+2. Each layer should should perform a well-defined function
+3. The function for each layer should be chosen with eye toward defining an internationally standardized protocols
+4. Minimize the information flow across layer boundries
+5. The number of layers should be large enough that distinct functions need not be in same layer, but small enough that architecture is not unwieldy
+*** Physical Layer
+The lowest layer of the OSI model. Responsible for physical connections between the devices. The physical layer handles data in form of bits and is responsible for transmitting bits without loss from one node to another.
+
+Functions of physical layer are
++ *Bit Synchronization* : the physical layer provides a clok to synchronize sending and recieving of data between nodes
++ *Bit rate  control* : the physical layer also controls the the number of bits sent per second.
++ *Physical topologies* : topology defines how the nodes and links are arranged in the network
++ *Transmission mode* : the physical layer defines how data will flow from one node to another. Some transmissions modes are simplex, half-duplex and full-duplex
+
+Hub, repeater, moden and cables are physical layer devices
+*** Data Link Layer (DLL)
+This layer is responsible for node-to-node delivery of the message. It makes sure that data transfer is error-free from one node to another, over the physical layer. When packet enters a network, it is the responsibility of DLL to transmit it to the host using MAC address.
+
+The DLL has two sublayers:
+1. Logical Link Control (LLC)
+2. Media Access Control (MAC)
+
+The packet recieved from *network layer* is divided into frames, depending on the frame size of NIC. The reciever's MAC address is obtained by placing an Address Resolution Protocol (ARP) request, asking for MAC address for given IP address. The destination host replies to the ARP request with it's MAC address.
+
+The functions of DLL are
++ *Framing* : since physical layer only accepts and transmits stream of bits without meaning or structure, the DLL breaks message into recognizable frame with boundries. This is done by attaching special bit patterns at beginning and end of a frame. Breaking message into frames is called framing.
++ *Physical addressing* : after creating frames, the DLL will add MAC address of the sender and reciever in the header of each frame.
++ *Error control* : DLL will detect and retransmit damaged or lost frames.
++ *Flow control* : the data rate must be constant on both sides to not cause corruption in data. Flow control is coordinated by the DLL to avoid this.
++ *Access contrl* : when a single communication channel is shared by multiple devices, the MAC sub-layer of DLL determines which device has control over the channel at a given time.
+
+DLL is handled by the NIC and device drivers of host machines.
+Switch and bridges are example of DLL devices.
+*** Network Layer
+The network layer controls operations of the subnet.
+It is responsible for transmission of data from one host to other located on different subnets. It is also responsible for packet routing i.e, the selection of the shortest path for the packets. The sender and reciever IP addresses are place in the header by the network layer.
+
+Routes can be based on static table that rarely changed, or are updated automatically at the start of conversation. Routes can also be highly dynamic to reflect the current network load.
+
+Too many packets present in subnet can cause bottlenecks. *Handling congestion is also the responsibility of network layer*. The *quality of service* (delay, transit time, jitter, etc.) are also a network layer issue.
+
+Functions of network layer are
++ *Routing* : the network layer determines which route will be used to send packet from sender to reciever.
++ *Logical addressing* : the network layer identifies the IP addresses of sender and reciever in the network an places them in the header.
+
+The implementation of network layer is in devices such as routers and switches.
+*** Transport Layer
+The data in transport layer is referred to as *segments*. This layer is responsible for end to end delivery of messages. It also acknowledges successful transmission and re-transmits data if error is found.
+
+At sender's side, this layer recieves data from upper layers, performs *segmentation* and also implements *flow and error control*. It also adds source and destination port numbers in headers and forwards the segmented data to network layer. The destination port number is configured either by default or manually. example, when requesting web server, we use destination port 80 for the request because it is default port used for HTTP requests.
+
+At reciever's side, it performs sequencing and reassembling of segmented  data. Then port number is read from the header and data is forwarded to the respective application.
+
+Transport layer is an *end-to-end layer*. It carries data all the way from source to destination. That is, a program on source machine carries on a conversation with similar program on destination machine using headers and control messages. The lower layers, have protocols which communicate between machine and immediate neighbours, not the source and destination. /*Layers 1 to 3 are chained, i.e. communicate with neighbours while layers 4 to 7 are end-to-end.*/
+
+Funtions of transport layer are
++ *Segmentation and Reassembly* : at sender the message from session layer is broken into smaller units called segments, at receiver the segements are reassembled into message.
++ *Service Point Addressing* : the transport layer determines what type of service is provided to the session layer and ultimately, to the user. The type of service is determined when connection is established via port address.
+
+The service of transport layer is of two types
+1. *Connection Oriented Service* : it is a three phase service that has connection establishment, data transfer and then termination. The receiving node will send and acknowledgment and asks for re-transmission if there is error. This type of transmission is reliable and secure. example, TCP
+2. *Connectionless service* : in this type of transmission,  there is no need to establish a connection before data transfer and the receiver does not send an acknowledgement. This approach allows faster communication but is less reliable. example, UDP
+
+Transport layer is operated by the OS. This layer is called the *heart of OSI model*.
+*** Session Layer
+This layer is responsible for establishing connection, maintanance of communication sessions and authentication. It ensures the security in connection.
+
+The services provided by session layer are
++ *Connection establishmen and release* : The session layer open a connection between two nodes, this connection is called a *session*. In OSI, transport layer does not terminate the connection, the session layer is responsible for that. In TCP/IP model, this is done by the transport layer.
++ *Dialogue control* : in a session, there can be three different types of dialogue - two way simultaneous (full-duplex), two way alternate (half-duplex) and one way (simplex). It controls which side has the turn during communication.
++ *Synchronization points and resynchronization* : this layer allows the two sides to insert synchronization points between dialogue and allow them to resynchronize to a previous synchronization point, aborting the current transmission. This can be used for real-time audio/video.
+*** Presentation Layer
+Also called the translation layer. This layer translates files and data from local formats to standard, transmittable formats.
+
+The services provided by presentation layer are
++ *Data conversion* : example, converting file formats such as bmp to webp which are easier to transmit in a network.
++ *Character code translation* : changing strings to bits that can be transmitted.
++ *Compression* : compressing and decompressing data in order to reduce the amount of data has to be sent.
++ *Encryption and Decryption* : encrypting and decryting of messages for security
++ *Serialization* : converting complex data structures into flat structures using mechanisms like JSON and XML.
+*** Application Layer
+Also called the Desktop Layer. This layer acts as the window for applications to access the network. This layer produces the data which will be transferred over network and displays the information to user. This layer also contains the protocols for interfaces to different functionalities of the web.
+
+This layer has protocols such as HTTP, FTP, SMTP, DNS and provides the functionality to use services associated with these protocols.
+@@html:<hr />@@
+** TCP/IP Model
+TCP/IP was used in ARPANET and now the worldwide Internet. The ARPANET started as a network of hundreds of universities and government installations. When satellite and radio networks were added, they caused problems with existing protocols. This need for a model that can connect multiple networks in a seamless way was the major goal of the TCP/IP model.
+
+Another requirment was that connections remain intact as long as the source and destination machines were working, even if some machines or transmission lines were out of operation. So a flexible and robust network was needed.
+
+The TCP/IP model had 4 layers, but sometimes physical layer is also included in the model.
+
+*** Link layer
+The requirnment for a robust network led to the choice of packet-switching network based on a connectionless layer that runs across different networks. The link layer describes what links like serial lines and classic ethernet must do to meet needs of this connectionless internet layer. It is not a layer in normal sense, but rather an interface between different hosts and transmission links.
+
+*** Internet layer
+This layer roughly corresponds to the OSI network layer. Its job is to permit hosts to *inject packets into any network and have them travel independently to the destination*. That is, it will allow packets from go to one network to another while they are going to destination. This property that packets can travel through any network makes the whole network more robust, by allowing communication even if a few networks in some path are down.
+
+The packets may even arrive in a completely different order than in which they were sent. If in-order delivery was needed, then it's the responsibility of higher layers to rearrange them.
+
+It is similar to the *old mail system*. When a sequence of international letters are dropped in a mailbox from one country, most mails will be delivered to the correct address in destination country. The mails may not go in the same sequence they we entered in the mailbox. Furthermore, each country (network for our analogy) has it's own stamps, envelope size, and other rules and protocols.
+
+The internet layer defines an official packet format and protocol called *Internet Protocol* (IP), with a companion protocol *Internet Control Message Protocol* (ICMP) that helps its function.
+
+The job of internet layer is to deliver IP packets where they are supposed to go. Packet routing is the major obstacle for this layer. (IP has proven not effective to avoid congestion)
+*** Transport
+Same functionality as the transport layer in the OSI model
+*** Application layer
+Same functionality as the presentation layer and the application layer in the OSI model. Also handles some functions of the session layer.
+@@html:<hr />@@
+#+INCLUDE: "./physical.org" :minlevel 1
+@@html:<hr />@@
+#+INCLUDE: "./datalink.org" :minlevel 1
+@@html:<hr />@@
+#+INCLUDE: "./mac_sublayer.org" :minlevel 1
+@@html:<hr />@@
+#+INCLUDE: "./network.org" :minlevel 1
+@@html:<hr />@@
+#+INCLUDE: "./transport.org" :minlevel 1

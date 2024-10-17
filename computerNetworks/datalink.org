@@ -1,0 +1,487 @@
+* Data Link Layer
+In this layer, data is handelded in form of *frames.* It handles data transfer between two *adjacent machines*.
+
+Adjacent means two computers connected by a *communication channel*. The essential property of a communication channel is that it acts *conceptually like a wire.* That is, bits are delivered in same order in which they are sent.
+
+The data link layer uses the services of the physical layer to send and recieve bits from communication channels.
+
+The *main functions* of DLL are
+1. Provide a well defined interface for the network layer
+2. *Framing* sequences of bytes as self-contained segments.
+3. *Detection and correction of transmission errors*.
+4. *Regulating the flow of data* so that slow recievers are not swamped by fast senders.
+@@html:<hr />@@
+** Services Provided to Network Layer
+The *principle function of DLL is to transfer data from network layer of source machine to network layer of destination machine*. The data link layers of source and destination will communicate via a data link protocol.
+
+The service data link layer provides varies from protocol to protocol. Three common possibilities are
+1. *_Unacknowledged connectionless service_* : sends frames to destination without having the destination acknowledge them. Example, ethernet provides this class of service.
+   + No logical connection is established.
+   + If frame is lost due to noise, no attempt is made to detect or recover it.
+   + Appropriate when error rate is low and real time traffic (voice or video).
+2. *_Acknowledged connectionless service_* : step up in terms of reliability.
+   + Still no logical connection is established
+   + Each frame sent is individually acknowledged
+   + If sender gets no acknowledgement within a specified time interval, frame is sent again
+   + Acknowledgement in data link layer is an optimization rather than a requirnment. It can also be handled in network layer, but there the whole message is retransmitted rather than a single frame.
+   + On unreliable channels, data link protocols overhead is worth the cost, but it may be unneccessary on reliable channels (wired channels)
+3. *_Acknowledged connection-oriented service_* : source and destination machine establish a connection before data transfer begins.
+   + Each frame is numbered
+   + Data link layer will guarantee that each frame is received
+   + Also guarantees that all frames are received only once and in right order
+   + Appropraite over long, unreliable links like satellite channels or telephone circuits
+   In connection-oriented service, transfer has three distinct phases
+   1. Establish connection : both sides initialize variables and counters to keep track of frames
+   2. Data transfer : frames are transmitted
+   3. Connection released : free variables, buffers and other resources used to maintain connection
+
+@@html:<hr />@@
+** Framing
+Physical layer accepts raw bit stream and attempt to deliver it to destination. But because channels are noisy, it causes error in the bit stream. The physical layer adds redundany bits to reduce error rate to tolerable level.
+
+But the physical layer does not guarantee error-free transmission. Bits may not have equal values or the number of bits received may be different from number of bits sent. It is up to data link layer to detect and if needed, correct errors.
+*** Use of framing
+Data link layer breaks the bit stream into discrete frames, and computes a checksum for each frame and includes it in frame when it is transmitted. When frame arrives at the destination, the receiver can recompute checksum to test if error has ocurred.
+
+*** How framing is done
+A good framing design must make it easy for receiver to find start of new frames while using little bandwidth.
+
++ *Payload data* : The data that is carried by a frame which is given to network layer is called payload data.
+**** Byte count
+Uses a field in header to specify number of bytes in the frame. Data link layer at receiver reads the byte count to know where the frame ends.
+
+The *count can be garbled during transmission*. Then receiver cannot locate the correct start of next frame. Even when the checksum fails, sending frame back for retransmission won't help, since destination won't know how many bytes to skip over to start retransmission (resynchronization error).
+
+Therefore, byte count method is not used by itself.
+**** Flag byte
+The problem of resynchronization is solved by having each frame start and end with special bytes (often the same byte) called *flag byte.*
+Flag byte is usually used as both starting and ending delimiter.
+
+*Two consecutive flag bytes indicate end of one frame and start of next*. So if receiver ever losses synchronization, it can search for two consecutive flag bytes to resynchronize.
+
+It may happen that the payload data to be sent has the same byte as the flag byte, this would interfere with framing. There are two ways to solve this, *byte stuffing* and *bit stuffing*.
+**** Byte stuffing
+Sender's data link layer will insert a special *escape byte (ESC)* before the FLAG byte in payload data
++ The idea is the same as using \" for inserting quotes in strings
++ If payload data has FLAG byte, data link layer converts it to ESC FLAG
++ If payload data has ESC byte, data link layer converts it to ESC ESC
+The data link layer on receiver machine will remove the esacape bytes before giving data to network layer. This technique is called *byte stuffing*.
+\\
+This byte-stuffing scheme is a slight simplification of actual used scheme in PPP (Point-to-Point Protocol).
+**** Bit stuffing
+The problem with byte stuffing is that we use a whole byte to escape flag byte. *Inserting a full byte of data every time to escape the flag byte pattern wastes bandwidth*
+
+In bit stuffing, we use a single bit in order to escape flag byte in payload data. It was developed for *HDLC (High-level Data Link Control) Protocol*
+
+On senders side
++ The flag byte is 01111110 or 0x7E in hexadecimal
++ Whenever the payload data has 5 consecutive 1's, a 0 bit is stuffed in the outgoing stream
++ Therefore only a single bit is used for stuffing rather than a whole byte
+On the receivers side
++ If there are 5 consecutive 1's followed by a 0, layer automatically destuffs (deletes) the 0 bit
++ The flag byte 0x7E is used to detect frames
+Example, if payload data has flag pattern 01111110, it will be transmitted as 011111010 on receiver's side, the 0 bit is discarded and it is given to network layer as 01111110.
+\[ \text{Sender side : } 01111110 \text{ transmitted as } 011111010 \]
+\[ \text{Receiver side : } 011111010 \text{ read as } 01111110 \]
+
+**** Physical layer coding violations
+Both byte stuffing and bit stuffing have the downside where length of frame depends on content of payload data. So if there are no flag bytes in payload data, then the stuffed data to be sent is small. But if we assume all bytes in payload data are flag bytes, then the data to be sent doubles when using byte stuffing. With bit stuffing, increase is roughly 12.5% for same scenario.
+
+If we know that physical layer is using a specific coding for example 4B/5B to reduce redundancy. We can use one of the "coding violations" pattern, i.e. the *unused pattern as the flag byte*. Since these pattern won't occur in the payload data, this allows us to use these patterns for our flag byte.
+
+The advantage of this scheme is that since these patterns don't occur in payload, it is *easy to find start and end of frames*. This method also *avoids need to stuff data.*
+@@html:<hr />@@
+** Error Control
+Another goal of data link layer is to deliver data to network layer in proper order.
+
+For unacknowledged connectionless service, sender can keep outputting frames without regard to whether they are arriving properly
+*** Using Acknowledgements
+For reliable service, we need to know if frame reached destination without error
++ We need to provide the sender feedback about what is received
++ This is done by protocol calls of the receiver, which send back special control frames with either /*positive or negative acknowledgement*/
+  + Positive acknowledgemen means frame was received safely
+  + Negative means the frame must be retransmitted
+*** Lost frames
++ There is a possibility that a /*frame vanishes completely, i.e. it is lost*/. This usually happens due to hardware trouble
+  + In this case, receiver has no way to know a frame was lost and will not react to it
+  + Similarly, if sender waits for acknowledgement after sending a frame and /*acknowledgement frame is lost, then sender waits forever*/
++ Frame being lost is /*dealt by using timers*/ in data link layer
+  + When sender transmits a frame, it starts a timer with an interval long enough for frame to reach destination, be processed there and the acknowledgement to propogate back to sender.
+  + Normally, frame is sent and acknowledgement is received within time interval, in which case timer is discarded 
+  + If orignal frame or acknowledgement is lost, timer will go off alerting the sender
+*** Retransmission of lost frames
++ However, the /frame can't be simply retransmitted if it is lost/. Because there is risk of destination accepting multiple frames and passing them to it's network layer
++ To prevent this, we need to sequence outgoing frames, so that receiver can distinguish retransmissions and originals
+Managing timers and sequencing frames to ensure that each frame is passed to network layer of destination extactly once is an important duty of data link layer.
+@@html:<hr />@@
+** Error detection and correction
+Some channels like optical fiber have tiny error rates that are a rare occurance. But other channels (especially wireless) have error rates that are orders of magnitude larger. However, transmission errors are present in every medium, so we need methods to deal with them.
+
+There are two basic strategies for dealing with errors. *Both add redundant (extra) information* to the data that is sent.
+
++ *Error-correction* : include enough redundant information to enable receiver to be able to deduce what transmitted data must have been and correct received data. Uses error-correcting codes
+  + The use of error correcting codes is refferred to as *FEC (Forward Error Correction)*
++ *Error-detection and retransmission* : include only enough redundancy to allow receiver to detect that an error occured and have it request retransmission. Uses error-detecting codes.
+A key consideration for both methods is that redundant bits are just as likely to have errors as data bits. So error code must be strong enough to handle these situations.
+**** Which method to use
+Both of these methods have their own uses
++ On reliable channels such as fiber, it is cheaper to use error-detecting codes and just retransmit the occasional faulty frame
++ On unreliable channels such as WiFi, it is better to add redundancy to each block so that receiver is able to figure out what what orignal transmitted data was
++ FEC is used on noisy channels because retransmissions are just as likely to be in error as the first transmission
+**** Types of errors in channel
+There are two models of errors that can happen in a channel
+1. *Single-bit errors* : 
+   Extreme thermal noise that overwhelm the signal briefly and occasionally give rise to isolated single-bit errors.
+   + Single-bit errors are easier to correct using error-correcting codes
+2. *Burst errors* : 
+   Problem in physical processes which generate signals such as electrical interference can cause errors to code in bursts.
+   + Burst errors are much harder to correct than isolated errors.
+   + Since data is sent in blocks in networks. It is easier to use error-detecting codes and retransmit faulty blocks
+Another type of error that occurs is erasure channel
++ *Erasure channel* :
+  Sometimes, the location of the error is known.
+  + This *usually happens when physical layer receives an analog signal that is not expected*, so if we were using +5V for 1 bit and -5V for 0 bit, then getting some other voltage means error has occured
+  + This situation is called a erasure channel
+  + It is easy to correct these errors using Forward Error Control (FEC) i.e, by using error-correcting codes
+@@html:<hr />@@
+** Codewords and Code rate
+Data will be sent in blocks containing data bits and the redundant bits.
+\\
+In a block, data takes $m$ bits and redundant data takes $r$ bits
+\[ \text{size of block with error code} (n) = m + r \]
+\[ m : \text{number of payload data bits} \]
+\[ r : \text{number of redundant data bits} \]
++ A n-bit unit containing data and check bit sis referred to as an /n-bit codeword/. We describe it as $(n,m)$ code.
++ The /code rate/ or simply rate, is the fraction of codeword that carries payload information and not redundant data.
+  \[ \text{code rate} = \frac{m}{n} \]
++ Code rate vary depending on channel. It might be 1/2 for noisy channel, and close to 1 for a high-quality channel
+#+DOWNLOADED: file:E%3A/CN_Notes/Medium_Access_Control_Sublayer/Untitled-2023-12-03-1551.png @ 2023-12-03 15:56:02
+[[file:Data_Link_Layer/2023-12-03_15-56-02_Untitled-2023-12-03-1551.png]]
+*** Hamming distance
+Hamming distance is a way to compare two strings of equal lengths.
++ The number of positions in which two codewords differ is called /Hamming distance/
+To calculate hamming distance
++ Calculate the XOR of two strings
++ Count the number of 1's in result to get hamming distance
+Example, 10001001 and 10110001 are two strings of equal length (8-bits).
+
+Their XOR is
+\[ 10001001 \oplus 10110001 = 00111000 \]
+\[ \text{Hamming distace} (d) = \text{Number of 1's in } 00111000 \]
+\[ d = 3 \]
+This tells us that the two strings differ in 3 positions
+*** Use of hamming distance
+Hamming distance is used to define correct error detecting and error correcting codes.
++ A code is $k$ error detecting (i.e, it can detect k single bit errors in a codeword), if and only if, the minimum Hamming distance between any two of its codewords is atleast $k + 1$
++ A code is $k$ error correcting (i.e, it can correct k single bit errors in a codeword), if and only if, the minimum Hamming distance between any two of its codewords is atleast $2k + 1$
+
+This is given by following two equations
+\[ \text{Error Detection } : \text{Hamming Distance } \ge k + 1 \]
+\[ \text{Error Correction } : \text{Hamming Distance } \ge 2k + 1 \]
+@@html:<hr />@@
+** Error-Correcting codes
+These codes are often *used in the physical layer*, particularly for noisy channels, and in higher levels for real-time media and content distribution.
+
+There are four common error-correcting codes
+1. Hamming codes
+2. Binary Convolution codes
+3. Reed-Solomon codes
+4. Low-Density Parity Check codes
+Most error-correcting codes have properties of being systematic code and linear code
++ *Systematic code* : The /$m$ data bits are sent directly, along with $r$ check-bits/. So the $m$ data bits are not encoded before transmission.
++ *Linear code* : The /$r$ check bits are computed as a linear function of the $m$ data bits/. XOR  or modulo 2 addition is popular choice to compute the check bits. This means the encoding can be done with operations such as matrix multiplication or simple logic circuits.
+*** Hamming code
+Hamming code is a *error-correcting, linear code.* Because of hamming distance, we know that all $2^n$ possible bit strings are not legal for error-correcting n-codewords.
+
+The relation between number of data bits $m$ and redundant bits $r$ is,
+*\[ \text{for 1 bit error-correcting codes } : 2^r \ge (m + r + 1) \]*
+/This assures a hamming distance of atleast 3/, therefore allowing hamming code to correct 1-bit errors.
+
+*Hamming code uses parity bit to get redundant bits*. Hamming code can use both even and odd parity
+**** Creating hamming codeword
++ Redundant bits are stored at the $2^i$ positions in the code word, so we store redundant bits $r_1$, $r_2$, $r_4$, $r_8$ .... $r_{2^i}$
++ Remaining positions are for data bits $m_i$
++ $r_{2^i}$ is the parity bit of data bits with positions, such that position number has 1 as the $i^{th}$ LSB in binary form
+  \[ r_{2^i} = parity \left( \forall m_{(1\ at\ (i+1)^{th}\ LSB)} \right) \]
+/Example,/ the data bits are *$1100101$*.
+\\
+number of data bits is 7, after using $(2^r \ge (m + r + 1))$, number of redundant bits is 4.
+\\
+Therefore, in this case, we have a 11-codeword
+[[./imgs/IMG_20230923_183757.jpg]]
+Now, we can calculate parity for $r_{2^i}$'s. In this case, we assume we are using /even parity/
+\[ r_1 = parity \left( \forall m_{(1\ at\ 1^{st}\ LSB)} \right) \]
+\[ r_1 = parity \left( m_{0011}, m_{0101}, m_{0111}, m_{1001}, m_{1011} \right) \]
+\[ r_1 = parity \left( 1,0,0,0,1 \right) = 0\]
+Similarly,
+\[ r_2 = parity \left( \forall m_{(1\ at\ 2^{nd}\ LSB)} \right) \]
+\[ r_2 = parity \left( m_{0011}, m_{0110},m_{0111}, m_{1010}, m_{1011} \right) = 0 \]
+\\
+
+\[ r_4 = parity \left( \forall m_{(1\ at\ 3^{rd}\ LSB)} \right) \]
+\[ r_4 = parity \left( m_{0101},m_{0110},m_{0111} \right) = 1 \]
+\\
+
+\[ r_8 = parity \left( \forall m_{(1\ at\ 4^{th}\ LSB)} \right) \]
+\[ r_8 = parity \left( m_{1001}, m_{1010}, m_{1011} \right) = 0 \]
+Therefore, the final transmitted codeword is
+[[./imgs/IMG_20230923_183812.jpg]]
+**** Error detection and correction
+When the receiver gets the hamming codeword, it checks the parity again to decide if an error has occured and correct it. Same type of parity (even or odd) is used to decode the codeword as was used to create it
++ The parities are checked again, each checked parity will include the redundancy bits and the data bits that were used to get the redundancy bit
++ The concatnation of the checked parity bits will tell the position where single-bit error has occured. If no error has occured, then all checked parities are 0s
+Example, let's assume from previous example, /the bit at 7th position got flipped/
+[[./imgs/IMG_20230923_183846.jpg]]
++ The first checked parity is for redundant bit $r_1$, we will get it by cheking parity of $r_1$ and the data bits that were used to compute it
+  \[ c_1 = parity \left( r_1, m_{0011}, m_{0101}, m_{0111}, m_{1001}, m_{1011} \right) \]
+  \[ c_1 = parity \left( 0, 1, 0, 1, 0, 1 \right) = 1 \]
+  Similarly, we /calculate $c_i$ for all $r_{2^{i-1}}$ in received codeword/
+  \[ c_2 = parity \left( r_2, m_{0011}, m_{0110},m_{0111}, m_{1010}, m_{1011} \right) \]
+  \[ c_2 = parity \left( 0,1,1,1,1,1  \right) = 1 \]
+  \\
+  
+  \[ c_3 = parity \left( r_4, m_{0101},m_{0110},m_{0111} \right) \]
+  \[ c_3 = parity \left( 1,0,1,1 \right) = 1 \]
+  \\
+  
+  \[ c_4 = parity \left( r_8, m_{1001}, m_{1010}, m_{1011} \right) \]
+  \[ c_4 = parity \left( 0,0,1,1 \right) = 0 \]
++ The position we get by concatnating these bits is the position of the error, in our example position of error is $c_4c_3c_2c_1$
+  \[ c_4c_3c_2c_1 = 0111 \]
+  i.e, position 7 which is exactly where the error occured
+@@html:<hr />@@
+** Error-Detecting codes
+These codes are commonly *used in data link layer, network layer and transport layer.*
+Error-correcting codes are more useful on noisy and error prone channels (wireless). However, over higher quality channels we can use error-detecting codes to deal with the occasional errors.
+
+There are three common error-detecting methods
+1. Parity
+2. Checksums
+3. Cyclic Redundancy Checks (CRCs)
+*** Parity
+TODO: Basic parity first (even parity odd parity)
+**** Vertical Redundancy Check (VRC)
+TODO : Here
+**** Longitudinal Redundancy Check (LRC)
+TODO : Here
+*** Checksum
+TODO : Here
+*** Cyclic Redundancy Checks
+CRC is an error-detecting code. It uses a polynomial with cofficients only 0 and 1 called the generator polynomial.
+
+We will look at how to get redundant bit with
+
+/Example,/ A bit stream 1101011011 is transmitted using the standard CRC method. The generator polynomial is $x^4+x+1$. What is the actual bit string transmitted?
+**** Generator polynomial
+The generator polynomial is what is used to get the redundant bits from the data. The first step is converting the generator polynomial to a bitstring.
++ The generator polynomial will only have 0's and 1's and coefficients
++ These coefficients are what are used to make the bit string
+Example, the generator polynomial $x^4 + x + 1$ is converted to bitstring as:
+1. $x^4 + x + 1 = \left( 1 \times x^4 + 0 \times x^3 + 0 \times x^2 + 1 \times x + 1 \times 1 \right)$ 
+2. Now we can get the coefficients $1 0 0 1 1$, therefore the generator bitstring is $10011$
+**** Data append bits
+Before we can start to calculate the redundant bits, we need to append 0's to the LSB side of the data.
+
+/The number of 0's appended to left is equal to (length of generator bitstring - 1)/
+
+For our example, the generator bitstring in our example is $10011$, which has length 5. So we need to append $(5 - 1) = 4$ bits to the data
+
+So our data was previously $1101011011$ and after appending 0's becomes $11010110110000$
+**** Getting redundant bits
+Now we will do special CRC division in-order to get the redundant bits. This division is paritally similar to our long division method
++ We will do *XOR on each step rather than subtraction*
++ We will choose the next digit of divisor, so that result of LSB after XOR is 0
++ *Only the MSB is discarded from XOR result*
++ After ever XOR, we will discard the first bit of the result
++ Only a single bit is carried down always after discarding the bit
++ Our final CRC is remainder, when there are no more bits to carry down
+Example, for the example we have seen so far, the division process is
+#+DOWNLOADED: file:D%3A/Downloads/WhatsApp%20Image%202023-12-03%20at%204.08.35%20AM.jpeg @ 2023-12-03 04:09:05
+[[file:Data_Link_Layer/2023-12-03_04-09-05_WhatsApp Image 2023-12-03 at 4.08.35 AM.jpeg]]
+
+The final remainder i.e, the CRC is $1110$.
++ *NOTE* : for generator bitstring of size $n$, the size of CRC is $n - 1$
+The CRC is the redundant bits
+**** Transmitted data
+The transmitted data is our original data (not the one with appended 0's) with the CRC at the LSB side, i.e, the rightmost side
+
+In our example, the data is $1101011011$ and CRC is $1110$
++ The transmitted data is $cat(1101011011,1110)$ which is $11010110111110$
+**** On receiver's side
+The receiver will use the same division method with the same generator polynomial
++ If remainder is 0, then there are no errors
++ If remainder is not 0, then an error has occured
+@@html:<hr />@@
+** Flow control : Stop-and-wait ARQ
+Flow control is managing the rate of data transmission between two machines to prevent fast sender from overwhelming a slow receiver.
+
+If flow control is not implemented, then slow receiver is swamped with frames and may lose them even if transmission was error free.
++ Flow control is a done in data link layer and higher layers as well.
++ There are two common approaches to flow control
+  + *Feedback-based flow control* : used at both data link layer and higher layers, receiver sends feedback to sender, giving it permission to send more data, or atleast telling sender how receiver is doing
+  + *Rate-based flow control* : used only as part of transport layer, protocol has built-in mechanism that limits rate at which sender may transmit data, without relying on feedback from receiver.
++ Rate-based flow control is more common in computer networks now, therefore data link layer hardware is designed to run fast enough that it does not cause loss, i.e. NICs are run at "wire speed", meaning they can handle frames as fast as they can arrive on link
++ So in modern networks, overruns are not usually a data link layer problem, they are handled by higher layers
+*** Flow Control : Stop-and-Wait
+Currently assume that communication channel is error free. We will look at error correction later.
+
+/Stop-and-Wait is a feedback-based flow control/. Most feedback-based protocols have the following basic properties
++ Protocol contains well defined rules when sender may transmit next frame
++ Permission is given to sender either implicitly or explicitly
+In case of stop-and-wait permission is given explicitly by receiver using acknowledgement frame.
++ After having passed a packet to its network layer, receiver sends a little dummy frame basck to sender, which gives sender permission to transmit the next frame. 
++ After sending a frame, sender is required by protocol to wait until the dummy (i.e acknowledgement) frame arrives
+This protocol has a strict alternation of flow: first sender sends a frame, then receiver sends a frame, then sender again sends a frame and so on. So *atleast a half-duplex physical channel* is required for this protocol.
+*** Error Correction : Sequence Numbers and ARQ
+In a channel frame may be either damaged or lost completely. If frame is damaged in transit, receiver hardware will detect this when it computes the checksum.
+
+The naive approach is to depend on the timer. So if the frame is damaged, receiver discards the frame and when the timer on receiver's end goes off it will retransmit the frame.
+
+The problem with this approach is that *acknowledgement sent back to the sender can also be lost or damaged, causing sender to retransmit a frame* that was already given to the network layer on receiver side.
+\\
+To fix this, we use sequence numbers 
++ Sequence number will be added to the header of each frame. The receiver can read header to know if frame is duplicate or new frame. *If it is duplicate, it will be discarded and an acknowledgement is retransmitted*
++ /Ambiguity occurs only between any two consecutive frames/.
++ *Therefore, a single bit is enough for sequencing*. So the sender's data link layer will do sequencing by adding 0 and 1 bit to headers alternatively
++ When receiver gets a valid frame, it only passes the next frame if it has modulo 2 bit (0 if 1, 1 if 0) of the previous passed frame.
+  + Else it will discard the duplicate frame and resends its acknowledgement
+Protocols in which sender waits for positive acknowledgement or timers to send next frame are called *Automatic Repeat reQuest (ARQ)* or *Positive Acknowledgement with Retransmission (PAR)*.
+
+When we pair this ARQ with Stop-and-Wait protocol, we get the *Stop-and-Wait ARQ* also called alternating bit protocol.
+[[./imgs/Stop_and_wait_arq.png]]
+@@html:<hr />@@
+** Improving Efficiency
+Upto now, data frames were transmitted in one direction only i.e, there was a sender and a receiver machine. But in most practical cases, there is need to transmit data in both directions. Additionally, to increase efficiency we send multiple frames at a time before getting acknowledgement.
+*** Bidirectional Transmission : Piggybacking
+A simple way to achieve simple full-duplex transmission is to run two instances of half-duplex protocol (like the stop-and-wait ARQ) on both machines.
+
+But running half-duplex protocol on both will require two links, one for each running protocol. So we need a way to use two half-duplex protocol with a single link.
+
+We already transmit frames in both directions (one direction for data frames and other for acknowledgement), so we will intermix the data frames from A to B, with acknowledgement frames from A to B and same for frames from B to A. The data link layer will look at the header of each frame to determine whether it is a acknowledgement or data frame (/kind/ field in header is used).
+**** Piggybacking
+Although using /kind/ field allows us full-duplex communication, the acknowledgement frames are very small in size when compared to data frames. So in order to have more efficient data transfer, we can have acknowledgement of the received frame be attached in the header of the frame that is to be sent next
+
+*Rather than sending acknowledgement frame immediately, we will wait for the next data frame that is to be sent. This technique is called piggybacking.* The acknowledgement is added to the header of data frame in /ack/ field.
+**** Advantages of piggybacking
+1. Better use of available channel bandwidth. Since the /ack/ field only takes a few bits, whereas a seperate ACK frame will have its own header and checksum
+2. Having fewer frames used for communication means that data transfer is faster
+3. Sending fewer frames also reduces load on receiver
+**** Problem with piggybacking (and it's solution)
+The problem with piggybacking is deciding how long should data link layer avoid sending a ACK frame.
++ If data link layer on one side waits too long to send ACK, the link layer on other side will retransmit the frame
++ This is solved by having a receiver timeout. After a data frame is received, link layer will start a timer. If a packet is given to it by it's own network layer, then /ack/ is attached to it otherwise a seperate ACK frame is sent.
+*** Multiple frames at a time : Sliding Windows
+Sliding windows are class of bidirectional transmission protocols. 
++ In sliding window protocols, *each sent frame has a sequence number ranging from $0$ to $(2^n - 1)$*, where $n$ is the number of bits for sequence numbers.
++ Sender maintains sequence number of frames, and is allowed to send a batch of sequence numbers within a *sending window*
++ Similarly, receiver maintans a *receiving window* within which it is permitted to accept frames.
++ The sender's and receiver's *windows don't need to be of same size*
+The process of a sliding window is as follows:
+**** On sender's side
++ When a packet arrives from network layer, it is given the next largest sequence number (wraps to zero).
++ After getting the sequence number, frame is appended to the upper edge of window
++ When acknowledgement frame for frame on lower edge arrives, the lower edge is advanced by one
+This way, the frames in sender's window at any time are the unacknowledged frames.
+
+Since the frames in sender's window are unacknowledged, they have to be kept in memory. Therefore, when window is full the network layer is paused till acknowledgement for some frames arrives
+
+/Sender's window can "grow and shrink" based on number of unacknowledged frames/
+**** On receiver's side
++ The receiver's window contains frame sequences that can be accepted
++ Initially, the receiver window starts with frame sequence $0$ at the it's lower edge (at start)
+On getting a frame :
++ If frame contains sequence within the window, it is accepted and acknowledgement is sent
++ If frame contains sequence outside the window, the frame is discarded and no ACK is sent
++ When receiver gets a frame with same sequence no. which is on the lower edge, the window is moved (slid) by one position
+Unlike sender's window, /receiver's window is fixed in size/
+@@html:<hr />@@
+** Sliding Windows
+We will look at two protocols that are in category of sliding windows. The first one (one-bit sliding window) is not a sliding window protocol but gives us a way to connect stop-and-wait ARQ to sliding windows
+*** Properties of sliding window protocols
+Before looking at Go-Back-N and Selective Repeat protocols, we will look at shared properties of sliding window protocols
+**** Bandwidth-Delay Product
+The bandwidth-dealy product is the amount of data that can be sent continuously by the sender, before the first acknowledgement from receiver arrives.
+\[ \text{Bandwidth-Delay Product} = \text{Bandwidth} \times \text{Round-Trip Delay}  \]
+\[ BD = B \times D \]
+Example, in the previous example Bandwidth is $50kbps$ and Round-Trip Delay is $500ms$, therefore the Bandwidth-Delay Product is
+\[ BD = 50kbps \times 500ms \]
+\[ BD = 25kb \]
+**** Optimal/Maximum Window Size
+For sliding window protocols, we want to maximize the size of window, such that everytime sender's window is almost full a ACK will arrive.
+*\[ \text{optimal/maximum window size} = ceil \left( \frac{BD}{\text{Frame size}} \right) \]*
+Since, $BD = B \times D$, and $D = 2T_p$
+\[ \text{optimal/maximum window size} = ceil \left( \frac{B \times 2T_p}{\text{Frame size}} \right) \]
+Since, $T_t = \text{Frame Size} / B$
+*\[ \text{optimal/maximum window size} = ceil \left( \frac{2T_p}{T_t} \right) \]*
+**** Pipelining
+Pipelining is sending multiple packets without waiting for their seperate acknowledgements. The main goal for all sliding window protocols is to have efficient pipelining of packets through the data link.
+*** One-Bit Sliding Window (Stop-and-Wait ARQ)
+A one-bit sliding window means the *window size is 1*. This protocol uses the simple *stop-and-wait ARQ* since sender window is full after sending a single frame and has to wait for acknowledgement.
+
+*Example*, Suppose there is a channel with bandwidth $50kbps$ and round-trip propogation delay is $500ms$
+\[ \text{Bandwidth}(B) = 50 kbps \]
+\[ \text{Round-trip Propogation delay}(D) = 500 ms \]
+Therefore,
+\[ \text{Propogation delay}(T_p) = 250 ms \]
+
+Suppose we want to send a $1000bit$ frame with Stop-and-Wait ARQ
+\[ \text{Transmission delay}(T_t) = \frac{1000 bit}{50 kbps} \]
+\[ T_t = 20ms \]
+\[ \text{Total time taken to deliver data frame} = T_t + T_p \]
+\[ \text{Total time taken to deliver data frame} = 250ms + 20ms = 270ms \]
+And for the returning acknowledgement frame
+\[ \text{Since acknowledgement frame size is very samll, we can neglect its transmission delay} \]
+\[ T_t = 0 \]
+\[ T_p = 250ms \]
+\[ \text{Total time taken to deliver ACK frame} = 250ms \]
+Therefore, for a sending a single frame and receiving it's ACK, stop and wait takes total $270ms + 250ms = 520ms$ time.
+*** Go-Back-N ARQ
+The difference between Go-Back-N and Selective Repeat is how they deal with errors.
++ In Go-Back-N ARP, /the sender's window is of size $N$ and the receiver's window is of size $1$./
++ /If a frame is lost, all incoming frames are discarded/, i.e, receiver will refuse all frames except the next one in the sequence. This is because receiver window is of size 1
++ By the time sender's link layer timeout's, the pipeline will be empty. On timeout, sender will start retransmitting frames from the lost frame in order again.
+This is why protocol is named Go-Back-N, because the sender goes back and restarts the sequence of frames. This works well on channels with very low error rates, but is channel is noisy it wastes a lot of bandwidth
+
+The properties of Go-Back-N are:
++ Uses Cumulative Acknowledgement
++ Does not used Negetive Acknowledgement 
+*** Selective Repeat ARQ
+The selective repeat ARQ is better for unreliable channels
++ /The sender's window and receiver's window are both bigger than $1$ and of equal size/
++ /This protocol allows receiver to accept any frame in the receiver's window, but window is slid forward only if frame on lower edge is received/
++ A *negetive acknowledgement* (NAK), is sent for the frame which is lost, which it detects when an out of sequence frame is received.
++ NAK will stimulate retransmission from sender without having to wait for timeout, which improves performance
+These two approaches have trade-offs between efficient use of bandwidth and data link layer buffer space.
+
+The properties of Selective Repeat ARQ are:
++ Uses Independent Acknowledgement
++ Uses Negetive Acknowledgement
+*** Properties of Go-Back-N and Selective Repeat
+Now we will look at the properties of Go-Back-N and Selective Repeat protocols
+**** Cumulative ACK vs Independent ACK
+Go-Back-N uses Cumulative Acknowledgements
++ After sender stops sending frames, the receiver will send the ACK for the last frame it received correctly
+  + *NOTE :* Go-Back-N receiver only receives frames in correct seqence
++ Sender will check this ACK to know from where it has to go-back and resend the frames
++ In case no ACK from receiver arrives, sender will send all frames in it's window in sequence again
+
+Selective Repeat uses Independent ACK
++ This means that each frame that the receiver window receives, it will send an acknowledgement for it
++ In case ACK of a frame is lost, sender will send it again, in which case receiver window will resend ACK
+**** Relation between sequence numbers and window sizes
+We need to make sure that window size is small enought that it does not contain overlap sequence numbers. This is done by setting as follows
+\[ \text{Window Size} = \frac{\text{Maximum sequence number} + 1}{2} \]
+Suppose sequence number uses $n$ bits, then the window size is given by
+\[ \text{Window Size} = \frac{2^{n}}{2} \]
+**** Negetive ACK (NAK)
+Selective repeat uses Negative ACK to improve performance
++ If receiver window receives a frame out of sequence, it will store it in it's window. But it will also send back a NACK frame back
++ This Negetive ACK frame will tell sender that one frame was missing from sequence
++ On receing NACK for a frame, sender will resend that frame. If receiver gets it successfully this time, then it will send an ACK frame for it
+**** Efficiency
+\[ \text{For Stop-and-wait ARQ : } Efficiency = \frac{1}{1 + 2a} \]
+\[ \text{For Go-Back-N ARQ : } Efficiency = \frac{N}{1 + 2a} \]
+\[ \text{For Selective Repeat ARQ : } Efficiency = \frac{N}{1 + 2a} \]
+where, $a = \frac{T_p}{T_t}$
+
+TODO : show where this comes from maybe
