@@ -362,3 +362,122 @@ Both parties will choose a different random number to start. So when a package i
 The acknowledgement is the /next byte number that the reciever expects/. So it will take the number of last byte that was recieved and adds 1 to it and sends that as acknowledgement.
 
 The acknowledgement number is cumulative. So if one party recieves 5643 as acknowledgement, we can say all bytes numbered till 5642 have been delivered 
+
+**** Flow Control
+In TCP, the receiver of data controls the amount of data that is to be sent by the sender. This is to prevent receiver from being overwhelmed. The /numbering system allows byte-oriented flow control/
+
+**** Error Control
+Error control in TCP is both segment oriented when using acknowledgements; as well as byte-oriented as we will see later
+
+**** Congestion Control
+The amount of data sent will not only be controlled by receiver, TCP will also check the level of congestion in the network
+
+*** Segment
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202024-10-18%20151701.png @ 2024-10-18 15:17:07
+[[file:Transport_Layer/2024-10-18_15-17-07_Screenshot 2024-10-18 151701.png]]
+
+The header is 20 to 60 bytes in size.
++ size is 20 bytes with no options
++ size is upto 60 bytes with options
+
+_*Source port address*_
+
+16-bit field that defines port of program sending the segment
+
+_*Destination port address*_
+
+16-bit field that defines port of program receiving the segment
+
+_*Sequence number*_
+
+32-bit field that holds sequence number of segment. When connetion is established, both sides will pick a random Initial Sequence Number (ISN), which usually is different for both
+
+_*Acknowledgement number*_
+
+32-bit field used for acknowledgement. So if lastbyte number received is $x$; the acknowledgement number sent back is $x + 1$. Acknowledgement and data can be piggy-backed
+
+_*Header length*_
+
+4-bit field indicates number of 4-byte words in TCP, i.e. if /size of header is $x$ then value of this field is $(x \div 4)$/. Therefore, it's value is between 5 ($5 \times 4 = 20$) and 15 ($15 \times 4 = 60$)
+
+_*Reserved*_
+
+6-bit field reserved for future use
+
+_*Control*_
+
+6-bits, each of which is a flag. One or more of these can be set at a time
+
+These bits are used for flow control; connection establishment, termination and abortion; and mode of data transfer
+
+| Flag | Description                       |
+|------+-----------------------------------|
+| URG  | Value of urgent pointer is valid  |
+| ACK  | Value of acknowledgement is valid |
+| PSH  | Push data                         |
+| RST  | Reset connection                  |
+| SYN  | Synchronize sequence numbers      |
+| FIN  | Terminate connection              |
+
+_*Window Size*_
+
+16-bit field which tells size of window in bytes that other side must maintain.
++ This value is normally referred to as the receiving window (rwnd) and it determined by the receiver
++ The sender must obey dication of receiver in this case.
++ Since field is 16-bit the maximum size of window is 65,535 bytes.
+
+_*Checksum*_
+
+16-bit field that contains the checksum.
++ Calculation is same as in UDP
++ The same pseudoheader, serving same purpose
+  + value of protcol field is 6
+
+_*Urgent Pointer*_
+
+16-bit field which is valid if urgent flag is set, used when segment contains urgent data. This field added with sequence number gives number of urgent byte in data section.
+
+_*Options*_
+
+There can be upto 40-bytes of optional information in TCP header. (Will not be discussed here)
+
+*** TCP Connection
+A TCP connection sets up a single virtual pathway which used used for both transmission, acknowledgement and retransmission
+
+**** Connection Establishment
+TCP is full-duplex. Two machines connected can send each other segments. Each party must initialize communication and get approval from other before any data transfer
+
+_*Three-Way Handshaking*_
+
++ The process starts with the server. Server program tells TCP that it is ready to accept connection. This is called /passive open/
++ The client will issue request for /active open/. This starts the three-way handshake
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202024-10-19%20015904.png @ 2024-10-19 01:59:10
+[[file:Transport_Layer/2024-10-19_01-59-10_Screenshot 2024-10-19 015904.png]]
+
+1. The client sends first segment, a SYN segment, in which only SYN flag is set. This segment synchronizes sequence numbers.
+   + This will send the Initial Sequence Number (ISN)
+   + This segment has 1 imaginary byte (phony byte)
+2. Server sends second segment, a SYN + ACK segment, with these 2 flags set.
+   + The SYN is for synchronizing and ACK is for the previous segment sent by user
+3. Client sends third segment with just ACK
+   + This acknowledges the SYN + ACK sent by server
+   + It's sequence number is still the ISN of client. This is because ACK does not consume sequence number by itself
+
+#+begin_quote
+An ACK segment, if carrying no data, will not consume sequence number
+#+end_quote
+
+_*Simultaneous Open*_
+
+If both sides issue an active open; then both TCPs transmit a SYN + ACK segments to each other. TCP can handle this and one single connection is established between them.
+
+_*SYN Flooding Attack*_
+
+A malicious attacker can send large number of SYN segments to a server, acting as independent clients by faking IP address.
+
+The server is fooled and allocates large no. of resources for all the connections. When server tries to send SYN + ACK to fake clients, these segments are lost. But data is already allocated for connections; thus the server may crash.
+
+This type of attack is denial-of-service attack. Some strategies to combat this are: filter datagrams from certain IPs, impose limit on connection requests; the most recent one is to postpone allocation till whole connection is established using cooking (used in SCTP)
+

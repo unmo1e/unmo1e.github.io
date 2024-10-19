@@ -1,0 +1,4 @@
+#+title: Operating Systems
+
++ [[./OS GATE 1.pdf][Part 1]]
++ [[./OS GATE 2.pdf][Part 2]]

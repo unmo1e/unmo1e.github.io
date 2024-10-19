@@ -2,5 +2,8 @@
 
 + [[./algorithms/main.html][Algorithms]]
 + [[./dataStructures/main.html][Data Structures]]
++ [[./computerOrganizationAndArchitechture/main.html][Computer Organization and Architechture]]
++ [[./operatingSystems/main.html][Operating Systems]]
 + [[./computerNetworks/main.html][Computer Networks]]
++ [[./theoryOfComputation/main.html][Theory of Computation]]
 + [[./compiler/main.html][Compilers]]
