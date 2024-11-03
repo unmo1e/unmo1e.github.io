@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2023-10-02 Mon 13:49 -->
+<!-- 2024-11-04 Mon 04:06 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Data Structures</title>
@@ -191,41 +191,30 @@
     { font-size: 10px; font-weight: bold; white-space: nowrap; }
   .org-info-js_search-highlight
     { background-color: #ffff00; color: #000000; font-weight: bold; }
-  .org-svg { }
+  .org-svg { width: 90%; }
 </style>
 <link rel="stylesheet" href="src/org.css">
-<script>
-  window.MathJax = {
-    tex: {
-      ams: {
-        multlineWidth: '85%'
-      },
-      tags: 'ams',
-      tagSide: 'right',
-      tagIndent: '.8em'
-    },
-    chtml: {
-      scale: 1.0,
-      displayAlign: 'center',
-      displayIndent: '0em'
-    },
-    svg: {
-      scale: 1.0,
-      displayAlign: 'center',
-      displayIndent: '0em'
-    },
-    output: {
-      font: 'mathjax-modern',
-      displayOverflow: 'overflow'
-    }
-  };
-</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        displayAlign: "center",
+        displayIndent: "0em",
 
-<script
-  id="MathJax-script"
-  async
-  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+        "HTML-CSS": { scale: 100,
+                        linebreaks: { automatic: "false" },
+                        webFont: "TeX"
+                       },
+        SVG: {scale: 100,
+              linebreaks: { automatic: "false" },
+              font: "TeX"},
+        NativeMML: {scale: 100},
+        TeX: { equationNumbers: {autoNumber: "AMS"},
+               MultLineWidth: "85%",
+               TagSide: "right",
+               TagIndent: ".8em"
+             }
+});
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
 </head>
 <body>
 <div id="content" class="content">
@@ -234,138 +223,138 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org163c7a1">1. Stack</a>
+<li><a href="#org7d907ed">1. Stack</a>
 <ul>
-<li><a href="#org0748c04">1.1. Operation on stack</a></li>
+<li><a href="#org8106bf3">1.1. Operation on stack</a></li>
 </ul>
 </li>
-<li><a href="#org2763bb4">2. Direct Address Table</a></li>
-<li><a href="#orgd364274">3. Hash Table</a>
+<li><a href="#org51453bb">2. Direct Address Table</a></li>
+<li><a href="#org12df153">3. Hash Table</a>
 <ul>
-<li><a href="#org8173f79">3.1. Collision</a>
+<li><a href="#org135d355">3.1. Collision</a>
 <ul>
-<li><a href="#org04f7f67">3.1.1. Chaining</a></li>
-<li><a href="#org581f1ed">3.1.2. Performance of chaining hash table</a></li>
-<li><a href="#org92ce119">3.1.3. Open Addressing</a>
+<li><a href="#org4332c99">3.1.1. Chaining</a></li>
+<li><a href="#org390fada">3.1.2. Performance of chaining hash table</a></li>
+<li><a href="#org77de47f">3.1.3. Open Addressing</a>
 <ul>
-<li><a href="#org00395eb">3.1.3.1. Linear probing</a></li>
-<li><a href="#org7ff686c">3.1.3.2. Quadratic probing</a></li>
-<li><a href="#orgeb11d50">3.1.3.3. Double Hashing</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href="#org370e99a">3.2. Hash Functions</a>
-<ul>
-<li><a href="#org56149ae">3.2.1. The division method</a></li>
-<li><a href="#orgf3fa455">3.2.2. The multiplication method</a></li>
-<li><a href="#orgb06e422">3.2.3. Mid square method</a></li>
-<li><a href="#org5aae66e">3.2.4. Folding method</a></li>
-</ul>
-</li>
-<li><a href="#orgb2f422e">3.3. Universal Hashing</a>
-<ul>
-<li><a href="#org23aba84">3.3.1. Rehashing</a></li>
-<li><a href="#orgbd4c14f">3.3.2. Universal family</a></li>
-<li><a href="#org19214ad">3.3.3. Performance of universal hashing</a></li>
-<li><a href="#orgfaf8460">3.3.4. Example for universal set of hash functions</a></li>
-</ul>
-</li>
-<li><a href="#orgf71fb05">3.4. Perfect Hashing</a></li>
-</ul>
-</li>
-<li><a href="#org7cbf501">4. Representing rooted trees using nodes</a>
-<ul>
-<li><a href="#org00f3c9f">4.1. Fixed number of children</a></li>
-<li><a href="#org092967c">4.2. Unbounded number of children</a></li>
-</ul>
-</li>
-<li><a href="#orgeea09e3">5. Binary Search Trees</a>
-<ul>
-<li><a href="#org068d34e">5.1. Quering a BST</a>
-<ul>
-<li><a href="#orgcf1d625">5.1.1. Searching for node</a></li>
-<li><a href="#org1eccdb9">5.1.2. Minimum and maximum</a></li>
-<li><a href="#orgd1eb8f1">5.1.3. Find Parent Node</a></li>
-<li><a href="#org06aec1b">5.1.4. Is ancestor</a></li>
-<li><a href="#orgad2acf4">5.1.5. Successor and predecessor</a>
-<ul>
-<li><a href="#orgc182038">5.1.5.1. For Successor</a></li>
-<li><a href="#org4eea03a">5.1.5.2. For Predecessor</a></li>
+<li><a href="#orgf5e3e78">3.1.3.1. Linear probing</a></li>
+<li><a href="#orgc1c6b5d">3.1.3.2. Quadratic probing</a></li>
+<li><a href="#org96aca88">3.1.3.3. Double Hashing</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#orge2c01f8">5.2. Inserting and Deleting nodes</a>
+<li><a href="#org38f52a7">3.2. Hash Functions</a>
 <ul>
-<li><a href="#orga3817ac">5.2.1. Insertion</a></li>
-<li><a href="#org43bca22">5.2.2. Deletion</a></li>
+<li><a href="#orgf278fcd">3.2.1. The division method</a></li>
+<li><a href="#org9d0defb">3.2.2. The multiplication method</a></li>
+<li><a href="#orga163f8d">3.2.3. Mid square method</a></li>
+<li><a href="#orgeac46d3">3.2.4. Folding method</a></li>
 </ul>
 </li>
-<li><a href="#org5be9c4c">5.3. Performance of BST</a></li>
-<li><a href="#orgcf9a8ac">5.4. Traversing a Binary Tree</a>
+<li><a href="#orgc115127">3.3. Universal Hashing</a>
 <ul>
-<li><a href="#orgef80d36">5.4.1. Inorder tree walk</a></li>
-<li><a href="#orgd2f801a">5.4.2. Preorder tree walk</a></li>
-<li><a href="#org4720c1c">5.4.3. Postorder tree walk</a></li>
+<li><a href="#org84fd927">3.3.1. Rehashing</a></li>
+<li><a href="#org8dd2c49">3.3.2. Universal family</a></li>
+<li><a href="#orgdfd01cd">3.3.3. Performance of universal hashing</a></li>
+<li><a href="#org8f52e65">3.3.4. Example for universal set of hash functions</a></li>
+</ul>
+</li>
+<li><a href="#orge05a96f">3.4. Perfect Hashing</a></li>
+</ul>
+</li>
+<li><a href="#org5a101d3">4. Representing rooted trees using nodes</a>
+<ul>
+<li><a href="#org7c4d1f9">4.1. Fixed number of children</a></li>
+<li><a href="#org4765425">4.2. Unbounded number of children</a></li>
+</ul>
+</li>
+<li><a href="#org5d261e7">5. Binary Search Trees</a>
+<ul>
+<li><a href="#org9575402">5.1. Quering a BST</a>
+<ul>
+<li><a href="#orge187843">5.1.1. Searching for node</a></li>
+<li><a href="#org8fcf0b3">5.1.2. Minimum and maximum</a></li>
+<li><a href="#orgfa9bc17">5.1.3. Find Parent Node</a></li>
+<li><a href="#orgacbcbc2">5.1.4. Is ancestor</a></li>
+<li><a href="#orgb8c2265">5.1.5. Successor and predecessor</a>
+<ul>
+<li><a href="#org8613abf">5.1.5.1. For Successor</a></li>
+<li><a href="#orgf504f91">5.1.5.2. For Predecessor</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#orgeeca0a9">6. Binary Heap</a>
+<li><a href="#org9e6dd40">5.2. Inserting and Deleting nodes</a>
 <ul>
-<li><a href="#org8e7cc0a">6.1. Heap Property</a></li>
-<li><a href="#orgbf5eade">6.2. Shape of Heap</a></li>
-<li><a href="#orgb19ce0e">6.3. Array implementation</a></li>
-<li><a href="#orgd6f65c2">6.4. Operations on heaps</a>
-<ul>
-<li><a href="#org43125ac">6.4.1. Parent and child indices</a></li>
-<li><a href="#org05ab70a">6.4.2. Down-heapify</a></li>
-<li><a href="#org399a72c">6.4.3. Up-heapify</a></li>
-<li><a href="#org63bf7f2">6.4.4. Insertion</a></li>
-<li><a href="#orgfcc9520">6.4.5. Deletion or Extraction</a></li>
-<li><a href="#org47ce745">6.4.6. Insert then extract</a></li>
-<li><a href="#org54c7a08">6.4.7. Searching</a></li>
-<li><a href="#orge3a08f2">6.4.8. Deleting arbitray element</a></li>
-<li><a href="#org8a91190">6.4.9. Decrease and increase keys</a></li>
+<li><a href="#orgd483877">5.2.1. Insertion</a></li>
+<li><a href="#org30e9f95">5.2.2. Deletion</a></li>
 </ul>
 </li>
-<li><a href="#orgc6cf4ef">6.5. Building a heap from array</a></li>
+<li><a href="#org41eb53d">5.3. Performance of BST</a></li>
+<li><a href="#org0144958">5.4. Traversing a Binary Tree</a>
+<ul>
+<li><a href="#org0163919">5.4.1. Inorder tree walk</a></li>
+<li><a href="#orgb7b755f">5.4.2. Preorder tree walk</a></li>
+<li><a href="#org3263699">5.4.3. Postorder tree walk</a></li>
 </ul>
 </li>
-<li><a href="#org3e3ed9b">7. Graphs</a>
-<ul>
-<li><a href="#org6625a01">7.1. Representing graphs</a>
-<ul>
-<li><a href="#org3138112">7.1.1. Adjacency List</a></li>
-<li><a href="#org0a3e49b">7.1.2. Adjacency Matrix</a></li>
 </ul>
 </li>
-<li><a href="#orgbcfe613">7.2. Vertex and edge attributes</a></li>
-<li><a href="#org2343c63">7.3. Density of graph</a>
+<li><a href="#org001fc18">6. Binary Heap</a>
 <ul>
-<li><a href="#org73a1cdd">7.3.1. Which representation to use</a></li>
+<li><a href="#org8d2224d">6.1. Heap Property</a></li>
+<li><a href="#orgb454dd8">6.2. Shape of Heap</a></li>
+<li><a href="#org4bc46af">6.3. Array implementation</a></li>
+<li><a href="#org833ffb2">6.4. Operations on heaps</a>
+<ul>
+<li><a href="#org4179da6">6.4.1. Parent and child indices</a></li>
+<li><a href="#orge4751e4">6.4.2. Down-heapify</a></li>
+<li><a href="#org6346f98">6.4.3. Up-heapify</a></li>
+<li><a href="#orgbadbca5">6.4.4. Insertion</a></li>
+<li><a href="#org9f6438e">6.4.5. Deletion or Extraction</a></li>
+<li><a href="#orgff7022a">6.4.6. Insert then extract</a></li>
+<li><a href="#orgfa53e9e">6.4.7. Searching</a></li>
+<li><a href="#org17486b7">6.4.8. Deleting arbitray element</a></li>
+<li><a href="#org836b988">6.4.9. Decrease and increase keys</a></li>
 </ul>
 </li>
-<li><a href="#orgdb2a125">7.4. Searching Graphs</a>
-<ul>
-<li><a href="#orgba9fa64">7.4.1. Breadth first search</a></li>
-<li><a href="#org135ed3e">7.4.2. Breadth-first trees for shortest path</a></li>
-<li><a href="#orgca24b82">7.4.3. Depth first search</a></li>
-<li><a href="#org08e97e1">7.4.4. Properties of DFS</a>
-<ul>
-<li><a href="#org6623c5a">7.4.4.1. Parenthesis theorem</a></li>
-<li><a href="#org37b14f5">7.4.4.2. White path theorem</a></li>
-<li><a href="#org55b5048">7.4.4.3. Classification of edges</a></li>
+<li><a href="#org3296889">6.5. Building a heap from array</a></li>
 </ul>
 </li>
-<li><a href="#org1d5efc4">7.4.5. Depth-first and Breadth-first Forests</a></li>
-<li><a href="#org47a752d">7.4.6. Topological sort using DFS</a></li>
+<li><a href="#org4e99733">7. Graphs</a>
+<ul>
+<li><a href="#org106f14f">7.1. Representing graphs</a>
+<ul>
+<li><a href="#orge34f5a3">7.1.1. Adjacency List</a></li>
+<li><a href="#orgc0a971d">7.1.2. Adjacency Matrix</a></li>
 </ul>
 </li>
-<li><a href="#orgf9dd9a8">7.5. Strongly connected components</a>
+<li><a href="#org5d2cfd2">7.2. Vertex and edge attributes</a></li>
+<li><a href="#org7679fa9">7.3. Density of graph</a>
 <ul>
-<li><a href="#org18101bf">7.5.1. Finding strongly connected components</a></li>
+<li><a href="#org6979231">7.3.1. Which representation to use</a></li>
+</ul>
+</li>
+<li><a href="#orgbcf74d3">7.4. Searching Graphs</a>
+<ul>
+<li><a href="#org3909509">7.4.1. Breadth first search</a></li>
+<li><a href="#org204dbb8">7.4.2. Breadth-first trees for shortest path</a></li>
+<li><a href="#orgece3fd8">7.4.3. Depth first search</a></li>
+<li><a href="#orgc3c6b4c">7.4.4. Properties of DFS</a>
+<ul>
+<li><a href="#org4684501">7.4.4.1. Parenthesis theorem</a></li>
+<li><a href="#org9543fb3">7.4.4.2. White path theorem</a></li>
+<li><a href="#orgbd4c9e1">7.4.4.3. Classification of edges</a></li>
+</ul>
+</li>
+<li><a href="#org7a4807b">7.4.5. Depth-first and Breadth-first Forests</a></li>
+<li><a href="#org52dba3d">7.4.6. Topological sort using DFS</a></li>
+</ul>
+</li>
+<li><a href="#org7d371ab">7.5. Strongly connected components</a>
+<ul>
+<li><a href="#org2a3aa7d">7.5.1. Finding strongly connected components</a></li>
 </ul>
 </li>
 </ul>
@@ -374,8 +363,8 @@
 </div>
 </div>
 
-<div id="outline-container-org163c7a1" class="outline-2">
-<h2 id="org163c7a1"><span class="section-number-2">1.</span> Stack</h2>
+<div id="outline-container-org7d907ed" class="outline-2">
+<h2 id="org7d907ed"><span class="section-number-2">1.</span> Stack</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 A stack is a data structure which only allows insertion and deletion from one end of the array. The insertion is always on the extreme end of the array. The deletion can only be done on the element which was most recently added.
@@ -388,8 +377,8 @@ To create a stack, we will keep track of the index which is the <b>top</b> of th
 </p>
 </div>
 
-<div id="outline-container-org0748c04" class="outline-3">
-<h3 id="org0748c04"><span class="section-number-3">1.1.</span> Operation on stack</h3>
+<div id="outline-container-org8106bf3" class="outline-3">
+<h3 id="org8106bf3"><span class="section-number-3">1.1.</span> Operation on stack</h3>
 <div class="outline-text-3" id="text-1-1">
 <p>
 A stack has two operations 
@@ -401,8 +390,8 @@ A stack has two operations
 </div>
 </div>
 </div>
-<div id="outline-container-org2763bb4" class="outline-2">
-<h2 id="org2763bb4"><span class="section-number-2">2.</span> Direct Address Table</h2>
+<div id="outline-container-org51453bb" class="outline-2">
+<h2 id="org51453bb"><span class="section-number-2">2.</span> Direct Address Table</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 Direct Address Tables are useful when we know that key is within a small range. Then, we can allocate an array such that each possible key gets an index and just add the values according to the keys.
@@ -415,18 +404,18 @@ This also assumes that keys are integers
 </ul>
 
 <div class="org-src-container">
-<pre class="src src-c"><span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">table</span>{
-  <span style="color: #dcdc00; font-weight: bold;">int</span> * <span style="color: #e2e2e2;">values</span>;
-  <span style="color: #dcdc00; font-weight: bold;">size_t</span> <span style="color: #e2e2e2;">min_key</span>;
-  <span style="color: #dcdc00; font-weight: bold;">size_t</span> <span style="color: #e2e2e2;">max_key</span>;
+<pre class="src src-c"><span style="color: #a626a4;">struct</span> <span style="color: #c18401;">table</span>{
+  <span style="color: #c18401;">int</span> * <span style="color: #8b4513;">values</span>;
+  <span style="color: #c18401;">size_t</span> <span style="color: #8b4513;">min_key</span>;
+  <span style="color: #c18401;">size_t</span> <span style="color: #8b4513;">max_key</span>;
 };
 
-<span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">table</span> <span style="color: #00cbcb;">create_table</span>(<span style="color: #dcdc00; font-weight: bold;">size_t</span> <span style="color: #e2e2e2;">min_key</span>, <span style="color: #dcdc00; font-weight: bold;">size_t</span> <span style="color: #e2e2e2;">max_key</span>){
-  <span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">table</span> <span style="color: #e2e2e2;">r</span>;
-  r.values = (<span style="color: #dcdc00; font-weight: bold;">int</span> * ) malloc(<span style="color: #c25959; font-weight: bold;">sizeof</span>(<span style="color: #dcdc00; font-weight: bold;">int</span>) * (max_key - min_key + 1) );
+<span style="color: #a626a4;">struct</span> <span style="color: #c18401;">table</span> <span style="color: #0184bc;">create_table</span>(<span style="color: #c18401;">size_t</span> <span style="color: #8b4513;">min_key</span>, <span style="color: #c18401;">size_t</span> <span style="color: #8b4513;">max_key</span>){
+  <span style="color: #a626a4;">struct</span> <span style="color: #c18401;">table</span> <span style="color: #8b4513;">r</span>;
+  r.values = (<span style="color: #c18401;">int</span> * ) malloc(<span style="color: #a626a4;">sizeof</span>(<span style="color: #c18401;">int</span>) * (max_key - min_key + 1) );
   r.min_key = min_key;
   r.max_key = max_key;
-  <span style="color: #c25959; font-weight: bold;">return</span> r;
+  <span style="color: #a626a4;">return</span> r;
 }
 </pre>
 </div>
@@ -436,9 +425,9 @@ This also assumes that keys are integers
 </ul>
 
 <div class="org-src-container">
-<pre class="src src-c"><span style="color: #dcdc00; font-weight: bold;">void</span> <span style="color: #00cbcb;">table_insert</span>(<span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">table</span> <span style="color: #e2e2e2;">t</span>, <span style="color: #dcdc00; font-weight: bold;">size_t</span> <span style="color: #e2e2e2;">key</span>, <span style="color: #dcdc00; font-weight: bold;">int</span> <span style="color: #e2e2e2;">value</span>){
-  <span style="color: #c25959; font-weight: bold;">if</span>(key &gt; t.max_key || key &lt; t.min_key)
-    assert(<span style="color: #3eca3e;">false</span> &amp;&amp; <span style="color: #3eca3e;">"Key value out of boundry"</span>);
+<pre class="src src-c"><span style="color: #c18401;">void</span> <span style="color: #0184bc;">table_insert</span>(<span style="color: #a626a4;">struct</span> <span style="color: #c18401;">table</span> <span style="color: #8b4513;">t</span>, <span style="color: #c18401;">size_t</span> <span style="color: #8b4513;">key</span>, <span style="color: #c18401;">int</span> <span style="color: #8b4513;">value</span>){
+  <span style="color: #a626a4;">if</span>(key &gt; t.max_key || key &lt; t.min_key)
+    assert(<span style="font-weight: bold; text-decoration: underline;">false</span> &amp;&amp; <span style="color: #50a14f;">"Key value out of boundry"</span>);
 
   t.values[key - t.min_key] = value;
 }
@@ -450,9 +439,9 @@ This also assumes that keys are integers
 </ul>
 
 <div class="org-src-container">
-<pre class="src src-c"><span style="color: #dcdc00; font-weight: bold;">void</span> <span style="color: #00cbcb;">table_delete</span>(<span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">table</span> <span style="color: #e2e2e2;">t</span>, <span style="color: #dcdc00; font-weight: bold;">size_t</span> <span style="color: #e2e2e2;">key</span>){
-  <span style="color: #c25959; font-weight: bold;">if</span>(key &gt; t.max_key || key &lt; t.min_key)
-    assert(<span style="color: #3eca3e;">false</span> &amp;&amp; <span style="color: #3eca3e;">"Key value out of boundry"</span>);
+<pre class="src src-c"><span style="color: #c18401;">void</span> <span style="color: #0184bc;">table_delete</span>(<span style="color: #a626a4;">struct</span> <span style="color: #c18401;">table</span> <span style="color: #8b4513;">t</span>, <span style="color: #c18401;">size_t</span> <span style="color: #8b4513;">key</span>){
+  <span style="color: #a626a4;">if</span>(key &gt; t.max_key || key &lt; t.min_key)
+    assert(<span style="font-weight: bold; text-decoration: underline;">false</span> &amp;&amp; <span style="color: #50a14f;">"Key value out of boundry"</span>);
 
   t.values[key - t.min_key] = 0x00;
 }
@@ -464,11 +453,11 @@ This also assumes that keys are integers
 </ul>
 
 <div class="org-src-container">
-<pre class="src src-c"><span style="color: #dcdc00; font-weight: bold;">int</span> <span style="color: #00cbcb;">table_get</span>(<span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">table</span> <span style="color: #e2e2e2;">t</span>, <span style="color: #dcdc00; font-weight: bold;">size_t</span> <span style="color: #e2e2e2;">key</span>){
-    <span style="color: #c25959; font-weight: bold;">if</span>(key &gt; t.max_key || key &lt; t.min_key)
-      assert(<span style="color: #3eca3e;">false</span> &amp;&amp; <span style="color: #3eca3e;">"Key value out of boundry"</span>);
+<pre class="src src-c"><span style="color: #c18401;">int</span> <span style="color: #0184bc;">table_get</span>(<span style="color: #a626a4;">struct</span> <span style="color: #c18401;">table</span> <span style="color: #8b4513;">t</span>, <span style="color: #c18401;">size_t</span> <span style="color: #8b4513;">key</span>){
+    <span style="color: #a626a4;">if</span>(key &gt; t.max_key || key &lt; t.min_key)
+      assert(<span style="font-weight: bold; text-decoration: underline;">false</span> &amp;&amp; <span style="color: #50a14f;">"Key value out of boundry"</span>);
 
-    <span style="color: #c25959; font-weight: bold;">return</span> t.values[key - t.min_key];
+    <span style="color: #a626a4;">return</span> t.values[key - t.min_key];
 }
 </pre>
 </div>
@@ -479,8 +468,8 @@ This also assumes that keys are integers
 </div>
 </div>
 
-<div id="outline-container-orgd364274" class="outline-2">
-<h2 id="orgd364274"><span class="section-number-2">3.</span> Hash Table</h2>
+<div id="outline-container-org12df153" class="outline-2">
+<h2 id="org12df153"><span class="section-number-2">3.</span> Hash Table</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 When the set of possible keys is large, it is impractical to allocate a table big enough for all keys. In order to fit all possible keys into a small table, rather than directly using keys as the index for our array, we wil first calculate a <i><b>hash</b></i> for it using a <i><b>hash function</b></i>. Since we are relying on hashes for this addressing in the table, we call it a hash table.
@@ -496,8 +485,8 @@ So the main purpose of the hash function is to reduce the range of array indices
 </p>
 </div>
 
-<div id="outline-container-org8173f79" class="outline-3">
-<h3 id="org8173f79"><span class="section-number-3">3.1.</span> Collision</h3>
+<div id="outline-container-org135d355" class="outline-3">
+<h3 id="org135d355"><span class="section-number-3">3.1.</span> Collision</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
 Because we are reducing the range of indices, the hash function may <i><b>hash two keys to the same slot</b></i>. This is called a collision.
@@ -516,8 +505,8 @@ There are two ways we will look at to resolve collision.
 </ol>
 </div>
 
-<div id="outline-container-org04f7f67" class="outline-4">
-<h4 id="org04f7f67"><span class="section-number-4">3.1.1.</span> Chaining</h4>
+<div id="outline-container-org4332c99" class="outline-4">
+<h4 id="org4332c99"><span class="section-number-4">3.1.1.</span> Chaining</h4>
 <div class="outline-text-4" id="text-3-1-1">
 <p>
 In chaining, rather than storing values in table slots. We will have <i><b>linked lists at each slot</b></i> which will store (key, value) pairs.
@@ -531,10 +520,10 @@ When the hash gives us a slot, we will add the value to linked list at that slot
 </ul>
 
 <div class="org-src-container">
-<pre class="src src-c"><span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">linked_list</span>{
-  <span style="color: #dcdc00; font-weight: bold;">size_t</span> <span style="color: #e2e2e2;">key</span>;
-  <span style="color: #dcdc00; font-weight: bold;">int</span> <span style="color: #e2e2e2;">value</span>;
-  <span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">linked_list</span> * <span style="color: #e2e2e2;">next</span>;
+<pre class="src src-c"><span style="color: #a626a4;">struct</span> <span style="color: #c18401;">linked_list</span>{
+  <span style="color: #c18401;">size_t</span> <span style="color: #8b4513;">key</span>;
+  <span style="color: #c18401;">int</span> <span style="color: #8b4513;">value</span>;
+  <span style="color: #a626a4;">struct</span> <span style="color: #c18401;">linked_list</span> * <span style="color: #8b4513;">next</span>;
 };
 </pre>
 </div>
@@ -544,9 +533,9 @@ When the hash gives us a slot, we will add the value to linked list at that slot
 </ul>
 
 <div class="org-src-container">
-<pre class="src src-c"><span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">table</span>{
-  <span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">linked_list</span> * <span style="color: #e2e2e2;">table</span>[];
-  <span style="color: #dcdc00; font-weight: bold;">size_t</span> <span style="color: #e2e2e2;">table_size</span>;
+<pre class="src src-c"><span style="color: #a626a4;">struct</span> <span style="color: #c18401;">table</span>{
+  <span style="color: #a626a4;">struct</span> <span style="color: #c18401;">linked_list</span> * <span style="color: #8b4513;">table</span>[];
+  <span style="color: #c18401;">size_t</span> <span style="color: #8b4513;">table_size</span>;
 };
 </pre>
 </div>
@@ -560,9 +549,9 @@ Insertion can be done in \(\theta (1)\) time if we assume that key being inserte
 </p>
 
 <div class="org-src-container">
-<pre class="src src-c"><span style="color: #3eca3e;">// </span><span style="color: #3eca3e;">linked_list_add(struct linked_list * ll, size_t key, int value)</span>
-<span style="color: #3eca3e;">// </span><span style="color: #3eca3e;">adds the given key,value to the start of the list</span>
-<span style="color: #dcdc00; font-weight: bold;">void</span> <span style="color: #00cbcb;">chained_hash_insert</span>(<span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">table</span> <span style="color: #e2e2e2;">t</span>, <span style="color: #dcdc00; font-weight: bold;">size_t</span> <span style="color: #e2e2e2;">key</span>, <span style="color: #dcdc00; font-weight: bold;">int</span> <span style="color: #e2e2e2;">value</span>){
+<pre class="src src-c"><span style="color: #a0a1a7; font-weight: bold;">// </span><span style="color: #a0a1a7;">linked_list_add(struct linked_list * ll, size_t key, int value)</span>
+<span style="color: #a0a1a7; font-weight: bold;">// </span><span style="color: #a0a1a7;">adds the given key,value to the start of the list</span>
+<span style="color: #c18401;">void</span> <span style="color: #0184bc;">chained_hash_insert</span>(<span style="color: #a626a4;">struct</span> <span style="color: #c18401;">table</span> <span style="color: #8b4513;">t</span>, <span style="color: #c18401;">size_t</span> <span style="color: #8b4513;">key</span>, <span style="color: #c18401;">int</span> <span style="color: #8b4513;">value</span>){
   linked_list_add(t.table[ h(key) ], key ,value);
 }
 </pre>
@@ -573,10 +562,10 @@ Insertion can be done in \(\theta (1)\) time if we assume that key being inserte
 </ul>
 
 <div class="org-src-container">
-<pre class="src src-c"><span style="color: #3eca3e;">// </span><span style="color: #3eca3e;">linked_list_search(struct linked_list * ll, size_t key)</span>
-<span style="color: #3eca3e;">// </span><span style="color: #3eca3e;">gets the value stored with the given key</span>
-<span style="color: #dcdc00; font-weight: bold;">void</span> <span style="color: #00cbcb;">chained_hash_get</span>(<span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">table</span> <span style="color: #e2e2e2;">t</span>, <span style="color: #dcdc00; font-weight: bold;">size_t</span> <span style="color: #e2e2e2;">key</span>){
-  <span style="color: #c25959; font-weight: bold;">return</span> linked_list_search(t.table[ h(key) ], key);
+<pre class="src src-c"><span style="color: #a0a1a7; font-weight: bold;">// </span><span style="color: #a0a1a7;">linked_list_search(struct linked_list * ll, size_t key)</span>
+<span style="color: #a0a1a7; font-weight: bold;">// </span><span style="color: #a0a1a7;">gets the value stored with the given key</span>
+<span style="color: #c18401;">void</span> <span style="color: #0184bc;">chained_hash_get</span>(<span style="color: #a626a4;">struct</span> <span style="color: #c18401;">table</span> <span style="color: #8b4513;">t</span>, <span style="color: #c18401;">size_t</span> <span style="color: #8b4513;">key</span>){
+  <span style="color: #a626a4;">return</span> linked_list_search(t.table[ h(key) ], key);
 }
 </pre>
 </div>
@@ -586,9 +575,9 @@ Insertion can be done in \(\theta (1)\) time if we assume that key being inserte
 </ul>
 
 <div class="org-src-container">
-<pre class="src src-c"><span style="color: #3eca3e;">// </span><span style="color: #3eca3e;">linked_list_delete(struct linked_list * ll, size_t key)</span>
-<span style="color: #3eca3e;">// </span><span style="color: #3eca3e;">delete the node with the given key</span>
-<span style="color: #dcdc00; font-weight: bold;">void</span> <span style="color: #00cbcb;">chained_hash_delete</span>(<span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">table</span> <span style="color: #e2e2e2;">t</span>, <span style="color: #dcdc00; font-weight: bold;">size_t</span> <span style="color: #e2e2e2;">key</span>){
+<pre class="src src-c"><span style="color: #a0a1a7; font-weight: bold;">// </span><span style="color: #a0a1a7;">linked_list_delete(struct linked_list * ll, size_t key)</span>
+<span style="color: #a0a1a7; font-weight: bold;">// </span><span style="color: #a0a1a7;">delete the node with the given key</span>
+<span style="color: #c18401;">void</span> <span style="color: #0184bc;">chained_hash_delete</span>(<span style="color: #a626a4;">struct</span> <span style="color: #c18401;">table</span> <span style="color: #8b4513;">t</span>, <span style="color: #c18401;">size_t</span> <span style="color: #8b4513;">key</span>){
   linked_list_delete(t.table[ h(key) ], key);
 }
 </pre>
@@ -596,8 +585,8 @@ Insertion can be done in \(\theta (1)\) time if we assume that key being inserte
 </div>
 </div>
 
-<div id="outline-container-org581f1ed" class="outline-4">
-<h4 id="org581f1ed"><span class="section-number-4">3.1.2.</span> Performance of chaining hash table</h4>
+<div id="outline-container-org390fada" class="outline-4">
+<h4 id="org390fada"><span class="section-number-4">3.1.2.</span> Performance of chaining hash table</h4>
 <div class="outline-text-4" id="text-3-1-2">
 <p>
 The <b>load factor</b> is defined as number of elements per slot and is calculated as
@@ -613,8 +602,8 @@ If we also assume that hash funtion takes constant time, then in the average cas
 </p>
 </div>
 </div>
-<div id="outline-container-org92ce119" class="outline-4">
-<h4 id="org92ce119"><span class="section-number-4">3.1.3.</span> Open Addressing</h4>
+<div id="outline-container-org77de47f" class="outline-4">
+<h4 id="org77de47f"><span class="section-number-4">3.1.3.</span> Open Addressing</h4>
 <div class="outline-text-4" id="text-3-1-3">
 <p>
 In open addressing, all the key and value pair of entries are stored in the table itself. Because of this, the load factor \(\left( \alpha \right)\) can never exceed 1.
@@ -628,8 +617,8 @@ It is necessary to keep probe sequence fixed for any given key, so that we can s
 </p>
 </div>
 
-<div id="outline-container-org00395eb" class="outline-5">
-<h5 id="org00395eb"><span class="section-number-5">3.1.3.1.</span> Linear probing</h5>
+<div id="outline-container-orgf5e3e78" class="outline-5">
+<h5 id="orgf5e3e78"><span class="section-number-5">3.1.3.1.</span> Linear probing</h5>
 <div class="outline-text-5" id="text-3-1-3-1">
 <p>
 For a given <b>ordinary hash function</b> \(h(k)\), the linear probing uses the hash function
@@ -645,8 +634,8 @@ Linear probing is easy to implement, but it suffers from <b><i>primary clusterin
 </div>
 </div>
 
-<div id="outline-container-org7ff686c" class="outline-5">
-<h5 id="org7ff686c"><span class="section-number-5">3.1.3.2.</span> Quadratic probing</h5>
+<div id="outline-container-orgc1c6b5d" class="outline-5">
+<h5 id="orgc1c6b5d"><span class="section-number-5">3.1.3.2.</span> Quadratic probing</h5>
 <div class="outline-text-5" id="text-3-1-3-2">
 <p>
 For given auxiliary hash function \(h(k)\), the quadratic probing uses
@@ -667,8 +656,8 @@ If \(quadratic\_h(k_1, 0) = quadratic\_h(k_2,0)\), then that implies that all \(
 </p>
 </div>
 </div>
-<div id="outline-container-orgeb11d50" class="outline-5">
-<h5 id="orgeb11d50"><span class="section-number-5">3.1.3.3.</span> Double Hashing</h5>
+<div id="outline-container-org96aca88" class="outline-5">
+<h5 id="org96aca88"><span class="section-number-5">3.1.3.3.</span> Double Hashing</h5>
 <div class="outline-text-5" id="text-3-1-3-3">
 <p>
 Double hashing is one of the best available method for open addressing. <br />
@@ -702,8 +691,8 @@ The number of probes on averge in a successful search is at most \(\frac{1}{\alp
 </div>
 </div>
 </div>
-<div id="outline-container-org370e99a" class="outline-3">
-<h3 id="org370e99a"><span class="section-number-3">3.2.</span> Hash Functions</h3>
+<div id="outline-container-org38f52a7" class="outline-3">
+<h3 id="org38f52a7"><span class="section-number-3">3.2.</span> Hash Functions</h3>
 <div class="outline-text-3" id="text-3-2">
 <p>
 A good hash funtion will approximately satisfy the <b>simple uniform hashing</b>, which means that any element is equally likely to be hashed to any slot.
@@ -725,8 +714,8 @@ We will look at a few ways to make a hash function.
 </p>
 </div>
 
-<div id="outline-container-org56149ae" class="outline-4">
-<h4 id="org56149ae"><span class="section-number-4">3.2.1.</span> The division method</h4>
+<div id="outline-container-orgf278fcd" class="outline-4">
+<h4 id="orgf278fcd"><span class="section-number-4">3.2.1.</span> The division method</h4>
 <div class="outline-text-4" id="text-3-2-1">
 <p>
 In division method, we map a key \(k\) into one of the \(m\) slots by taking the remainder of k divided by m.
@@ -742,8 +731,8 @@ But there are some cases where \(m\) is chosen to be something else.
 </div>
 </div>
 
-<div id="outline-container-orgf3fa455" class="outline-4">
-<h4 id="orgf3fa455"><span class="section-number-4">3.2.2.</span> The multiplication method</h4>
+<div id="outline-container-org9d0defb" class="outline-4">
+<h4 id="org9d0defb"><span class="section-number-4">3.2.2.</span> The multiplication method</h4>
 <div class="outline-text-4" id="text-3-2-2">
 <p>
 In multiplication method, we first multiply the key \(k\) with a constant \(A\) which is in range \(0 < A < 1\). Then we get the <b>fractional part</b> of \(kA\). Then we multiply the fractional part by \(m\) and floor it to get the hash.
@@ -773,21 +762,21 @@ Then to get our \(h(k)\),
 In C language,
 </p>
 <div class="org-src-container">
-<pre class="src src-c"><span style="color: #dcdc00; font-weight: bold;">size_t</span> <span style="color: #00cbcb;">hash</span>(<span style="color: #dcdc00; font-weight: bold;">size_t</span> <span style="color: #e2e2e2;">key</span>, <span style="color: #dcdc00; font-weight: bold;">size_t</span> <span style="color: #e2e2e2;">m</span>){
-  <span style="color: #dcdc00; font-weight: bold;">double</span> <span style="color: #e2e2e2;">kA</span> = key * 0.618;
-  <span style="color: #3eca3e;">// </span><span style="color: #3eca3e;">get decimal part only</span>
-  <span style="color: #dcdc00; font-weight: bold;">double</span> <span style="color: #e2e2e2;">kA</span> = kA - ((<span style="color: #dcdc00; font-weight: bold;">int</span>) kA);
-  <span style="color: #3eca3e;">// </span><span style="color: #3eca3e;">floor the product of decimal part and m</span>
-  <span style="color: #dcdc00; font-weight: bold;">size_t</span> <span style="color: #e2e2e2;">h</span> = floor(m * kA);
-  <span style="color: #c25959; font-weight: bold;">return</span> h;
+<pre class="src src-c"><span style="color: #c18401;">size_t</span> <span style="color: #0184bc;">hash</span>(<span style="color: #c18401;">size_t</span> <span style="color: #8b4513;">key</span>, <span style="color: #c18401;">size_t</span> <span style="color: #8b4513;">m</span>){
+  <span style="color: #c18401;">double</span> <span style="color: #8b4513;">kA</span> = key * 0.618;
+  <span style="color: #a0a1a7; font-weight: bold;">// </span><span style="color: #a0a1a7;">get decimal part only</span>
+  <span style="color: #c18401;">double</span> <span style="color: #8b4513;">kA</span> = kA - ((<span style="color: #c18401;">int</span>) kA);
+  <span style="color: #a0a1a7; font-weight: bold;">// </span><span style="color: #a0a1a7;">floor the product of decimal part and m</span>
+  <span style="color: #c18401;">size_t</span> <span style="color: #8b4513;">h</span> = floor(m * kA);
+  <span style="color: #a626a4;">return</span> h;
 }
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orgb06e422" class="outline-4">
-<h4 id="orgb06e422"><span class="section-number-4">3.2.3.</span> Mid square method</h4>
+<div id="outline-container-orga163f8d" class="outline-4">
+<h4 id="orga163f8d"><span class="section-number-4">3.2.3.</span> Mid square method</h4>
 <div class="outline-text-4" id="text-3-2-3">
 <p>
 In this method, we square the keys and then we choose some digits from the middle.
@@ -800,8 +789,8 @@ With huge numbers, we need to take care of overflow conditions in this method.
 </div>
 </div>
 
-<div id="outline-container-org5aae66e" class="outline-4">
-<h4 id="org5aae66e"><span class="section-number-4">3.2.4.</span> Folding method</h4>
+<div id="outline-container-orgeac46d3" class="outline-4">
+<h4 id="orgeac46d3"><span class="section-number-4">3.2.4.</span> Folding method</h4>
 <div class="outline-text-4" id="text-3-2-4">
 <p>
 While this method can be used on integers, this method is usually used where the key is segmented. For example in arrays or when key is a string.
@@ -826,8 +815,8 @@ h(k) = 32
 </div>
 </div>
 
-<div id="outline-container-orgb2f422e" class="outline-3">
-<h3 id="orgb2f422e"><span class="section-number-3">3.3.</span> Universal Hashing</h3>
+<div id="outline-container-orgc115127" class="outline-3">
+<h3 id="orgc115127"><span class="section-number-3">3.3.</span> Universal Hashing</h3>
 <div class="outline-text-3" id="text-3-3">
 <p>
 Suppose a malicious adversary who know's our hash function chooses the keys that are to be hashed. He can choose keys that all hash to same slot therefore degrading performance of our hash table to \(\theta (n)\).
@@ -841,8 +830,8 @@ Fixed hash functions are vulnerable to such attacks. To prevent this from happen
 The randomization of chosen hash function will almost guarentee that we won't get the worst case behaviour. The hash function is <i><b>not changed every time we do an insert or delete operation.</b></i> Changing hash function after each operation will not allow us to lookup elements in optimal time. We only change to another hash function when we do rehashing.
 </p>
 </div>
-<div id="outline-container-org23aba84" class="outline-4">
-<h4 id="org23aba84"><span class="section-number-4">3.3.1.</span> Rehashing</h4>
+<div id="outline-container-org84fd927" class="outline-4">
+<h4 id="org84fd927"><span class="section-number-4">3.3.1.</span> Rehashing</h4>
 <div class="outline-text-4" id="text-3-3-1">
 <p>
 When we need to increase the size of hash table or change the hash function, we have to do rehashing.
@@ -859,8 +848,8 @@ In universal hashing, we will change the hash function each time we rehash the h
 </p>
 </div>
 </div>
-<div id="outline-container-orgbd4c14f" class="outline-4">
-<h4 id="orgbd4c14f"><span class="section-number-4">3.3.2.</span> Universal family</h4>
+<div id="outline-container-org8dd2c49" class="outline-4">
+<h4 id="org8dd2c49"><span class="section-number-4">3.3.2.</span> Universal family</h4>
 <div class="outline-text-4" id="text-3-3-2">
 <p>
 For universal hashing, the set of hash functions which is used is called <b>universal family</b>.
@@ -881,8 +870,8 @@ Sometimes, universal family may be called a universal of hash functions.
 </p>
 </div>
 </div>
-<div id="outline-container-org19214ad" class="outline-4">
-<h4 id="org19214ad"><span class="section-number-4">3.3.3.</span> Performance of universal hashing</h4>
+<div id="outline-container-orgdfd01cd" class="outline-4">
+<h4 id="orgdfd01cd"><span class="section-number-4">3.3.3.</span> Performance of universal hashing</h4>
 <div class="outline-text-4" id="text-3-3-3">
 <p>
 For any hash function \(h\) from the universal. We know that the probability of collision between two keys is \((1/m)\).
@@ -893,8 +882,8 @@ Where, alpha is the load factor of hash table.
 </p>
 </div>
 </div>
-<div id="outline-container-orgfaf8460" class="outline-4">
-<h4 id="orgfaf8460"><span class="section-number-4">3.3.4.</span> Example for universal set of hash functions</h4>
+<div id="outline-container-org8f52e65" class="outline-4">
+<h4 id="org8f52e65"><span class="section-number-4">3.3.4.</span> Example for universal set of hash functions</h4>
 <div class="outline-text-4" id="text-3-3-4">
 <p>
 Suppose we have set of keys \(\{ 0,1,2,...,k \}\), we will choose a prime number \(p > k\).
@@ -909,8 +898,8 @@ Here, \(m\) is the number of slots in hash table.
 </div>
 </div>
 </div>
-<div id="outline-container-orgf71fb05" class="outline-3">
-<h3 id="orgf71fb05"><span class="section-number-3">3.4.</span> Perfect Hashing</h3>
+<div id="outline-container-orge05a96f" class="outline-3">
+<h3 id="orge05a96f"><span class="section-number-3">3.4.</span> Perfect Hashing</h3>
 <div class="outline-text-3" id="text-3-4">
 <p>
 TODO : Doing this or nah
@@ -920,8 +909,8 @@ NOTE : This doesn't seem to be in B.Tech syllabus, but it seems cool.
 </div>
 </div>
 </div>
-<div id="outline-container-org7cbf501" class="outline-2">
-<h2 id="org7cbf501"><span class="section-number-2">4.</span> Representing rooted trees using nodes</h2>
+<div id="outline-container-org5a101d3" class="outline-2">
+<h2 id="org5a101d3"><span class="section-number-2">4.</span> Representing rooted trees using nodes</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 We can represent trees using nodes.  A node only stores a single element of the tree. What is a node will depend on the language being used.
@@ -930,10 +919,10 @@ In C, we make a struct which will store the element and pointers to other node s
 </p>
 
 <div class="org-src-container">
-<pre class="src src-c"><span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">tree_node</span>{
-  <span style="color: #dcdc00; font-weight: bold;">int</span> <span style="color: #e2e2e2;">element</span>;
-  <span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">tree_node</span> * <span style="color: #e2e2e2;">left_child</span>;
-  <span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">tree_node</span> * <span style="color: #e2e2e2;">right_child</span>;
+<pre class="src src-c"><span style="color: #a626a4;">struct</span> <span style="color: #c18401;">tree_node</span>{
+  <span style="color: #c18401;">int</span> <span style="color: #8b4513;">element</span>;
+  <span style="color: #a626a4;">struct</span> <span style="color: #c18401;">tree_node</span> * <span style="color: #8b4513;">left_child</span>;
+  <span style="color: #a626a4;">struct</span> <span style="color: #c18401;">tree_node</span> * <span style="color: #8b4513;">right_child</span>;
 };
 </pre>
 </div>
@@ -942,23 +931,23 @@ In C, we make a struct which will store the element and pointers to other node s
 In languages with oop, we create node class which will store refrences to other node objects.
 </p>
 <div class="org-src-container">
-<pre class="src src-java"><span style="color: #c25959; font-weight: bold;">class</span> <span style="color: #dcdc00; font-weight: bold;">Node</span> {
-    <span style="color: #dcdc00; font-weight: bold;">int</span> <span style="color: #e2e2e2;">value</span>;
-    <span style="color: #dcdc00; font-weight: bold;">Node</span> <span style="color: #e2e2e2;">left</span>;
-    <span style="color: #dcdc00; font-weight: bold;">Node</span> <span style="color: #e2e2e2;">right</span>;
+<pre class="src src-java"><span style="color: #a626a4;">class</span> <span style="color: #c18401;">Node</span> {
+    <span style="color: #c18401;">int</span> <span style="color: #8b4513;">value</span>;
+    <span style="color: #c18401;">Node</span> <span style="color: #8b4513;">left</span>;
+    <span style="color: #c18401;">Node</span> <span style="color: #8b4513;">right</span>;
 
-    Node(<span style="color: #dcdc00; font-weight: bold;">int</span> <span style="color: #e2e2e2;">value</span>) {
-        <span style="color: #c25959; font-weight: bold;">this</span>.value = value;
-        right = <span style="color: #3eca3e;">null</span>;
-        left = <span style="color: #3eca3e;">null</span>;
+    Node(<span style="color: #c18401;">int</span> <span style="color: #8b4513;">value</span>) {
+        <span style="color: #a626a4;">this</span>.value = value;
+        right = <span style="font-weight: bold; text-decoration: underline;">null</span>;
+        left = <span style="font-weight: bold; text-decoration: underline;">null</span>;
     }
 }
 </pre>
 </div>
 </div>
 
-<div id="outline-container-org00f3c9f" class="outline-3">
-<h3 id="org00f3c9f"><span class="section-number-3">4.1.</span> Fixed number of children</h3>
+<div id="outline-container-org7c4d1f9" class="outline-3">
+<h3 id="org7c4d1f9"><span class="section-number-3">4.1.</span> Fixed number of children</h3>
 <div class="outline-text-3" id="text-4-1">
 <p>
 When we know how many children any given node can have, i.e, the number of children is bounded. We can just use refrences or pointers to the nodes directly.
@@ -967,18 +956,18 @@ For example, if we know we are making a binary tree, then we can just store refr
 </p>
 
 <div class="org-src-container">
-<pre class="src src-c"><span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">tree_node</span>{
-  <span style="color: #dcdc00; font-weight: bold;">int</span> <span style="color: #e2e2e2;">element</span>;
-  <span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">tree_node</span> * <span style="color: #e2e2e2;">left_child</span>;
-  <span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">tree_node</span> * <span style="color: #e2e2e2;">right_child</span>;
+<pre class="src src-c"><span style="color: #a626a4;">struct</span> <span style="color: #c18401;">tree_node</span>{
+  <span style="color: #c18401;">int</span> <span style="color: #8b4513;">element</span>;
+  <span style="color: #a626a4;">struct</span> <span style="color: #c18401;">tree_node</span> * <span style="color: #8b4513;">left_child</span>;
+  <span style="color: #a626a4;">struct</span> <span style="color: #c18401;">tree_node</span> * <span style="color: #8b4513;">right_child</span>;
 };
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org092967c" class="outline-3">
-<h3 id="org092967c"><span class="section-number-3">4.2.</span> Unbounded number of children</h3>
+<div id="outline-container-org4765425" class="outline-3">
+<h3 id="org4765425"><span class="section-number-3">4.2.</span> Unbounded number of children</h3>
 <div class="outline-text-3" id="text-4-2">
 <p>
 When we don't know how many children any given node will have. Thus any node can have any number of children, we can't just use refrences. We could create an array of refrences to nodes, but some nodes will only have one or two childs and some may have no childs. This will lead to a lot of wasted memory.
@@ -987,10 +976,10 @@ There is a way to represent such trees without wasting any memory. This is done 
 <br />
 </p>
 <div class="org-src-container">
-<pre class="src src-c"><span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">tree_node</span>{
-  <span style="color: #dcdc00; font-weight: bold;">int</span> <span style="color: #e2e2e2;">element</span>;
-  <span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">tree_node</span> * <span style="color: #e2e2e2;">left_child</span>;
-  <span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">tree_node</span> * <span style="color: #e2e2e2;">right_sibling</span>;
+<pre class="src src-c"><span style="color: #a626a4;">struct</span> <span style="color: #c18401;">tree_node</span>{
+  <span style="color: #c18401;">int</span> <span style="color: #8b4513;">element</span>;
+  <span style="color: #a626a4;">struct</span> <span style="color: #c18401;">tree_node</span> * <span style="color: #8b4513;">left_child</span>;
+  <span style="color: #a626a4;">struct</span> <span style="color: #c18401;">tree_node</span> * <span style="color: #8b4513;">right_sibling</span>;
 };
 </pre>
 </div>
@@ -1000,13 +989,13 @@ The right sibling pointer will point to the right sibling of the node. This allo
 </p>
 
 <div class="org-src-container">
-<pre class="src src-c"><span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">tree_node</span>{
-  <span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">tree_node</span> * <span style="color: #e2e2e2;">parent</span>;
+<pre class="src src-c"><span style="color: #a626a4;">struct</span> <span style="color: #c18401;">tree_node</span>{
+  <span style="color: #a626a4;">struct</span> <span style="color: #c18401;">tree_node</span> * <span style="color: #8b4513;">parent</span>;
 
-  <span style="color: #dcdc00; font-weight: bold;">int</span> <span style="color: #e2e2e2;">element</span>;
+  <span style="color: #c18401;">int</span> <span style="color: #8b4513;">element</span>;
 
-  <span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">tree_node</span> * <span style="color: #e2e2e2;">left_child</span>;
-  <span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">tree_node</span> * <span style="color: #e2e2e2;">right_sibling</span>;
+  <span style="color: #a626a4;">struct</span> <span style="color: #c18401;">tree_node</span> * <span style="color: #8b4513;">left_child</span>;
+  <span style="color: #a626a4;">struct</span> <span style="color: #c18401;">tree_node</span> * <span style="color: #8b4513;">right_sibling</span>;
 };
 </pre>
 </div>
@@ -1026,8 +1015,8 @@ can be represented using refrences and pointers as :
 </div>
 </div>
 
-<div id="outline-container-orgeea09e3" class="outline-2">
-<h2 id="orgeea09e3"><span class="section-number-2">5.</span> Binary Search Trees</h2>
+<div id="outline-container-org5d261e7" class="outline-2">
+<h2 id="org5d261e7"><span class="section-number-2">5.</span> Binary Search Trees</h2>
 <div class="outline-text-2" id="text-5">
 <p>
 A tree where any node can have only two child nodes is called a <b><i>binary tree</i></b>.
@@ -1042,43 +1031,43 @@ This property allows us easily search for elements from the data structure. We s
 In C, we can make a binary tree as
 </p>
 <div class="org-src-container">
-<pre class="src src-c"><span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">binary_tree</span>{
-  <span style="color: #dcdc00; font-weight: bold;">int</span> <span style="color: #e2e2e2;">value</span>;
-  <span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">binary_tree</span> * <span style="color: #e2e2e2;">left_child</span>;
-  <span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">binary_tree</span> * <span style="color: #e2e2e2;">right_child</span>;
+<pre class="src src-c"><span style="color: #a626a4;">struct</span> <span style="color: #c18401;">binary_tree</span>{
+  <span style="color: #c18401;">int</span> <span style="color: #8b4513;">value</span>;
+  <span style="color: #a626a4;">struct</span> <span style="color: #c18401;">binary_tree</span> * <span style="color: #8b4513;">left_child</span>;
+  <span style="color: #a626a4;">struct</span> <span style="color: #c18401;">binary_tree</span> * <span style="color: #8b4513;">right_child</span>;
 };
 </pre>
 </div>
 </div>
 
-<div id="outline-container-org068d34e" class="outline-3">
-<h3 id="org068d34e"><span class="section-number-3">5.1.</span> Quering a BST</h3>
+<div id="outline-container-org9575402" class="outline-3">
+<h3 id="org9575402"><span class="section-number-3">5.1.</span> Quering a BST</h3>
 <div class="outline-text-3" id="text-5-1">
 <p>
 Some common ways in which we usually query a BST are searching for a node, minimum &amp; maximum node and successor &amp; predecessor nodes. We will also look at how we can get the parent node for a given node, if we already store a parent pointer then that algorithm will be unnecessary.
 </p>
 </div>
-<div id="outline-container-orgcf1d625" class="outline-4">
-<h4 id="orgcf1d625"><span class="section-number-4">5.1.1.</span> Searching for node</h4>
+<div id="outline-container-orge187843" class="outline-4">
+<h4 id="orge187843"><span class="section-number-4">5.1.1.</span> Searching for node</h4>
 <div class="outline-text-4" id="text-5-1-1">
 <p>
 We can search for a node very effectively with the help of binary search tree property. The search will return the node if it is found, else it will return NULL.
 </p>
 <div class="org-src-container">
-<pre class="src src-c"><span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">binary_tree</span> *
-<span style="color: #00cbcb;">search_recursively</span>(<span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">binary_tree</span> * <span style="color: #e2e2e2;">root</span>, <span style="color: #dcdc00; font-weight: bold;">int</span> <span style="color: #e2e2e2;">value</span>){
-  <span style="color: #3eca3e;">// </span><span style="color: #3eca3e;">If we reach a null, then value is not in tree</span>
-  <span style="color: #c25959; font-weight: bold;">if</span>(root == <span style="color: #3eca3e;">NULL</span>)
-    <span style="color: #c25959; font-weight: bold;">return</span> <span style="color: #3eca3e;">NULL</span>;
-  <span style="color: #3eca3e;">// </span><span style="color: #3eca3e;">if we found the value, return the current node</span>
-  <span style="color: #c25959; font-weight: bold;">if</span>(root-&gt;value == value)
-    <span style="color: #c25959; font-weight: bold;">return</span> root;
-  <span style="color: #3eca3e;">// </span><span style="color: #3eca3e;">compare value we are looking for</span>
-  <span style="color: #3eca3e;">// </span><span style="color: #3eca3e;">and go to either left or right sub-tree</span>
-  <span style="color: #c25959; font-weight: bold;">if</span>(value &lt; root-&gt;value)
-    <span style="color: #c25959; font-weight: bold;">return</span> search_recursively(root-&gt;left, value);
-  <span style="color: #c25959; font-weight: bold;">else</span>
-    <span style="color: #c25959; font-weight: bold;">return</span> search_recursively(root-&gt;right, value);
+<pre class="src src-c"><span style="color: #a626a4;">struct</span> <span style="color: #c18401;">binary_tree</span> *
+<span style="color: #0184bc;">search_recursively</span>(<span style="color: #a626a4;">struct</span> <span style="color: #c18401;">binary_tree</span> * <span style="color: #8b4513;">root</span>, <span style="color: #c18401;">int</span> <span style="color: #8b4513;">value</span>){
+  <span style="color: #a0a1a7; font-weight: bold;">// </span><span style="color: #a0a1a7;">If we reach a null, then value is not in tree</span>
+  <span style="color: #a626a4;">if</span>(root == <span style="font-weight: bold; text-decoration: underline;">NULL</span>)
+    <span style="color: #a626a4;">return</span> <span style="font-weight: bold; text-decoration: underline;">NULL</span>;
+  <span style="color: #a0a1a7; font-weight: bold;">// </span><span style="color: #a0a1a7;">if we found the value, return the current node</span>
+  <span style="color: #a626a4;">if</span>(root-&gt;value == value)
+    <span style="color: #a626a4;">return</span> root;
+  <span style="color: #a0a1a7; font-weight: bold;">// </span><span style="color: #a0a1a7;">compare value we are looking for</span>
+  <span style="color: #a0a1a7; font-weight: bold;">// </span><span style="color: #a0a1a7;">and go to either left or right sub-tree</span>
+  <span style="color: #a626a4;">if</span>(value &lt; root-&gt;value)
+    <span style="color: #a626a4;">return</span> search_recursively(root-&gt;left, value);
+  <span style="color: #a626a4;">else</span>
+    <span style="color: #a626a4;">return</span> search_recursively(root-&gt;right, value);
 }
 </pre>
 </div>
@@ -1086,23 +1075,23 @@ We can search for a node very effectively with the help of binary search tree pr
 We can also search iteratively rather than recursively.
 </p>
 <div class="org-src-container">
-<pre class="src src-c"><span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">binary_tree</span> *
-<span style="color: #00cbcb;">search_iterative</span>(<span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">binary_tree</span> * <span style="color: #e2e2e2;">root</span>, <span style="color: #dcdc00; font-weight: bold;">int</span> <span style="color: #e2e2e2;">value</span>){
-  <span style="color: #c25959; font-weight: bold;">while</span>(root != <span style="color: #3eca3e;">NULL</span>){
-    <span style="color: #3eca3e;">// </span><span style="color: #3eca3e;">if we found the value, return the current node</span>
-    <span style="color: #c25959; font-weight: bold;">if</span>(root-&gt;value == value) <span style="color: #c25959; font-weight: bold;">return</span> root;
-    <span style="color: #3eca3e;">// </span><span style="color: #3eca3e;">compare value and go to left or right sub-tree</span>
+<pre class="src src-c"><span style="color: #a626a4;">struct</span> <span style="color: #c18401;">binary_tree</span> *
+<span style="color: #0184bc;">search_iterative</span>(<span style="color: #a626a4;">struct</span> <span style="color: #c18401;">binary_tree</span> * <span style="color: #8b4513;">root</span>, <span style="color: #c18401;">int</span> <span style="color: #8b4513;">value</span>){
+  <span style="color: #a626a4;">while</span>(root != <span style="font-weight: bold; text-decoration: underline;">NULL</span>){
+    <span style="color: #a0a1a7; font-weight: bold;">// </span><span style="color: #a0a1a7;">if we found the value, return the current node</span>
+    <span style="color: #a626a4;">if</span>(root-&gt;value == value) <span style="color: #a626a4;">return</span> root;
+    <span style="color: #a0a1a7; font-weight: bold;">// </span><span style="color: #a0a1a7;">compare value and go to left or right sub-tree</span>
     root = (value &lt; root-&gt;value) ? root-&gt;left : root-&gt;right;
   }
-  <span style="color: #3eca3e;">// </span><span style="color: #3eca3e;">if not found then return NULL</span>
-  <span style="color: #c25959; font-weight: bold;">return</span> <span style="color: #3eca3e;">NULL</span>;
+  <span style="color: #a0a1a7; font-weight: bold;">// </span><span style="color: #a0a1a7;">if not found then return NULL</span>
+  <span style="color: #a626a4;">return</span> <span style="font-weight: bold; text-decoration: underline;">NULL</span>;
 }
 </pre>
 </div>
 </div>
 </div>
-<div id="outline-container-org1eccdb9" class="outline-4">
-<h4 id="org1eccdb9"><span class="section-number-4">5.1.2.</span> Minimum and maximum</h4>
+<div id="outline-container-org8fcf0b3" class="outline-4">
+<h4 id="org8fcf0b3"><span class="section-number-4">5.1.2.</span> Minimum and maximum</h4>
 <div class="outline-text-4" id="text-5-1-2">
 <p>
 Finding the minimum and maximum is simple in a Binary Search Tree. The minimum element will be the leftmost node and maximum will be the rightmost node. We can get the minimum and maximum nodes by using these algorithms.
@@ -1111,11 +1100,11 @@ Finding the minimum and maximum is simple in a Binary Search Tree. The minimum e
 <li>For minimum node</li>
 </ul>
 <div class="org-src-container">
-<pre class="src src-c"><span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">binary_tree</span> * <span style="color: #00cbcb;">minimum</span>(<span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">binary_tree</span> * <span style="color: #e2e2e2;">root</span>){
-  <span style="color: #c25959; font-weight: bold;">if</span>(root == <span style="color: #3eca3e;">NULL</span>) <span style="color: #c25959; font-weight: bold;">return</span> <span style="color: #3eca3e;">NULL</span>;
-  <span style="color: #c25959; font-weight: bold;">while</span>(root-&gt;left != <span style="color: #3eca3e;">NULL</span>)
+<pre class="src src-c"><span style="color: #a626a4;">struct</span> <span style="color: #c18401;">binary_tree</span> * <span style="color: #0184bc;">minimum</span>(<span style="color: #a626a4;">struct</span> <span style="color: #c18401;">binary_tree</span> * <span style="color: #8b4513;">root</span>){
+  <span style="color: #a626a4;">if</span>(root == <span style="font-weight: bold; text-decoration: underline;">NULL</span>) <span style="color: #a626a4;">return</span> <span style="font-weight: bold; text-decoration: underline;">NULL</span>;
+  <span style="color: #a626a4;">while</span>(root-&gt;left != <span style="font-weight: bold; text-decoration: underline;">NULL</span>)
     root = root-&gt;left;
-  <span style="color: #c25959; font-weight: bold;">return</span> root;
+  <span style="color: #a626a4;">return</span> root;
 }
 </pre>
 </div>
@@ -1123,97 +1112,97 @@ Finding the minimum and maximum is simple in a Binary Search Tree. The minimum e
 <li>For maximum node</li>
 </ul>
 <div class="org-src-container">
-<pre class="src src-c"><span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">binary_tree</span> * <span style="color: #00cbcb;">maximum</span>(<span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">binary_tree</span> * <span style="color: #e2e2e2;">root</span>){
-  <span style="color: #c25959; font-weight: bold;">if</span>(root == <span style="color: #3eca3e;">NULL</span>) <span style="color: #c25959; font-weight: bold;">return</span> <span style="color: #3eca3e;">NULL</span>;
-  <span style="color: #c25959; font-weight: bold;">while</span>(root-&gt;right != <span style="color: #3eca3e;">NULL</span>)
+<pre class="src src-c"><span style="color: #a626a4;">struct</span> <span style="color: #c18401;">binary_tree</span> * <span style="color: #0184bc;">maximum</span>(<span style="color: #a626a4;">struct</span> <span style="color: #c18401;">binary_tree</span> * <span style="color: #8b4513;">root</span>){
+  <span style="color: #a626a4;">if</span>(root == <span style="font-weight: bold; text-decoration: underline;">NULL</span>) <span style="color: #a626a4;">return</span> <span style="font-weight: bold; text-decoration: underline;">NULL</span>;
+  <span style="color: #a626a4;">while</span>(root-&gt;right != <span style="font-weight: bold; text-decoration: underline;">NULL</span>)
     root = root-&gt;right;
-  <span style="color: #c25959; font-weight: bold;">return</span> root;
+  <span style="color: #a626a4;">return</span> root;
 }
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orgd1eb8f1" class="outline-4">
-<h4 id="orgd1eb8f1"><span class="section-number-4">5.1.3.</span> Find Parent Node</h4>
+<div id="outline-container-orgfa9bc17" class="outline-4">
+<h4 id="orgfa9bc17"><span class="section-number-4">5.1.3.</span> Find Parent Node</h4>
 <div class="outline-text-4" id="text-5-1-3">
 <p>
 This algorithm will return the parent node. It uses a trailing node to get the parent. If the root node is given, then it will return NULL. <b>This algorithm makes the assumption that the node is in the tree</b>.
 </p>
 <div class="org-src-container">
-<pre class="src src-c"><span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">binary_tree</span> * 
-<span style="color: #00cbcb;">find_parent</span>(<span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">binary_tree</span> * <span style="color: #e2e2e2;">tree</span>, <span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">binary_tree</span> * <span style="color: #e2e2e2;">node</span>){
-  <span style="color: #c25959; font-weight: bold;">if</span>(tree == node) <span style="color: #c25959; font-weight: bold;">return</span> <span style="color: #3eca3e;">NULL</span>;
+<pre class="src src-c"><span style="color: #a626a4;">struct</span> <span style="color: #c18401;">binary_tree</span> * 
+<span style="color: #0184bc;">find_parent</span>(<span style="color: #a626a4;">struct</span> <span style="color: #c18401;">binary_tree</span> * <span style="color: #8b4513;">tree</span>, <span style="color: #a626a4;">struct</span> <span style="color: #c18401;">binary_tree</span> * <span style="color: #8b4513;">node</span>){
+  <span style="color: #a626a4;">if</span>(tree == node) <span style="color: #a626a4;">return</span> <span style="font-weight: bold; text-decoration: underline;">NULL</span>;
 
-  <span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">binary_tree</span> * <span style="color: #e2e2e2;">current_node</span> = tree;
-  <span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">binary_tree</span> * <span style="color: #e2e2e2;">trailing_node</span> = tree;
+  <span style="color: #a626a4;">struct</span> <span style="color: #c18401;">binary_tree</span> * <span style="color: #8b4513;">current_node</span> = tree;
+  <span style="color: #a626a4;">struct</span> <span style="color: #c18401;">binary_tree</span> * <span style="color: #8b4513;">trailing_node</span> = tree;
 
-  <span style="color: #c25959; font-weight: bold;">while</span>(current_node != node){
+  <span style="color: #a626a4;">while</span>(current_node != node){
     trailing_node = current_node;
     current_node = (node-&gt;value &lt; current_node-&gt;value) ?
       current_node-&gt;left :
       current_node-&gt;right;
   }
 
-  <span style="color: #c25959; font-weight: bold;">return</span> trailing_node;
+  <span style="color: #a626a4;">return</span> trailing_node;
 }
 </pre>
 </div>
 </div>
 </div>
-<div id="outline-container-org06aec1b" class="outline-4">
-<h4 id="org06aec1b"><span class="section-number-4">5.1.4.</span> Is ancestor</h4>
+<div id="outline-container-orgacbcbc2" class="outline-4">
+<h4 id="orgacbcbc2"><span class="section-number-4">5.1.4.</span> Is ancestor</h4>
 <div class="outline-text-4" id="text-5-1-4">
 <p>
 This algorithm will take two nodes, ancestor and descendant. Then it will check if ancestor node is really the ancestor of descendant node.
 </p>
 <div class="org-src-container">
-<pre class="src src-c"><span style="color: #dcdc00; font-weight: bold;">bool</span>
-<span style="color: #00cbcb;">is_ancestor</span>(<span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">binary_tree</span> *<span style="color: #e2e2e2;">ancestor</span>,
-            <span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">binary_tree</span> *<span style="color: #e2e2e2;">descendant</span>){
-  <span style="color: #3eca3e;">// </span><span style="color: #3eca3e;">both ancestor and descendant</span>
-  <span style="color: #3eca3e;">// </span><span style="color: #3eca3e;">should not be NULL</span>
-  <span style="color: #c25959; font-weight: bold;">if</span>(ancestor == <span style="color: #3eca3e;">NULL</span> || descendant == <span style="color: #3eca3e;">NULL</span>)
-    <span style="color: #c25959; font-weight: bold;">return</span> <span style="color: #3eca3e;">false</span>;
+<pre class="src src-c"><span style="color: #c18401;">bool</span>
+<span style="color: #0184bc;">is_ancestor</span>(<span style="color: #a626a4;">struct</span> <span style="color: #c18401;">binary_tree</span> *<span style="color: #8b4513;">ancestor</span>,
+            <span style="color: #a626a4;">struct</span> <span style="color: #c18401;">binary_tree</span> *<span style="color: #8b4513;">descendant</span>){
+  <span style="color: #a0a1a7; font-weight: bold;">// </span><span style="color: #a0a1a7;">both ancestor and descendant</span>
+  <span style="color: #a0a1a7; font-weight: bold;">// </span><span style="color: #a0a1a7;">should not be NULL</span>
+  <span style="color: #a626a4;">if</span>(ancestor == <span style="font-weight: bold; text-decoration: underline;">NULL</span> || descendant == <span style="font-weight: bold; text-decoration: underline;">NULL</span>)
+    <span style="color: #a626a4;">return</span> <span style="font-weight: bold; text-decoration: underline;">false</span>;
 
-  <span style="color: #c25959; font-weight: bold;">while</span>(ancestor != <span style="color: #3eca3e;">NULL</span>){
-    <span style="color: #c25959; font-weight: bold;">if</span>(ancestor == descendant) <span style="color: #c25959; font-weight: bold;">return</span> <span style="color: #3eca3e;">true</span>;
+  <span style="color: #a626a4;">while</span>(ancestor != <span style="font-weight: bold; text-decoration: underline;">NULL</span>){
+    <span style="color: #a626a4;">if</span>(ancestor == descendant) <span style="color: #a626a4;">return</span> <span style="font-weight: bold; text-decoration: underline;">true</span>;
     ancestor = (descendant-&gt;value &lt; ancestor-&gt;value) ?
                ancestor-&gt;left :
                ancestor-&gt;right;
   }
-  <span style="color: #c25959; font-weight: bold;">return</span> <span style="color: #3eca3e;">false</span>;
+  <span style="color: #a626a4;">return</span> <span style="font-weight: bold; text-decoration: underline;">false</span>;
 }
 </pre>
 </div>
 </div>
 </div>
-<div id="outline-container-orgad2acf4" class="outline-4">
-<h4 id="orgad2acf4"><span class="section-number-4">5.1.5.</span> Successor and predecessor</h4>
+<div id="outline-container-orgb8c2265" class="outline-4">
+<h4 id="orgb8c2265"><span class="section-number-4">5.1.5.</span> Successor and predecessor</h4>
 <div class="outline-text-4" id="text-5-1-5">
 <p>
 We often need to find the successor or predecessor of an element in a Binary Search Tree. The search for predecessor and succesor is divided in to two cases.
 </p>
 </div>
 
-<div id="outline-container-orgc182038" class="outline-5">
-<h5 id="orgc182038"><span class="section-number-5">5.1.5.1.</span> For Successor</h5>
+<div id="outline-container-org8613abf" class="outline-5">
+<h5 id="org8613abf"><span class="section-number-5">5.1.5.1.</span> For Successor</h5>
 <div class="outline-text-5" id="text-5-1-5-1">
 <div class="org-src-container">
-<pre class="src src-c"><span style="color: #3eca3e;">// </span><span style="color: #3eca3e;">get successor of x</span>
-<span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">binary_tree</span> *
-<span style="color: #00cbcb;">successor</span>(<span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">binary_tree</span> * <span style="color: #e2e2e2;">tree</span>, <span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">binary_tree</span> * <span style="color: #e2e2e2;">x</span>){
-  <span style="color: #3eca3e;">// </span><span style="color: #3eca3e;">case 1 : right subtree is non-empty</span>
-  <span style="color: #c25959; font-weight: bold;">if</span>(x-&gt;right != <span style="color: #3eca3e;">NULL</span>){
-    <span style="color: #c25959; font-weight: bold;">return</span> minimum(x-&gt;right);
+<pre class="src src-c"><span style="color: #a0a1a7; font-weight: bold;">// </span><span style="color: #a0a1a7;">get successor of x</span>
+<span style="color: #a626a4;">struct</span> <span style="color: #c18401;">binary_tree</span> *
+<span style="color: #0184bc;">successor</span>(<span style="color: #a626a4;">struct</span> <span style="color: #c18401;">binary_tree</span> * <span style="color: #8b4513;">tree</span>, <span style="color: #a626a4;">struct</span> <span style="color: #c18401;">binary_tree</span> * <span style="color: #8b4513;">x</span>){
+  <span style="color: #a0a1a7; font-weight: bold;">// </span><span style="color: #a0a1a7;">case 1 : right subtree is non-empty</span>
+  <span style="color: #a626a4;">if</span>(x-&gt;right != <span style="font-weight: bold; text-decoration: underline;">NULL</span>){
+    <span style="color: #a626a4;">return</span> minimum(x-&gt;right);
   }
-  <span style="color: #3eca3e;">// </span><span style="color: #3eca3e;">case 2 : right subtree is empty</span>
-  <span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">binary_tree</span> * <span style="color: #e2e2e2;">y</span> = find_parent(tree, x);
-  <span style="color: #c25959; font-weight: bold;">while</span>(y != <span style="color: #3eca3e;">NULL</span>){
-    <span style="color: #c25959; font-weight: bold;">if</span>(is_ancestor(y, x) &amp;&amp; is_ancestor(y-&gt;left, x)) <span style="color: #c25959; font-weight: bold;">return</span> y;
+  <span style="color: #a0a1a7; font-weight: bold;">// </span><span style="color: #a0a1a7;">case 2 : right subtree is empty</span>
+  <span style="color: #a626a4;">struct</span> <span style="color: #c18401;">binary_tree</span> * <span style="color: #8b4513;">y</span> = find_parent(tree, x);
+  <span style="color: #a626a4;">while</span>(y != <span style="font-weight: bold; text-decoration: underline;">NULL</span>){
+    <span style="color: #a626a4;">if</span>(is_ancestor(y, x) &amp;&amp; is_ancestor(y-&gt;left, x)) <span style="color: #a626a4;">return</span> y;
     y = find_parent(tree, y);
   }
-  <span style="color: #c25959; font-weight: bold;">return</span> <span style="color: #3eca3e;">NULL</span>;
+  <span style="color: #a626a4;">return</span> <span style="font-weight: bold; text-decoration: underline;">NULL</span>;
 }
 </pre>
 </div>
@@ -1224,23 +1213,23 @@ We often need to find the successor or predecessor of an element in a Binary Sea
 </p>
 </div>
 </div>
-<div id="outline-container-org4eea03a" class="outline-5">
-<h5 id="org4eea03a"><span class="section-number-5">5.1.5.2.</span> For Predecessor</h5>
+<div id="outline-container-orgf504f91" class="outline-5">
+<h5 id="orgf504f91"><span class="section-number-5">5.1.5.2.</span> For Predecessor</h5>
 <div class="outline-text-5" id="text-5-1-5-2">
 <div class="org-src-container">
-<pre class="src src-c"><span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">binary_tree</span> *
-<span style="color: #00cbcb;">predecessor</span>(<span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">binary_tree</span> * <span style="color: #e2e2e2;">tree</span>, <span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">binary_tree</span> * <span style="color: #e2e2e2;">x</span>){
-  <span style="color: #3eca3e;">// </span><span style="color: #3eca3e;">case 1 : left subtree is non-empty</span>
-  <span style="color: #c25959; font-weight: bold;">if</span>(x-&gt;left != <span style="color: #3eca3e;">NULL</span>){
-    <span style="color: #c25959; font-weight: bold;">return</span> maximum(x-&gt;left);
+<pre class="src src-c"><span style="color: #a626a4;">struct</span> <span style="color: #c18401;">binary_tree</span> *
+<span style="color: #0184bc;">predecessor</span>(<span style="color: #a626a4;">struct</span> <span style="color: #c18401;">binary_tree</span> * <span style="color: #8b4513;">tree</span>, <span style="color: #a626a4;">struct</span> <span style="color: #c18401;">binary_tree</span> * <span style="color: #8b4513;">x</span>){
+  <span style="color: #a0a1a7; font-weight: bold;">// </span><span style="color: #a0a1a7;">case 1 : left subtree is non-empty</span>
+  <span style="color: #a626a4;">if</span>(x-&gt;left != <span style="font-weight: bold; text-decoration: underline;">NULL</span>){
+    <span style="color: #a626a4;">return</span> maximum(x-&gt;left);
   }
-  <span style="color: #3eca3e;">// </span><span style="color: #3eca3e;">case 2 : left subtree is empty</span>
-  <span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">binary_tree</span> * <span style="color: #e2e2e2;">y</span> = find_parent(tree, x);
-  <span style="color: #c25959; font-weight: bold;">while</span>(y != <span style="color: #3eca3e;">NULL</span>){
-    <span style="color: #c25959; font-weight: bold;">if</span>(is_ancestor(y, x) &amp;&amp; is_ancestor(y-&gt;right, x)) <span style="color: #c25959; font-weight: bold;">return</span> y;
+  <span style="color: #a0a1a7; font-weight: bold;">// </span><span style="color: #a0a1a7;">case 2 : left subtree is empty</span>
+  <span style="color: #a626a4;">struct</span> <span style="color: #c18401;">binary_tree</span> * <span style="color: #8b4513;">y</span> = find_parent(tree, x);
+  <span style="color: #a626a4;">while</span>(y != <span style="font-weight: bold; text-decoration: underline;">NULL</span>){
+    <span style="color: #a626a4;">if</span>(is_ancestor(y, x) &amp;&amp; is_ancestor(y-&gt;right, x)) <span style="color: #a626a4;">return</span> y;
     y = find_parent(tree, y);
   }
-  <span style="color: #c25959; font-weight: bold;">return</span> <span style="color: #3eca3e;">NULL</span>;
+  <span style="color: #a626a4;">return</span> <span style="font-weight: bold; text-decoration: underline;">NULL</span>;
 }
 </pre>
 </div>
@@ -1253,34 +1242,34 @@ We often need to find the successor or predecessor of an element in a Binary Sea
 </div>
 </div>
 </div>
-<div id="outline-container-orge2c01f8" class="outline-3">
-<h3 id="orge2c01f8"><span class="section-number-3">5.2.</span> Inserting and Deleting nodes</h3>
+<div id="outline-container-org9e6dd40" class="outline-3">
+<h3 id="org9e6dd40"><span class="section-number-3">5.2.</span> Inserting and Deleting nodes</h3>
 <div class="outline-text-3" id="text-5-2">
 <p>
 When inserting and deleting nodes in BST, we need to make sure that the Binary Search Tree property continues to hold. Inserting node is easier in a binary search tree than deleting a node.
 </p>
 </div>
-<div id="outline-container-orga3817ac" class="outline-4">
-<h4 id="orga3817ac"><span class="section-number-4">5.2.1.</span> Insertion</h4>
+<div id="outline-container-orgd483877" class="outline-4">
+<h4 id="orgd483877"><span class="section-number-4">5.2.1.</span> Insertion</h4>
 <div class="outline-text-4" id="text-5-2-1">
 <p>
 Insertion is simple in a binary search tree. We search for the node we want to insert in the tree and insert it where we find first NULL spot.
 </p>
 <div class="org-src-container">
-<pre class="src src-c"><span style="color: #dcdc00; font-weight: bold;">void</span>
-<span style="color: #00cbcb;">insert_node</span>(<span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">binary_tree</span> ** <span style="color: #e2e2e2;">tree</span>, <span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">binary_tree</span> * <span style="color: #e2e2e2;">node</span>){
-  <span style="color: #3eca3e;">// </span><span style="color: #3eca3e;">if found a null spot, insert the node</span>
-  <span style="color: #c25959; font-weight: bold;">if</span>(*tree == <span style="color: #3eca3e;">NULL</span>){
+<pre class="src src-c"><span style="color: #c18401;">void</span>
+<span style="color: #0184bc;">insert_node</span>(<span style="color: #a626a4;">struct</span> <span style="color: #c18401;">binary_tree</span> ** <span style="color: #8b4513;">tree</span>, <span style="color: #a626a4;">struct</span> <span style="color: #c18401;">binary_tree</span> * <span style="color: #8b4513;">node</span>){
+  <span style="color: #a0a1a7; font-weight: bold;">// </span><span style="color: #a0a1a7;">if found a null spot, insert the node</span>
+  <span style="color: #a626a4;">if</span>(*tree == <span style="font-weight: bold; text-decoration: underline;">NULL</span>){
     *tree = node;
-    <span style="color: #c25959; font-weight: bold;">return</span>;
+    <span style="color: #a626a4;">return</span>;
   }  
-  <span style="color: #c25959; font-weight: bold;">if</span>(node-&gt;value &lt; (*tree)-&gt;value){
-    <span style="color: #3eca3e;">// </span><span style="color: #3eca3e;">the node is to be inserted into left subtree</span>
-    <span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">binary_tree</span> ** <span style="color: #e2e2e2;">left_tree</span> = &amp;((*tree)-&gt;left);
+  <span style="color: #a626a4;">if</span>(node-&gt;value &lt; (*tree)-&gt;value){
+    <span style="color: #a0a1a7; font-weight: bold;">// </span><span style="color: #a0a1a7;">the node is to be inserted into left subtree</span>
+    <span style="color: #a626a4;">struct</span> <span style="color: #c18401;">binary_tree</span> ** <span style="color: #8b4513;">left_tree</span> = &amp;((*tree)-&gt;left);
     insert_node(left_tree, node);
-  }<span style="color: #c25959; font-weight: bold;">else</span>{
-    <span style="color: #3eca3e;">// </span><span style="color: #3eca3e;">the node is to be inserted into right subtree</span>
-    <span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">binary_tree</span> ** <span style="color: #e2e2e2;">right_tree</span> = &amp;((*tree)-&gt;right);
+  }<span style="color: #a626a4;">else</span>{
+    <span style="color: #a0a1a7; font-weight: bold;">// </span><span style="color: #a0a1a7;">the node is to be inserted into right subtree</span>
+    <span style="color: #a626a4;">struct</span> <span style="color: #c18401;">binary_tree</span> ** <span style="color: #8b4513;">right_tree</span> = &amp;((*tree)-&gt;right);
     insert_node(right_tree, node);
   }
 }
@@ -1293,36 +1282,36 @@ The recursive algorithm for inserting into a Binary search tree is simpler than 
 The algorithm for iterative insertion is
 </p>
 <div class="org-src-container">
-<pre class="src src-c"><span style="color: #dcdc00; font-weight: bold;">void</span>
-<span style="color: #00cbcb;">insert_node</span>(<span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">binary_tree</span> **<span style="color: #e2e2e2;">tree</span>, <span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">binary_tree</span> * <span style="color: #e2e2e2;">node</span>){
-  <span style="color: #3eca3e;">// </span><span style="color: #3eca3e;">if no nodes in tree, then just node and return</span>
-  <span style="color: #c25959; font-weight: bold;">if</span>((*tree) == <span style="color: #3eca3e;">NULL</span>){
+<pre class="src src-c"><span style="color: #c18401;">void</span>
+<span style="color: #0184bc;">insert_node</span>(<span style="color: #a626a4;">struct</span> <span style="color: #c18401;">binary_tree</span> **<span style="color: #8b4513;">tree</span>, <span style="color: #a626a4;">struct</span> <span style="color: #c18401;">binary_tree</span> * <span style="color: #8b4513;">node</span>){
+  <span style="color: #a0a1a7; font-weight: bold;">// </span><span style="color: #a0a1a7;">if no nodes in tree, then just node and return</span>
+  <span style="color: #a626a4;">if</span>((*tree) == <span style="font-weight: bold; text-decoration: underline;">NULL</span>){
     *tree = node;
-    <span style="color: #c25959; font-weight: bold;">return</span>;
+    <span style="color: #a626a4;">return</span>;
   }
 
-  <span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">binary_tree</span> ** <span style="color: #e2e2e2;">current_node</span> = tree;
-  <span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">binary_tree</span> ** <span style="color: #e2e2e2;">trailing_node</span> = tree;
+  <span style="color: #a626a4;">struct</span> <span style="color: #c18401;">binary_tree</span> ** <span style="color: #8b4513;">current_node</span> = tree;
+  <span style="color: #a626a4;">struct</span> <span style="color: #c18401;">binary_tree</span> ** <span style="color: #8b4513;">trailing_node</span> = tree;
 
-  <span style="color: #3eca3e;">// </span><span style="color: #3eca3e;">look for an empty place using current_node</span>
-  <span style="color: #c25959; font-weight: bold;">while</span>(*current_node != <span style="color: #3eca3e;">NULL</span>){
+  <span style="color: #a0a1a7; font-weight: bold;">// </span><span style="color: #a0a1a7;">look for an empty place using current_node</span>
+  <span style="color: #a626a4;">while</span>(*current_node != <span style="font-weight: bold; text-decoration: underline;">NULL</span>){
     trailing_node = current_node;
     current_node = (node-&gt;value &lt; (*current_node)-&gt;value) ?
       &amp;((*current_node)-&gt;left) : &amp;((*current_node)-&gt;right);
   }
 
-  <span style="color: #3eca3e;">// </span><span style="color: #3eca3e;">we need to insert node on the trailing node</span>
-  <span style="color: #c25959; font-weight: bold;">if</span>(node-&gt;value &lt; (*trailing_node)-&gt;value)
+  <span style="color: #a0a1a7; font-weight: bold;">// </span><span style="color: #a0a1a7;">we need to insert node on the trailing node</span>
+  <span style="color: #a626a4;">if</span>(node-&gt;value &lt; (*trailing_node)-&gt;value)
     (*trailing_node)-&gt;left = node;
-  <span style="color: #c25959; font-weight: bold;">else</span>
+  <span style="color: #a626a4;">else</span>
     (*trailing_node)-&gt;right = node;
 }
 </pre>
 </div>
 </div>
 </div>
-<div id="outline-container-org43bca22" class="outline-4">
-<h4 id="org43bca22"><span class="section-number-4">5.2.2.</span> Deletion</h4>
+<div id="outline-container-org30e9f95" class="outline-4">
+<h4 id="org30e9f95"><span class="section-number-4">5.2.2.</span> Deletion</h4>
 <div class="outline-text-4" id="text-5-2-2">
 <p>
 Deletion in Binary Search Trees is tricky because we need to delete nodes in a way that the property of the Binary Search Tree holds after the deletion of the node. So we first have to remove the node from the tree before we can free it.
@@ -1350,12 +1339,12 @@ We also use a helper function called Replace Child for deletion of node. This fu
 </p>
 
 <div class="org-src-container">
-<pre class="src src-c"><span style="color: #dcdc00; font-weight: bold;">void</span>
-<span style="color: #00cbcb;">replace_child</span>(<span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">binary_tree</span> *<span style="color: #e2e2e2;">parent</span>,
-              <span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">binary_tree</span> *<span style="color: #e2e2e2;">old_child</span>,
-              <span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">binary_tree</span> *<span style="color: #e2e2e2;">new_child</span>){
-  <span style="color: #c25959; font-weight: bold;">if</span>(parent-&gt;left == old_child) parent-&gt;left = new_child;
-  <span style="color: #c25959; font-weight: bold;">else</span> parent-&gt;right = new_child;
+<pre class="src src-c"><span style="color: #c18401;">void</span>
+<span style="color: #0184bc;">replace_child</span>(<span style="color: #a626a4;">struct</span> <span style="color: #c18401;">binary_tree</span> *<span style="color: #8b4513;">parent</span>,
+              <span style="color: #a626a4;">struct</span> <span style="color: #c18401;">binary_tree</span> *<span style="color: #8b4513;">old_child</span>,
+              <span style="color: #a626a4;">struct</span> <span style="color: #c18401;">binary_tree</span> *<span style="color: #8b4513;">new_child</span>){
+  <span style="color: #a626a4;">if</span>(parent-&gt;left == old_child) parent-&gt;left = new_child;
+  <span style="color: #a626a4;">else</span> parent-&gt;right = new_child;
 }
 </pre>
 </div>
@@ -1369,35 +1358,35 @@ Making remove root node a different funtion will also allow us to not worry abou
 </p>
 
 <div class="org-src-container">
-<pre class="src src-c"><span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">binary_tree</span> *
-<span style="color: #00cbcb;">remove_root_node</span>(<span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">binary_tree</span> *<span style="color: #e2e2e2;">root</span>){
-  <span style="color: #3eca3e;">// </span><span style="color: #3eca3e;">case 1 : no child</span>
-  <span style="color: #3eca3e;">// </span><span style="color: #3eca3e;">this case can be skipped in real implementation</span>
-  <span style="color: #3eca3e;">// </span><span style="color: #3eca3e;">as it is covered by the case 2</span>
-  <span style="color: #c25959; font-weight: bold;">if</span>(root-&gt;left == <span style="color: #3eca3e;">NULL</span> &amp;&amp; root-&gt;right == <span style="color: #3eca3e;">NULL</span>){
-    <span style="color: #c25959; font-weight: bold;">return</span> <span style="color: #3eca3e;">NULL</span>;
+<pre class="src src-c"><span style="color: #a626a4;">struct</span> <span style="color: #c18401;">binary_tree</span> *
+<span style="color: #0184bc;">remove_root_node</span>(<span style="color: #a626a4;">struct</span> <span style="color: #c18401;">binary_tree</span> *<span style="color: #8b4513;">root</span>){
+  <span style="color: #a0a1a7; font-weight: bold;">// </span><span style="color: #a0a1a7;">case 1 : no child</span>
+  <span style="color: #a0a1a7; font-weight: bold;">// </span><span style="color: #a0a1a7;">this case can be skipped in real implementation</span>
+  <span style="color: #a0a1a7; font-weight: bold;">// </span><span style="color: #a0a1a7;">as it is covered by the case 2</span>
+  <span style="color: #a626a4;">if</span>(root-&gt;left == <span style="font-weight: bold; text-decoration: underline;">NULL</span> &amp;&amp; root-&gt;right == <span style="font-weight: bold; text-decoration: underline;">NULL</span>){
+    <span style="color: #a626a4;">return</span> <span style="font-weight: bold; text-decoration: underline;">NULL</span>;
   }
 
-  <span style="color: #3eca3e;">// </span><span style="color: #3eca3e;">case 2 : one child</span>
-  <span style="color: #c25959; font-weight: bold;">if</span>(root-&gt;left == <span style="color: #3eca3e;">NULL</span>){
-    <span style="color: #c25959; font-weight: bold;">return</span> root-&gt;right;
-  }<span style="color: #c25959; font-weight: bold;">else</span> <span style="color: #c25959; font-weight: bold;">if</span>(root-&gt;right == <span style="color: #3eca3e;">NULL</span>){
-    <span style="color: #c25959; font-weight: bold;">return</span> root-&gt;left;
+  <span style="color: #a0a1a7; font-weight: bold;">// </span><span style="color: #a0a1a7;">case 2 : one child</span>
+  <span style="color: #a626a4;">if</span>(root-&gt;left == <span style="font-weight: bold; text-decoration: underline;">NULL</span>){
+    <span style="color: #a626a4;">return</span> root-&gt;right;
+  }<span style="color: #a626a4;">else</span> <span style="color: #a626a4;">if</span>(root-&gt;right == <span style="font-weight: bold; text-decoration: underline;">NULL</span>){
+    <span style="color: #a626a4;">return</span> root-&gt;left;
   }
 
-  <span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">binary_tree</span> *<span style="color: #e2e2e2;">successor</span> = minimum(root-&gt;right);
-  <span style="color: #3eca3e;">// </span><span style="color: #3eca3e;">case 3 : two child and successor is right node of root node</span>
-  <span style="color: #c25959; font-weight: bold;">if</span>(successor == root-&gt;right){
+  <span style="color: #a626a4;">struct</span> <span style="color: #c18401;">binary_tree</span> *<span style="color: #8b4513;">successor</span> = minimum(root-&gt;right);
+  <span style="color: #a0a1a7; font-weight: bold;">// </span><span style="color: #a0a1a7;">case 3 : two child and successor is right node of root node</span>
+  <span style="color: #a626a4;">if</span>(successor == root-&gt;right){
     successor-&gt;left = root-&gt;left;
-    <span style="color: #c25959; font-weight: bold;">return</span> successor;
+    <span style="color: #a626a4;">return</span> successor;
   }
 
-  <span style="color: #3eca3e;">// </span><span style="color: #3eca3e;">case 4 : two child and successor is not the right node of root node</span>
-  <span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">binary_tree</span> *<span style="color: #e2e2e2;">successor_parent</span> = find_parent(root, successor);
+  <span style="color: #a0a1a7; font-weight: bold;">// </span><span style="color: #a0a1a7;">case 4 : two child and successor is not the right node of root node</span>
+  <span style="color: #a626a4;">struct</span> <span style="color: #c18401;">binary_tree</span> *<span style="color: #8b4513;">successor_parent</span> = find_parent(root, successor);
   replace_child(successor_parent, successor, successor-&gt;right);
   successor-&gt;left = root-&gt;left;
   successor-&gt;right = root-&gt;right;
-  <span style="color: #c25959; font-weight: bold;">return</span> successor;
+  <span style="color: #a626a4;">return</span> successor;
 }
 </pre>
 </div>
@@ -1407,18 +1396,18 @@ Now we can make a delete node function which will remove the node, reattach the 
 </p>
 
 <div class="org-src-container">
-<pre class="src src-c"><span style="color: #dcdc00; font-weight: bold;">void</span>
-<span style="color: #00cbcb;">delete_node</span>(<span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">binary_tre</span> **<span style="color: #e2e2e2;">tree</span>, <span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">binary_tree</span> *<span style="color: #e2e2e2;">node</span>){
-  <span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">binary_tree</span> *<span style="color: #e2e2e2;">new_root</span> = remove_root_node(node);
+<pre class="src src-c"><span style="color: #c18401;">void</span>
+<span style="color: #0184bc;">delete_node</span>(<span style="color: #a626a4;">struct</span> <span style="color: #c18401;">binary_tre</span> **<span style="color: #8b4513;">tree</span>, <span style="color: #a626a4;">struct</span> <span style="color: #c18401;">binary_tree</span> *<span style="color: #8b4513;">node</span>){
+  <span style="color: #a626a4;">struct</span> <span style="color: #c18401;">binary_tree</span> *<span style="color: #8b4513;">new_root</span> = remove_root_node(node);
 
-  <span style="color: #3eca3e;">// </span><span style="color: #3eca3e;">if deleting root node of tree</span>
-  <span style="color: #c25959; font-weight: bold;">if</span>(node == (*tree)){
+  <span style="color: #a0a1a7; font-weight: bold;">// </span><span style="color: #a0a1a7;">if deleting root node of tree</span>
+  <span style="color: #a626a4;">if</span>(node == (*tree)){
     (*tree) = new_root;
     free(node);
-    <span style="color: #c25959; font-weight: bold;">return</span>;
+    <span style="color: #a626a4;">return</span>;
   }
 
-  <span style="color: #3eca3e;">// </span><span style="color: #3eca3e;">when not deleting root node of tree</span>
+  <span style="color: #a0a1a7; font-weight: bold;">// </span><span style="color: #a0a1a7;">when not deleting root node of tree</span>
   replace_child(find_parent(*tree, node)
                 ,node ,new_root);
   free(node);
@@ -1429,8 +1418,8 @@ Now we can make a delete node function which will remove the node, reattach the 
 </div>
 </div>
 
-<div id="outline-container-org5be9c4c" class="outline-3">
-<h3 id="org5be9c4c"><span class="section-number-3">5.3.</span> Performance of BST</h3>
+<div id="outline-container-org41eb53d" class="outline-3">
+<h3 id="org41eb53d"><span class="section-number-3">5.3.</span> Performance of BST</h3>
 <div class="outline-text-3" id="text-5-3">
 <p>
 The performance of the search operation depends on the height of the tree. If the tree has \(n\) elements, the height of a binary tree can be between \(n\) and \(floor\left( 1+ log_2(n) \right)\).
@@ -1449,30 +1438,30 @@ A balanced binary search tree in worst case for any operation will take \(\theta
 </div>
 </div>
 
-<div id="outline-container-orgcf9a8ac" class="outline-3">
-<h3 id="orgcf9a8ac"><span class="section-number-3">5.4.</span> Traversing a Binary Tree</h3>
+<div id="outline-container-org0144958" class="outline-3">
+<h3 id="org0144958"><span class="section-number-3">5.4.</span> Traversing a Binary Tree</h3>
 <div class="outline-text-3" id="text-5-4">
 <p>
 There are three ways to traverse a binary tree, inorder tree walk, preorder tree walk and postorder tree walk. All three algorithm will take \(\theta (n)\) time to traverse the \(n\) nodes.
 </p>
 </div>
 
-<div id="outline-container-orgef80d36" class="outline-4">
-<h4 id="orgef80d36"><span class="section-number-4">5.4.1.</span> Inorder tree walk</h4>
+<div id="outline-container-org0163919" class="outline-4">
+<h4 id="org0163919"><span class="section-number-4">5.4.1.</span> Inorder tree walk</h4>
 <div class="outline-text-4" id="text-5-4-1">
 <p>
 This algorithm is named so because it first traverses the left sub-tree recursively, then the node value and then traverses right sub-tree recursively.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-c"><span style="color: #dcdc00; font-weight: bold;">void</span> <span style="color: #00cbcb;">inorder_print</span>(<span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">binary_tree</span> * <span style="color: #e2e2e2;">node</span>){
-  <span style="color: #c25959; font-weight: bold;">if</span>(node == <span style="color: #3eca3e;">NULL</span>)
-    <span style="color: #c25959; font-weight: bold;">return</span>;
-  <span style="color: #3eca3e;">// </span><span style="color: #3eca3e;">recursively print left sub-tree</span>
+<pre class="src src-c"><span style="color: #c18401;">void</span> <span style="color: #0184bc;">inorder_print</span>(<span style="color: #a626a4;">struct</span> <span style="color: #c18401;">binary_tree</span> * <span style="color: #8b4513;">node</span>){
+  <span style="color: #a626a4;">if</span>(node == <span style="font-weight: bold; text-decoration: underline;">NULL</span>)
+    <span style="color: #a626a4;">return</span>;
+  <span style="color: #a0a1a7; font-weight: bold;">// </span><span style="color: #a0a1a7;">recursively print left sub-tree</span>
   inorder_print(node-&gt;left_child);
-  <span style="color: #3eca3e;">// </span><span style="color: #3eca3e;">print the node value</span>
-  printf(<span style="color: #3eca3e;">"%d\t"</span>, node-&gt;value);
-  <span style="color: #3eca3e;">// </span><span style="color: #3eca3e;">recursively print right sub-tree</span>
+  <span style="color: #a0a1a7; font-weight: bold;">// </span><span style="color: #a0a1a7;">print the node value</span>
+  printf(<span style="color: #50a14f;">"%d\t"</span>, node-&gt;value);
+  <span style="color: #a0a1a7; font-weight: bold;">// </span><span style="color: #a0a1a7;">recursively print right sub-tree</span>
   inorder_print(node-&gt;right_child);
 }
 </pre>
@@ -1485,21 +1474,21 @@ This algorithm is named so because it first traverses the left sub-tree recursiv
 </ul>
 </div>
 </div>
-<div id="outline-container-orgd2f801a" class="outline-4">
-<h4 id="orgd2f801a"><span class="section-number-4">5.4.2.</span> Preorder tree walk</h4>
+<div id="outline-container-orgb7b755f" class="outline-4">
+<h4 id="orgb7b755f"><span class="section-number-4">5.4.2.</span> Preorder tree walk</h4>
 <div class="outline-text-4" id="text-5-4-2">
 <p>
 This algorithm is called preorder algorithm because it will first traverse the current node, then recursively traverses the left sub-tree and then recursively traverse the right sub-tree.
 </p>
 <div class="org-src-container">
-<pre class="src src-c"><span style="color: #dcdc00; font-weight: bold;">void</span> <span style="color: #00cbcb;">preorder_print</span>(<span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">binary_tree</span> * <span style="color: #e2e2e2;">node</span>){
-  <span style="color: #c25959; font-weight: bold;">if</span>(node == <span style="color: #3eca3e;">NULL</span>)
-    <span style="color: #c25959; font-weight: bold;">return</span>;
-  <span style="color: #3eca3e;">// </span><span style="color: #3eca3e;">print the node</span>
-  printf(<span style="color: #3eca3e;">"%d\t"</span>, node-&gt;value);
-  <span style="color: #3eca3e;">// </span><span style="color: #3eca3e;">recursively print left sub-tree</span>
+<pre class="src src-c"><span style="color: #c18401;">void</span> <span style="color: #0184bc;">preorder_print</span>(<span style="color: #a626a4;">struct</span> <span style="color: #c18401;">binary_tree</span> * <span style="color: #8b4513;">node</span>){
+  <span style="color: #a626a4;">if</span>(node == <span style="font-weight: bold; text-decoration: underline;">NULL</span>)
+    <span style="color: #a626a4;">return</span>;
+  <span style="color: #a0a1a7; font-weight: bold;">// </span><span style="color: #a0a1a7;">print the node</span>
+  printf(<span style="color: #50a14f;">"%d\t"</span>, node-&gt;value);
+  <span style="color: #a0a1a7; font-weight: bold;">// </span><span style="color: #a0a1a7;">recursively print left sub-tree</span>
   preorder_print(node-&gt;left_child);
-  <span style="color: #3eca3e;">// </span><span style="color: #3eca3e;">recursively print right sub-tree</span>
+  <span style="color: #a0a1a7; font-weight: bold;">// </span><span style="color: #a0a1a7;">recursively print right sub-tree</span>
   preorder_print(node-&gt;right_child);
 }
 </pre>
@@ -1511,22 +1500,22 @@ This algorithm is called preorder algorithm because it will first traverse the c
 </ul>
 </div>
 </div>
-<div id="outline-container-org4720c1c" class="outline-4">
-<h4 id="org4720c1c"><span class="section-number-4">5.4.3.</span> Postorder tree walk</h4>
+<div id="outline-container-org3263699" class="outline-4">
+<h4 id="org3263699"><span class="section-number-4">5.4.3.</span> Postorder tree walk</h4>
 <div class="outline-text-4" id="text-5-4-3">
 <p>
 In this algorithm, we first traverse the left sub-tree recursively, then the right-sub tree recursively and finally the node.
 </p>
 <div class="org-src-container">
-<pre class="src src-c"><span style="color: #dcdc00; font-weight: bold;">void</span> <span style="color: #00cbcb;">postorder_print</span>(<span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">binary_tree</span> * <span style="color: #e2e2e2;">node</span>){
-  <span style="color: #c25959; font-weight: bold;">if</span>(node == <span style="color: #3eca3e;">NULL</span>)
-    <span style="color: #c25959; font-weight: bold;">return</span>;
-  <span style="color: #3eca3e;">// </span><span style="color: #3eca3e;">recursively print left sub-tree</span>
+<pre class="src src-c"><span style="color: #c18401;">void</span> <span style="color: #0184bc;">postorder_print</span>(<span style="color: #a626a4;">struct</span> <span style="color: #c18401;">binary_tree</span> * <span style="color: #8b4513;">node</span>){
+  <span style="color: #a626a4;">if</span>(node == <span style="font-weight: bold; text-decoration: underline;">NULL</span>)
+    <span style="color: #a626a4;">return</span>;
+  <span style="color: #a0a1a7; font-weight: bold;">// </span><span style="color: #a0a1a7;">recursively print left sub-tree</span>
   postorder_print(node-&gt;left_child);
-  <span style="color: #3eca3e;">// </span><span style="color: #3eca3e;">recursively print right sub-tree</span>
+  <span style="color: #a0a1a7; font-weight: bold;">// </span><span style="color: #a0a1a7;">recursively print right sub-tree</span>
   postorder_print(node-&gt;right_child);
-  <span style="color: #3eca3e;">// </span><span style="color: #3eca3e;">print the node</span>
-  printf(<span style="color: #3eca3e;">"%d\t"</span>, node-&gt;value);
+  <span style="color: #a0a1a7; font-weight: bold;">// </span><span style="color: #a0a1a7;">print the node</span>
+  printf(<span style="color: #50a14f;">"%d\t"</span>, node-&gt;value);
 }
 </pre>
 </div>
@@ -1539,8 +1528,8 @@ In this algorithm, we first traverse the left sub-tree recursively, then the rig
 </div>
 </div>
 
-<div id="outline-container-orgeeca0a9" class="outline-2">
-<h2 id="orgeeca0a9"><span class="section-number-2">6.</span> Binary Heap</h2>
+<div id="outline-container-org001fc18" class="outline-2">
+<h2 id="org001fc18"><span class="section-number-2">6.</span> Binary Heap</h2>
 <div class="outline-text-2" id="text-6">
 <p>
 Heap is a data structure represented as a complete tree which follows the heap property. All levels in a heap tree are completely filled except possible the last one, which is filled from left to right. 
@@ -1553,8 +1542,8 @@ The heap data structure is used to implement <b>priority queues</b>. In many cas
 </p>
 </div>
 
-<div id="outline-container-org8e7cc0a" class="outline-3">
-<h3 id="org8e7cc0a"><span class="section-number-3">6.1.</span> Heap Property</h3>
+<div id="outline-container-org8d2224d" class="outline-3">
+<h3 id="org8d2224d"><span class="section-number-3">6.1.</span> Heap Property</h3>
 <div class="outline-text-3" id="text-6-1">
 <p>
 Heaps are of two types
@@ -1573,8 +1562,8 @@ The heap property is different for min-heaps and max-heaps.
 </div>
 </div>
 
-<div id="outline-container-orgbf5eade" class="outline-3">
-<h3 id="orgbf5eade"><span class="section-number-3">6.2.</span> Shape of Heap</h3>
+<div id="outline-container-orgb454dd8" class="outline-3">
+<h3 id="orgb454dd8"><span class="section-number-3">6.2.</span> Shape of Heap</h3>
 <div class="outline-text-3" id="text-6-2">
 <p>
 Also reffered to as <b>shape property</b> of heap.
@@ -1583,8 +1572,8 @@ A heap is represented as a complete tree. A complete tree is one where all the l
 </p>
 </div>
 </div>
-<div id="outline-container-orgb19ce0e" class="outline-3">
-<h3 id="orgb19ce0e"><span class="section-number-3">6.3.</span> Array implementation</h3>
+<div id="outline-container-org4bc46af" class="outline-3">
+<h3 id="org4bc46af"><span class="section-number-3">6.3.</span> Array implementation</h3>
 <div class="outline-text-3" id="text-6-3">
 <p>
 We can implement binary heap using arrays. The root of tree is the first element of the array. The next two elements are elements of second level of tree and children of the root node. Similary, the next four elements are elements of third level of tree and so on.
@@ -1602,24 +1591,24 @@ For example, a max-heap implemented using array can be represented as tree as sh
 In C, we can create a heap struct for easier implementation of algorithms
 </p>
 <div class="org-src-container">
-<pre class="src src-c"><span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">heap_type</span>{
-  <span style="color: #dcdc00; font-weight: bold;">int</span> <span style="color: #e2e2e2;">array</span>[];
-  <span style="color: #dcdc00; font-weight: bold;">size_t</span> <span style="color: #e2e2e2;">capacity</span>;
-  <span style="color: #dcdc00; font-weight: bold;">size_t</span> <span style="color: #e2e2e2;">len</span>;
+<pre class="src src-c"><span style="color: #a626a4;">struct</span> <span style="color: #c18401;">heap_type</span>{
+  <span style="color: #c18401;">int</span> <span style="color: #8b4513;">array</span>[];
+  <span style="color: #c18401;">size_t</span> <span style="color: #8b4513;">capacity</span>;
+  <span style="color: #c18401;">size_t</span> <span style="color: #8b4513;">len</span>;
 };
 </pre>
 </div>
 </div>
 </div>
-<div id="outline-container-orgd6f65c2" class="outline-3">
-<h3 id="orgd6f65c2"><span class="section-number-3">6.4.</span> Operations on heaps</h3>
+<div id="outline-container-org833ffb2" class="outline-3">
+<h3 id="org833ffb2"><span class="section-number-3">6.4.</span> Operations on heaps</h3>
 <div class="outline-text-3" id="text-6-4">
 <p>
 Both insertion and deletion in heap must be done in a way which conform to the heap property as well as shape property of heap. Before we can look at insertion and deletion, we need a way to find parent and child for a given index. We will also first see up-heapify and down-heapfiy funtions.
 </p>
 </div>
-<div id="outline-container-org43125ac" class="outline-4">
-<h4 id="org43125ac"><span class="section-number-4">6.4.1.</span> Parent and child indices</h4>
+<div id="outline-container-org4179da6" class="outline-4">
+<h4 id="org4179da6"><span class="section-number-4">6.4.1.</span> Parent and child indices</h4>
 <div class="outline-text-4" id="text-6-4-1">
 <p>
 In a binary heap, we can find parent and children for any given index using simple formulas.
@@ -1639,8 +1628,8 @@ In a binary heap, we can find parent and children for any given index using simp
 </div>
 </div>
 
-<div id="outline-container-org05ab70a" class="outline-4">
-<h4 id="org05ab70a"><span class="section-number-4">6.4.2.</span> Down-heapify</h4>
+<div id="outline-container-orge4751e4" class="outline-4">
+<h4 id="orge4751e4"><span class="section-number-4">6.4.2.</span> Down-heapify</h4>
 <div class="outline-text-4" id="text-6-4-2">
 <p>
 The down-heapify is a function which can re-heapify an array if no element of heap violates the heap property other than index and it's two children.
@@ -1653,18 +1642,18 @@ This function runs in \(\theta (log_2n)\) time. The algorithm for this works as 
 </ol>
 
 <div class="org-src-container">
-<pre class="src src-c"><span style="color: #dcdc00; font-weight: bold;">void</span> <span style="color: #00cbcb;">down_heapify</span>(<span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">heap_type</span> <span style="color: #e2e2e2;">heap</span>, <span style="color: #dcdc00; font-weight: bold;">size_t</span> <span style="color: #e2e2e2;">index</span>){
-  <span style="color: #dcdc00; font-weight: bold;">size_t</span> <span style="color: #e2e2e2;">left</span> = 2 * index  + 1;
-  <span style="color: #dcdc00; font-weight: bold;">size_t</span> <span style="color: #e2e2e2;">right</span> = 2 * index + 2;
-  <span style="color: #dcdc00; font-weight: bold;">size_t</span> <span style="color: #e2e2e2;">largest</span> = index;
+<pre class="src src-c"><span style="color: #c18401;">void</span> <span style="color: #0184bc;">down_heapify</span>(<span style="color: #a626a4;">struct</span> <span style="color: #c18401;">heap_type</span> <span style="color: #8b4513;">heap</span>, <span style="color: #c18401;">size_t</span> <span style="color: #8b4513;">index</span>){
+  <span style="color: #c18401;">size_t</span> <span style="color: #8b4513;">left</span> = 2 * index  + 1;
+  <span style="color: #c18401;">size_t</span> <span style="color: #8b4513;">right</span> = 2 * index + 2;
+  <span style="color: #c18401;">size_t</span> <span style="color: #8b4513;">largest</span> = index;
 
-  <span style="color: #c25959; font-weight: bold;">if</span>(left &lt; heap.len &amp;&amp; heap.array[left] &gt; heap.array[largest])
+  <span style="color: #a626a4;">if</span>(left &lt; heap.len &amp;&amp; heap.array[left] &gt; heap.array[largest])
     largest = left;
 
-  <span style="color: #c25959; font-weight: bold;">if</span>(right &lt; heap.len &amp;&amp; heap.array[right] &gt; heap.array[largest])
+  <span style="color: #a626a4;">if</span>(right &lt; heap.len &amp;&amp; heap.array[right] &gt; heap.array[largest])
     largest = right;
 
-  <span style="color: #c25959; font-weight: bold;">if</span>(largest != index){
+  <span style="color: #a626a4;">if</span>(largest != index){
     swap(heap.array[index], heap.array[largest]);
     down_heapify(heap, largest);
   }
@@ -1678,8 +1667,8 @@ Since we shift element downwards, this operation is often called <i>down-heap</i
 </div>
 </div>
 
-<div id="outline-container-org399a72c" class="outline-4">
-<h4 id="org399a72c"><span class="section-number-4">6.4.3.</span> Up-heapify</h4>
+<div id="outline-container-org6346f98" class="outline-4">
+<h4 id="org6346f98"><span class="section-number-4">6.4.3.</span> Up-heapify</h4>
 <div class="outline-text-4" id="text-6-4-3">
 <p>
 The up-heapify is a function which can re-heapify an array if no element of heap violates the heap property other than index and it's parent.
@@ -1692,14 +1681,14 @@ This function runs in \(\theta (log_2n)\) time. The algorithm for this works as 
 </ol>
 
 <div class="org-src-container">
-<pre class="src src-c"><span style="color: #dcdc00; font-weight: bold;">void</span> <span style="color: #00cbcb;">up_heapify</span>(<span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">heap_type</span> <span style="color: #e2e2e2;">heap</span>, <span style="color: #dcdc00; font-weight: bold;">size_t</span> <span style="color: #e2e2e2;">index</span>){
-  <span style="color: #dcdc00; font-weight: bold;">size_t</span> <span style="color: #e2e2e2;">parent</span> = (index - 1) / 2;
-  <span style="color: #dcdc00; font-weight: bold;">size_t</span> <span style="color: #e2e2e2;">smallest</span> = index;
+<pre class="src src-c"><span style="color: #c18401;">void</span> <span style="color: #0184bc;">up_heapify</span>(<span style="color: #a626a4;">struct</span> <span style="color: #c18401;">heap_type</span> <span style="color: #8b4513;">heap</span>, <span style="color: #c18401;">size_t</span> <span style="color: #8b4513;">index</span>){
+  <span style="color: #c18401;">size_t</span> <span style="color: #8b4513;">parent</span> = (index - 1) / 2;
+  <span style="color: #c18401;">size_t</span> <span style="color: #8b4513;">smallest</span> = index;
 
-  <span style="color: #c25959; font-weight: bold;">if</span>(parent &gt;= 0 &amp;&amp; heap.array[smallest] &gt; heap.array[parent])
+  <span style="color: #a626a4;">if</span>(parent &gt;= 0 &amp;&amp; heap.array[smallest] &gt; heap.array[parent])
     smallest = parent;
 
-  <span style="color: #c25959; font-weight: bold;">if</span>(smallest != index){
+  <span style="color: #a626a4;">if</span>(smallest != index){
     swap(heap.array[index], heap.array[smallest]);
     up_heapify(heap, smallest);
   }
@@ -1712,8 +1701,8 @@ Since we shift element upwards, this operation is often called <i>up-heap</i> op
 </p>
 </div>
 </div>
-<div id="outline-container-org63bf7f2" class="outline-4">
-<h4 id="org63bf7f2"><span class="section-number-4">6.4.4.</span> Insertion</h4>
+<div id="outline-container-orgbadbca5" class="outline-4">
+<h4 id="orgbadbca5"><span class="section-number-4">6.4.4.</span> Insertion</h4>
 <div class="outline-text-4" id="text-6-4-4">
 <p>
 Insertion takes \(\theta (log_2n)\) time in a binary heap. To insert and element in heap, we will add it to the end of the heap and then apply up-heapify operation of the elment
@@ -1722,12 +1711,12 @@ The code shows example of insertion in a max-heap.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-c"><span style="color: #dcdc00; font-weight: bold;">void</span> <span style="color: #00cbcb;">insert_element</span>(<span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">heap_type</span> <span style="color: #e2e2e2;">heap</span>, <span style="color: #dcdc00; font-weight: bold;">int</span> <span style="color: #e2e2e2;">element</span>){
-  <span style="color: #3eca3e;">// </span><span style="color: #3eca3e;">add element</span>
-  <span style="color: #dcdc00; font-weight: bold;">size_t</span> <span style="color: #e2e2e2;">element_index</span> = heap.len;
-  <span style="color: #c25959; font-weight: bold;">if</span>(element_index == heap.capacity){
-    printf(<span style="color: #3eca3e;">"Heap reached full capacity"</span>);
-    <span style="color: #c25959; font-weight: bold;">return</span>;
+<pre class="src src-c"><span style="color: #c18401;">void</span> <span style="color: #0184bc;">insert_element</span>(<span style="color: #a626a4;">struct</span> <span style="color: #c18401;">heap_type</span> <span style="color: #8b4513;">heap</span>, <span style="color: #c18401;">int</span> <span style="color: #8b4513;">element</span>){
+  <span style="color: #a0a1a7; font-weight: bold;">// </span><span style="color: #a0a1a7;">add element</span>
+  <span style="color: #c18401;">size_t</span> <span style="color: #8b4513;">element_index</span> = heap.len;
+  <span style="color: #a626a4;">if</span>(element_index == heap.capacity){
+    printf(<span style="color: #50a14f;">"Heap reached full capacity"</span>);
+    <span style="color: #a626a4;">return</span>;
   }
 
   heap.array[heap.len++] = element;
@@ -1738,8 +1727,8 @@ The code shows example of insertion in a max-heap.
 </div>
 </div>
 
-<div id="outline-container-orgfcc9520" class="outline-4">
-<h4 id="orgfcc9520"><span class="section-number-4">6.4.5.</span> Deletion or Extraction</h4>
+<div id="outline-container-org9f6438e" class="outline-4">
+<h4 id="org9f6438e"><span class="section-number-4">6.4.5.</span> Deletion or Extraction</h4>
 <div class="outline-text-4" id="text-6-4-5">
 <p>
 Like insertion, extraction also takes \(\theta (log_2n)\) time. Extraction from heap will extract the root element of the heap. We can use the down-heapify function in order to re-heapify after extracting the root node.
@@ -1749,27 +1738,27 @@ The code shows example of extraction in max-heap.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-c"><span style="color: #dcdc00; font-weight: bold;">int</span> <span style="color: #00cbcb;">extract_element</span>(<span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">heap_type</span> <span style="color: #e2e2e2;">heap</span>){
-  <span style="color: #c25959; font-weight: bold;">if</span>(heap.len &lt; 1){
-    printf(<span style="color: #3eca3e;">"No elements in the heap"</span>);
-    <span style="color: #c25959; font-weight: bold;">return</span> -1;
+<pre class="src src-c"><span style="color: #c18401;">int</span> <span style="color: #0184bc;">extract_element</span>(<span style="color: #a626a4;">struct</span> <span style="color: #c18401;">heap_type</span> <span style="color: #8b4513;">heap</span>){
+  <span style="color: #a626a4;">if</span>(heap.len &lt; 1){
+    printf(<span style="color: #50a14f;">"No elements in the heap"</span>);
+    <span style="color: #a626a4;">return</span> -1;
   }
 
-  <span style="color: #dcdc00; font-weight: bold;">int</span> <span style="color: #e2e2e2;">r</span> = heap.array[0];
+  <span style="color: #c18401;">int</span> <span style="color: #8b4513;">r</span> = heap.array[0];
   heap.array[0] = heap.array[heap.len - 1];
   heap.len -= 1;
 
-  down_heapify(heap, 0);
+  <span style="color: #0184bc;">down_heapify</span>(heap, 0);
 
-  <span style="color: #c25959; font-weight: bold;">return</span> r;
+  <span style="color: #a626a4;">return</span> r;
 }
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org47ce745" class="outline-4">
-<h4 id="org47ce745"><span class="section-number-4">6.4.6.</span> Insert then extract</h4>
+<div id="outline-container-orgff7022a" class="outline-4">
+<h4 id="orgff7022a"><span class="section-number-4">6.4.6.</span> Insert then extract</h4>
 <div class="outline-text-4" id="text-6-4-6">
 <p>
 Inserting an element and then extracting from the heap can be done more efficiently than simply calling these functions seperately as defined previously. If we call both funtions we define above, we have to do an up-heap operation followed by a down-heap. Instead, there is a way to do just a single down-heap.
@@ -1792,30 +1781,30 @@ The algorithm for this will work as follows in a max-heap.
 In python, this is implemented by the name of <b><i>heap replace</i></b>.
 </p>
 <div class="org-src-container">
-<pre class="src src-c"><span style="color: #dcdc00; font-weight: bold;">int</span> <span style="color: #00cbcb;">heap_replace</span>(<span style="color: #c25959; font-weight: bold;">struct</span> <span style="color: #dcdc00; font-weight: bold;">heap_type</span> <span style="color: #e2e2e2;">heap</span>, <span style="color: #dcdc00; font-weight: bold;">int</span> <span style="color: #e2e2e2;">element</span>){
-  <span style="color: #c25959; font-weight: bold;">if</span>(element &gt; heap.array[0])
-    <span style="color: #c25959; font-weight: bold;">return</span> element;
+<pre class="src src-c"><span style="color: #c18401;">int</span> <span style="color: #0184bc;">heap_replace</span>(<span style="color: #a626a4;">struct</span> <span style="color: #c18401;">heap_type</span> <span style="color: #8b4513;">heap</span>, <span style="color: #c18401;">int</span> <span style="color: #8b4513;">element</span>){
+  <span style="color: #a626a4;">if</span>(element &gt; heap.array[0])
+    <span style="color: #a626a4;">return</span> element;
 
-  <span style="color: #dcdc00; font-weight: bold;">int</span> <span style="color: #e2e2e2;">r</span> = heap.array[0];
+  <span style="color: #c18401;">int</span> <span style="color: #8b4513;">r</span> = heap.array[0];
   swap(heap.array[0], element);
   down_heapify(heap, 0);
-  <span style="color: #c25959; font-weight: bold;">return</span> r;
+  <span style="color: #a626a4;">return</span> r;
 }
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org54c7a08" class="outline-4">
-<h4 id="org54c7a08"><span class="section-number-4">6.4.7.</span> Searching</h4>
+<div id="outline-container-orgfa53e9e" class="outline-4">
+<h4 id="orgfa53e9e"><span class="section-number-4">6.4.7.</span> Searching</h4>
 <div class="outline-text-4" id="text-6-4-7">
 <p>
 Searching for a arbitrary element takes linear time in a heap. We use linear search to search for element in array.
 </p>
 </div>
 </div>
-<div id="outline-container-orge3a08f2" class="outline-4">
-<h4 id="orge3a08f2"><span class="section-number-4">6.4.8.</span> Deleting arbitray element</h4>
+<div id="outline-container-org17486b7" class="outline-4">
+<h4 id="org17486b7"><span class="section-number-4">6.4.8.</span> Deleting arbitray element</h4>
 <div class="outline-text-4" id="text-6-4-8">
 <p>
 For a max-heap, deleting an arbitrary element is done as follows
@@ -1827,8 +1816,8 @@ For a max-heap, deleting an arbitrary element is done as follows
 </ol>
 </div>
 </div>
-<div id="outline-container-org8a91190" class="outline-4">
-<h4 id="org8a91190"><span class="section-number-4">6.4.9.</span> Decrease and increase keys</h4>
+<div id="outline-container-org836b988" class="outline-4">
+<h4 id="org836b988"><span class="section-number-4">6.4.9.</span> Decrease and increase keys</h4>
 <div class="outline-text-4" id="text-6-4-9">
 <p>
 TODO : I don't know if it is neccessary to do this operation. It looks simple to implement.
@@ -1836,18 +1825,18 @@ TODO : I don't know if it is neccessary to do this operation. It looks simple to
 </div>
 </div>
 </div>
-<div id="outline-container-orgc6cf4ef" class="outline-3">
-<h3 id="orgc6cf4ef"><span class="section-number-3">6.5.</span> Building a heap from array</h3>
+<div id="outline-container-org3296889" class="outline-3">
+<h3 id="org3296889"><span class="section-number-3">6.5.</span> Building a heap from array</h3>
 <div class="outline-text-3" id="text-6-5">
 <p>
 We can convert a normal array into a heap using the down-heapify operation in linear time \(\left( \theta (n) \right)\)
 </p>
 
 <div class="org-src-container">
-<pre class="src src-c"><span style="color: #3eca3e;">// </span><span style="color: #3eca3e;">array.array[..] contains an array which is not a heap yet</span>
-<span style="color: #3eca3e;">// </span><span style="color: #3eca3e;">this funtion will turn it into a correct heap</span>
-<span style="color: #dcdc00; font-weight: bold;">void</span> <span style="color: #00cbcb;">build_heap</span>(<span style="color: #dcdc00; font-weight: bold;">int</span> <span style="color: #e2e2e2;">array</span>[], <span style="color: #dcdc00; font-weight: bold;">size_t</span> <span style="color: #e2e2e2;">len</span>){
-  <span style="color: #c25959; font-weight: bold;">for</span>(<span style="color: #dcdc00; font-weight: bold;">int</span> <span style="color: #e2e2e2;">i</span> = (len/2) - 1; i &gt;= 0; i--)
+<pre class="src src-c"><span style="color: #a0a1a7; font-weight: bold;">// </span><span style="color: #a0a1a7;">array.array[..] contains an array which is not a heap yet</span>
+<span style="color: #a0a1a7; font-weight: bold;">// </span><span style="color: #a0a1a7;">this funtion will turn it into a correct heap</span>
+<span style="color: #c18401;">void</span> <span style="color: #0184bc;">build_heap</span>(<span style="color: #c18401;">int</span> <span style="color: #8b4513;">array</span>[], <span style="color: #c18401;">size_t</span> <span style="color: #8b4513;">len</span>){
+  <span style="color: #a626a4;">for</span>(<span style="color: #c18401;">int</span> <span style="color: #8b4513;">i</span> = (len/2) - 1; i &gt;= 0; i--)
     down_heapify(array, i);
 }
 </pre>
@@ -1861,15 +1850,15 @@ If we are using a <b><i>one indexed language</i></b>, then range of for loop is 
 </div>
 </div>
 
-<div id="outline-container-org3e3ed9b" class="outline-2">
-<h2 id="org3e3ed9b"><span class="section-number-2">7.</span> Graphs</h2>
+<div id="outline-container-org4e99733" class="outline-2">
+<h2 id="org4e99733"><span class="section-number-2">7.</span> Graphs</h2>
 <div class="outline-text-2" id="text-7">
 <p>
 A graph is a data structure which consists of nodes/vertices, and edges. We sometimes write it as \(G=(V,E)\), where \(V\) is the set of vertices and \(E\) is the set of edges. When we are working on runtime of algorithms related to graphs, we represent runtime in two input sizes. \(|V|\) which we simply write as \(V\) is the number of vertices and similarly \(E\) is the number of edges. 
 </p>
 </div>
-<div id="outline-container-org6625a01" class="outline-3">
-<h3 id="org6625a01"><span class="section-number-3">7.1.</span> Representing graphs</h3>
+<div id="outline-container-org106f14f" class="outline-3">
+<h3 id="org106f14f"><span class="section-number-3">7.1.</span> Representing graphs</h3>
 <div class="outline-text-3" id="text-7-1">
 <p>
 We need a way to represent graphs in computers and to search a graph. Searching a graph means to systematically follow edges of graphs in order to reach vertices.
@@ -1879,8 +1868,8 @@ The two common ways of representing graphs are either using adjacency lists and 
 </p>
 </div>
 
-<div id="outline-container-org3138112" class="outline-4">
-<h4 id="org3138112"><span class="section-number-4">7.1.1.</span> Adjacency List</h4>
+<div id="outline-container-orge34f5a3" class="outline-4">
+<h4 id="orge34f5a3"><span class="section-number-4">7.1.1.</span> Adjacency List</h4>
 <div class="outline-text-4" id="text-7-1-1">
 <p>
 Every node in the graph is represented by a linked list. The list contains the nodes to which the list node is connected by an edge.
@@ -1904,8 +1893,8 @@ The adjacency list representation is very robust and can represent various types
 </p>
 </div>
 </div>
-<div id="outline-container-org0a3e49b" class="outline-4">
-<h4 id="org0a3e49b"><span class="section-number-4">7.1.2.</span> Adjacency Matrix</h4>
+<div id="outline-container-orgc0a971d" class="outline-4">
+<h4 id="orgc0a971d"><span class="section-number-4">7.1.2.</span> Adjacency Matrix</h4>
 <div class="outline-text-4" id="text-7-1-2">
 <p>
 We use a single matrix to represent the graph. The size of the matrix is \(\left( |V| \times |V| \right)\). When we make the matrix, all it's elements are zero, i.e the matrix is zero initialized.
@@ -1939,8 +1928,8 @@ We can store weighted graphs in adjacency matrix by storing the weights along wi
 </div>
 </div>
 </div>
-<div id="outline-container-orgbcfe613" class="outline-3">
-<h3 id="orgbcfe613"><span class="section-number-3">7.2.</span> Vertex and edge attributes</h3>
+<div id="outline-container-org5d2cfd2" class="outline-3">
+<h3 id="org5d2cfd2"><span class="section-number-3">7.2.</span> Vertex and edge attributes</h3>
 <div class="outline-text-3" id="text-7-2">
 <p>
 Many times we have to store attributes with either vertices or edges or sometimes both. How this is differs by language. In notation, we will write it using a dot (.)
@@ -1952,8 +1941,8 @@ Similarly, the attribute x of edge (u , v) will be denoted as (u , v).x
 </p>
 </div>
 </div>
-<div id="outline-container-org2343c63" class="outline-3">
-<h3 id="org2343c63"><span class="section-number-3">7.3.</span> Density of graph</h3>
+<div id="outline-container-org7679fa9" class="outline-3">
+<h3 id="org7679fa9"><span class="section-number-3">7.3.</span> Density of graph</h3>
 <div class="outline-text-3" id="text-7-3">
 <p>
 Knowing the density of a graph can help us choose the way in which we represent our graph.
@@ -1976,8 +1965,8 @@ Therefore, maximum density for a graph is 1. The minimum density for a graph is 
 Knowing this, we can say graph with low density is a sparse graph and graph with high density is a dense graph.
 </p>
 </div>
-<div id="outline-container-org73a1cdd" class="outline-4">
-<h4 id="org73a1cdd"><span class="section-number-4">7.3.1.</span> Which representation to use</h4>
+<div id="outline-container-org6979231" class="outline-4">
+<h4 id="org6979231"><span class="section-number-4">7.3.1.</span> Which representation to use</h4>
 <div class="outline-text-4" id="text-7-3-1">
 <p>
 For a quick approximation, when undirected graph and \(2|E|\) is close to \(|V|^2\), we say that graph is dense, else we say it is sparse.
@@ -1993,8 +1982,8 @@ Another criteria is how algorithm will use the graph. If we want to traverse to 
 </div>
 </div>
 
-<div id="outline-container-orgdb2a125" class="outline-3">
-<h3 id="orgdb2a125"><span class="section-number-3">7.4.</span> Searching Graphs</h3>
+<div id="outline-container-orgbcf74d3" class="outline-3">
+<h3 id="orgbcf74d3"><span class="section-number-3">7.4.</span> Searching Graphs</h3>
 <div class="outline-text-3" id="text-7-4">
 <p>
 Graph search (or graph traversal) algorithms are used to explore a graph to find nodes and edges. Vertices not connected by edges are not explored by such algorithms. These algorithms start at a source vertex and traverse as much of the connected graph as possible.
@@ -2003,8 +1992,8 @@ Graph search (or graph traversal) algorithms are used to explore a graph to find
 Searching graphs algorithm can also be used on trees, because trees are also graphs.
 </p>
 </div>
-<div id="outline-container-orgba9fa64" class="outline-4">
-<h4 id="orgba9fa64"><span class="section-number-4">7.4.1.</span> Breadth first search</h4>
+<div id="outline-container-org3909509" class="outline-4">
+<h4 id="org3909509"><span class="section-number-4">7.4.1.</span> Breadth first search</h4>
 <div class="outline-text-4" id="text-7-4-1">
 <p>
 BFS is one of the simplest algorithms for searching a graph and is used as an archetype for many other graph algorithms. This algorithm works well with the adjacency list representation.
@@ -2016,19 +2005,19 @@ In BFS, the nodes are explored based on their distance from the starting node. W
 So in BFS, all nodes at distance 1 are explored first, then nodes at distance 2 are explored, then nodes at distance 3 and so on. That is, all nodes at distance \(k\) are explored before exploring nodes at distance \((k+1)\).
 </p>
 <div class="org-src-container">
-<pre class="src src-c"><span style="color: #00cbcb;">BFS</span>(<span style="color: #dcdc00; font-weight: bold;">graph_type</span> <span style="color: #e2e2e2;">graph</span>, <span style="color: #dcdc00; font-weight: bold;">node_type</span> <span style="color: #e2e2e2;">start</span>){
-  <span style="color: #dcdc00; font-weight: bold;">queue_type</span> <span style="color: #e2e2e2;">queue</span>;
-  start.explored = <span style="color: #3eca3e;">true</span>;
+<pre class="src src-c"><span style="color: #0184bc;">BFS</span>(<span style="color: #c18401;">graph_type</span> <span style="color: #8b4513;">graph</span>, <span style="color: #c18401;">node_type</span> <span style="color: #8b4513;">start</span>){
+  <span style="color: #c18401;">queue_type</span> <span style="color: #8b4513;">queue</span>;
+  start.explored = <span style="font-weight: bold; text-decoration: underline;">true</span>;
   queue.add(start);
 
-  <span style="color: #c25959; font-weight: bold;">while</span>(queue.len != 0){
-    <span style="color: #dcdc00; font-weight: bold;">node_type</span> <span style="color: #e2e2e2;">v</span> = queue.dequeue();
-    <span style="color: #dcdc00; font-weight: bold;">node_list</span> <span style="color: #e2e2e2;">adjacency_list</span> = grap.adj_list(v);
+  <span style="color: #a626a4;">while</span>(queue.len != 0){
+    <span style="color: #c18401;">node_type</span> <span style="color: #8b4513;">v</span> = queue.dequeue();
+    <span style="color: #c18401;">node_list</span> <span style="color: #8b4513;">adjacency_list</span> = grap.adj_list(v);
 
-    <span style="color: #c25959; font-weight: bold;">while</span>(adjacency_list != <span style="color: #3eca3e;">NULL</span>){
-      <span style="color: #dcdc00; font-weight: bold;">node_type</span> <span style="color: #e2e2e2;">u</span> = adjacency_list.node;
-      <span style="color: #c25959; font-weight: bold;">if</span>(u.explored == <span style="color: #3eca3e;">false</span>){
-        u.explored = <span style="color: #3eca3e;">true</span>;
+    <span style="color: #a626a4;">while</span>(adjacency_list != <span style="font-weight: bold; text-decoration: underline;">NULL</span>){
+      <span style="color: #c18401;">node_type</span> <span style="color: #8b4513;">u</span> = adjacency_list.node;
+      <span style="color: #a626a4;">if</span>(u.explored == <span style="font-weight: bold; text-decoration: underline;">false</span>){
+        u.explored = <span style="font-weight: bold; text-decoration: underline;">true</span>;
         queue.add(u);
       }
       adjacency_list = adjacency_list.next;
@@ -2047,8 +2036,8 @@ For an input graph \(G=(V,E)\), every node is enqued only once and hence, dequeu
 </p>
 </div>
 </div>
-<div id="outline-container-org135ed3e" class="outline-4">
-<h4 id="org135ed3e"><span class="section-number-4">7.4.2.</span> Breadth-first trees for shortest path</h4>
+<div id="outline-container-org204dbb8" class="outline-4">
+<h4 id="org204dbb8"><span class="section-number-4">7.4.2.</span> Breadth-first trees for shortest path</h4>
 <div class="outline-text-4" id="text-7-4-2">
 <p>
 For a simple graph, we may want to get the shortest path between two nodes. This can be done by making a Breadth-first tree.
@@ -2057,31 +2046,31 @@ For a simple graph, we may want to get the shortest path between two nodes. This
 When we are traversing nodes using BFS, we can create a breadth-first tree. To make this tree, we simply need to set parent of u in the inner while loop in the BFS algorithm to v. So our algorithm from earlier will become.
 </p>
 <div class="org-src-container">
-<pre class="src src-c"><span style="color: #00cbcb;">BFS_shortest_path</span>(<span style="color: #dcdc00; font-weight: bold;">graph_type</span> <span style="color: #e2e2e2;">graph</span>, <span style="color: #dcdc00; font-weight: bold;">node_type</span> <span style="color: #e2e2e2;">start</span>, <span style="color: #dcdc00; font-weight: bold;">node_type</span> <span style="color: #e2e2e2;">end</span>){
-  <span style="color: #dcdc00; font-weight: bold;">queue_type</span> <span style="color: #e2e2e2;">queue</span>;
-  start.explored = <span style="color: #3eca3e;">true</span>;
-  start.parent = <span style="color: #3eca3e;">NULL</span>; <span style="color: #3eca3e;">// </span><span style="color: #3eca3e;">the start node is root node of tree</span>
+<pre class="src src-c"><span style="color: #0184bc;">BFS_shortest_path</span>(<span style="color: #c18401;">graph_type</span> <span style="color: #8b4513;">graph</span>, <span style="color: #c18401;">node_type</span> <span style="color: #8b4513;">start</span>, <span style="color: #c18401;">node_type</span> <span style="color: #8b4513;">end</span>){
+  <span style="color: #c18401;">queue_type</span> <span style="color: #8b4513;">queue</span>;
+  start.explored = <span style="font-weight: bold; text-decoration: underline;">true</span>;
+  start.parent = <span style="font-weight: bold; text-decoration: underline;">NULL</span>; <span style="color: #a0a1a7; font-weight: bold;">// </span><span style="color: #a0a1a7;">the start node is root node of tree</span>
   queue.add(start);
 
-  <span style="color: #c25959; font-weight: bold;">while</span>(queue.len != 0){
-    <span style="color: #dcdc00; font-weight: bold;">node_type</span> <span style="color: #e2e2e2;">v</span> = queue.dequeue();
-    <span style="color: #dcdc00; font-weight: bold;">node_list</span> <span style="color: #e2e2e2;">adjacency_list</span> = grap.adj_list(v);
-    <span style="color: #c25959; font-weight: bold;">while</span>(adjacency_list != <span style="color: #3eca3e;">NULL</span>){
-      <span style="color: #dcdc00; font-weight: bold;">node_type</span> <span style="color: #e2e2e2;">u</span> = adjacency_list.node;
-      <span style="color: #c25959; font-weight: bold;">if</span>(u.explored == <span style="color: #3eca3e;">false</span>){
-        u.explored = <span style="color: #3eca3e;">true</span>;
-        u.parent = v; <span style="color: #3eca3e;">// </span><span style="color: #3eca3e;">the parent of u is v</span>
+  <span style="color: #a626a4;">while</span>(queue.len != 0){
+    <span style="color: #c18401;">node_type</span> <span style="color: #8b4513;">v</span> = queue.dequeue();
+    <span style="color: #c18401;">node_list</span> <span style="color: #8b4513;">adjacency_list</span> = grap.adj_list(v);
+    <span style="color: #a626a4;">while</span>(adjacency_list != <span style="font-weight: bold; text-decoration: underline;">NULL</span>){
+      <span style="color: #c18401;">node_type</span> <span style="color: #8b4513;">u</span> = adjacency_list.node;
+      <span style="color: #a626a4;">if</span>(u.explored == <span style="font-weight: bold; text-decoration: underline;">false</span>){
+        u.explored = <span style="font-weight: bold; text-decoration: underline;">true</span>;
+        u.parent = v; <span style="color: #a0a1a7; font-weight: bold;">// </span><span style="color: #a0a1a7;">the parent of u is v</span>
         queue.add(u);
 
-        <span style="color: #c25959; font-weight: bold;">if</span>(u == end) <span style="color: #c25959; font-weight: bold;">return</span>; <span style="color: #3eca3e;">// </span><span style="color: #3eca3e;">if we found the end node,</span>
-                             <span style="color: #3eca3e;">// </span><span style="color: #3eca3e;">we have the path to it.</span>
+        <span style="color: #a626a4;">if</span>(u == end) <span style="color: #a626a4;">return</span>; <span style="color: #a0a1a7; font-weight: bold;">// </span><span style="color: #a0a1a7;">if we found the end node,</span>
+                             <span style="color: #a0a1a7; font-weight: bold;">// </span><span style="color: #a0a1a7;">we have the path to it.</span>
       }
 
       adjacency_list = adjacency_list.next;
     }
   }
 
-  printf(<span style="color: #3eca3e;">"end node not in graph"</span>);
+  printf(<span style="color: #50a14f;">"end node not in graph"</span>);
 }
 </pre>
 </div>
@@ -2091,9 +2080,9 @@ In this tree, the path upwards from any given node to start node will be the sho
 Therefore, we can get the shortest path now as follows
 </p>
 <div class="org-src-container">
-<pre class="src src-c"><span style="color: #00cbcb;">print_shortest_path</span>(<span style="color: #dcdc00; font-weight: bold;">graph_type</span> <span style="color: #e2e2e2;">graph</span>, <span style="color: #dcdc00; font-weight: bold;">node_type</span> <span style="color: #e2e2e2;">start</span>, <span style="color: #dcdc00; font-weight: bold;">node_type</span> <span style="color: #e2e2e2;">end</span>){
+<pre class="src src-c"><span style="color: #0184bc;">print_shortest_path</span>(<span style="color: #c18401;">graph_type</span> <span style="color: #8b4513;">graph</span>, <span style="color: #c18401;">node_type</span> <span style="color: #8b4513;">start</span>, <span style="color: #c18401;">node_type</span> <span style="color: #8b4513;">end</span>){
   BFS_shortest_path(graph, start, end);
-  <span style="color: #c25959; font-weight: bold;">while</span>(end != <span style="color: #3eca3e;">NULL</span>){
+  <span style="color: #a626a4;">while</span>(end != <span style="font-weight: bold; text-decoration: underline;">NULL</span>){
     print_node(end);
     end = end.parent;
   }
@@ -2105,8 +2094,8 @@ This will print shortest path from end node to start node.
 </p>
 </div>
 </div>
-<div id="outline-container-orgca24b82" class="outline-4">
-<h4 id="orgca24b82"><span class="section-number-4">7.4.3.</span> Depth first search</h4>
+<div id="outline-container-orgece3fd8" class="outline-4">
+<h4 id="orgece3fd8"><span class="section-number-4">7.4.3.</span> Depth first search</h4>
 <div class="outline-text-4" id="text-7-4-3">
 <p>
 Unlike BFS, depth first search is more biased towards the farthest nodes of a graph. It follows a single path till it reaches the end of a path. After that, it back tracks to the last open path and follows that one. This process is repeated till all nodes are covered.
@@ -2121,19 +2110,19 @@ Implementation of DFS is very similar to BFS with two differences.
 </ol>
 
 <div class="org-src-container">
-<pre class="src src-c"><span style="color: #00cbcb;">DFS</span>(<span style="color: #dcdc00; font-weight: bold;">graph_type</span> <span style="color: #e2e2e2;">graph</span>, <span style="color: #dcdc00; font-weight: bold;">node_type</span> <span style="color: #e2e2e2;">start</span>){
-  <span style="color: #dcdc00; font-weight: bold;">stack_type</span> <span style="color: #e2e2e2;">stack</span>;
+<pre class="src src-c"><span style="color: #0184bc;">DFS</span>(<span style="color: #c18401;">graph_type</span> <span style="color: #8b4513;">graph</span>, <span style="color: #c18401;">node_type</span> <span style="color: #8b4513;">start</span>){
+  <span style="color: #c18401;">stack_type</span> <span style="color: #8b4513;">stack</span>;
   stack.push(start);
 
-  <span style="color: #c25959; font-weight: bold;">while</span>(stack.len != 0){
-    <span style="color: #dcdc00; font-weight: bold;">node_type</span> <span style="color: #e2e2e2;">v</span> = stack.pop();
+  <span style="color: #a626a4;">while</span>(stack.len != 0){
+    <span style="color: #c18401;">node_type</span> <span style="color: #8b4513;">v</span> = stack.pop();
 
-    <span style="color: #c25959; font-weight: bold;">if</span>(v.discovered == <span style="color: #3eca3e;">false</span>){
-      <span style="color: #3eca3e;">/* </span><span style="color: #3eca3e;">after discovering is where we work on the node</span><span style="color: #3eca3e;"> */</span>
-      v.discovered = <span style="color: #3eca3e;">true</span>;
+    <span style="color: #a626a4;">if</span>(v.discovered == <span style="font-weight: bold; text-decoration: underline;">false</span>){
+      <span style="color: #a0a1a7; font-weight: bold;">/* </span><span style="color: #a0a1a7;">after discovering is where we work on the node</span><span style="color: #a0a1a7; font-weight: bold;"> */</span>
+      v.discovered = <span style="font-weight: bold; text-decoration: underline;">true</span>;
 
-      <span style="color: #dcdc00; font-weight: bold;">node_list</span> <span style="color: #e2e2e2;">adjacency_list</span> = graph.adj_list(start);
-      <span style="color: #c25959; font-weight: bold;">while</span>(adjacency_list != <span style="color: #3eca3e;">NULL</span>){
+      <span style="color: #c18401;">node_list</span> <span style="color: #8b4513;">adjacency_list</span> = graph.adj_list(start);
+      <span style="color: #a626a4;">while</span>(adjacency_list != <span style="font-weight: bold; text-decoration: underline;">NULL</span>){
         stack.push(adjacency_list.node);
         adjacency_list = adjacency_list.next;
       }
@@ -2148,18 +2137,17 @@ Another way to implement DFS is recursively.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-c"><span style="color: #00cbcb;">DFS</span>(<span style="color: #dcdc00; font-weight: bold;">graph_type</span> <span style="color: #e2e2e2;">graph</span>, <span style="color: #dcdc00; font-weight: bold;">node_type</span> <span style="color: #e2e2e2;">node</span>){
-  <span style="color: #3eca3e;">/* </span><span style="color: #3eca3e;">Work on node here</span><span style="color: #3eca3e;"> */</span>
-  node.discovered = <span style="color: #3eca3e;">true</span>;
-  <span style="color: #dcdc00; font-weight: bold;">node_list</span> <span style="color: #e2e2e2;">adjacency_list</span> = graph.adj_list(node);
+<pre class="src src-c"><span style="color: #0184bc;">DFS</span>(<span style="color: #c18401;">graph_type</span> <span style="color: #8b4513;">graph</span>, <span style="color: #c18401;">node_type</span> <span style="color: #8b4513;">node</span>){
+  <span style="color: #a0a1a7; font-weight: bold;">/* </span><span style="color: #a0a1a7;">Work on node here</span><span style="color: #a0a1a7; font-weight: bold;"> */</span>
+  node.discovered = <span style="font-weight: bold; text-decoration: underline;">true</span>;
+  <span style="color: #c18401;">node_list</span> <span style="color: #8b4513;">adjacency_list</span> = graph.adj_list(node);
 
-  <span style="color: #c25959; font-weight: bold;">while</span>(adjacency_list != <span style="color: #3eca3e;">NULL</span>){
-    <span style="color: #dcdc00; font-weight: bold;">node_type</span> <span style="color: #e2e2e2;">u</span> = adjacency_list.node;
-    <span style="color: #c25959; font-weight: bold;">if</span>(u.discovered == <span style="color: #3eca3e;">false</span>)
+  <span style="color: #a626a4;">while</span>(adjacency_list != <span style="font-weight: bold; text-decoration: underline;">NULL</span>){
+    <span style="color: #c18401;">node_type</span> <span style="color: #8b4513;">u</span> = adjacency_list.node;
+    <span style="color: #a626a4;">if</span>(u.discovered == <span style="font-weight: bold; text-decoration: underline;">false</span>)
       DFS(graph, u);
     adjacency_list = adjacency_list.next;
   }
-
 }
 </pre>
 </div>
@@ -2178,8 +2166,8 @@ For an input graph \(G=(V,E)\), the time complexity for Depth first search is \(
 </div>
 </div>
 
-<div id="outline-container-org08e97e1" class="outline-4">
-<h4 id="org08e97e1"><span class="section-number-4">7.4.4.</span> Properties of DFS</h4>
+<div id="outline-container-orgc3c6b4c" class="outline-4">
+<h4 id="orgc3c6b4c"><span class="section-number-4">7.4.4.</span> Properties of DFS</h4>
 <div class="outline-text-4" id="text-7-4-4">
 <p>
 DFS is very useful to <b><i>understand the structure of a graph</i></b>. To study the structure of a graph using DFS, we will get two attributes of each node using DFS. We suppose that each step in traversal takes a unit of time.
@@ -2193,24 +2181,24 @@ So our funtion will become
 </p>
 
 <div class="org-src-container">
-<pre class="src src-c"><span style="color: #3eca3e;">// </span><span style="color: #3eca3e;">call with time = 0</span>
-<span style="color: #3eca3e;">// </span><span style="color: #3eca3e;">or whatever inital time is</span>
-<span style="color: #00cbcb;">DFS</span>(<span style="color: #dcdc00; font-weight: bold;">graph_type</span> <span style="color: #e2e2e2;">graph</span>, <span style="color: #dcdc00; font-weight: bold;">node_type</span> <span style="color: #e2e2e2;">node</span>, <span style="color: #dcdc00; font-weight: bold;">size_t</span> <span style="color: #e2e2e2;">time</span>){
-  node.discovered = <span style="color: #3eca3e;">true</span>;
+<pre class="src src-c"><span style="color: #a0a1a7; font-weight: bold;">// </span><span style="color: #a0a1a7;">call with time = 0</span>
+<span style="color: #a0a1a7; font-weight: bold;">// </span><span style="color: #a0a1a7;">or whatever inital time is</span>
+<span style="color: #0184bc;">DFS</span>(<span style="color: #c18401;">graph_type</span> <span style="color: #8b4513;">graph</span>, <span style="color: #c18401;">node_type</span> <span style="color: #8b4513;">node</span>, <span style="color: #c18401;">size_t</span> <span style="color: #8b4513;">time</span>){
+  node.discovered = <span style="font-weight: bold; text-decoration: underline;">true</span>;
 
-  <span style="color: #3eca3e;">// </span><span style="color: #3eca3e;">update time on node discovery</span>
+  <span style="color: #a0a1a7; font-weight: bold;">// </span><span style="color: #a0a1a7;">update time on node discovery</span>
   time = time + 1;
   node.d = time;
 
-  <span style="color: #dcdc00; font-weight: bold;">node_list</span> <span style="color: #e2e2e2;">adjacency_list</span> = graph.adj_list(node);
-  <span style="color: #c25959; font-weight: bold;">while</span>(adjacency_list != <span style="color: #3eca3e;">NULL</span>){
-    <span style="color: #dcdc00; font-weight: bold;">node_type</span> <span style="color: #e2e2e2;">u</span> = adjacency_list.node;
-    <span style="color: #c25959; font-weight: bold;">if</span>(u.discovered == <span style="color: #3eca3e;">false</span>)
+  <span style="color: #c18401;">node_list</span> <span style="color: #8b4513;">adjacency_list</span> = graph.adj_list(node);
+  <span style="color: #a626a4;">while</span>(adjacency_list != <span style="font-weight: bold; text-decoration: underline;">NULL</span>){
+    <span style="color: #c18401;">node_type</span> <span style="color: #8b4513;">u</span> = adjacency_list.node;
+    <span style="color: #a626a4;">if</span>(u.discovered == <span style="font-weight: bold; text-decoration: underline;">false</span>)
       DFS(graph, u, time);
     adjacency_list = adjacency_list.next;
   }
 
-  <span style="color: #3eca3e;">// </span><span style="color: #3eca3e;">update time on node finished</span>
+  <span style="color: #a0a1a7; font-weight: bold;">// </span><span style="color: #a0a1a7;">update time on node finished</span>
   time = time + 1;
   node.f = time;
 }
@@ -2222,8 +2210,8 @@ This algorithm will give all nodes the (node.d) and (node.f) attribute. <b>Simil
 </p>
 </div>
 
-<div id="outline-container-org6623c5a" class="outline-5">
-<h5 id="org6623c5a"><span class="section-number-5">7.4.4.1.</span> Parenthesis theorem</h5>
+<div id="outline-container-org4684501" class="outline-5">
+<h5 id="org4684501"><span class="section-number-5">7.4.4.1.</span> Parenthesis theorem</h5>
 <div class="outline-text-5" id="text-7-4-4-1">
 <p>
 The paranthesis theorem is used to find relationship between two nodes in the <b>Depth First Search Tree</b>.
@@ -2240,8 +2228,8 @@ So if node, \(y\) is a proper descendant of node \(x\) in the depth first tree, 
 </p>
 </div>
 </div>
-<div id="outline-container-org37b14f5" class="outline-5">
-<h5 id="org37b14f5"><span class="section-number-5">7.4.4.2.</span> White path theorem</h5>
+<div id="outline-container-org9543fb3" class="outline-5">
+<h5 id="org9543fb3"><span class="section-number-5">7.4.4.2.</span> White path theorem</h5>
 <div class="outline-text-5" id="text-7-4-4-2">
 <p>
 If \(y\) is a descendant of \(x\) in graph G, then at time \(t = x.d\), the path from \(u\) to \(v\) was undiscovered.
@@ -2252,8 +2240,8 @@ That is, all the nodes in path from \(x\) to \(y\) were undiscovered. Undiscover
 </p>
 </div>
 </div>
-<div id="outline-container-org55b5048" class="outline-5">
-<h5 id="org55b5048"><span class="section-number-5">7.4.4.3.</span> Classification of edges</h5>
+<div id="outline-container-orgbd4c9e1" class="outline-5">
+<h5 id="orgbd4c9e1"><span class="section-number-5">7.4.4.3.</span> Classification of edges</h5>
 <div class="outline-text-5" id="text-7-4-4-3">
 <p>
 We can arrange the connected nodes of a graph into the form of a Depth-first tree. When the graph is arranged in this way, the edges can be classified into four types
@@ -2273,8 +2261,8 @@ The back edge, forward edge and cross edge are not a part of the depth-first tre
 </div>
 </div>
 </div>
-<div id="outline-container-org1d5efc4" class="outline-4">
-<h4 id="org1d5efc4"><span class="section-number-4">7.4.5.</span> Depth-first and Breadth-first Forests</h4>
+<div id="outline-container-org7a4807b" class="outline-4">
+<h4 id="org7a4807b"><span class="section-number-4">7.4.5.</span> Depth-first and Breadth-first Forests</h4>
 <div class="outline-text-4" id="text-7-4-5">
 <p>
 In directed graphs, the depth-first and breadth-first algorithms <b>can't traverse to nodes which are not connected by a directed edge</b>. This can leave parts of graph not mapped by a single tree.
@@ -2295,8 +2283,8 @@ Thus when using DFS or BFS on a graph, we store this collection of trees i.e, fo
 </ul>
 </div>
 </div>
-<div id="outline-container-org47a752d" class="outline-4">
-<h4 id="org47a752d"><span class="section-number-4">7.4.6.</span> Topological sort using DFS</h4>
+<div id="outline-container-org52dba3d" class="outline-4">
+<h4 id="org52dba3d"><span class="section-number-4">7.4.6.</span> Topological sort using DFS</h4>
 <div class="outline-text-4" id="text-7-4-6">
 <p>
 Topological sorting can only be done on <b>directed acyclic graphs</b>. A topological sort is a linear ordering of the nodes of a directed acyclic graph (dag). It is ordering the nodes such that all the <b>the edges point right</b>.
@@ -2320,8 +2308,8 @@ TODO : Add image to show process of topological sorting
 </div>
 </div>
 </div>
-<div id="outline-container-orgf9dd9a8" class="outline-3">
-<h3 id="orgf9dd9a8"><span class="section-number-3">7.5.</span> Strongly connected components</h3>
+<div id="outline-container-org7d371ab" class="outline-3">
+<h3 id="org7d371ab"><span class="section-number-3">7.5.</span> Strongly connected components</h3>
 <div class="outline-text-3" id="text-7-5">
 <p>
 If we can traverse from a node \(x\) to node \(y\) in a directed graph, we show it as \(x \rightsquigarrow y\).
@@ -2338,14 +2326,14 @@ Example, the dotted regions are the strongly connected components (SCC) of the g
 </p>
 
 
-<div id="org1f17d88" class="figure">
+<div id="org3fb2b35" class="figure">
 <p><img src="./imgs/strongly-connected-component.svg" alt="strongly-connected-component.svg" class="org-svg" />
 </p>
 </div>
 </div>
 
-<div id="outline-container-org18101bf" class="outline-4">
-<h4 id="org18101bf"><span class="section-number-4">7.5.1.</span> Finding strongly connected components</h4>
+<div id="outline-container-org2a3aa7d" class="outline-4">
+<h4 id="org2a3aa7d"><span class="section-number-4">7.5.1.</span> Finding strongly connected components</h4>
 <div class="outline-text-4" id="text-7-5-1">
 <p>
 We can find the strongly connected components of a graph \(G\) using DFS. The algorithm is called Kosaraju's algorithm.
@@ -2385,9 +2373,8 @@ TODO : Add images for this
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Date: .</p>
 <p class="author">Author: Anmol Nawani</p>
-<p class="date">Created: 2023-10-02 Mon 13:49</p>
+<p class="date">Created: 2024-11-04 Mon 04:06</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

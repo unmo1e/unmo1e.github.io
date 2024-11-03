@@ -11,7 +11,7 @@
 
 @font-face {
 	font-family: nrk;
-	src: url(VictorMono.woff2);
+	src: url(ComicCode.ttf);
 }
 * {
 	font-family: "nrk", "monospace";

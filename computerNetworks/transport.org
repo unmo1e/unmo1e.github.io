@@ -481,3 +481,175 @@ The server is fooled and allocates large no. of resources for all the connection
 
 This type of attack is denial-of-service attack. Some strategies to combat this are: filter datagrams from certain IPs, impose limit on connection requests; the most recent one is to postpone allocation till whole connection is established using cooking (used in SCTP)
 
+**** Data transfer
+An example of data transfer is as follows
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202024-10-28%20180406.png @ 2024-10-28 18:04:12
+[[file:Transport_Layer/2024-10-28_18-04-12_Screenshot 2024-10-28 180406.png]]
+
++ client wants to send 4000 bytes
+  + it sends it in 2 segments (each 2000 bytes)
++ then server sends 2000 bytes of data
+  + server will piggyback acknowledgement with this data segment
++ finally, client acknowledges the received data
+  + since client doesn't have more data to send, it will send a ACK only segment
+
+Also notice that client has set the *PSH (push)* flag for first two segments
+
+_*Pushing data*_
+
+The receiving TCP has a buffer where data is stored until the application demands it or buffer is full.
+
+However, on occassion we need more interactivity (for example a game where client is sending keystrokes). In this situation, this buffering can cause delay.
+
+To handle this, sender can request /push/ operation. This is done by setting the /PSH flag/
++ This segment is not placed in the senders buffer, instead it is sent immediately. 
++ The receiver will also give it to application as soon as possible without waiting for more to come
++ This feature is not required to be implemented. So some programs may ignore such requests.
+
+_*Urgent data*_
+
+TCP is stream oriented. Application will only receive a stream of bytes and not know about the individual bytes.
+
+On occasion, application program may need to send /urgent bytes/. This is piece of data not part of stream. 
+
+This data is sent by setting the /URG flag/. The application tells TCP that these bytes of data is urgent.
+
+The TCP then takes these bytes and puts them at the start of the segment to be sent next. The rest of the segment still contains the normal stream data.
+
+The urgent pointer field in header defines end of urgent data and start of normal data.
+
+If receiver gets a segment with URG flag set, it extracts urgent data from segment, using value of urgent pointer and delivers it to application before continuing the stream data.
+
+**** Connection termination
+Any of the two parties in TCP can terminate connection. But, it is usually done by the client. There are two options for termination
++ Three-way handshaking
++ Four-way handshaking with half-close option
+
+_*Three-way Handshaking*_
+
++ After getting close command for program, the client TCP sends the first segment, a /FIN/ segment.
+  + The /FIN/ segment may also carry the last chunk of data sent by client, or may just be control segment
+  + if not carrying data, FIN segment still consumes a sequence number (phony byte)
++ The server TCP after getting FIN will inform the process and send the second segment, a /FIN + ACK/ segment.
+  + This can also contain last chunk of data from server.
+  + if not carrying data, it also consumes sequence number (phony byte)
++ The client sends last segment, it is the /ACK/ to confirm the server's FIN
+  + This cannot carry more data and thus consumes no sequence numbers.
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202024-10-28%20185611.png @ 2024-10-28 18:56:17
+[[file:Transport_Layer/2024-10-28_18-56-17_Screenshot 2024-10-28 185611.png]]
+
+_*Half close (Four way handshake)*_
+
+One end way want to stop sending data while still receiving. This is called a half-close.
+
+Both sides can issue a half-close, but is usually done by client.
+
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202024-10-28%20190939.png @ 2024-10-28 19:09:45
+[[file:Transport_Layer/2024-10-28_19-09-45_Screenshot 2024-10-28 190939.png]]
+
+In this example,
++ client half-closes the connection after sending FIN.
++ server accepts half-close and sends ACK
++ after server has sent all remaining data to client it sends the FIN
++ finally, client will send ACK
+
+Here, we can see that we had 4-segments to close connection on both sides. Thus it is called a 4-way handshake.
+
+*** Flow Control
+TCP uses sliding window for flow control. The protocol is something between Go-Back-N and Selective Repeat.
+
++ Similar to Go-Back-N, we don't use Negetive Acknowledgement (NAKs)
++ Similar to selective repeat, the receiver holds out-of-order segmets till missing ones arrive.
+
+There are two main differences between sliding window in data link layer and TCP.
++ TCP sliding window is byte-oriented; the data link layer is frame-oriented.
++ The size of window is variable in TCP. The window in data link layer is fixed size
+
+The window spans portion of the buffer used to send and receive bytes. This window has two walls left and right.
+
+The window can be opened, closed or shrunk. All these are controlled by the receiver (and depend on congestion). The sender must obey commands of receiver
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202024-10-28%20201150.png @ 2024-10-28 20:11:58
+[[file:Transport_Layer/2024-10-28_20-11-58_Screenshot 2024-10-28 201150.png]]
+
+When TCP is making a segment, it will take bytes only from the window.
++ Opening window means moving right wall, this allows new bytes to be eligible for sending
++ Closing window means moving left wall, this is done when acknowledgement for some bytes is recieved
++ Shrinking means moving right wall to left. This is strongly discouraged because sender may have already sent those bytes. Some implementations don't allow this operation
+
+The size of window is determined by lesser of two values:
+/receiver window (rwnd)/ and /congention window (cwnd)/
+
+#+begin_quote
+window size = min(rwnd, cwnd)
+#+end_quote
+
++ The /receiver window/ is advertised by opposite end by a segment containing acknowledgement.
++ The /congestion window/ is value determined by the network to avoid congestion
+
+Example, suppose that host A is sender and host B is receiver.
++ host B has total buffer size of 5000 bytes
++ host B also has 1000 bytes of received and unprocessed data in buffer
++ therefore, host B will have window size of (5000 - 1000) bytes, i.e, 4000 bytes
++ host B will send rwnd value of 4000 when sending next segment to host A
+
+*** Error Control
+TCP has error control for corrupted segmets, lost segments, out-of-order segments and duplicated segments
+
+There are three tools to achieve this: checksum, acknowledgement and time-out
+
+**** Checksum
+The checksum is used to detect corrupted segments. If segment is corrupted it is discarded.
+
+It is a 16-bit checksum like UDP and is calculated similarly to UDP by using a pseudoheader. Unlike, UDP this is mandatory.
+
+(It is considered inadequate for corrupted segment detection now, but can't we change it. One of the reason SCTP was made was to fix this)
+
+**** Acknowledgement
+TCP uses acknowledgements to confirm receipt of segments. ACK segments that carry no data do not consume sequence numbers.
+
+Other control segments even if not containing data consume a sequence number, we say they consume a phony byte
+
+**** Out-of-order segments
+Initially, TCP was designed to discard all out-of-order segments, so retransmission had to be done again.
+
+However, today we don't discard out-of-order segments. They are stoed temporarily and flagged as out-of-order until missing ones arrive.
+
+These out-of-order segments will not be delivered to application, since TCP guarentees delivery to process in order.
+
+**** Retransmission
+A segment is retransmitted on two occassions: when retransmission timer expires or sender receives three duplicate ACKs.
+
+There is no retransmission for segments that don't consume sequenc numbers (like ACK only segments)
+
+_*Retransmission after RTO*_
+
+Recent implementations of TCP maintain /retransmission-time-out (RTO)/ for all outstanding (sent, not acknowledged) segments.
+
+When timer matures, the segment is retransmitted. This may happen due to delayed segment, delayed ACK or lost ACK.
+
+The value of /RTO is dynamic based on RTT/ (round-trip time). The round-trip time is time needed for segment to reach destination and an ACK to be received.
+
+Retransmission uses the back-off strategy similar to CSMA/CD
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202024-10-28%20234253.png @ 2024-10-28 23:43:00
+[[file:Transport_Layer/2024-10-28_23-43-00_Screenshot 2024-10-28 234253.png]]
+
+_*Retransmission after Three duplicate ACKs*_
+
+Sometimes, one segment can get lost and the receiver gets so many out-of-order segments that they cannot be saved (full buffer).
+
+To alliviate this, we have three-duplicate ACKs rule and retransmit misssing segment immediately. This is called /fast retransmission/
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202024-10-28%20233700.png @ 2024-10-28 23:37:06
+[[file:Transport_Layer/2024-10-28_23-37-06_Screenshot 2024-10-28 233700.png]]
+
+When receiver gets segment with seq number 401, 501 and 601 it triggers acknowledgements. The sender receives four acknowledgements with same number (three duplicates).
+
+Even if timer has not matured for segment 301, fast tranmission causes it to be retransmitted immediately.
+
+Note: only 301 is retransmitted although four segments are not acknowledged. When sender then gets ACK, it uses cumulative acknowledgement.
+

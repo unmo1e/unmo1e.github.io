@@ -465,7 +465,7 @@ The reduce/reduce conflict is resolved by increasing the lookahead of the parsar
 ** LR(0) parser
 A simple LR(k) parser uses k lookahead symbols.
 + L stands for left-to-right scanning
-+ R stands for rightmost derivation tree
++ R stands for rightmost derivation /in reverse/ tree
 + k is the number of lookahead
 For most practical languages we use $k \le 1$. We generally study LR(1) parsers only.
 

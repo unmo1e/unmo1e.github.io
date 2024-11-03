@@ -103,17 +103,6 @@ or
 
 Of the two possible time complexities, we consider the one with higher growth rate in the big-oh notation.
 
-** Avoiding tree method
-The tree method as mentioned is mainly used when we have multiple recursive calls with different factors. But when using the big-oh notation (O). We can avoid tree method in favour of the master's theorem by converting recursive call with smaller factor to larger. This works since big-oh calculates worst case. Let's take our previous example
-\[ T(n) = T(n/5) + T(4n/5) + f(n) \]
-Since T(n) is an increasing function. We can say that
-\[ T(n/5) < T(4n/5)  \]
-So we can replace smaller one and approximate our equation to,
-\[ T(n) = T(4n/5) + T(4n/5) + f(n) \]
-\[ T(n) = 2.T(4n/5) + f(n) \]
-
-Now, our recurrance relation is in a form where we can apply the mater's theorem.
-
 * Space complexity
 The amount of memory used by the algorithm to execute and produce the result for a given input size is space complexity. Similar to time complexity, when comparing two algorithms space complexity is usually represented as the growth rate of memory used with respect to input size. The space complexity includes
 + *Input space* : The amount of memory used by the inputs to the algorithm.

@@ -649,8 +649,7 @@ The variable sized arrays are not part of activation record, they are at the end
 
 The code to compute these offsets can be generated at compile time, thus allocations can be done at runtime.
 
-
-#+TODO : Skipped section 7.3 (Nonlocal Data on Stack) doesn't seem necessary
+# TODO : Skipped section 7.3 (Nonlocal Data on Stack) doesn't seem necessary
 ** Heap management
 Heap manages data that is stored indefinitely unitl program explicitly deletes it. Unlike local data on the stack, which becomes inaccessible when procedure ends, the heap data is independent of procedures lifetimes.
 
@@ -721,3 +720,38 @@ We need to combine these small holes to larger holes to avoid fragmentation.
 
 Fragmentation may lead to a situation where we have enough free space in the heap, but not enough contiguos space to complete a request
 
+**** Object Placement Policies
+We can reduce fragmentation by controlling how memory manager places new objects on the heap.
+
+_*First-fit*_
+
+The quickest way is to search the heap linearly and find the first contiguos space that fits the object. This is a first-fit placement.
+
+While it is quick, it causes fragmentation and effects performance in long term.
+
+_*Best-fit*_
+
+In this strategy, we will check all the open holes in the heap and place object in the hole with least internal fragmentation.
+
+i.e, we will place it in hole which it completely fits or the smallest hole that will fit object.
+
+To implement best-fit placement more efficiently, we seperate space to chunks of different sizes called /bins./
+
+Usually, the bins are aligned to 8-bytes. So there are bins for the multiples of 8-byte, i.e, we have bins from size 16 bytes to 512 bytes and more.
+
+There is also a chunk of free space that can be used for larger allocations from OS. This is called the /wilderness chunk/. This is treated as the largest bin because it is extendable
+
+Binning is done to make it eas to find best-fit chunk.
++ for small size allocations, we can easily find the chuck of correct size, since bins are ordered
++ for allocations that don't fit a bin completely, we look for bin with some fragmentation and within it use first-fit
+  + we try to fit it in smaller bins to reduce fragmentation
++ if there is no more space within a bin, we will repeat the process on the next bin.
+  + if we don't find place in any bins, eventually we will place it in wilderness
+
+_*Next-fit*_
+
+An optimization which is done to increase spatial locality. When we start looking for free space, we start from the point of last allocation.
+
+This strategy can be paired with both first-fit and best-fit to get the closest free-space in heap for new allocation.
+
+**** Managing and Coalescing Free Space

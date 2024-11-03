@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2024-10-06 Sun 19:20 -->
+<!-- 2024-10-20 Sun 22:29 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Compilers</title>
@@ -222,84 +222,84 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org4ea3491">1. Syntax-Directed Translation and Syntax-Directed Definition</a>
+<li><a href="#orgc262560">1. Syntax-Directed Translation and Syntax-Directed Definition</a>
 <ul>
-<li><a href="#orgc1bec3e">1.1. SDD</a>
+<li><a href="#org6e6215c">1.1. SDD</a>
 <ul>
-<li><a href="#orgc3596fa">1.1.1. Evaluating SDD at nodes</a></li>
-<li><a href="#org3479a0d">1.1.2. Use of inherited attributes in top-down grammars</a></li>
-<li><a href="#orgf6f5f0f">1.1.3. Evaluation order for SDD</a>
+<li><a href="#orgdd2efe7">1.1.1. Evaluating SDD at nodes</a></li>
+<li><a href="#orgd9e40ab">1.1.2. Use of inherited attributes in top-down grammars</a></li>
+<li><a href="#orga1994c1">1.1.3. Evaluation order for SDD</a>
 <ul>
-<li><a href="#org3bd4fc1">1.1.3.1. Dependency graphs</a></li>
-<li><a href="#org740a679">1.1.3.2. L-Attributed SDDs</a></li>
-<li><a href="#org7b79cb2">1.1.3.3. Side effects</a></li>
+<li><a href="#orgfc8a01e">1.1.3.1. Dependency graphs</a></li>
+<li><a href="#org519214f">1.1.3.2. L-Attributed SDDs</a></li>
+<li><a href="#orga95959a">1.1.3.3. Side effects</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org52b8c39">1.2. Applications of SDDs</a>
+<li><a href="#orgd706f36">1.2. Applications of SDDs</a>
 <ul>
-<li><a href="#org000ee0f">1.2.1. Construction of Syntax Tree</a></li>
-<li><a href="#orgbe939a6">1.2.2. Handling array types using SDDs</a></li>
+<li><a href="#orgfa38bd1">1.2.1. Construction of Syntax Tree</a></li>
+<li><a href="#org38e50b8">1.2.2. Handling array types using SDDs</a></li>
 </ul>
 </li>
-<li><a href="#orgc204a1d">1.3. SDT</a>
+<li><a href="#orge492d39">1.3. SDT</a>
 <ul>
-<li><a href="#orgfaf4bf9">1.3.1. Postfix SDTs (S-attributed SDDs to SDTs)</a></li>
-<li><a href="#org8b1bf12">1.3.2. SDT's with actions at any position</a></li>
-<li><a href="#orgc09306b">1.3.3. Eliminating left recursion with SDTs</a></li>
-<li><a href="#org813859c">1.3.4. L-attributed SDDs to SDTs</a></li>
+<li><a href="#org49ea35c">1.3.1. Postfix SDTs (S-attributed SDDs to SDTs)</a></li>
+<li><a href="#org6aa791f">1.3.2. SDT's with actions at any position</a></li>
+<li><a href="#orgbb81e22">1.3.3. Eliminating left recursion with SDTs</a></li>
+<li><a href="#org487fe3c">1.3.4. L-attributed SDDs to SDTs</a></li>
 </ul>
 </li>
-<li><a href="#org43f477a">1.4. Implementing L-attributed SDDs and SDTs</a></li>
+<li><a href="#org18e99af">1.4. Implementing L-attributed SDDs and SDTs</a></li>
 </ul>
 </li>
-<li><a href="#org4ca47f3">2. Intermediate-Code Generation</a>
+<li><a href="#orgf1a4f26">2. Intermediate-Code Generation</a>
 <ul>
-<li><a href="#org8c52403">2.1. Syntax Trees</a>
+<li><a href="#orgb37acb7">2.1. Syntax Trees</a>
 <ul>
-<li><a href="#orgbc9822e">2.1.1. Directed Acyclic Graphs for Expressions</a></li>
-<li><a href="#org2a261e8">2.1.2. Value-Number Method for DAG construction</a></li>
+<li><a href="#org0579b0f">2.1.1. Directed Acyclic Graphs for Expressions</a></li>
+<li><a href="#org813a261">2.1.2. Value-Number Method for DAG construction</a></li>
 </ul>
 </li>
-<li><a href="#org8891eb7">2.2. Three-Address Code</a>
+<li><a href="#org2b42441">2.2. Three-Address Code</a>
 <ul>
-<li><a href="#org3d4d919">2.2.1. Addresses and Instructions</a></li>
-<li><a href="#org845df3a">2.2.2. Quadruples</a></li>
-<li><a href="#org31e474c">2.2.3. Triples</a></li>
-<li><a href="#orgac1efed">2.2.4. Quadruples vs Triples (and Indirect triples)</a></li>
-<li><a href="#org521656e">2.2.5. Static Single-Assignment Form</a></li>
+<li><a href="#org399da06">2.2.1. Addresses and Instructions</a></li>
+<li><a href="#orgcbc4bc1">2.2.2. Quadruples</a></li>
+<li><a href="#org158a2df">2.2.3. Triples</a></li>
+<li><a href="#orgd5fbcb5">2.2.4. Quadruples vs Triples (and Indirect triples)</a></li>
+<li><a href="#orgb0fd036">2.2.5. Static Single-Assignment Form</a></li>
 </ul>
 </li>
-<li><a href="#org1c85b5e">2.3. Control Flow</a>
+<li><a href="#org591c69b">2.3. Control Flow</a>
 <ul>
-<li><a href="#org6869ed0">2.3.1. Boolean Expressions</a></li>
-<li><a href="#orga37fce7">2.3.2. Short-Circuit Code</a></li>
-<li><a href="#org5a461b3">2.3.3. Flow-of-control Statements</a></li>
+<li><a href="#org801b063">2.3.1. Boolean Expressions</a></li>
+<li><a href="#orgcac170a">2.3.2. Short-Circuit Code</a></li>
+<li><a href="#org8b3e638">2.3.3. Flow-of-control Statements</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org7d4b25e">3. Run-time environments</a>
+<li><a href="#org4a110bf">3. Run-time environments</a>
 <ul>
-<li><a href="#org7be7212">3.1. Stack Allocation of Space</a>
+<li><a href="#org3841483">3.1. Stack Allocation of Space</a>
 <ul>
-<li><a href="#orgca4a0ba">3.1.1. Activation trees</a></li>
-<li><a href="#orga227d72">3.1.2. Activation Records</a></li>
-<li><a href="#org9409ef8">3.1.3. Calling Sequences</a></li>
-<li><a href="#org323d839">3.1.4. Variable-Length Data on Stack</a></li>
+<li><a href="#org5dcf54e">3.1.1. Activation trees</a></li>
+<li><a href="#orgbd01130">3.1.2. Activation Records</a></li>
+<li><a href="#org849d17c">3.1.3. Calling Sequences</a></li>
+<li><a href="#org77d4751">3.1.4. Variable-Length Data on Stack</a></li>
 </ul>
 </li>
-<li><a href="#org789d291">3.2. Heap management</a>
+<li><a href="#org5c5a015">3.2. Heap management</a>
 <ul>
-<li><a href="#org99502e5">3.2.1. The Memory Manager</a></li>
-<li><a href="#org4cd13b3">3.2.2. The Memory hierarchy</a></li>
-<li><a href="#orgeb52542">3.2.3. Locality</a>
+<li><a href="#org23ec761">3.2.1. The Memory Manager</a></li>
+<li><a href="#org753d46a">3.2.2. The Memory hierarchy</a></li>
+<li><a href="#orgc90d2e8">3.2.3. Locality</a>
 <ul>
-<li><a href="#org9b22d07">3.2.3.1. Optimizations</a></li>
+<li><a href="#orgc2509bb">3.2.3.1. Optimizations</a></li>
 </ul>
 </li>
-<li><a href="#org664a807">3.2.4. Reducing Fragmentation</a></li>
+<li><a href="#org8980d9c">3.2.4. Reducing Fragmentation</a></li>
 </ul>
 </li>
 </ul>
@@ -308,8 +308,8 @@
 </div>
 </div>
 
-<div id="outline-container-org4ea3491" class="outline-2">
-<h2 id="org4ea3491"><span class="section-number-2">1.</span> Syntax-Directed Translation and Syntax-Directed Definition</h2>
+<div id="outline-container-orgc262560" class="outline-2">
+<h2 id="orgc262560"><span class="section-number-2">1.</span> Syntax-Directed Translation and Syntax-Directed Definition</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 We have two different ways of having semantic specifications for translation of our source code
@@ -328,7 +328,7 @@ Example of SDD is,
 </p>
 
 
-<div id="org127ac73" class="figure">
+<div id="org1f6896c" class="figure">
 <p><img src="Syntax-Directed_Translation/2024-06-01_00-54-10_Screenshot 2024-06-01 005405.png" alt="2024-06-01_00-54-10_Screenshot 2024-06-01 005405.png" />
 </p>
 </div>
@@ -342,7 +342,7 @@ Example of SDT is,
 </p>
 
 
-<div id="org76ae28c" class="figure">
+<div id="org96a624d" class="figure">
 <p><img src="Syntax-Directed_Translation/2024-06-01_00-55-53_Screenshot 2024-06-01 005547.png" alt="2024-06-01_00-55-53_Screenshot 2024-06-01 005547.png" />
 </p>
 </div>
@@ -353,8 +353,8 @@ Example of SDT is,
 </ul>
 </div>
 
-<div id="outline-container-orgc1bec3e" class="outline-3">
-<h3 id="orgc1bec3e"><span class="section-number-3">1.1.</span> SDD</h3>
+<div id="outline-container-org6e6215c" class="outline-3">
+<h3 id="org6e6215c"><span class="section-number-3">1.1.</span> SDD</h3>
 <div class="outline-text-3" id="text-1-1">
 <p>
 A syntax-directed definition (SDD) has a semantic rule with production. With every node we also have attributes. If node is \(X\) and attribute name is \(a\), we represent value of attribute as \(X.a\)
@@ -389,7 +389,7 @@ Example of complete SDD is
 </p>
 
 
-<div id="org2e9143d" class="figure">
+<div id="orgee10db1" class="figure">
 <p><img src="Syntax-Directed_Translation/2024-06-01_02-16-20_Screenshot 2024-06-01 021612.png" alt="2024-06-01_02-16-20_Screenshot 2024-06-01 021612.png" />
 </p>
 </div>
@@ -408,8 +408,8 @@ The <i>lexval</i> attribute is given to token by lexer to the digit token. This 
 NOTE : An SDD with no side-effects is called an <i>attribute grammar</i>
 </p>
 </div>
-<div id="outline-container-orgc3596fa" class="outline-4">
-<h4 id="orgc3596fa"><span class="section-number-4">1.1.1.</span> Evaluating SDD at nodes</h4>
+<div id="outline-container-orgdd2efe7" class="outline-4">
+<h4 id="orgdd2efe7"><span class="section-number-4">1.1.1.</span> Evaluating SDD at nodes</h4>
 <div class="outline-text-4" id="text-1-1-1">
 <p>
 A translator does not need to have a tree, but it's useful to visualize a tree. A parser tree, showing values of attributes is called <b>annotated parse tree</b>
@@ -427,7 +427,7 @@ A translator does not need to have a tree, but it's useful to visualize a tree. 
 There can also be circular dependencies, making evaluation impossible. Example,
 </p>
 
-<div id="orgbc09827" class="figure">
+<div id="orged6f67e" class="figure">
 <p><img src="Syntax-Directed_Translation/2024-06-03_03-01-06_Screenshot 2024-06-03 030058.png" alt="2024-06-03_03-01-06_Screenshot 2024-06-03 030058.png" />
 </p>
 </div>
@@ -440,8 +440,8 @@ Here, \(A.s\) and \(B.i\) have circular dependencies. These circular dependencie
 </ul>
 </div>
 </div>
-<div id="outline-container-org3479a0d" class="outline-4">
-<h4 id="org3479a0d"><span class="section-number-4">1.1.2.</span> Use of inherited attributes in top-down grammars</h4>
+<div id="outline-container-orgd9e40ab" class="outline-4">
+<h4 id="orgd9e40ab"><span class="section-number-4">1.1.2.</span> Use of inherited attributes in top-down grammars</h4>
 <div class="outline-text-4" id="text-1-1-2">
 <p>
 <b>Inherited attributes are useful for grammars that were designed for parsing, rather than translation</b> like top-down grammars
@@ -452,7 +452,7 @@ Example,
 </p>
 
 
-<div id="org9d461df" class="figure">
+<div id="org140d771" class="figure">
 <p><img src="Syntax-Directed_Translation/2024-06-03_04-02-23_Screenshot 2024-06-03 040216.png" alt="2024-06-03_04-02-23_Screenshot 2024-06-03 040216.png" />
 </p>
 </div>
@@ -468,8 +468,8 @@ Here, \(T'\) is made to inherit the value of \(F\), which is it's left number. I
 </div>
 </div>
 
-<div id="outline-container-orgf6f5f0f" class="outline-4">
-<h4 id="orgf6f5f0f"><span class="section-number-4">1.1.3.</span> Evaluation order for SDD</h4>
+<div id="outline-container-orga1994c1" class="outline-4">
+<h4 id="orga1994c1"><span class="section-number-4">1.1.3.</span> Evaluation order for SDD</h4>
 <div class="outline-text-4" id="text-1-1-3">
 <p>
 Dependency graphs can be used for determining order of evaluation. We also define two important classes of SDDs
@@ -479,8 +479,8 @@ Dependency graphs can be used for determining order of evaluation. We also defin
 <li>L-attributed SDDs</li>
 </ul>
 </div>
-<div id="outline-container-org3bd4fc1" class="outline-5">
-<h5 id="org3bd4fc1"><span class="section-number-5">1.1.3.1.</span> Dependency graphs</h5>
+<div id="outline-container-orgfc8a01e" class="outline-5">
+<h5 id="orgfc8a01e"><span class="section-number-5">1.1.3.1.</span> Dependency graphs</h5>
 <div class="outline-text-5" id="text-1-1-3-1">
 <p>
 Suppose we have an SDD, where \(A.b\) is defined in terms of \(X.c\) (i.e, \(A.b = X.c\)), then arrow goes from \(X.c\) to \(A.b\)
@@ -491,7 +491,7 @@ Suppose grammar with SDD is
 </p>
 
 
-<div id="orgdddb350" class="figure">
+<div id="org7a0ac1a" class="figure">
 <p><img src="Syntax-Directed_Translation/2024-06-03_04-02-23_Screenshot 2024-06-03 040216.png" alt="2024-06-03_04-02-23_Screenshot 2024-06-03 040216.png" />
 </p>
 </div>
@@ -501,7 +501,7 @@ and the parse tree is
 </p>
 
 
-<div id="orga63e0c1" class="figure">
+<div id="org105dc9e" class="figure">
 <p><img src="Syntax-Directed_Translation/2024-06-03_22-57-09_Screenshot 2024-06-03 225704.png" alt="2024-06-03_22-57-09_Screenshot 2024-06-03 225704.png" />
 </p>
 </div>
@@ -511,7 +511,7 @@ Then the dependency graph is
 </p>
 
 
-<div id="orga7502ac" class="figure">
+<div id="orge0c13f4" class="figure">
 <p><img src="Syntax-Directed_Translation/2024-06-03_22-58-15_Screenshot 2024-06-03 225810.png" alt="2024-06-03_22-58-15_Screenshot 2024-06-03 225810.png" />
 </p>
 </div>
@@ -540,8 +540,8 @@ The order of evaluation can be found by doing a topological sort. <b>If there is
 </ul>
 </div>
 </div>
-<div id="outline-container-org740a679" class="outline-5">
-<h5 id="org740a679"><span class="section-number-5">1.1.3.2.</span> L-Attributed SDDs</h5>
+<div id="outline-container-org519214f" class="outline-5">
+<h5 id="org519214f"><span class="section-number-5">1.1.3.2.</span> L-Attributed SDDs</h5>
 <div class="outline-text-5" id="text-1-1-3-2">
 <p>
 L-attributed definitions are another class of SDDs, these also guarentee an order of evaluation
@@ -583,7 +583,7 @@ We can also use attributes of \(X_i\) itself, but we need to make sure there are
 Our previous example definitions were L-Attributed
 </p>
 
-<div id="orga04eb5e" class="figure">
+<div id="org10b9435" class="figure">
 <p><img src="Syntax-Directed_Translation/2024-06-03_04-02-23_Screenshot 2024-06-03 040216.png" alt="2024-06-03_04-02-23_Screenshot 2024-06-03 040216.png" />
 </p>
 </div>
@@ -594,8 +594,8 @@ Here, every attribute depends on either parent or left sibling. There is also, \
 </div>
 </div>
 
-<div id="outline-container-org7b79cb2" class="outline-5">
-<h5 id="org7b79cb2"><span class="section-number-5">1.1.3.3.</span> Side effects</h5>
+<div id="outline-container-orga95959a" class="outline-5">
+<h5 id="orga95959a"><span class="section-number-5">1.1.3.3.</span> Side effects</h5>
 <div class="outline-text-5" id="text-1-1-3-3">
 <p>
 SDDs with no side effects are called, <b>attribute grammars</b>. They allow for any evaluation order as long as it is a topological sort of the dependency graph.
@@ -613,8 +613,8 @@ For SDDs with side effects, we need to make sure the side effects don't cause pr
 </div>
 </div>
 
-<div id="outline-container-org52b8c39" class="outline-3">
-<h3 id="org52b8c39"><span class="section-number-3">1.2.</span> Applications of SDDs</h3>
+<div id="outline-container-orgd706f36" class="outline-3">
+<h3 id="orgd706f36"><span class="section-number-3">1.2.</span> Applications of SDDs</h3>
 <div class="outline-text-3" id="text-1-2">
 <p>
 One of the applications of SDDs is to convert the parse tree into a cleaner syntax tree. This tree will remove unused information which is needed for parsing and leave only useful information
@@ -625,8 +625,8 @@ SDDs can also convert a list of productions to syntax tree. This is useful when 
 </p>
 </div>
 
-<div id="outline-container-org000ee0f" class="outline-4">
-<h4 id="org000ee0f"><span class="section-number-4">1.2.1.</span> Construction of Syntax Tree</h4>
+<div id="outline-container-orgfa38bd1" class="outline-4">
+<h4 id="orgfa38bd1"><span class="section-number-4">1.2.1.</span> Construction of Syntax Tree</h4>
 <div class="outline-text-4" id="text-1-2-1">
 <p>
 We will use two constructors to create nodes and form a tree
@@ -640,7 +640,7 @@ We will construct syntax tree for a grammar with two binary operators (- and +).
 </p>
 
 
-<div id="org827c613" class="figure">
+<div id="org6578729" class="figure">
 <p><img src="Syntax-Directed_Translation_and_Syntax-Directed_Definition/2024-06-04_19-09-35_Screenshot 2024-06-04 190928.png" alt="2024-06-04_19-09-35_Screenshot 2024-06-04 190928.png" />
 </p>
 </div>
@@ -667,15 +667,15 @@ The following diagram shows conversion of input \(a - 4 + c\) to syntax tree
 </ul>
 
 
-<div id="orge2bbae1" class="figure">
+<div id="org2e3b517" class="figure">
 <p><img src="Syntax-Directed_Translation_and_Syntax-Directed_Definition/2024-06-04_19-54-28_Screenshot 2024-06-04 195423.png" alt="2024-06-04_19-54-28_Screenshot 2024-06-04 195423.png" />
 </p>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orgbe939a6" class="outline-4">
-<h4 id="orgbe939a6"><span class="section-number-4">1.2.2.</span> Handling array types using SDDs</h4>
+<div id="outline-container-org38e50b8" class="outline-4">
+<h4 id="org38e50b8"><span class="section-number-4">1.2.2.</span> Handling array types using SDDs</h4>
 <div class="outline-text-4" id="text-1-2-2">
 <p>
 Suppose we have a type \(int[2][3]\), this is read as "array of 2 arrays of 3 integers". The expression for arrays is suppose \(array(num, type)\), \(num\) is number of elements and \(type\) type of array.
@@ -690,7 +690,7 @@ To produce this result from our input string of \(int[2][3]\), we can use SDDs
 </p>
 
 
-<div id="orgc0348af" class="figure">
+<div id="org8cd12ee" class="figure">
 <p><img src="Syntax-Directed_Translation_and_Syntax-Directed_Definition/2024-06-05_02-09-52_Screenshot 2024-06-05 020945.png" alt="2024-06-05_02-09-52_Screenshot 2024-06-05 020945.png" />
 </p>
 </div>
@@ -716,7 +716,7 @@ The example for intput \(int[2][3]\) is
 </p>
 
 
-<div id="org341b919" class="figure">
+<div id="org9a69eaa" class="figure">
 <p><img src="Syntax-Directed_Translation_and_Syntax-Directed_Definition/2024-06-05_02-14-27_Screenshot 2024-06-05 021421.png" alt="2024-06-05_02-14-27_Screenshot 2024-06-05 021421.png" />
 </p>
 </div>
@@ -724,8 +724,8 @@ The example for intput \(int[2][3]\) is
 </div>
 </div>
 
-<div id="outline-container-orgc204a1d" class="outline-3">
-<h3 id="orgc204a1d"><span class="section-number-3">1.3.</span> SDT</h3>
+<div id="outline-container-orge492d39" class="outline-3">
+<h3 id="orge492d39"><span class="section-number-3">1.3.</span> SDT</h3>
 <div class="outline-text-3" id="text-1-3">
 <p>
 A syntax-directed translation scheme (SDT) is CFG with program fragments embedded within the production bodies called semantic actions
@@ -744,8 +744,8 @@ SDT have a fixed order of evaluation rather than SDDs. We first build the parse 
 </p>
 </div>
 
-<div id="outline-container-orgfaf4bf9" class="outline-4">
-<h4 id="orgfaf4bf9"><span class="section-number-4">1.3.1.</span> Postfix SDTs (S-attributed SDDs to SDTs)</h4>
+<div id="outline-container-org49ea35c" class="outline-4">
+<h4 id="org49ea35c"><span class="section-number-4">1.3.1.</span> Postfix SDTs (S-attributed SDDs to SDTs)</h4>
 <div class="outline-text-4" id="text-1-3-1">
 <p>
 SDTs where all semantic actions are the end of the production are called Postfix SDTs.
@@ -759,7 +759,7 @@ The S-attributed SDDs can be directly converted to SDTs by taking the actions an
 So our S-attributed SDD
 </p>
 
-<div id="org2c87ae1" class="figure">
+<div id="org6194ed7" class="figure">
 <p><img src="Syntax-Directed_Translation_and_Syntax-Directed_Definition/2024-06-05_03-42-17_Screenshot 2024-06-05 034212.png" alt="2024-06-05_03-42-17_Screenshot 2024-06-05 034212.png" />
 </p>
 </div>
@@ -769,7 +769,7 @@ can be directly converted to
 </p>
 
 
-<div id="org7d4fbdf" class="figure">
+<div id="orgbb9f94b" class="figure">
 <p><img src="Syntax-Directed_Translation_and_Syntax-Directed_Definition/2024-06-05_03-43-02_Screenshot 2024-06-05 034257.png" alt="2024-06-05_03-43-02_Screenshot 2024-06-05 034257.png" />
 </p>
 </div>
@@ -784,8 +784,8 @@ Postfix SDDs can be evaluated as we are doing LR-parsing. Every time we pop a no
 </div>
 </div>
 
-<div id="outline-container-org8b1bf12" class="outline-4">
-<h4 id="org8b1bf12"><span class="section-number-4">1.3.2.</span> SDT's with actions at any position</h4>
+<div id="outline-container-org6aa791f" class="outline-4">
+<h4 id="org6aa791f"><span class="section-number-4">1.3.2.</span> SDT's with actions at any position</h4>
 <div class="outline-text-4" id="text-1-3-2">
 <p>
 An action can be placed at any position in within the body of production. This action is done when all the left siblings are traversed.
@@ -796,7 +796,7 @@ But some SDTs can't be evaluated during parsing. Example, the SDT that converts 
 </p>
 
 
-<div id="orgb74f856" class="figure">
+<div id="orgf9c019a" class="figure">
 <p><img src="Syntax-Directed_Translation_and_Syntax-Directed_Definition/2024-06-05_14-50-46_Screenshot 2024-06-05 145041.png" alt="2024-06-05_14-50-46_Screenshot 2024-06-05 145041.png" />
 </p>
 </div>
@@ -822,7 +822,7 @@ So suppose our input is \(3 * 5 + 4\)
 The initial parse tree is drawn with solid lines. Dashed lines show the actions we attached later
 </p>
 
-<div id="org3ce54f2" class="figure">
+<div id="orgc7ddd48" class="figure">
 <p><img src="Syntax-Directed_Translation_and_Syntax-Directed_Definition/2024-06-05_14-55-35_Screenshot 2024-06-05 145530.png" alt="2024-06-05_14-55-35_Screenshot 2024-06-05 145530.png" />
 </p>
 </div>
@@ -833,8 +833,8 @@ The preorder traversal of this tree will now print prefix expression \(+ * 3\ 5\
 </div>
 </div>
 
-<div id="outline-container-orgc09306b" class="outline-4">
-<h4 id="orgc09306b"><span class="section-number-4">1.3.3.</span> Eliminating left recursion with SDTs</h4>
+<div id="outline-container-orgbb81e22" class="outline-4">
+<h4 id="orgbb81e22"><span class="section-number-4">1.3.3.</span> Eliminating left recursion with SDTs</h4>
 <div class="outline-text-4" id="text-1-3-3">
 <p>
 Suppose we have created productions with SDTs, but they can't be parsed top-down because of left recursion
@@ -852,7 +852,7 @@ To eliminate left recursion for with attributes to evaluate, we can't use this m
 Suppose our productions are
 </p>
 
-<div id="org443b72f" class="figure">
+<div id="org19d9603" class="figure">
 <p><img src="Syntax-Directed_Translation_and_Syntax-Directed_Definition/2024-06-05_22-42-01_Screenshot 2024-06-05 224154.png" alt="2024-06-05_22-42-01_Screenshot 2024-06-05 224154.png" />
 </p>
 </div>
@@ -861,7 +861,7 @@ Suppose our productions are
 If we ignore the actions, we can convert this grammar to
 </p>
 
-<div id="org2d85a4b" class="figure">
+<div id="org4f6e9b6" class="figure">
 <p><img src="Syntax-Directed_Translation_and_Syntax-Directed_Definition/2024-06-05_22-44-28_Screenshot 2024-06-05 224422.png" alt="2024-06-05_22-44-28_Screenshot 2024-06-05 224422.png" />
 </p>
 </div>
@@ -878,15 +878,15 @@ The \(R.i\) is copied down the tree, till we reach the production \(R \rightarro
 The converted SDT is
 </p>
 
-<div id="org1ae2742" class="figure">
+<div id="orgf5b059b" class="figure">
 <p><img src="Syntax-Directed_Translation_and_Syntax-Directed_Definition/2024-06-05_23-24-28_Screenshot 2024-06-05 232421.png" alt="2024-06-05_23-24-28_Screenshot 2024-06-05 232421.png" />
 </p>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org813859c" class="outline-4">
-<h4 id="org813859c"><span class="section-number-4">1.3.4.</span> L-attributed SDDs to SDTs</h4>
+<div id="outline-container-org487fe3c" class="outline-4">
+<h4 id="org487fe3c"><span class="section-number-4">1.3.4.</span> L-attributed SDDs to SDTs</h4>
 <div class="outline-text-4" id="text-1-3-4">
 <p>
 The rules for turning an L-attributed SDD into an SDT are
@@ -905,8 +905,8 @@ The rules for turning an L-attributed SDD into an SDT are
 </div>
 </div>
 
-<div id="outline-container-org43f477a" class="outline-3">
-<h3 id="org43f477a"><span class="section-number-3">1.4.</span> Implementing L-attributed SDDs and SDTs</h3>
+<div id="outline-container-org18e99af" class="outline-3">
+<h3 id="org18e99af"><span class="section-number-3">1.4.</span> Implementing L-attributed SDDs and SDTs</h3>
 <div class="outline-text-3" id="text-1-4">
 <p>
 Since most translation applications can be done using L-attributed definitions, we will look at how we can implement them in an efficient manner.
@@ -931,8 +931,8 @@ But this section will work on how to implement the L-attributed SDDs and SDTS <b
 </div>
 </div>
 
-<div id="outline-container-org4ca47f3" class="outline-2">
-<h2 id="org4ca47f3"><span class="section-number-2">2.</span> Intermediate-Code Generation</h2>
+<div id="outline-container-orgf1a4f26" class="outline-2">
+<h2 id="orgf1a4f26"><span class="section-number-2">2.</span> Intermediate-Code Generation</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 The work of the front end ends after it generates the intermediate code. This is given to back end to convert to target language.
@@ -968,16 +968,16 @@ The intermediate representation varies from compiler to compiler. We may use eit
 </ol>
 </div>
 
-<div id="outline-container-org8c52403" class="outline-3">
-<h3 id="org8c52403"><span class="section-number-3">2.1.</span> Syntax Trees</h3>
+<div id="outline-container-orgb37acb7" class="outline-3">
+<h3 id="orgb37acb7"><span class="section-number-3">2.1.</span> Syntax Trees</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 Nodes in syntax tree represent high level constructs of program. The children of nodes are components of the constructs.
 </p>
 </div>
 
-<div id="outline-container-orgbc9822e" class="outline-4">
-<h4 id="orgbc9822e"><span class="section-number-4">2.1.1.</span> Directed Acyclic Graphs for Expressions</h4>
+<div id="outline-container-org0579b0f" class="outline-4">
+<h4 id="org0579b0f"><span class="section-number-4">2.1.1.</span> Directed Acyclic Graphs for Expressions</h4>
 <div class="outline-text-4" id="text-2-1-1">
 <p>
 A directed acyclic graph (DAG) will identify the <i>common subexpressions</i> in the expression.
@@ -1008,7 +1008,7 @@ the DAG is
 </p>
 
 
-<div id="org02177bc" class="figure">
+<div id="org0d2675b" class="figure">
 <p><img src="Intermediate-Code_Generation/2024-06-06_23-36-26_Screenshot 2024-06-06 233618.png" alt="2024-06-06_23-36-26_Screenshot 2024-06-06 233618.png" />
 </p>
 </div>
@@ -1021,7 +1021,7 @@ We can convert a syntax tree to DAG using same SDD, but later we will combine th
 Since the SDD for syntax tree is
 </p>
 
-<div id="orga093028" class="figure">
+<div id="org5f8bd2f" class="figure">
 <p><img src="Intermediate-Code_Generation/2024-06-07_00-04-55_Screenshot 2024-06-07 000442.png" alt="2024-06-07_00-04-55_Screenshot 2024-06-07 000442.png" />
 </p>
 </div>
@@ -1030,7 +1030,7 @@ Since the SDD for syntax tree is
 The steps for conversion is
 </p>
 
-<div id="org87b92ab" class="figure">
+<div id="org957c6a8" class="figure">
 <p><img src="Intermediate-Code_Generation/2024-06-07_00-05-32_Screenshot 2024-06-07 000527.png" alt="2024-06-07_00-05-32_Screenshot 2024-06-07 000527.png" />
 </p>
 </div>
@@ -1045,8 +1045,8 @@ We will do the same for every node going down the node creation list and merge t
 </div>
 </div>
 
-<div id="outline-container-org2a261e8" class="outline-4">
-<h4 id="org2a261e8"><span class="section-number-4">2.1.2.</span> Value-Number Method for DAG construction</h4>
+<div id="outline-container-org813a261" class="outline-4">
+<h4 id="org813a261"><span class="section-number-4">2.1.2.</span> Value-Number Method for DAG construction</h4>
 <div class="outline-text-4" id="text-2-1-2">
 <p>
 Syntax tree or DAG can be stored as an array of records. Each record represents a single node.
@@ -1057,7 +1057,7 @@ We can refer to other nodes by the indicies of the array. So first field is oper
 </p>
 
 
-<div id="org55a4781" class="figure">
+<div id="orga049b60" class="figure">
 <p><img src="Intermediate-Code_Generation/2024-06-07_00-24-21_Screenshot 2024-06-07 002414.png" alt="2024-06-07_00-24-21_Screenshot 2024-06-07 002414.png" />
 </p>
 </div>
@@ -1093,8 +1093,8 @@ We can make this algorithm more efficient by using dictionary instead of a simpl
 </div>
 </div>
 
-<div id="outline-container-org8891eb7" class="outline-3">
-<h3 id="org8891eb7"><span class="section-number-3">2.2.</span> Three-Address Code</h3>
+<div id="outline-container-org2b42441" class="outline-3">
+<h3 id="org2b42441"><span class="section-number-3">2.2.</span> Three-Address Code</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 In three-address code, there is atmost one operator on right side of instruction. So an expression like
@@ -1109,14 +1109,14 @@ Here, \(t_1\) and \(t_2\) are temporary names created by compiler. Unraveling of
 Three-address code is a linearized representation of a DAG
 </p>
 
-<div id="org8b0c8ec" class="figure">
+<div id="orgc169fe2" class="figure">
 <p><img src="Intermediate-Code_Generation/2024-06-07_01-14-00_Screenshot 2024-06-07 011354.png" alt="2024-06-07_01-14-00_Screenshot 2024-06-07 011354.png" />
 </p>
 </div>
 </div>
 
-<div id="outline-container-org3d4d919" class="outline-4">
-<h4 id="org3d4d919"><span class="section-number-4">2.2.1.</span> Addresses and Instructions</h4>
+<div id="outline-container-org399da06" class="outline-4">
+<h4 id="org399da06"><span class="section-number-4">2.2.1.</span> Addresses and Instructions</h4>
 <div class="outline-text-4" id="text-2-2-1">
 <p>
 Three-address codes are formed of two concepts: addresses and instructions.
@@ -1175,7 +1175,7 @@ do i = i + 1; while (a[i] &lt; v);
 can be converted to either of two ways
 </p>
 
-<div id="orgc2f8640" class="figure">
+<div id="org5a01c0b" class="figure">
 <p><img src="Intermediate-Code_Generation/2024-06-08_00-15-26_Screenshot 2024-06-08 001520.png" alt="2024-06-08_00-15-26_Screenshot 2024-06-08 001520.png" />
 </p>
 </div>
@@ -1198,8 +1198,8 @@ However, if frontend generates long sequences of instructions, then optimizer an
 </div>
 </div>
 
-<div id="outline-container-org845df3a" class="outline-4">
-<h4 id="org845df3a"><span class="section-number-4">2.2.2.</span> Quadruples</h4>
+<div id="outline-container-orgcbc4bc1" class="outline-4">
+<h4 id="orgcbc4bc1"><span class="section-number-4">2.2.2.</span> Quadruples</h4>
 <div class="outline-text-4" id="text-2-2-2">
 <p>
 Three-address instructions specify the type of instructions allowed. But they don't specify how these will be represented in data structures.
@@ -1224,7 +1224,7 @@ A quadruple has <i>4 fields</i> : these are \(op\), \(arg_1\), \(arg_2\) and \(r
 </ol>
 
 
-<div id="org02fbb35" class="figure">
+<div id="org13f8574" class="figure">
 <p><img src="Intermediate-Code_Generation/2024-06-11_01-36-19_Screenshot 2024-06-11 013613.png" alt="2024-06-11_01-36-19_Screenshot 2024-06-11 013613.png" />
 </p>
 </div>
@@ -1235,8 +1235,8 @@ In above figure, we use identifiers like \(a\), \(b\) and \(c\) for readability;
 </div>
 </div>
 
-<div id="outline-container-org31e474c" class="outline-4">
-<h4 id="org31e474c"><span class="section-number-4">2.2.3.</span> Triples</h4>
+<div id="outline-container-org158a2df" class="outline-4">
+<h4 id="org158a2df"><span class="section-number-4">2.2.3.</span> Triples</h4>
 <div class="outline-text-4" id="text-2-2-3">
 <p>
 A triple has only 3 fields \(op\), \(arg_1\) and \(arg_2\). This is possible because usually, we have temporary in the \(result\) field when using quads.
@@ -1255,7 +1255,7 @@ So our quadruple
 </p>
 
 
-<div id="org414795c" class="figure">
+<div id="org4114e88" class="figure">
 <p><img src="Intermediate-Code_Generation/2024-06-11_02-02-16_Screenshot 2024-06-11 020211.png" alt="2024-06-11_02-02-16_Screenshot 2024-06-11 020211.png" />
 </p>
 </div>
@@ -1265,7 +1265,7 @@ is equivalent to triple
 </p>
 
 
-<div id="org2013b32" class="figure">
+<div id="org8948a07" class="figure">
 <p><img src="Intermediate-Code_Generation/2024-06-11_02-02-48_Screenshot 2024-06-11 020243.png" alt="2024-06-11_02-02-48_Screenshot 2024-06-11 020243.png" />
 </p>
 </div>
@@ -1284,8 +1284,8 @@ Indexed operations like \(x[i] = y\) require two entries in triple structure. An
 </div>
 </div>
 
-<div id="outline-container-orgac1efed" class="outline-4">
-<h4 id="orgac1efed"><span class="section-number-4">2.2.4.</span> Quadruples vs Triples (and Indirect triples)</h4>
+<div id="outline-container-orgd5fbcb5" class="outline-4">
+<h4 id="orgd5fbcb5"><span class="section-number-4">2.2.4.</span> Quadruples vs Triples (and Indirect triples)</h4>
 <div class="outline-text-4" id="text-2-2-4">
 <ul class="org-ul">
 <li>Triples take less memory than quadruples to store.</li>
@@ -1306,8 +1306,8 @@ Now compiler can move instructions by changing the pointer list, this won't effe
 </div>
 </div>
 
-<div id="outline-container-org521656e" class="outline-4">
-<h4 id="org521656e"><span class="section-number-4">2.2.5.</span> Static Single-Assignment Form</h4>
+<div id="outline-container-orgb0fd036" class="outline-4">
+<h4 id="orgb0fd036"><span class="section-number-4">2.2.5.</span> Static Single-Assignment Form</h4>
 <div class="outline-text-4" id="text-2-2-5">
 <p>
 SSA is an intermediate representation that facilitates certain optimizations. Two aspects distinguish SSA from 3-address code are
@@ -1321,7 +1321,7 @@ SSA is an intermediate representation that facilitates certain optimizations. Tw
 Example of tree-address code vs SSA is
 </p>
 
-<div id="org1bc76e9" class="figure">
+<div id="org82c3db6" class="figure">
 <p><img src="Intermediate-Code_Generation/2024-06-11_03-14-05_Screenshot 2024-06-11 031359.png" alt="2024-06-11_03-14-05_Screenshot 2024-06-11 031359.png" />
 </p>
 </div>
@@ -1330,7 +1330,7 @@ Example of tree-address code vs SSA is
 Suppose the 3-address code is
 </p>
 
-<div id="org631c7e5" class="figure">
+<div id="org53f8b81" class="figure">
 <p><img src="Intermediate-Code_Generation/2024-06-11_03-14-43_Screenshot 2024-06-11 031438.png" alt="2024-06-11_03-14-43_Screenshot 2024-06-11 031438.png" />
 </p>
 </div>
@@ -1339,7 +1339,7 @@ Suppose the 3-address code is
 Here, \(x\) has two different values based on control flow. So, we make <i>each \(x\) a seperate variable in SSA, then combine using \(\phi\)</i>. This is converted to
 </p>
 
-<div id="org13a43b8" class="figure">
+<div id="orgeed89f9" class="figure">
 <p><img src="Intermediate-Code_Generation/2024-06-11_03-16-19_Screenshot 2024-06-11 031613.png" alt="2024-06-11_03-16-19_Screenshot 2024-06-11 031613.png" />
 </p>
 </div>
@@ -1347,8 +1347,8 @@ Here, \(x\) has two different values based on control flow. So, we make <i>each 
 </div>
 </div>
 
-<div id="outline-container-org1c85b5e" class="outline-3">
-<h3 id="org1c85b5e"><span class="section-number-3">2.3.</span> Control Flow</h3>
+<div id="outline-container-org591c69b" class="outline-3">
+<h3 id="org591c69b"><span class="section-number-3">2.3.</span> Control Flow</h3>
 <div class="outline-text-3" id="text-2-3">
 <p>
 The translation of control flow depends on boolean expressions. Boolean expressions are used for two purposes
@@ -1358,8 +1358,8 @@ The translation of control flow depends on boolean expressions. Boolean expressi
 <li>Compute logical values</li>
 </ol>
 </div>
-<div id="outline-container-org6869ed0" class="outline-4">
-<h4 id="org6869ed0"><span class="section-number-4">2.3.1.</span> Boolean Expressions</h4>
+<div id="outline-container-org801b063" class="outline-4">
+<h4 id="org801b063"><span class="section-number-4">2.3.1.</span> Boolean Expressions</h4>
 <div class="outline-text-4" id="text-2-3-1">
 <p>
 Boolean expressions are composed of boolean operators (denoted by &amp;&amp;, || and ! in C, for AND, OR, and NOT) applied to boolean variables.
@@ -1394,8 +1394,8 @@ Therefore, in a binary boolean expressions, we may not do a complete evaluation.
 </div>
 </div>
 
-<div id="outline-container-orga37fce7" class="outline-4">
-<h4 id="orga37fce7"><span class="section-number-4">2.3.2.</span> Short-Circuit Code</h4>
+<div id="outline-container-orgcac170a" class="outline-4">
+<h4 id="orgcac170a"><span class="section-number-4">2.3.2.</span> Short-Circuit Code</h4>
 <div class="outline-text-4" id="text-2-3-2">
 <p>
 In short-circuit (or jumping) code, the boolean operators &amp;&amp;, ||  and ! translates to jumps.
@@ -1413,15 +1413,15 @@ if (x &lt; 100 || x &gt; 200 &amp;&amp; x != y) x = 0;
 this is translated to
 </p>
 
-<div id="org30862d9" class="figure">
+<div id="orgb32d6c7" class="figure">
 <p><img src="Intermediate-Code_Generation/2024-06-12_17-50-04_Screenshot 2024-06-12 174959.png" alt="2024-06-12_17-50-04_Screenshot 2024-06-12 174959.png" />
 </p>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org5a461b3" class="outline-4">
-<h4 id="org5a461b3"><span class="section-number-4">2.3.3.</span> Flow-of-control Statements</h4>
+<div id="outline-container-org8b3e638" class="outline-4">
+<h4 id="org8b3e638"><span class="section-number-4">2.3.3.</span> Flow-of-control Statements</h4>
 <div class="outline-text-4" id="text-2-3-3">
 <p>
 An example grammar for control flow is
@@ -1450,7 +1450,7 @@ The grammar for if statements
 will have <b>\(B.code\)</b> followed by <b>\(S_1.code\)</b> in the IR. We use <i>inherited attributes for labels for jumps</i> : we have <b>\(B.true\)</b> and <b>\(B.false\)</b>
 </p>
 
-<div id="orga1f1cc3" class="figure">
+<div id="orge61780c" class="figure">
 <p><img src="Intermediate-Code_Generation/2024-06-15_01-55-20_Screenshot 2024-06-15 015514.png" alt="2024-06-15_01-55-20_Screenshot 2024-06-15 015514.png" />
 </p>
 </div>
@@ -1459,7 +1459,7 @@ will have <b>\(B.code\)</b> followed by <b>\(S_1.code\)</b> in the IR. We use <i
 To have an if-else, we also have inherited attribute <b>\(S.next\)</b> denoting a label for instruction immediately after \(S.code\) in IR.
 </p>
 
-<div id="org19c5049" class="figure">
+<div id="org086564f" class="figure">
 <p><img src="Intermediate-Code_Generation/2024-06-15_01-59-07_Screenshot 2024-06-15 015902.png" alt="2024-06-15_01-59-07_Screenshot 2024-06-15 015902.png" />
 </p>
 </div>
@@ -1468,7 +1468,7 @@ To have an if-else, we also have inherited attribute <b>\(S.next\)</b> denoting 
 Finally, for while loop, we create a label at the beginning of the loop.
 </p>
 
-<div id="orgc40f42c" class="figure">
+<div id="org2cad5be" class="figure">
 <p><img src="Intermediate-Code_Generation/2024-06-15_01-59-55_Screenshot 2024-06-15 015948.png" alt="2024-06-15_01-59-55_Screenshot 2024-06-15 015948.png" />
 </p>
 </div>
@@ -1477,8 +1477,8 @@ Finally, for while loop, we create a label at the beginning of the loop.
 </div>
 </div>
 
-<div id="outline-container-org7d4b25e" class="outline-2">
-<h2 id="org7d4b25e"><span class="section-number-2">3.</span> Run-time environments</h2>
+<div id="outline-container-org4a110bf" class="outline-2">
+<h2 id="org4a110bf"><span class="section-number-2">3.</span> Run-time environments</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 During execution of the program, we need to manage memory in a way that can accurately implement the abstractions. For this we use run-time environments. The most common way to manage memory are stack allocation and heap management.
@@ -1505,8 +1505,8 @@ So for memory allocations we use the combination of following strategies
 </p>
 </div>
 
-<div id="outline-container-org7be7212" class="outline-3">
-<h3 id="org7be7212"><span class="section-number-3">3.1.</span> Stack Allocation of Space</h3>
+<div id="outline-container-org3841483" class="outline-3">
+<h3 id="org3841483"><span class="section-number-3">3.1.</span> Stack Allocation of Space</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
 All languages that support procedures/functions manage the run-time memory using the stack. When a procedure is called, space for it's variables is pushed on the stack. When we return from procedure, we will pop the data off the stack.
@@ -1517,8 +1517,8 @@ Using stack allows us to compile procedures in a way that relative addresses of 
 </p>
 </div>
 
-<div id="outline-container-orgca4a0ba" class="outline-4">
-<h4 id="orgca4a0ba"><span class="section-number-4">3.1.1.</span> Activation trees</h4>
+<div id="outline-container-org5dcf54e" class="outline-4">
+<h4 id="org5dcf54e"><span class="section-number-4">3.1.1.</span> Activation trees</h4>
 <div class="outline-text-4" id="text-3-1-1">
 <p>
 We can visualize the procedure calls or activations in form of trees. An example of the visualizing this is when using quicksort.
@@ -1539,7 +1539,7 @@ Then if we have 9 elements in the array, the activation tree will be
 </p>
 
 
-<div id="orgb0396d1" class="figure">
+<div id="org53ea69a" class="figure">
 <p><img src="Run-time_environments/2024-06-29_02-28-02_Screenshot 2024-06-29 022750.png" alt="2024-06-29_02-28-02_Screenshot 2024-06-29 022750.png" />
 </p>
 </div>
@@ -1560,8 +1560,8 @@ The activations happen from left to right. So in our example \(m()\) first calls
 </div>
 </div>
 
-<div id="outline-container-orga227d72" class="outline-4">
-<h4 id="orga227d72"><span class="section-number-4">3.1.2.</span> Activation Records</h4>
+<div id="outline-container-orgbd01130" class="outline-4">
+<h4 id="orgbd01130"><span class="section-number-4">3.1.2.</span> Activation Records</h4>
 <div class="outline-text-4" id="text-3-1-2">
 <p>
 Procedure calls and returns are managed by a run-time stack called <i>control stack</i>. Each activation has an <i>activation record</i> (or <i>frame</i>) on the control stack.
@@ -1582,8 +1582,8 @@ The contents of activation record depends on the language being implemented. The
 </div>
 </div>
 
-<div id="outline-container-org9409ef8" class="outline-4">
-<h4 id="org9409ef8"><span class="section-number-4">3.1.3.</span> Calling Sequences</h4>
+<div id="outline-container-org849d17c" class="outline-4">
+<h4 id="org849d17c"><span class="section-number-4">3.1.3.</span> Calling Sequences</h4>
 <div class="outline-text-4" id="text-3-1-3">
 <ul class="org-ul">
 <li><i>Calling sequences</i> is code that allocates activation records on the stack and enters information into the record fields</li>
@@ -1617,7 +1617,7 @@ Suppose, we call a function \(n\) times. If code is given to caller, it will gen
 The following figure shows <b>stack that grows downwards</b> (like it does in memory)
 </p>
 
-<div id="org89bdf2f" class="figure">
+<div id="org8572010" class="figure">
 <p><img src="Run-time_environments/2024-07-06_02-25-53_Screenshot 2024-07-06 022537.png" alt="2024-07-06_02-25-53_Screenshot 2024-07-06 022537.png" />
 </p>
 </div>
@@ -1651,8 +1651,8 @@ In variadic functions, caller knows size of parameters at compile time. But call
 </p>
 </div>
 </div>
-<div id="outline-container-org323d839" class="outline-4">
-<h4 id="org323d839"><span class="section-number-4">3.1.4.</span> Variable-Length Data on Stack</h4>
+<div id="outline-container-org77d4751" class="outline-4">
+<h4 id="org77d4751"><span class="section-number-4">3.1.4.</span> Variable-Length Data on Stack</h4>
 <div class="outline-text-4" id="text-3-1-4">
 <p>
 In most modern languages, we don't have variable sized allocations on stack. Instead we do an allocation on the heap and then store reference (which is constant size) on the stack.
@@ -1681,8 +1681,8 @@ The code to compute these offsets can be generated at compile time, thus allocat
 </div>
 </div>
 </div>
-<div id="outline-container-org789d291" class="outline-3">
-<h3 id="org789d291"><span class="section-number-3">3.2.</span> Heap management</h3>
+<div id="outline-container-org5c5a015" class="outline-3">
+<h3 id="org5c5a015"><span class="section-number-3">3.2.</span> Heap management</h3>
 <div class="outline-text-3" id="text-3-2">
 <p>
 Heap manages data that is stored indefinitely unitl program explicitly deletes it. Unlike local data on the stack, which becomes inaccessible when procedure ends, the heap data is independent of procedures lifetimes.
@@ -1693,8 +1693,8 @@ The heap allocation requires a <i>memory manager</i> which serves as an interfac
 </p>
 </div>
 
-<div id="outline-container-org99502e5" class="outline-4">
-<h4 id="org99502e5"><span class="section-number-4">3.2.1.</span> The Memory Manager</h4>
+<div id="outline-container-org23ec761" class="outline-4">
+<h4 id="org23ec761"><span class="section-number-4">3.2.1.</span> The Memory Manager</h4>
 <div class="outline-text-4" id="text-3-2-1">
 <p>
 The memory manager has two basic functions
@@ -1730,8 +1730,8 @@ But most languages can't meet both criteria and general allocations are necessar
 </ol>
 </div>
 </div>
-<div id="outline-container-org4cd13b3" class="outline-4">
-<h4 id="org4cd13b3"><span class="section-number-4">3.2.2.</span> The Memory hierarchy</h4>
+<div id="outline-container-org753d46a" class="outline-4">
+<h4 id="org753d46a"><span class="section-number-4">3.2.2.</span> The Memory hierarchy</h4>
 <div class="outline-text-4" id="text-3-2-2">
 <p>
 Memory management must be done with awareness of memory hierarchy. In the hierarchy access to different parts can vary from nanoseconds to milliseconds.
@@ -1757,15 +1757,15 @@ Between disk and main memory, data is transferred in blocks know as pages, typic
 </p>
 
 
-<div id="org0d6bed7" class="figure">
+<div id="org8e42ac0" class="figure">
 <p><img src="Run-time_environments/2024-07-11_02-28-45_Screenshot 2024-07-11 022830.png" alt="2024-07-11_02-28-45_Screenshot 2024-07-11 022830.png" />
 </p>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orgeb52542" class="outline-4">
-<h4 id="orgeb52542"><span class="section-number-4">3.2.3.</span> Locality</h4>
+<div id="outline-container-orgc90d2e8" class="outline-4">
+<h4 id="orgc90d2e8"><span class="section-number-4">3.2.3.</span> Locality</h4>
 <div class="outline-text-4" id="text-3-2-3">
 <p>
 Programs usually have high degree of locality, since most time is spent on relatively small fraction of code and small fraction of data.
@@ -1796,8 +1796,8 @@ Since we can't tell what instructions are repeated most just by looking at code;
 </p>
 </div>
 
-<div id="outline-container-org9b22d07" class="outline-5">
-<h5 id="org9b22d07"><span class="section-number-5">3.2.3.1.</span> Optimizations</h5>
+<div id="outline-container-orgc2509bb" class="outline-5">
+<h5 id="orgc2509bb"><span class="section-number-5">3.2.3.1.</span> Optimizations</h5>
 <div class="outline-text-5" id="text-3-2-3-1">
 <p>
 The policy to keep most recent instructions in cache tends to work well. This works well for temporal locality
@@ -1818,8 +1818,8 @@ We can also improve locality by <i>changing the layout of data.</i> For example,
 </div>
 </div>
 
-<div id="outline-container-org664a807" class="outline-4">
-<h4 id="org664a807"><span class="section-number-4">3.2.4.</span> Reducing Fragmentation</h4>
+<div id="outline-container-org8980d9c" class="outline-4">
+<h4 id="org8980d9c"><span class="section-number-4">3.2.4.</span> Reducing Fragmentation</h4>
 <div class="outline-text-4" id="text-3-2-4">
 <p>
 At beginning of program execution heap is empty. When we do allocations, that space is used. But when we deallocate, empty patches of space are left in-between allocated memory.
@@ -1842,7 +1842,7 @@ Fragmentation may lead to a situation where we have enough free space in the hea
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Created: 2024-10-06 Sun 19:20</p>
+<p class="date">Created: 2024-10-20 Sun 22:29</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

@@ -49,7 +49,6 @@ The program to solve n-queen problem is
     int row_num = -1;
 
     // a function to test that current placement of queens is correct
-    // TODO : maybe implement this, we just need to check every row, column and diagonal
     bool correct();
 
     void backtrack() {
@@ -98,7 +97,6 @@ For a graph with $n$ nodes, the backtracking algorithm will start an with initia
     int path[N] = {0};
     size_t path_len = 0;
 
-    // TODO : function to check if the path is correct
     void correct();
 
     void backtrack(){

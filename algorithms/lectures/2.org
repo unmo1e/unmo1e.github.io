@@ -33,7 +33,7 @@ Where $c$ is any constant.
 # Taken from https://www.youtube.com/watch?v=pmGau4xHjFM&ab_channel=UnacademyComputerScience (Analysis of an Algorithm - 2 | L 2 | Algorithms | Infinity Batch | GATE 2022 CS/IT | Ankush Sir)
 [[file:./imgs/asymptotic-notations-properties.png]]
 
-+ *Reflexive* :  $f(n) = O(f(n)$ and $f(n) = \Omega (f(n))$ and $f(n) = \theta (f(n))$
++ *Reflexive* :  $f(n) = O(f(n))$ and $f(n) = \Omega (f(n))$ and $f(n) = \theta (f(n))$
 + *Symmetric* : If $f(n) = \theta (g(n))$ then $g(n) = \theta (f(n))$
 + *Transitive* : If $f(n) = O(g(n))$ and $g(n) = O(h(n))$ then $f(n) = O(h(n))$
 + *Transpose* : If $f(n) = O(g(n))$ then we can also conclude that $g(n) = \Omega (f(n))$ so we say Big-Oh is transpose of Big-Omega and vice-versa.
