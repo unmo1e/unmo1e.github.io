@@ -1,3 +1,6 @@
 #+Title: Computer Organization and Architechture
 
 + [[./GATE_COA_Notes1.pdf][Part 1]]
++ [[./GATE_COA_Notes2.pdf][Part 2]]
++ [[./GATE_COA_Notes3.pdf][Part 3]]
++ [[./GATE_COA_Notes4.pdf][Part 4]]
