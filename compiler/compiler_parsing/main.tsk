@@ -1,7 +1,0 @@
-* Export to HTML
-#do
-emacs --script src/export.el
-
-* Remove intermediate
-#do
-del "main.html~"

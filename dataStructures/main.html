@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2024-11-04 Mon 04:06 -->
+<!-- 2024-11-29 Fri 21:24 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Data Structures</title>
@@ -193,7 +193,7 @@
     { background-color: #ffff00; color: #000000; font-weight: bold; }
   .org-svg { width: 90%; }
 </style>
-<link rel="stylesheet" href="src/org.css">
+<link rel="stylesheet" href="../common/org.css">
 <script type="text/x-mathjax-config">
     MathJax.Hub.Config({
         displayAlign: "center",
@@ -223,138 +223,138 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org7d907ed">1. Stack</a>
+<li><a href="#org33bd1e7">1. Stack</a>
 <ul>
-<li><a href="#org8106bf3">1.1. Operation on stack</a></li>
+<li><a href="#org7ab1546">1.1. Operation on stack</a></li>
 </ul>
 </li>
-<li><a href="#org51453bb">2. Direct Address Table</a></li>
-<li><a href="#org12df153">3. Hash Table</a>
+<li><a href="#orgdb0f987">2. Direct Address Table</a></li>
+<li><a href="#org514b57f">3. Hash Table</a>
 <ul>
-<li><a href="#org135d355">3.1. Collision</a>
+<li><a href="#orge3ccb42">3.1. Collision</a>
 <ul>
-<li><a href="#org4332c99">3.1.1. Chaining</a></li>
-<li><a href="#org390fada">3.1.2. Performance of chaining hash table</a></li>
-<li><a href="#org77de47f">3.1.3. Open Addressing</a>
+<li><a href="#org50e69f2">3.1.1. Chaining</a></li>
+<li><a href="#orgf4e99c3">3.1.2. Performance of chaining hash table</a></li>
+<li><a href="#org3e5adc9">3.1.3. Open Addressing</a>
 <ul>
-<li><a href="#orgf5e3e78">3.1.3.1. Linear probing</a></li>
-<li><a href="#orgc1c6b5d">3.1.3.2. Quadratic probing</a></li>
-<li><a href="#org96aca88">3.1.3.3. Double Hashing</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href="#org38f52a7">3.2. Hash Functions</a>
-<ul>
-<li><a href="#orgf278fcd">3.2.1. The division method</a></li>
-<li><a href="#org9d0defb">3.2.2. The multiplication method</a></li>
-<li><a href="#orga163f8d">3.2.3. Mid square method</a></li>
-<li><a href="#orgeac46d3">3.2.4. Folding method</a></li>
-</ul>
-</li>
-<li><a href="#orgc115127">3.3. Universal Hashing</a>
-<ul>
-<li><a href="#org84fd927">3.3.1. Rehashing</a></li>
-<li><a href="#org8dd2c49">3.3.2. Universal family</a></li>
-<li><a href="#orgdfd01cd">3.3.3. Performance of universal hashing</a></li>
-<li><a href="#org8f52e65">3.3.4. Example for universal set of hash functions</a></li>
-</ul>
-</li>
-<li><a href="#orge05a96f">3.4. Perfect Hashing</a></li>
-</ul>
-</li>
-<li><a href="#org5a101d3">4. Representing rooted trees using nodes</a>
-<ul>
-<li><a href="#org7c4d1f9">4.1. Fixed number of children</a></li>
-<li><a href="#org4765425">4.2. Unbounded number of children</a></li>
-</ul>
-</li>
-<li><a href="#org5d261e7">5. Binary Search Trees</a>
-<ul>
-<li><a href="#org9575402">5.1. Quering a BST</a>
-<ul>
-<li><a href="#orge187843">5.1.1. Searching for node</a></li>
-<li><a href="#org8fcf0b3">5.1.2. Minimum and maximum</a></li>
-<li><a href="#orgfa9bc17">5.1.3. Find Parent Node</a></li>
-<li><a href="#orgacbcbc2">5.1.4. Is ancestor</a></li>
-<li><a href="#orgb8c2265">5.1.5. Successor and predecessor</a>
-<ul>
-<li><a href="#org8613abf">5.1.5.1. For Successor</a></li>
-<li><a href="#orgf504f91">5.1.5.2. For Predecessor</a></li>
+<li><a href="#org94a9c64">3.1.3.1. Linear probing</a></li>
+<li><a href="#org292d2a8">3.1.3.2. Quadratic probing</a></li>
+<li><a href="#org9da20dd">3.1.3.3. Double Hashing</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org9e6dd40">5.2. Inserting and Deleting nodes</a>
+<li><a href="#orga7e5cec">3.2. Hash Functions</a>
 <ul>
-<li><a href="#orgd483877">5.2.1. Insertion</a></li>
-<li><a href="#org30e9f95">5.2.2. Deletion</a></li>
+<li><a href="#orgb96b0ff">3.2.1. The division method</a></li>
+<li><a href="#org78d95af">3.2.2. The multiplication method</a></li>
+<li><a href="#org55b7317">3.2.3. Mid square method</a></li>
+<li><a href="#org26f68bb">3.2.4. Folding method</a></li>
 </ul>
 </li>
-<li><a href="#org41eb53d">5.3. Performance of BST</a></li>
-<li><a href="#org0144958">5.4. Traversing a Binary Tree</a>
+<li><a href="#orgfee3c7b">3.3. Universal Hashing</a>
 <ul>
-<li><a href="#org0163919">5.4.1. Inorder tree walk</a></li>
-<li><a href="#orgb7b755f">5.4.2. Preorder tree walk</a></li>
-<li><a href="#org3263699">5.4.3. Postorder tree walk</a></li>
+<li><a href="#orgf89ca20">3.3.1. Rehashing</a></li>
+<li><a href="#orgbe2449e">3.3.2. Universal family</a></li>
+<li><a href="#org01166b5">3.3.3. Performance of universal hashing</a></li>
+<li><a href="#org73b1dfc">3.3.4. Example for universal set of hash functions</a></li>
+</ul>
+</li>
+<li><a href="#orgf13f234">3.4. Perfect Hashing</a></li>
+</ul>
+</li>
+<li><a href="#orgcd35969">4. Representing rooted trees using nodes</a>
+<ul>
+<li><a href="#orgfab12bc">4.1. Fixed number of children</a></li>
+<li><a href="#orgacaefeb">4.2. Unbounded number of children</a></li>
+</ul>
+</li>
+<li><a href="#org1bd88e0">5. Binary Search Trees</a>
+<ul>
+<li><a href="#org8bd5302">5.1. Quering a BST</a>
+<ul>
+<li><a href="#orgf626de7">5.1.1. Searching for node</a></li>
+<li><a href="#org22863e5">5.1.2. Minimum and maximum</a></li>
+<li><a href="#org1005819">5.1.3. Find Parent Node</a></li>
+<li><a href="#orgf972f77">5.1.4. Is ancestor</a></li>
+<li><a href="#org867f699">5.1.5. Successor and predecessor</a>
+<ul>
+<li><a href="#orgdf06a86">5.1.5.1. For Successor</a></li>
+<li><a href="#orgf87be4c">5.1.5.2. For Predecessor</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org001fc18">6. Binary Heap</a>
+<li><a href="#org9b4dea1">5.2. Inserting and Deleting nodes</a>
 <ul>
-<li><a href="#org8d2224d">6.1. Heap Property</a></li>
-<li><a href="#orgb454dd8">6.2. Shape of Heap</a></li>
-<li><a href="#org4bc46af">6.3. Array implementation</a></li>
-<li><a href="#org833ffb2">6.4. Operations on heaps</a>
-<ul>
-<li><a href="#org4179da6">6.4.1. Parent and child indices</a></li>
-<li><a href="#orge4751e4">6.4.2. Down-heapify</a></li>
-<li><a href="#org6346f98">6.4.3. Up-heapify</a></li>
-<li><a href="#orgbadbca5">6.4.4. Insertion</a></li>
-<li><a href="#org9f6438e">6.4.5. Deletion or Extraction</a></li>
-<li><a href="#orgff7022a">6.4.6. Insert then extract</a></li>
-<li><a href="#orgfa53e9e">6.4.7. Searching</a></li>
-<li><a href="#org17486b7">6.4.8. Deleting arbitray element</a></li>
-<li><a href="#org836b988">6.4.9. Decrease and increase keys</a></li>
+<li><a href="#org4c0a9fc">5.2.1. Insertion</a></li>
+<li><a href="#org60b87f0">5.2.2. Deletion</a></li>
 </ul>
 </li>
-<li><a href="#org3296889">6.5. Building a heap from array</a></li>
+<li><a href="#orga781c6f">5.3. Performance of BST</a></li>
+<li><a href="#orgce61cb5">5.4. Traversing a Binary Tree</a>
+<ul>
+<li><a href="#org8334e9b">5.4.1. Inorder tree walk</a></li>
+<li><a href="#org9032ea6">5.4.2. Preorder tree walk</a></li>
+<li><a href="#orgcadeacb">5.4.3. Postorder tree walk</a></li>
 </ul>
 </li>
-<li><a href="#org4e99733">7. Graphs</a>
-<ul>
-<li><a href="#org106f14f">7.1. Representing graphs</a>
-<ul>
-<li><a href="#orge34f5a3">7.1.1. Adjacency List</a></li>
-<li><a href="#orgc0a971d">7.1.2. Adjacency Matrix</a></li>
 </ul>
 </li>
-<li><a href="#org5d2cfd2">7.2. Vertex and edge attributes</a></li>
-<li><a href="#org7679fa9">7.3. Density of graph</a>
+<li><a href="#orgc92fd36">6. Binary Heap</a>
 <ul>
-<li><a href="#org6979231">7.3.1. Which representation to use</a></li>
+<li><a href="#org2681375">6.1. Heap Property</a></li>
+<li><a href="#orgb4e271b">6.2. Shape of Heap</a></li>
+<li><a href="#org4bb5b60">6.3. Array implementation</a></li>
+<li><a href="#org0221095">6.4. Operations on heaps</a>
+<ul>
+<li><a href="#org9ca23cf">6.4.1. Parent and child indices</a></li>
+<li><a href="#org48cc041">6.4.2. Down-heapify</a></li>
+<li><a href="#org074a3e9">6.4.3. Up-heapify</a></li>
+<li><a href="#orgc8ebe60">6.4.4. Insertion</a></li>
+<li><a href="#orgf3ed17f">6.4.5. Deletion or Extraction</a></li>
+<li><a href="#orgd9119c8">6.4.6. Insert then extract</a></li>
+<li><a href="#org9b7e8a4">6.4.7. Searching</a></li>
+<li><a href="#org002b988">6.4.8. Deleting arbitray element</a></li>
+<li><a href="#orgc3895fc">6.4.9. Decrease and increase keys</a></li>
 </ul>
 </li>
-<li><a href="#orgbcf74d3">7.4. Searching Graphs</a>
-<ul>
-<li><a href="#org3909509">7.4.1. Breadth first search</a></li>
-<li><a href="#org204dbb8">7.4.2. Breadth-first trees for shortest path</a></li>
-<li><a href="#orgece3fd8">7.4.3. Depth first search</a></li>
-<li><a href="#orgc3c6b4c">7.4.4. Properties of DFS</a>
-<ul>
-<li><a href="#org4684501">7.4.4.1. Parenthesis theorem</a></li>
-<li><a href="#org9543fb3">7.4.4.2. White path theorem</a></li>
-<li><a href="#orgbd4c9e1">7.4.4.3. Classification of edges</a></li>
+<li><a href="#orge12ab6c">6.5. Building a heap from array</a></li>
 </ul>
 </li>
-<li><a href="#org7a4807b">7.4.5. Depth-first and Breadth-first Forests</a></li>
-<li><a href="#org52dba3d">7.4.6. Topological sort using DFS</a></li>
+<li><a href="#org1525ee1">7. Graphs</a>
+<ul>
+<li><a href="#org5cbf8ac">7.1. Representing graphs</a>
+<ul>
+<li><a href="#org6f8b06a">7.1.1. Adjacency List</a></li>
+<li><a href="#org8c35eb9">7.1.2. Adjacency Matrix</a></li>
 </ul>
 </li>
-<li><a href="#org7d371ab">7.5. Strongly connected components</a>
+<li><a href="#org1f8a2a2">7.2. Vertex and edge attributes</a></li>
+<li><a href="#orgb9e1f9d">7.3. Density of graph</a>
 <ul>
-<li><a href="#org2a3aa7d">7.5.1. Finding strongly connected components</a></li>
+<li><a href="#orgc330379">7.3.1. Which representation to use</a></li>
+</ul>
+</li>
+<li><a href="#org055fb51">7.4. Searching Graphs</a>
+<ul>
+<li><a href="#org8b4402c">7.4.1. Breadth first search</a></li>
+<li><a href="#org24d3793">7.4.2. Breadth-first trees for shortest path</a></li>
+<li><a href="#orga13cb3b">7.4.3. Depth first search</a></li>
+<li><a href="#org431e9dd">7.4.4. Properties of DFS</a>
+<ul>
+<li><a href="#orgd4d4f28">7.4.4.1. Parenthesis theorem</a></li>
+<li><a href="#org70e5d37">7.4.4.2. White path theorem</a></li>
+<li><a href="#orgc4a3677">7.4.4.3. Classification of edges</a></li>
+</ul>
+</li>
+<li><a href="#orgc072d4e">7.4.5. Depth-first and Breadth-first Forests</a></li>
+<li><a href="#orgb105fdb">7.4.6. Topological sort using DFS</a></li>
+</ul>
+</li>
+<li><a href="#orgafab789">7.5. Strongly connected components</a>
+<ul>
+<li><a href="#org39b71bd">7.5.1. Finding strongly connected components</a></li>
 </ul>
 </li>
 </ul>
@@ -363,22 +363,28 @@
 </div>
 </div>
 
-<div id="outline-container-org7d907ed" class="outline-2">
-<h2 id="org7d907ed"><span class="section-number-2">1.</span> Stack</h2>
+<div id="outline-container-org33bd1e7" class="outline-2">
+<h2 id="org33bd1e7"><span class="section-number-2">1.</span> Stack</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 A stack is a data structure which only allows insertion and deletion from one end of the array. The insertion is always on the extreme end of the array. The deletion can only be done on the element which was most recently added.
-<br />
+</p>
+
+<p>
 <b>It is similar to stacking plates.</b> The plate can only be added at the <b>top</b> of the stack and also only the last added plate to the stack can be removed (which will be on top).
-<br />
+</p>
+
+<p>
 Due to this property, Last In elements are removed First from a stack. Therefore, it is called a <b>Last In First Out (LIFO)</b> data structure or a <b>First In Last Out (FILO)</b> data structure.
-<br />
+</p>
+
+<p>
 To create a stack, we will keep track of the index which is the <b>top</b> of the array. This top index will <b>increment when we insert element</b> and <b>decrement when we remove element.</b>
 </p>
 </div>
 
-<div id="outline-container-org8106bf3" class="outline-3">
-<h3 id="org8106bf3"><span class="section-number-3">1.1.</span> Operation on stack</h3>
+<div id="outline-container-org7ab1546" class="outline-3">
+<h3 id="org7ab1546"><span class="section-number-3">1.1.</span> Operation on stack</h3>
 <div class="outline-text-3" id="text-1-1">
 <p>
 A stack has two operations 
@@ -390,12 +396,14 @@ A stack has two operations
 </div>
 </div>
 </div>
-<div id="outline-container-org51453bb" class="outline-2">
-<h2 id="org51453bb"><span class="section-number-2">2.</span> Direct Address Table</h2>
+<div id="outline-container-orgdb0f987" class="outline-2">
+<h2 id="orgdb0f987"><span class="section-number-2">2.</span> Direct Address Table</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 Direct Address Tables are useful when we know that key is within a small range. Then, we can allocate an array such that each possible key gets an index and just add the values according to the keys.
-<br />
+</p>
+
+<p>
 This also assumes that keys are integers
 </p>
 
@@ -468,35 +476,47 @@ This also assumes that keys are integers
 </div>
 </div>
 
-<div id="outline-container-org12df153" class="outline-2">
-<h2 id="org12df153"><span class="section-number-2">3.</span> Hash Table</h2>
+<div id="outline-container-org514b57f" class="outline-2">
+<h2 id="org514b57f"><span class="section-number-2">3.</span> Hash Table</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 When the set of possible keys is large, it is impractical to allocate a table big enough for all keys. In order to fit all possible keys into a small table, rather than directly using keys as the index for our array, we wil first calculate a <i><b>hash</b></i> for it using a <i><b>hash function</b></i>. Since we are relying on hashes for this addressing in the table, we call it a hash table.
-<br />
-<br />
+</p>
+
+
+<p>
 For a given key \(k_i\) in <b><i>direct address table</i></b>, we store value in \(table[k_i]\).
-<br />
-<br />
+</p>
+
+
+<p>
 For a given key \(k_i\) in <b><i>hash table</i></b>, we store value in \(table[h(k_i)]\), where \(h()\) is the hash function.
-<br />
-<br />
+</p>
+
+
+<p>
 So the main purpose of the hash function is to reduce the range of array indices.
 </p>
 </div>
 
-<div id="outline-container-org135d355" class="outline-3">
-<h3 id="org135d355"><span class="section-number-3">3.1.</span> Collision</h3>
+<div id="outline-container-orge3ccb42" class="outline-3">
+<h3 id="orge3ccb42"><span class="section-number-3">3.1.</span> Collision</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
 Because we are reducing the range of indices, the hash function may <i><b>hash two keys to the same slot</b></i>. This is called a collision.
-<br />
-<br />
+</p>
+
+
+<p>
 We should try to find a hash funtion which will minimise the number of collisions.
-<br />
-<br />
+</p>
+
+
+<p>
 The number of keys is going to be greater than number of slots in table. Therefore avoiding all collisions is not possible.
-<br />
+</p>
+
+<p>
 There are two ways we will look at to resolve collision.
 </p>
 <ol class="org-ol">
@@ -505,13 +525,15 @@ There are two ways we will look at to resolve collision.
 </ol>
 </div>
 
-<div id="outline-container-org4332c99" class="outline-4">
-<h4 id="org4332c99"><span class="section-number-4">3.1.1.</span> Chaining</h4>
+<div id="outline-container-org50e69f2" class="outline-4">
+<h4 id="org50e69f2"><span class="section-number-4">3.1.1.</span> Chaining</h4>
 <div class="outline-text-4" id="text-3-1-1">
 <p>
 In chaining, rather than storing values in table slots. We will have <i><b>linked lists at each slot</b></i> which will store (key, value) pairs.
-<br />
-<br />
+</p>
+
+
+<p>
 When the hash gives us a slot, we will add the value to linked list at that slot.
 </p>
 
@@ -585,57 +607,69 @@ Insertion can be done in \(\theta (1)\) time if we assume that key being inserte
 </div>
 </div>
 
-<div id="outline-container-org390fada" class="outline-4">
-<h4 id="org390fada"><span class="section-number-4">3.1.2.</span> Performance of chaining hash table</h4>
+<div id="outline-container-orgf4e99c3" class="outline-4">
+<h4 id="orgf4e99c3"><span class="section-number-4">3.1.2.</span> Performance of chaining hash table</h4>
 <div class="outline-text-4" id="text-3-1-2">
 <p>
 The <b>load factor</b> is defined as number of elements per slot and is calculated as
 \[ \alpha \text{(Load factor)} = \frac{\text{number of elements in hash table}}{\text{number of slots in hash table}} \]
 The worst case for chaining is when all keys are assigned to a single slot. In this case searching for an element takes \(\theta (n)\) time.
-<br />
-<br />
+</p>
+
+
+<p>
 If we assume that any given element is equally likely to be hashed into any of the slots, this assumption is called <b><i>simple uniform hashing</i></b>.
-<br />
-<br />
+</p>
+
+
+<p>
 If we also assume that hash funtion takes constant time, then in the average case, the time complexity for searching key in the chaining hash table is
 \[ \text{Average Case Searching} : \theta (1 + \alpha) \]
 </p>
 </div>
 </div>
-<div id="outline-container-org77de47f" class="outline-4">
-<h4 id="org77de47f"><span class="section-number-4">3.1.3.</span> Open Addressing</h4>
+<div id="outline-container-org3e5adc9" class="outline-4">
+<h4 id="org3e5adc9"><span class="section-number-4">3.1.3.</span> Open Addressing</h4>
 <div class="outline-text-4" id="text-3-1-3">
 <p>
 In open addressing, all the key and value pair of entries are stored in the table itself. Because of this, the load factor \(\left( \alpha \right)\) can never exceed 1.
-<br />
-<br />
+</p>
+
+
+<p>
 When we get a key whose slot is already taken, we will look for another empty slot. This is done by what is called <b><i>probing</i></b>. To get which slot to check next, we have various methods.
-<br />
-<br />
-The sequence in which empty slots are looked for is fixed for given key, this sequence is called <b>probe sequence</b>. <br />
+</p>
+
+
+<p>
+The sequence in which empty slots are looked for is fixed for given key, this sequence is called <b>probe sequence</b>.  
 It is necessary to keep probe sequence fixed for any given key, so that we can search for it later.
 </p>
 </div>
 
-<div id="outline-container-orgf5e3e78" class="outline-5">
-<h5 id="orgf5e3e78"><span class="section-number-5">3.1.3.1.</span> Linear probing</h5>
+<div id="outline-container-org94a9c64" class="outline-5">
+<h5 id="org94a9c64"><span class="section-number-5">3.1.3.1.</span> Linear probing</h5>
 <div class="outline-text-5" id="text-3-1-3-1">
 <p>
 For a given <b>ordinary hash function</b> \(h(k)\), the linear probing uses the hash function
 \[ linear\_h(k, i) = (h(k) + 1)\ mod\ m \]
 We refer to \(h(k)\) as the <b><i>auxiliary hash function</i></b>.
-<br />
-<br />
+</p>
+
+
+<p>
 In linear probing, we first check the slot [h(k)], if it is not empty, we check [h(k) + 1] then [h(k) + 2] &#x2026;. upto slot [m - 1] after which we wrap around to [1], [2] &#x2026; till we have checked all the slots.
-<br />
-<br />
+</p>
+
+
+<p>
 Linear probing is easy to implement, but it suffers from <b><i>primary clustering</i></b>. In long runs of linear probing, keys tend to cluster together. This causes the performance of operations on hash table to degrade. The time to query a random element from table degrades to \(\theta (n)\).
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgc1c6b5d" class="outline-5">
-<h5 id="orgc1c6b5d"><span class="section-number-5">3.1.3.2.</span> Quadratic probing</h5>
+<div id="outline-container-org292d2a8" class="outline-5">
+<h5 id="org292d2a8"><span class="section-number-5">3.1.3.2.</span> Quadratic probing</h5>
 <div class="outline-text-5" id="text-3-1-3-2">
 <p>
 For given auxiliary hash function \(h(k)\), the quadratic probing uses
@@ -650,20 +684,22 @@ Where, \(c_1\) and \(c_2\) are positive auxiliary constants.
 
 <p>
 Quadratic probing works much better than linear probing.
-<br />
-<br />
+</p>
+
+
+<p>
 If \(quadratic\_h(k_1, 0) = quadratic\_h(k_2,0)\), then that implies that all \(quadratic\_h(k_1, i) = quadratic\_h(k_2,i)\), i.e, they will have the same <b>probe sequence</b>. This leads to a probe sequence getting clustered. This is called <i><b>secondary clustering</b></i>. This also effects performance but not as drastically as primary clustering.
 </p>
 </div>
 </div>
-<div id="outline-container-org96aca88" class="outline-5">
-<h5 id="org96aca88"><span class="section-number-5">3.1.3.3.</span> Double Hashing</h5>
+<div id="outline-container-org9da20dd" class="outline-5">
+<h5 id="org9da20dd"><span class="section-number-5">3.1.3.3.</span> Double Hashing</h5>
 <div class="outline-text-5" id="text-3-1-3-3">
 <p>
-Double hashing is one of the best available method for open addressing. <br />
+Double hashing is one of the best available method for open addressing.  
 <b>Double hashing uses <i>two auxiliary hashing functions</i>.</b>
 \[ double\_h(k, i) = \left( h_1(k) + i \times h_2(k) \right) \ mod\ m \]
-The value of \(h_2(k)\) must be <b>relatively prime (i.e, coprime) to number of slots (m)</b>. <br />
+The value of \(h_2(k)\) must be <b>relatively prime (i.e, coprime) to number of slots (m)</b>.  
 </p>
 <ul class="org-ul">
 <li>A convenient way to ensure this is let <b>m be a power of 2</b> and \(h_2(k)\) be a <b>hash function that always produces an odd number</b>.</li>
@@ -671,28 +707,38 @@ The value of \(h_2(k)\) must be <b>relatively prime (i.e, coprime) to number of 
 </ul>
 <p>
 If we use one of the above two methods (either m is a power of 2 or a prime), then double hashing improves over linear and quadratic probing since keys will have distinct probe sequences.
-<br />
-<br />
+</p>
+
+
+<p>
 When using the above values of m, performance of double hashing is very close to the performance of "ideal" scheme of uniform hashing.
 <b>*n</b> Performace of open addressing
 In open addressing <b>load factor</b> \(\left( \alpha \right) \le 1\). We will assume <b>uniform hashing</b> i.e, any element is equally likely to be hashed in any slot. We will also assume that for any key, each possible probe sequence is equally likely.
-<br />
-<br />
+</p>
+
+
+<p>
 Under these assumptions, for load factor \(\alpha\). The number of probes in an unsuccessful search is at most \(1/(1 - \alpha )\)
-<br />
+</p>
+
+<p>
 This means that for a constant load factor, an unsuccessful search will run in \(\theta (1)\) time.
-<br />
-<br />
+</p>
+
+
+<p>
 The number of probes on average for inserting an element under these assumptions is \(1/(1- \alpha )\)
-<br />
+</p>
+
+<p>
 The number of probes on averge in a successful search is at most \(\frac{1}{\alpha} ln\left( \frac{1}{1-\alpha} \right)\)
 </p>
 </div>
 </div>
 </div>
 </div>
-<div id="outline-container-org38f52a7" class="outline-3">
-<h3 id="org38f52a7"><span class="section-number-3">3.2.</span> Hash Functions</h3>
+<div id="outline-container-orga7e5cec" class="outline-3">
+<h3 id="orga7e5cec"><span class="section-number-3">3.2.</span> Hash Functions</h3>
 <div class="outline-text-3" id="text-3-2">
 <p>
 A good hash funtion will approximately satisfy the <b>simple uniform hashing</b>, which means that any element is equally likely to be hashed to any slot.
@@ -705,17 +751,21 @@ A good hash funtion will approximately satisfy the <b>simple uniform hashing</b>
 
 <p>
 Suppose we knew that our keys are from a set of real numbers and the keys are picked uniformly. In this case, we could simply use the hash function \(h(k) = floor(mk)\).
-<br />
-<br />
+</p>
+
+
+<p>
 Similarly, in many cases we can make a reasonably good hash funtion if we know the distribution of keys.
-<br />
-<br />
+</p>
+
+
+<p>
 We will look at a few ways to make a hash function.
 </p>
 </div>
 
-<div id="outline-container-orgf278fcd" class="outline-4">
-<h4 id="orgf278fcd"><span class="section-number-4">3.2.1.</span> The division method</h4>
+<div id="outline-container-orgb96b0ff" class="outline-4">
+<h4 id="orgb96b0ff"><span class="section-number-4">3.2.1.</span> The division method</h4>
 <div class="outline-text-4" id="text-3-2-1">
 <p>
 In division method, we map a key \(k\) into one of the \(m\) slots by taking the remainder of k divided by m.
@@ -731,19 +781,23 @@ But there are some cases where \(m\) is chosen to be something else.
 </div>
 </div>
 
-<div id="outline-container-org9d0defb" class="outline-4">
-<h4 id="org9d0defb"><span class="section-number-4">3.2.2.</span> The multiplication method</h4>
+<div id="outline-container-org78d95af" class="outline-4">
+<h4 id="org78d95af"><span class="section-number-4">3.2.2.</span> The multiplication method</h4>
 <div class="outline-text-4" id="text-3-2-2">
 <p>
 In multiplication method, we first multiply the key \(k\) with a constant \(A\) which is in range \(0 < A < 1\). Then we get the <b>fractional part</b> of \(kA\). Then we multiply the fractional part by \(m\) and floor it to get the hash.
 \[ h(k) = floor(m \times decimal\_part(kA) ) \]
 The advantage of multiplication method is that we can choose any value of \(m\). We can even choose \(m\) to be a power of 2.
-<br />
+</p>
+
+<p>
 We can choose any value of \(A\). The value depends on characteristics of data,
 \[ A \approx \frac{\sqrt{5} - 1}{2} \]
 will work reasonably well.
-<br />
-<br />
+</p>
+
+
+<p>
 Example, Suppose
 </p>
 
@@ -775,8 +829,8 @@ In C language,
 </div>
 </div>
 
-<div id="outline-container-orga163f8d" class="outline-4">
-<h4 id="orga163f8d"><span class="section-number-4">3.2.3.</span> Mid square method</h4>
+<div id="outline-container-org55b7317" class="outline-4">
+<h4 id="org55b7317"><span class="section-number-4">3.2.3.</span> Mid square method</h4>
 <div class="outline-text-4" id="text-3-2-3">
 <p>
 In this method, we square the keys and then we choose some digits from the middle.
@@ -789,34 +843,46 @@ With huge numbers, we need to take care of overflow conditions in this method.
 </div>
 </div>
 
-<div id="outline-container-orgeac46d3" class="outline-4">
-<h4 id="orgeac46d3"><span class="section-number-4">3.2.4.</span> Folding method</h4>
+<div id="outline-container-org26f68bb" class="outline-4">
+<h4 id="org26f68bb"><span class="section-number-4">3.2.4.</span> Folding method</h4>
 <div class="outline-text-4" id="text-3-2-4">
 <p>
 While this method can be used on integers, this method is usually used where the key is segmented. For example in arrays or when key is a string.
-<br />
-<br />
+</p>
+
+
+<p>
 In this method, we add all of the segments and then we mod it with the number of slots.
 \[ h(k) = \left( \text{Sum of all the segments} \right) mod\ m \]
 Example, for string "hello"
-<br />
+</p>
+
+<p>
 sum = 'h' + 'e' + 'l' + 'l' + 'o'
-<br />
+</p>
+
+<p>
 sum = 104 + 101 + 108 + 108 + 111 = 532
-<br />
-<br />
+</p>
+
+
+<p>
 If m = 100, then
-<br />
+</p>
+
+<p>
 h(k) = 532 mod 100
-<br />
+</p>
+
+<p>
 h(k) = 32
 </p>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orgc115127" class="outline-3">
-<h3 id="orgc115127"><span class="section-number-3">3.3.</span> Universal Hashing</h3>
+<div id="outline-container-orgfee3c7b" class="outline-3">
+<h3 id="orgfee3c7b"><span class="section-number-3">3.3.</span> Universal Hashing</h3>
 <div class="outline-text-3" id="text-3-3">
 <p>
 Suppose a malicious adversary who know's our hash function chooses the keys that are to be hashed. He can choose keys that all hash to same slot therefore degrading performance of our hash table to \(\theta (n)\).
@@ -830,8 +896,8 @@ Fixed hash functions are vulnerable to such attacks. To prevent this from happen
 The randomization of chosen hash function will almost guarentee that we won't get the worst case behaviour. The hash function is <i><b>not changed every time we do an insert or delete operation.</b></i> Changing hash function after each operation will not allow us to lookup elements in optimal time. We only change to another hash function when we do rehashing.
 </p>
 </div>
-<div id="outline-container-org84fd927" class="outline-4">
-<h4 id="org84fd927"><span class="section-number-4">3.3.1.</span> Rehashing</h4>
+<div id="outline-container-orgf89ca20" class="outline-4">
+<h4 id="orgf89ca20"><span class="section-number-4">3.3.1.</span> Rehashing</h4>
 <div class="outline-text-4" id="text-3-3-1">
 <p>
 When we need to increase the size of hash table or change the hash function, we have to do rehashing.
@@ -843,13 +909,15 @@ Rehashing is the process of taking all the entries in a hash table and then reap
 
 <p>
 Rehashing is usually done when load factor increases to the point that it affects performace.
-<br />
+</p>
+
+<p>
 In universal hashing, we will change the hash function each time we rehash the hash table.
 </p>
 </div>
 </div>
-<div id="outline-container-org8dd2c49" class="outline-4">
-<h4 id="org8dd2c49"><span class="section-number-4">3.3.2.</span> Universal family</h4>
+<div id="outline-container-orgbe2449e" class="outline-4">
+<h4 id="orgbe2449e"><span class="section-number-4">3.3.2.</span> Universal family</h4>
 <div class="outline-text-4" id="text-3-3-2">
 <p>
 For universal hashing, the set of hash functions which is used is called <b>universal family</b>.
@@ -865,25 +933,31 @@ In other words, <b>the probability of collision between any two distinct keys \(
 
 <p>
 Here, \(m\) is the number of slots in hash table.
-<br />
+</p>
+
+<p>
 Sometimes, universal family may be called a universal of hash functions.
 </p>
 </div>
 </div>
-<div id="outline-container-orgdfd01cd" class="outline-4">
-<h4 id="orgdfd01cd"><span class="section-number-4">3.3.3.</span> Performance of universal hashing</h4>
+<div id="outline-container-org01166b5" class="outline-4">
+<h4 id="org01166b5"><span class="section-number-4">3.3.3.</span> Performance of universal hashing</h4>
 <div class="outline-text-4" id="text-3-3-3">
 <p>
 For any hash function \(h\) from the universal. We know that the probability of collision between two keys is \((1/m)\).
-<br />
+</p>
+
+<p>
 Using this, we can show that when using chaining, the expected (or average) length of each list in the hash table will be \((1 + \alpha)\).
-<br />
+</p>
+
+<p>
 Where, alpha is the load factor of hash table.
 </p>
 </div>
 </div>
-<div id="outline-container-org8f52e65" class="outline-4">
-<h4 id="org8f52e65"><span class="section-number-4">3.3.4.</span> Example for universal set of hash functions</h4>
+<div id="outline-container-org73b1dfc" class="outline-4">
+<h4 id="org73b1dfc"><span class="section-number-4">3.3.4.</span> Example for universal set of hash functions</h4>
 <div class="outline-text-4" id="text-3-3-4">
 <p>
 Suppose we have set of keys \(\{ 0,1,2,...,k \}\), we will choose a prime number \(p > k\).
@@ -892,29 +966,33 @@ Then we can define a hash funtion
 And, the universal is
 \[ H = \{ h_{ab} : a \in \{ 1,2,...,(p-1) \} \ and \ b \in \{ 0,1,...,(p-1) \} \} \]
 This class of hash functions will map from set \(\{ 0,1,2,...,(p-1) \}\) to set \(\{ 0,1,2,...,(m-1) \}\).
-<br />
+</p>
+
+<p>
 Here, \(m\) is the number of slots in hash table.
 </p>
 </div>
 </div>
 </div>
-<div id="outline-container-orge05a96f" class="outline-3">
-<h3 id="orge05a96f"><span class="section-number-3">3.4.</span> Perfect Hashing</h3>
+<div id="outline-container-orgf13f234" class="outline-3">
+<h3 id="orgf13f234"><span class="section-number-3">3.4.</span> Perfect Hashing</h3>
 <div class="outline-text-3" id="text-3-4">
 <p>
 TODO : Doing this or nah
 NOTE : This doesn't seem to be in B.Tech syllabus, but it seems cool.
-<br />
 </p>
 </div>
 </div>
 </div>
-<div id="outline-container-org5a101d3" class="outline-2">
-<h2 id="org5a101d3"><span class="section-number-2">4.</span> Representing rooted trees using nodes</h2>
+
+<div id="outline-container-orgcd35969" class="outline-2">
+<h2 id="orgcd35969"><span class="section-number-2">4.</span> Representing rooted trees using nodes</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 We can represent trees using nodes.  A node only stores a single element of the tree. What is a node will depend on the language being used.
-<br />
+</p>
+
+<p>
 In C, we make a struct which will store the element and pointers to other node structs.
 </p>
 
@@ -926,8 +1004,8 @@ In C, we make a struct which will store the element and pointers to other node s
 };
 </pre>
 </div>
+
 <p>
-<br />
 In languages with oop, we create node class which will store refrences to other node objects.
 </p>
 <div class="org-src-container">
@@ -946,12 +1024,14 @@ In languages with oop, we create node class which will store refrences to other 
 </div>
 </div>
 
-<div id="outline-container-org7c4d1f9" class="outline-3">
-<h3 id="org7c4d1f9"><span class="section-number-3">4.1.</span> Fixed number of children</h3>
+<div id="outline-container-orgfab12bc" class="outline-3">
+<h3 id="orgfab12bc"><span class="section-number-3">4.1.</span> Fixed number of children</h3>
 <div class="outline-text-3" id="text-4-1">
 <p>
 When we know how many children any given node can have, i.e, the number of children is bounded. We can just use refrences or pointers to the nodes directly.
-<br />
+</p>
+
+<p>
 For example, if we know we are making a binary tree, then we can just store refrence to left children and right childern.
 </p>
 
@@ -966,15 +1046,17 @@ For example, if we know we are making a binary tree, then we can just store refr
 </div>
 </div>
 
-<div id="outline-container-org4765425" class="outline-3">
-<h3 id="org4765425"><span class="section-number-3">4.2.</span> Unbounded number of children</h3>
+<div id="outline-container-orgacaefeb" class="outline-3">
+<h3 id="orgacaefeb"><span class="section-number-3">4.2.</span> Unbounded number of children</h3>
 <div class="outline-text-3" id="text-4-2">
 <p>
 When we don't know how many children any given node will have. Thus any node can have any number of children, we can't just use refrences. We could create an array of refrences to nodes, but some nodes will only have one or two childs and some may have no childs. This will lead to a lot of wasted memory.
-<br />
-There is a way to represent such trees without wasting any memory. This is done by using <b>sibling refrences or pointers</b>.
-<br />
 </p>
+
+<p>
+There is a way to represent such trees without wasting any memory. This is done by using <b>sibling refrences or pointers</b>.
+</p>
+
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #a626a4;">struct</span> <span style="color: #c18401;">tree_node</span>{
   <span style="color: #c18401;">int</span> <span style="color: #8b4513;">element</span>;
@@ -1002,28 +1084,42 @@ The right sibling pointer will point to the right sibling of the node. This allo
 
 <p>
 So a tree which is like :
-<br />
-<img src="./imgs/tree_actual.jpg" alt="tree_actual.jpg" />
-<br />
-<br />
+</p>
+
+
+<div id="org3af9def" class="figure">
+<p><img src="./imgs/tree_actual.jpg" alt="tree_actual.jpg" />
+</p>
+</div>
+
+
+<p>
 can be represented using refrences and pointers as :
-<br />
-<img src="./imgs/tree_representation.jpg" alt="tree_representation.jpg" />
-<br />
+</p>
+
+
+<div id="org17fb836" class="figure">
+<p><img src="./imgs/tree_representation.jpg" alt="tree_representation.jpg" />
 </p>
 </div>
 </div>
 </div>
+</div>
 
-<div id="outline-container-org5d261e7" class="outline-2">
-<h2 id="org5d261e7"><span class="section-number-2">5.</span> Binary Search Trees</h2>
+
+<div id="outline-container-org1bd88e0" class="outline-2">
+<h2 id="org1bd88e0"><span class="section-number-2">5.</span> Binary Search Trees</h2>
 <div class="outline-text-2" id="text-5">
 <p>
 A tree where any node can have only two child nodes is called a <b><i>binary tree</i></b>.
-<br />
+</p>
+
+<p>
 A binary search tree is a tree where for any give node <b>the nodes stored in left sub-tree are less than the parent node</b> and the <b>nodes stored in right sub-tree are greater than the parent node</b> (or vice versa). So the left-subtree always have smaller elements and right sub-tree always have greater elements.
-<br />
-<br />
+</p>
+
+
+<p>
 This property allows us easily search for elements from the data structure. We start our search at the root node. If the element we want is less than the current node, we will go to the left node ,else we will go to the right node. The concept is similar to the binary search on arrays.
 </p>
 
@@ -1040,15 +1136,15 @@ In C, we can make a binary tree as
 </div>
 </div>
 
-<div id="outline-container-org9575402" class="outline-3">
-<h3 id="org9575402"><span class="section-number-3">5.1.</span> Quering a BST</h3>
+<div id="outline-container-org8bd5302" class="outline-3">
+<h3 id="org8bd5302"><span class="section-number-3">5.1.</span> Quering a BST</h3>
 <div class="outline-text-3" id="text-5-1">
 <p>
 Some common ways in which we usually query a BST are searching for a node, minimum &amp; maximum node and successor &amp; predecessor nodes. We will also look at how we can get the parent node for a given node, if we already store a parent pointer then that algorithm will be unnecessary.
 </p>
 </div>
-<div id="outline-container-orge187843" class="outline-4">
-<h4 id="orge187843"><span class="section-number-4">5.1.1.</span> Searching for node</h4>
+<div id="outline-container-orgf626de7" class="outline-4">
+<h4 id="orgf626de7"><span class="section-number-4">5.1.1.</span> Searching for node</h4>
 <div class="outline-text-4" id="text-5-1-1">
 <p>
 We can search for a node very effectively with the help of binary search tree property. The search will return the node if it is found, else it will return NULL.
@@ -1090,8 +1186,8 @@ We can also search iteratively rather than recursively.
 </div>
 </div>
 </div>
-<div id="outline-container-org8fcf0b3" class="outline-4">
-<h4 id="org8fcf0b3"><span class="section-number-4">5.1.2.</span> Minimum and maximum</h4>
+<div id="outline-container-org22863e5" class="outline-4">
+<h4 id="org22863e5"><span class="section-number-4">5.1.2.</span> Minimum and maximum</h4>
 <div class="outline-text-4" id="text-5-1-2">
 <p>
 Finding the minimum and maximum is simple in a Binary Search Tree. The minimum element will be the leftmost node and maximum will be the rightmost node. We can get the minimum and maximum nodes by using these algorithms.
@@ -1123,8 +1219,8 @@ Finding the minimum and maximum is simple in a Binary Search Tree. The minimum e
 </div>
 </div>
 
-<div id="outline-container-orgfa9bc17" class="outline-4">
-<h4 id="orgfa9bc17"><span class="section-number-4">5.1.3.</span> Find Parent Node</h4>
+<div id="outline-container-org1005819" class="outline-4">
+<h4 id="org1005819"><span class="section-number-4">5.1.3.</span> Find Parent Node</h4>
 <div class="outline-text-4" id="text-5-1-3">
 <p>
 This algorithm will return the parent node. It uses a trailing node to get the parent. If the root node is given, then it will return NULL. <b>This algorithm makes the assumption that the node is in the tree</b>.
@@ -1150,8 +1246,8 @@ This algorithm will return the parent node. It uses a trailing node to get the p
 </div>
 </div>
 </div>
-<div id="outline-container-orgacbcbc2" class="outline-4">
-<h4 id="orgacbcbc2"><span class="section-number-4">5.1.4.</span> Is ancestor</h4>
+<div id="outline-container-orgf972f77" class="outline-4">
+<h4 id="orgf972f77"><span class="section-number-4">5.1.4.</span> Is ancestor</h4>
 <div class="outline-text-4" id="text-5-1-4">
 <p>
 This algorithm will take two nodes, ancestor and descendant. Then it will check if ancestor node is really the ancestor of descendant node.
@@ -1177,16 +1273,16 @@ This algorithm will take two nodes, ancestor and descendant. Then it will check 
 </div>
 </div>
 </div>
-<div id="outline-container-orgb8c2265" class="outline-4">
-<h4 id="orgb8c2265"><span class="section-number-4">5.1.5.</span> Successor and predecessor</h4>
+<div id="outline-container-org867f699" class="outline-4">
+<h4 id="org867f699"><span class="section-number-4">5.1.5.</span> Successor and predecessor</h4>
 <div class="outline-text-4" id="text-5-1-5">
 <p>
 We often need to find the successor or predecessor of an element in a Binary Search Tree. The search for predecessor and succesor is divided in to two cases.
 </p>
 </div>
 
-<div id="outline-container-org8613abf" class="outline-5">
-<h5 id="org8613abf"><span class="section-number-5">5.1.5.1.</span> For Successor</h5>
+<div id="outline-container-orgdf06a86" class="outline-5">
+<h5 id="orgdf06a86"><span class="section-number-5">5.1.5.1.</span> For Successor</h5>
 <div class="outline-text-5" id="text-5-1-5-1">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #a0a1a7; font-weight: bold;">// </span><span style="color: #a0a1a7;">get successor of x</span>
@@ -1208,13 +1304,15 @@ We often need to find the successor or predecessor of an element in a Binary Sea
 </div>
 <p>
 <b>Case 1</b> : If the node x has a right subtree, then the minimum of right subtree of x is the succesor.
-<br />
+</p>
+
+<p>
 <b>Case 2</b> : If the node x has no right subtree, then successor may or may not exist. If it exists, the successor node will be the ancestor of x whose own left node is also the ancestor of x.
 </p>
 </div>
 </div>
-<div id="outline-container-orgf504f91" class="outline-5">
-<h5 id="orgf504f91"><span class="section-number-5">5.1.5.2.</span> For Predecessor</h5>
+<div id="outline-container-orgf87be4c" class="outline-5">
+<h5 id="orgf87be4c"><span class="section-number-5">5.1.5.2.</span> For Predecessor</h5>
 <div class="outline-text-5" id="text-5-1-5-2">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #a626a4;">struct</span> <span style="color: #c18401;">binary_tree</span> *
@@ -1235,22 +1333,24 @@ We often need to find the successor or predecessor of an element in a Binary Sea
 </div>
 <p>
 <b>Case 1</b> : If the node x has a left subtree, then the maximum of left subtree of x is the predecessor.
-<br />
+</p>
+
+<p>
 <b>Case 2</b> : If the node x has no left subtree, then predecessor may or may not exist. If it exists, the predecessor node will be the ancestor of x whose own right node is also the ancestor of x.
 </p>
 </div>
 </div>
 </div>
 </div>
-<div id="outline-container-org9e6dd40" class="outline-3">
-<h3 id="org9e6dd40"><span class="section-number-3">5.2.</span> Inserting and Deleting nodes</h3>
+<div id="outline-container-org9b4dea1" class="outline-3">
+<h3 id="org9b4dea1"><span class="section-number-3">5.2.</span> Inserting and Deleting nodes</h3>
 <div class="outline-text-3" id="text-5-2">
 <p>
 When inserting and deleting nodes in BST, we need to make sure that the Binary Search Tree property continues to hold. Inserting node is easier in a binary search tree than deleting a node.
 </p>
 </div>
-<div id="outline-container-orgd483877" class="outline-4">
-<h4 id="orgd483877"><span class="section-number-4">5.2.1.</span> Insertion</h4>
+<div id="outline-container-org4c0a9fc" class="outline-4">
+<h4 id="org4c0a9fc"><span class="section-number-4">5.2.1.</span> Insertion</h4>
 <div class="outline-text-4" id="text-5-2-1">
 <p>
 Insertion is simple in a binary search tree. We search for the node we want to insert in the tree and insert it where we find first NULL spot.
@@ -1277,8 +1377,10 @@ Insertion is simple in a binary search tree. We search for the node we want to i
 </div>
 <p>
 The recursive algorithm for inserting into a Binary search tree is simpler than the iterative algorithm.
-<br />
-<br />
+</p>
+
+
+<p>
 The algorithm for iterative insertion is
 </p>
 <div class="org-src-container">
@@ -1310,15 +1412,19 @@ The algorithm for iterative insertion is
 </div>
 </div>
 </div>
-<div id="outline-container-org30e9f95" class="outline-4">
-<h4 id="org30e9f95"><span class="section-number-4">5.2.2.</span> Deletion</h4>
+<div id="outline-container-org60b87f0" class="outline-4">
+<h4 id="org60b87f0"><span class="section-number-4">5.2.2.</span> Deletion</h4>
 <div class="outline-text-4" id="text-5-2-2">
 <p>
 Deletion in Binary Search Trees is tricky because we need to delete nodes in a way that the property of the Binary Search Tree holds after the deletion of the node. So we first have to remove the node from the tree before we can free it.
-<br />
-<br />
+</p>
+
+
+<p>
 There are <b>four different cases</b> which can occur when we try to delete a node. All four have a different method to handle them. These four cases relate to how many children the node which we want to delete has.
-<br />
+</p>
+
+<p>
 Suppose the node is \(X\).
 </p>
 <ol class="org-ol">
@@ -1352,8 +1458,10 @@ We also use a helper function called Replace Child for deletion of node. This fu
 <p>
 We will create a funtion that will remove the root node from a given subtree and then return the root node of the result subtree.
 This will allow us to apply remove root node funtion on any node and then reattach the new subtree.
-<br />
-<br />
+</p>
+
+
+<p>
 Making remove root node a different funtion will also allow us to not worry about attaching the the subtree immediately in the same funtion.
 </p>
 
@@ -1418,36 +1526,44 @@ Now we can make a delete node function which will remove the node, reattach the 
 </div>
 </div>
 
-<div id="outline-container-org41eb53d" class="outline-3">
-<h3 id="org41eb53d"><span class="section-number-3">5.3.</span> Performance of BST</h3>
+<div id="outline-container-orga781c6f" class="outline-3">
+<h3 id="orga781c6f"><span class="section-number-3">5.3.</span> Performance of BST</h3>
 <div class="outline-text-3" id="text-5-3">
 <p>
 The performance of the search operation depends on the height of the tree. If the tree has \(n\) elements, the height of a binary tree can be between \(n\) and \(floor\left( 1+ log_2(n) \right)\).
-<br />
-<br />
+</p>
+
+
+<p>
 To perform an operation on BST, we need to find the node where we have perform the operation. Since even in worst case <b>we only need to traverse the height of the search tree to search for any node</b>, the time taken to perform any operation on a Binary Search Tree is  \(\theta (h)\) where, \(h\) is the height of the tree.
-<br />
-<br />
+</p>
+
+
+<p>
 A binary tree with height of \(floor(1 + log_2(n))\) is called a <b>balanced binary tree</b>, otherwise it is an unbalanced tree. A balanced binary tree is the shortest height a binary tree with that number of nodes can have.
-<br />
-<br />
+</p>
+
+
+<p>
 The worst case is when tree has a single branch, making the height of tree n. In this case, the worst case for any operation takes \(\theta (n)\) time.
-<br />
+</p>
+
+<p>
 A balanced binary search tree in worst case for any operation will take \(\theta (log_2n)\) time.
 </p>
 </div>
 </div>
 
-<div id="outline-container-org0144958" class="outline-3">
-<h3 id="org0144958"><span class="section-number-3">5.4.</span> Traversing a Binary Tree</h3>
+<div id="outline-container-orgce61cb5" class="outline-3">
+<h3 id="orgce61cb5"><span class="section-number-3">5.4.</span> Traversing a Binary Tree</h3>
 <div class="outline-text-3" id="text-5-4">
 <p>
 There are three ways to traverse a binary tree, inorder tree walk, preorder tree walk and postorder tree walk. All three algorithm will take \(\theta (n)\) time to traverse the \(n\) nodes.
 </p>
 </div>
 
-<div id="outline-container-org0163919" class="outline-4">
-<h4 id="org0163919"><span class="section-number-4">5.4.1.</span> Inorder tree walk</h4>
+<div id="outline-container-org8334e9b" class="outline-4">
+<h4 id="org8334e9b"><span class="section-number-4">5.4.1.</span> Inorder tree walk</h4>
 <div class="outline-text-4" id="text-5-4-1">
 <p>
 This algorithm is named so because it first traverses the left sub-tree recursively, then the node value and then traverses right sub-tree recursively.
@@ -1474,8 +1590,8 @@ This algorithm is named so because it first traverses the left sub-tree recursiv
 </ul>
 </div>
 </div>
-<div id="outline-container-orgb7b755f" class="outline-4">
-<h4 id="orgb7b755f"><span class="section-number-4">5.4.2.</span> Preorder tree walk</h4>
+<div id="outline-container-org9032ea6" class="outline-4">
+<h4 id="org9032ea6"><span class="section-number-4">5.4.2.</span> Preorder tree walk</h4>
 <div class="outline-text-4" id="text-5-4-2">
 <p>
 This algorithm is called preorder algorithm because it will first traverse the current node, then recursively traverses the left sub-tree and then recursively traverse the right sub-tree.
@@ -1500,8 +1616,8 @@ This algorithm is called preorder algorithm because it will first traverse the c
 </ul>
 </div>
 </div>
-<div id="outline-container-org3263699" class="outline-4">
-<h4 id="org3263699"><span class="section-number-4">5.4.3.</span> Postorder tree walk</h4>
+<div id="outline-container-orgcadeacb" class="outline-4">
+<h4 id="orgcadeacb"><span class="section-number-4">5.4.3.</span> Postorder tree walk</h4>
 <div class="outline-text-4" id="text-5-4-3">
 <p>
 In this algorithm, we first traverse the left sub-tree recursively, then the right-sub tree recursively and finally the node.
@@ -1528,22 +1644,26 @@ In this algorithm, we first traverse the left sub-tree recursively, then the rig
 </div>
 </div>
 
-<div id="outline-container-org001fc18" class="outline-2">
-<h2 id="org001fc18"><span class="section-number-2">6.</span> Binary Heap</h2>
+<div id="outline-container-orgc92fd36" class="outline-2">
+<h2 id="orgc92fd36"><span class="section-number-2">6.</span> Binary Heap</h2>
 <div class="outline-text-2" id="text-6">
 <p>
 Heap is a data structure represented as a complete tree which follows the heap property. All levels in a heap tree are completely filled except possible the last one, which is filled from left to right. 
-<br />
-<br />
+</p>
+
+
+<p>
 The most common implementation of the heap is a <b>binary heap</b>. The binary heap is represented as a binary tree. We can use an array to implement binary heaps.
-<br />
-<br />
+</p>
+
+
+<p>
 The heap data structure is used to implement <b>priority queues</b>. In many cases we even refer to heaps as priority queues and vice versa.
 </p>
 </div>
 
-<div id="outline-container-org8d2224d" class="outline-3">
-<h3 id="org8d2224d"><span class="section-number-3">6.1.</span> Heap Property</h3>
+<div id="outline-container-org2681375" class="outline-3">
+<h3 id="org2681375"><span class="section-number-3">6.1.</span> Heap Property</h3>
 <div class="outline-text-3" id="text-6-1">
 <p>
 Heaps are of two types
@@ -1562,32 +1682,44 @@ The heap property is different for min-heaps and max-heaps.
 </div>
 </div>
 
-<div id="outline-container-orgb454dd8" class="outline-3">
-<h3 id="orgb454dd8"><span class="section-number-3">6.2.</span> Shape of Heap</h3>
+<div id="outline-container-orgb4e271b" class="outline-3">
+<h3 id="orgb4e271b"><span class="section-number-3">6.2.</span> Shape of Heap</h3>
 <div class="outline-text-3" id="text-6-2">
 <p>
 Also reffered to as <b>shape property</b> of heap.
-<br />
+</p>
+
+<p>
 A heap is represented as a complete tree. A complete tree is one where all the levels are completely filled except possible the last. The last level if not completely filled is filled from left to right.
 </p>
 </div>
 </div>
-<div id="outline-container-org4bc46af" class="outline-3">
-<h3 id="org4bc46af"><span class="section-number-3">6.3.</span> Array implementation</h3>
+<div id="outline-container-org4bb5b60" class="outline-3">
+<h3 id="org4bb5b60"><span class="section-number-3">6.3.</span> Array implementation</h3>
 <div class="outline-text-3" id="text-6-3">
 <p>
 We can implement binary heap using arrays. The root of tree is the first element of the array. The next two elements are elements of second level of tree and children of the root node. Similary, the next four elements are elements of third level of tree and so on.
-<br />
-<br />
+</p>
+
+
+<p>
 <i><b>For a given level, the position in array from left to right is the position of elements in tree from left to right.</b></i>
-<br />
-<br />
+</p>
+
+
+<p>
 For example, a max-heap implemented using array can be represented as tree as shown
-<br />
-<br />
-<img src="./imgs/Heap-as-array.svg" alt="Heap-as-array.svg" class="org-svg" />
-<br />
-<br />
+</p>
+
+
+
+<div id="orgb750658" class="figure">
+<p><img src="./imgs/Heap-as-array.svg" alt="Heap-as-array.svg" class="org-svg" />
+</p>
+</div>
+
+
+<p>
 In C, we can create a heap struct for easier implementation of algorithms
 </p>
 <div class="org-src-container">
@@ -1600,15 +1732,15 @@ In C, we can create a heap struct for easier implementation of algorithms
 </div>
 </div>
 </div>
-<div id="outline-container-org833ffb2" class="outline-3">
-<h3 id="org833ffb2"><span class="section-number-3">6.4.</span> Operations on heaps</h3>
+<div id="outline-container-org0221095" class="outline-3">
+<h3 id="org0221095"><span class="section-number-3">6.4.</span> Operations on heaps</h3>
 <div class="outline-text-3" id="text-6-4">
 <p>
 Both insertion and deletion in heap must be done in a way which conform to the heap property as well as shape property of heap. Before we can look at insertion and deletion, we need a way to find parent and child for a given index. We will also first see up-heapify and down-heapfiy funtions.
 </p>
 </div>
-<div id="outline-container-org4179da6" class="outline-4">
-<h4 id="org4179da6"><span class="section-number-4">6.4.1.</span> Parent and child indices</h4>
+<div id="outline-container-org9ca23cf" class="outline-4">
+<h4 id="org9ca23cf"><span class="section-number-4">6.4.1.</span> Parent and child indices</h4>
 <div class="outline-text-4" id="text-6-4-1">
 <p>
 In a binary heap, we can find parent and children for any given index using simple formulas.
@@ -1628,12 +1760,14 @@ In a binary heap, we can find parent and children for any given index using simp
 </div>
 </div>
 
-<div id="outline-container-orge4751e4" class="outline-4">
-<h4 id="orge4751e4"><span class="section-number-4">6.4.2.</span> Down-heapify</h4>
+<div id="outline-container-org48cc041" class="outline-4">
+<h4 id="org48cc041"><span class="section-number-4">6.4.2.</span> Down-heapify</h4>
 <div class="outline-text-4" id="text-6-4-2">
 <p>
 The down-heapify is a function which can re-heapify an array if no element of heap violates the heap property other than index and it's two children.
-<br />
+</p>
+
+<p>
 This function runs in \(\theta (log_2n)\) time. The algorithm for this works as follows
 </p>
 <ol class="org-ol">
@@ -1667,12 +1801,14 @@ Since we shift element downwards, this operation is often called <i>down-heap</i
 </div>
 </div>
 
-<div id="outline-container-org6346f98" class="outline-4">
-<h4 id="org6346f98"><span class="section-number-4">6.4.3.</span> Up-heapify</h4>
+<div id="outline-container-org074a3e9" class="outline-4">
+<h4 id="org074a3e9"><span class="section-number-4">6.4.3.</span> Up-heapify</h4>
 <div class="outline-text-4" id="text-6-4-3">
 <p>
 The up-heapify is a function which can re-heapify an array if no element of heap violates the heap property other than index and it's parent.
-<br />
+</p>
+
+<p>
 This function runs in \(\theta (log_2n)\) time. The algorithm for this works as follows
 </p>
 <ol class="org-ol">
@@ -1701,12 +1837,14 @@ Since we shift element upwards, this operation is often called <i>up-heap</i> op
 </p>
 </div>
 </div>
-<div id="outline-container-orgbadbca5" class="outline-4">
-<h4 id="orgbadbca5"><span class="section-number-4">6.4.4.</span> Insertion</h4>
+<div id="outline-container-orgc8ebe60" class="outline-4">
+<h4 id="orgc8ebe60"><span class="section-number-4">6.4.4.</span> Insertion</h4>
 <div class="outline-text-4" id="text-6-4-4">
 <p>
 Insertion takes \(\theta (log_2n)\) time in a binary heap. To insert and element in heap, we will add it to the end of the heap and then apply up-heapify operation of the elment
-<br />
+</p>
+
+<p>
 The code shows example of insertion in a max-heap.
 </p>
 
@@ -1727,13 +1865,15 @@ The code shows example of insertion in a max-heap.
 </div>
 </div>
 
-<div id="outline-container-org9f6438e" class="outline-4">
-<h4 id="org9f6438e"><span class="section-number-4">6.4.5.</span> Deletion or Extraction</h4>
+<div id="outline-container-orgf3ed17f" class="outline-4">
+<h4 id="orgf3ed17f"><span class="section-number-4">6.4.5.</span> Deletion or Extraction</h4>
 <div class="outline-text-4" id="text-6-4-5">
 <p>
 Like insertion, extraction also takes \(\theta (log_2n)\) time. Extraction from heap will extract the root element of the heap. We can use the down-heapify function in order to re-heapify after extracting the root node.
-<br />
-<br />
+</p>
+
+
+<p>
 The code shows example of extraction in max-heap.
 </p>
 
@@ -1757,13 +1897,15 @@ The code shows example of extraction in max-heap.
 </div>
 </div>
 
-<div id="outline-container-orgff7022a" class="outline-4">
-<h4 id="orgff7022a"><span class="section-number-4">6.4.6.</span> Insert then extract</h4>
+<div id="outline-container-orgd9119c8" class="outline-4">
+<h4 id="orgd9119c8"><span class="section-number-4">6.4.6.</span> Insert then extract</h4>
 <div class="outline-text-4" id="text-6-4-6">
 <p>
 Inserting an element and then extracting from the heap can be done more efficiently than simply calling these functions seperately as defined previously. If we call both funtions we define above, we have to do an up-heap operation followed by a down-heap. Instead, there is a way to do just a single down-heap.
-<br />
-<br />
+</p>
+
+
+<p>
 The algorithm for this will work as follows in a max-heap.
 </p>
 <ol class="org-ol">
@@ -1795,16 +1937,16 @@ In python, this is implemented by the name of <b><i>heap replace</i></b>.
 </div>
 </div>
 
-<div id="outline-container-orgfa53e9e" class="outline-4">
-<h4 id="orgfa53e9e"><span class="section-number-4">6.4.7.</span> Searching</h4>
+<div id="outline-container-org9b7e8a4" class="outline-4">
+<h4 id="org9b7e8a4"><span class="section-number-4">6.4.7.</span> Searching</h4>
 <div class="outline-text-4" id="text-6-4-7">
 <p>
 Searching for a arbitrary element takes linear time in a heap. We use linear search to search for element in array.
 </p>
 </div>
 </div>
-<div id="outline-container-org17486b7" class="outline-4">
-<h4 id="org17486b7"><span class="section-number-4">6.4.8.</span> Deleting arbitray element</h4>
+<div id="outline-container-org002b988" class="outline-4">
+<h4 id="org002b988"><span class="section-number-4">6.4.8.</span> Deleting arbitray element</h4>
 <div class="outline-text-4" id="text-6-4-8">
 <p>
 For a max-heap, deleting an arbitrary element is done as follows
@@ -1816,8 +1958,8 @@ For a max-heap, deleting an arbitrary element is done as follows
 </ol>
 </div>
 </div>
-<div id="outline-container-org836b988" class="outline-4">
-<h4 id="org836b988"><span class="section-number-4">6.4.9.</span> Decrease and increase keys</h4>
+<div id="outline-container-orgc3895fc" class="outline-4">
+<h4 id="orgc3895fc"><span class="section-number-4">6.4.9.</span> Decrease and increase keys</h4>
 <div class="outline-text-4" id="text-6-4-9">
 <p>
 TODO : I don't know if it is neccessary to do this operation. It looks simple to implement.
@@ -1825,8 +1967,8 @@ TODO : I don't know if it is neccessary to do this operation. It looks simple to
 </div>
 </div>
 </div>
-<div id="outline-container-org3296889" class="outline-3">
-<h3 id="org3296889"><span class="section-number-3">6.5.</span> Building a heap from array</h3>
+<div id="outline-container-orge12ab6c" class="outline-3">
+<h3 id="orge12ab6c"><span class="section-number-3">6.5.</span> Building a heap from array</h3>
 <div class="outline-text-3" id="text-6-5">
 <p>
 We can convert a normal array into a heap using the down-heapify operation in linear time \(\left( \theta (n) \right)\)
@@ -1843,37 +1985,43 @@ We can convert a normal array into a heap using the down-heapify operation in li
 </div>
 <p>
 As we see, for <b><i>zero indexed language</i></b>, the range of for loop is [(len(array)/2) - 1, 0]
-<br />
+</p>
+
+<p>
 If we are using a <b><i>one indexed language</i></b>, then range of for loop is [len(array)/2, 1]
 </p>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org4e99733" class="outline-2">
-<h2 id="org4e99733"><span class="section-number-2">7.</span> Graphs</h2>
+<div id="outline-container-org1525ee1" class="outline-2">
+<h2 id="org1525ee1"><span class="section-number-2">7.</span> Graphs</h2>
 <div class="outline-text-2" id="text-7">
 <p>
 A graph is a data structure which consists of nodes/vertices, and edges. We sometimes write it as \(G=(V,E)\), where \(V\) is the set of vertices and \(E\) is the set of edges. When we are working on runtime of algorithms related to graphs, we represent runtime in two input sizes. \(|V|\) which we simply write as \(V\) is the number of vertices and similarly \(E\) is the number of edges. 
 </p>
 </div>
-<div id="outline-container-org106f14f" class="outline-3">
-<h3 id="org106f14f"><span class="section-number-3">7.1.</span> Representing graphs</h3>
+<div id="outline-container-org5cbf8ac" class="outline-3">
+<h3 id="org5cbf8ac"><span class="section-number-3">7.1.</span> Representing graphs</h3>
 <div class="outline-text-3" id="text-7-1">
 <p>
 We need a way to represent graphs in computers and to search a graph. Searching a graph means to systematically follow edges of graphs in order to reach vertices.
-<br />
-<br />
+</p>
+
+
+<p>
 The two common ways of representing graphs are either using adjacency lists and adjacency matrix. Either can represent both directed and undirected graphs.
 </p>
 </div>
 
-<div id="outline-container-orge34f5a3" class="outline-4">
-<h4 id="orge34f5a3"><span class="section-number-4">7.1.1.</span> Adjacency List</h4>
+<div id="outline-container-org6f8b06a" class="outline-4">
+<h4 id="org6f8b06a"><span class="section-number-4">7.1.1.</span> Adjacency List</h4>
 <div class="outline-text-4" id="text-7-1-1">
 <p>
 Every node in the graph is represented by a linked list. The list contains the nodes to which the list node is connected by an edge.
-<br />
+</p>
+
+<p>
 Example, if list-0 contains node-3, then node-0 is connected to node-3 by an edge.
 </p>
 <ul class="org-ul">
@@ -1882,30 +2030,44 @@ Example, if list-0 contains node-3, then node-0 is connected to node-3 by an edg
 </ul>
 <p>
 So in our previous example, if list-0 contains node-3, then the edge goes from 0 to 3 in the directed graph.
-<br />
-<br />
+</p>
+
+
+<p>
 The space taken by adjacency list representation is \(\theta (V + E)\).
-<br />
+</p>
+
+<p>
 Since each node represents an edge, it is easy to convert an adjacency representation graph to a <b>weighted graph</b>. A weighted graph is a graph where each edge has an associated weight. So the weight of (u, v) edge can be stored in the node-v of u's list.
-<br />
+</p>
+
+<p>
 The adjacency list representation is very robust and can represent various types of graph variants.
 <img src="./imgs/IMG_20230928_132750.jpg" alt="IMG_20230928_132750.jpg" />
 </p>
 </div>
 </div>
-<div id="outline-container-orgc0a971d" class="outline-4">
-<h4 id="orgc0a971d"><span class="section-number-4">7.1.2.</span> Adjacency Matrix</h4>
+<div id="outline-container-org8c35eb9" class="outline-4">
+<h4 id="org8c35eb9"><span class="section-number-4">7.1.2.</span> Adjacency Matrix</h4>
 <div class="outline-text-4" id="text-7-1-2">
 <p>
 We use a single matrix to represent the graph. The size of the matrix is \(\left( |V| \times |V| \right)\). When we make the matrix, all it's elements are zero, i.e the matrix is zero initialized.
-<br />
-<br />
+</p>
+
+
+<p>
 If there is an edge between vertices (x , y), we show it by setting
-<br />
+</p>
+
+<p>
 matrix[x][y] = true <b><i>or</i></b> matrix[x][y] = 1
-<br />
+</p>
+
+<p>
 If there is not an edge between vertices (x , y), we set
-<br />
+</p>
+
+<p>
 matrix[x][y] = false <b><i>or</i></b> matrix [x][y] = 0
 </p>
 <ul class="org-ul">
@@ -1915,38 +2077,50 @@ matrix[x][y] = false <b><i>or</i></b> matrix [x][y] = 0
 
 <p>
 The space taken by adjacency matrix is \(\theta (V^2)\).
-<br />
+</p>
+
+<p>
 For undirected graphs, the matrix will be symmetrical along the diagonal, because matrix will be equal to it's own <b>transpose</b>. So we can save space by only storing half the matrix in memory.
-<br />
-<br />
+</p>
+
+
+<p>
 When comparing asymptotic results, the adjacency list seems more efficient, but matrix has advantage of only storing 1 bit for each cell. So in denser graphs, the matrix may use less space.
-<br />
-<br />
+</p>
+
+
+<p>
 We can store weighted graphs in adjacency matrix by storing the weights along with the edge information in matrix cells.
 <img src="./imgs/IMG_20230928_132909.jpg" alt="IMG_20230928_132909.jpg" />
 </p>
 </div>
 </div>
 </div>
-<div id="outline-container-org5d2cfd2" class="outline-3">
-<h3 id="org5d2cfd2"><span class="section-number-3">7.2.</span> Vertex and edge attributes</h3>
+<div id="outline-container-org1f8a2a2" class="outline-3">
+<h3 id="org1f8a2a2"><span class="section-number-3">7.2.</span> Vertex and edge attributes</h3>
 <div class="outline-text-3" id="text-7-2">
 <p>
 Many times we have to store attributes with either vertices or edges or sometimes both. How this is differs by language. In notation, we will write it using a dot (.)
-<br />
-<br />
+</p>
+
+
+<p>
 For example, the attribute x of  v will be denoted as v.x
-<br />
+</p>
+
+<p>
 Similarly, the attribute x of edge (u , v) will be denoted as (u , v).x
 </p>
 </div>
 </div>
-<div id="outline-container-org7679fa9" class="outline-3">
-<h3 id="org7679fa9"><span class="section-number-3">7.3.</span> Density of graph</h3>
+<div id="outline-container-orgb9e1f9d" class="outline-3">
+<h3 id="orgb9e1f9d"><span class="section-number-3">7.3.</span> Density of graph</h3>
 <div class="outline-text-3" id="text-7-3">
 <p>
 Knowing the density of a graph can help us choose the way in which we represent our graph.
-<br />
+</p>
+
+<p>
 The formula for density of graph is
 \[ \text{density} = \frac{\text{number of edges}}{\text{maximum possible edges}} \]
 Maximum possible number of edges for a simple undirected graph is
@@ -1961,47 +2135,61 @@ And density of simple directed directed graph will be
 
 <p>
 Therefore, maximum density for a graph is 1. The minimum density for a graph is 0.
-<br />
+</p>
+
+<p>
 Knowing this, we can say graph with low density is a sparse graph and graph with high density is a dense graph.
 </p>
 </div>
-<div id="outline-container-org6979231" class="outline-4">
-<h4 id="org6979231"><span class="section-number-4">7.3.1.</span> Which representation to use</h4>
+<div id="outline-container-orgc330379" class="outline-4">
+<h4 id="orgc330379"><span class="section-number-4">7.3.1.</span> Which representation to use</h4>
 <div class="outline-text-4" id="text-7-3-1">
 <p>
 For a quick approximation, when undirected graph and \(2|E|\) is close to \(|V|^2\), we say that graph is dense, else we say it is sparse.
-<br />
+</p>
+
+<p>
 Similarly, for directed graph when \(|E|\) is close to \(|V|^2\), we can say graph is dense, else it is sparse.
-<br />
-<br />
+</p>
+
+
+<p>
 The list representation provides a more compact way to represent graph when the graph is <b>sparse</b>. Whereas matrix representation is better for <b>dense</b> graphs.
-<br />
+</p>
+
+<p>
 Another criteria is how algorithm will use the graph. If we want to traverse to neighbouring nodes, then list representation works well. If we want to quickly tell if there is an edge between two nodes, then matrix representation is better.
 </p>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orgbcf74d3" class="outline-3">
-<h3 id="orgbcf74d3"><span class="section-number-3">7.4.</span> Searching Graphs</h3>
+<div id="outline-container-org055fb51" class="outline-3">
+<h3 id="org055fb51"><span class="section-number-3">7.4.</span> Searching Graphs</h3>
 <div class="outline-text-3" id="text-7-4">
 <p>
 Graph search (or graph traversal) algorithms are used to explore a graph to find nodes and edges. Vertices not connected by edges are not explored by such algorithms. These algorithms start at a source vertex and traverse as much of the connected graph as possible.
-<br />
-<br />
+</p>
+
+
+<p>
 Searching graphs algorithm can also be used on trees, because trees are also graphs.
 </p>
 </div>
-<div id="outline-container-org3909509" class="outline-4">
-<h4 id="org3909509"><span class="section-number-4">7.4.1.</span> Breadth first search</h4>
+<div id="outline-container-org8b4402c" class="outline-4">
+<h4 id="org8b4402c"><span class="section-number-4">7.4.1.</span> Breadth first search</h4>
 <div class="outline-text-4" id="text-7-4-1">
 <p>
 BFS is one of the simplest algorithms for searching a graph and is used as an archetype for many other graph algorithms. This algorithm works well with the adjacency list representation.
-<br />
-<br />
+</p>
+
+
+<p>
 In BFS, the nodes are explored based on their distance from the starting node. What we mean by distance between nodes is how many edges are in between the two nodes.
-<br />
-<br />
+</p>
+
+
+<p>
 So in BFS, all nodes at distance 1 are explored first, then nodes at distance 2 are explored, then nodes at distance 3 and so on. That is, all nodes at distance \(k\) are explored before exploring nodes at distance \((k+1)\).
 </p>
 <div class="org-src-container">
@@ -2036,13 +2224,15 @@ For an input graph \(G=(V,E)\), every node is enqued only once and hence, dequeu
 </p>
 </div>
 </div>
-<div id="outline-container-org204dbb8" class="outline-4">
-<h4 id="org204dbb8"><span class="section-number-4">7.4.2.</span> Breadth-first trees for shortest path</h4>
+<div id="outline-container-org24d3793" class="outline-4">
+<h4 id="org24d3793"><span class="section-number-4">7.4.2.</span> Breadth-first trees for shortest path</h4>
 <div class="outline-text-4" id="text-7-4-2">
 <p>
 For a simple graph, we may want to get the shortest path between two nodes. This can be done by making a Breadth-first tree.
-<br />
-<br />
+</p>
+
+
+<p>
 When we are traversing nodes using BFS, we can create a breadth-first tree. To make this tree, we simply need to set parent of u in the inner while loop in the BFS algorithm to v. So our algorithm from earlier will become.
 </p>
 <div class="org-src-container">
@@ -2076,7 +2266,9 @@ When we are traversing nodes using BFS, we can create a breadth-first tree. To m
 </div>
 <p>
 In this tree, the path upwards from any given node to start node will be the shortest path to the start node.
-<br />
+</p>
+
+<p>
 Therefore, we can get the shortest path now as follows
 </p>
 <div class="org-src-container">
@@ -2094,8 +2286,8 @@ This will print shortest path from end node to start node.
 </p>
 </div>
 </div>
-<div id="outline-container-orgece3fd8" class="outline-4">
-<h4 id="orgece3fd8"><span class="section-number-4">7.4.3.</span> Depth first search</h4>
+<div id="outline-container-orga13cb3b" class="outline-4">
+<h4 id="orga13cb3b"><span class="section-number-4">7.4.3.</span> Depth first search</h4>
 <div class="outline-text-4" id="text-7-4-3">
 <p>
 Unlike BFS, depth first search is more biased towards the farthest nodes of a graph. It follows a single path till it reaches the end of a path. After that, it back tracks to the last open path and follows that one. This process is repeated till all nodes are covered.
@@ -2166,8 +2358,8 @@ For an input graph \(G=(V,E)\), the time complexity for Depth first search is \(
 </div>
 </div>
 
-<div id="outline-container-orgc3c6b4c" class="outline-4">
-<h4 id="orgc3c6b4c"><span class="section-number-4">7.4.4.</span> Properties of DFS</h4>
+<div id="outline-container-org431e9dd" class="outline-4">
+<h4 id="org431e9dd"><span class="section-number-4">7.4.4.</span> Properties of DFS</h4>
 <div class="outline-text-4" id="text-7-4-4">
 <p>
 DFS is very useful to <b><i>understand the structure of a graph</i></b>. To study the structure of a graph using DFS, we will get two attributes of each node using DFS. We suppose that each step in traversal takes a unit of time.
@@ -2210,12 +2402,14 @@ This algorithm will give all nodes the (node.d) and (node.f) attribute. <b>Simil
 </p>
 </div>
 
-<div id="outline-container-org4684501" class="outline-5">
-<h5 id="org4684501"><span class="section-number-5">7.4.4.1.</span> Parenthesis theorem</h5>
+<div id="outline-container-orgd4d4f28" class="outline-5">
+<h5 id="orgd4d4f28"><span class="section-number-5">7.4.4.1.</span> Parenthesis theorem</h5>
 <div class="outline-text-5" id="text-7-4-4-1">
 <p>
 The paranthesis theorem is used to find relationship between two nodes in the <b>Depth First Search Tree</b>.
-<br />
+</p>
+
+<p>
 For any two given nodes \(x\) and \(y\).
 </p>
 <ul class="org-ul">
@@ -2228,8 +2422,8 @@ So if node, \(y\) is a proper descendant of node \(x\) in the depth first tree, 
 </p>
 </div>
 </div>
-<div id="outline-container-org9543fb3" class="outline-5">
-<h5 id="org9543fb3"><span class="section-number-5">7.4.4.2.</span> White path theorem</h5>
+<div id="outline-container-org70e5d37" class="outline-5">
+<h5 id="org70e5d37"><span class="section-number-5">7.4.4.2.</span> White path theorem</h5>
 <div class="outline-text-5" id="text-7-4-4-2">
 <p>
 If \(y\) is a descendant of \(x\) in graph G, then at time \(t = x.d\), the path from \(u\) to \(v\) was undiscovered.
@@ -2240,8 +2434,8 @@ That is, all the nodes in path from \(x\) to \(y\) were undiscovered. Undiscover
 </p>
 </div>
 </div>
-<div id="outline-container-orgbd4c9e1" class="outline-5">
-<h5 id="orgbd4c9e1"><span class="section-number-5">7.4.4.3.</span> Classification of edges</h5>
+<div id="outline-container-orgc4a3677" class="outline-5">
+<h5 id="orgc4a3677"><span class="section-number-5">7.4.4.3.</span> Classification of edges</h5>
 <div class="outline-text-5" id="text-7-4-4-3">
 <p>
 We can arrange the connected nodes of a graph into the form of a Depth-first tree. When the graph is arranged in this way, the edges can be classified into four types
@@ -2261,8 +2455,8 @@ The back edge, forward edge and cross edge are not a part of the depth-first tre
 </div>
 </div>
 </div>
-<div id="outline-container-org7a4807b" class="outline-4">
-<h4 id="org7a4807b"><span class="section-number-4">7.4.5.</span> Depth-first and Breadth-first Forests</h4>
+<div id="outline-container-orgc072d4e" class="outline-4">
+<h4 id="orgc072d4e"><span class="section-number-4">7.4.5.</span> Depth-first and Breadth-first Forests</h4>
 <div class="outline-text-4" id="text-7-4-5">
 <p>
 In directed graphs, the depth-first and breadth-first algorithms <b>can't traverse to nodes which are not connected by a directed edge</b>. This can leave parts of graph not mapped by a single tree.
@@ -2270,7 +2464,9 @@ In directed graphs, the depth-first and breadth-first algorithms <b>can't traver
 
 <p>
 These tree's can help us better understand the graph and get properties of nodes, so we can't leave them when converting a graph to tree.
-<br />
+</p>
+
+<p>
 To solve this, we have <i><b>collection of trees for the graph</b></i>. This collection of trees will cover all the nodes of the graph and is called a <b>forest</b>. The forest of graph \(G\) is represented by \(G_{\pi}\).
 </p>
 
@@ -2283,8 +2479,8 @@ Thus when using DFS or BFS on a graph, we store this collection of trees i.e, fo
 </ul>
 </div>
 </div>
-<div id="outline-container-org52dba3d" class="outline-4">
-<h4 id="org52dba3d"><span class="section-number-4">7.4.6.</span> Topological sort using DFS</h4>
+<div id="outline-container-orgb105fdb" class="outline-4">
+<h4 id="orgb105fdb"><span class="section-number-4">7.4.6.</span> Topological sort using DFS</h4>
 <div class="outline-text-4" id="text-7-4-6">
 <p>
 Topological sorting can only be done on <b>directed acyclic graphs</b>. A topological sort is a linear ordering of the nodes of a directed acyclic graph (dag). It is ordering the nodes such that all the <b>the edges point right</b>.
@@ -2308,8 +2504,8 @@ TODO : Add image to show process of topological sorting
 </div>
 </div>
 </div>
-<div id="outline-container-org7d371ab" class="outline-3">
-<h3 id="org7d371ab"><span class="section-number-3">7.5.</span> Strongly connected components</h3>
+<div id="outline-container-orgafab789" class="outline-3">
+<h3 id="orgafab789"><span class="section-number-3">7.5.</span> Strongly connected components</h3>
 <div class="outline-text-3" id="text-7-5">
 <p>
 If we can traverse from a node \(x\) to node \(y\) in a directed graph, we show it as \(x \rightsquigarrow y\).
@@ -2326,14 +2522,14 @@ Example, the dotted regions are the strongly connected components (SCC) of the g
 </p>
 
 
-<div id="org3fb2b35" class="figure">
+<div id="orgc5e735c" class="figure">
 <p><img src="./imgs/strongly-connected-component.svg" alt="strongly-connected-component.svg" class="org-svg" />
 </p>
 </div>
 </div>
 
-<div id="outline-container-org2a3aa7d" class="outline-4">
-<h4 id="org2a3aa7d"><span class="section-number-4">7.5.1.</span> Finding strongly connected components</h4>
+<div id="outline-container-org39b71bd" class="outline-4">
+<h4 id="org39b71bd"><span class="section-number-4">7.5.1.</span> Finding strongly connected components</h4>
 <div class="outline-text-4" id="text-7-5-1">
 <p>
 We can find the strongly connected components of a graph \(G\) using DFS. The algorithm is called Kosaraju's algorithm.
@@ -2374,7 +2570,7 @@ TODO : Add images for this
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Anmol Nawani</p>
-<p class="date">Created: 2024-11-04 Mon 04:06</p>
+<p class="date">Created: 2024-11-29 Fri 21:24</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

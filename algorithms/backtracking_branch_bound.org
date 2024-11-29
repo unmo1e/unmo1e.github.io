@@ -18,7 +18,7 @@ The backtracking method will think of the set of all states of solution in form 
   + Else we will abandon the branch return to the parent
 
 The general pseudocode for a backtrack algorithm is
-#+begin_src python
+#+begin_src  
   def backtrack(currentNode):
     """ if partial solution is wrong, return to parent """
     if (not correct(currentNode)):

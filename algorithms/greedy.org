@@ -266,14 +266,14 @@ The formal algorithm is
 TODO : Add image of graph from wikipedia
 
 The edge list in sorted order is
-#+begin_src python
+#+begin_src 
   edge_list = [ ['a','d',5], ['c','e',5], ['d','f',6],
 		['b','e',7], ['a','b',7], ['b','c',8],
 		['f','e',8], ['e','g',9], ['d','b',9],
 		['g','f',11], ['d','e',15] ]
 #+end_src
 The collection of sets, each with initially single vertex of the graph (along with helper functions to work on collection)
-#+begin_src python
+#+begin_src 
   sets = [['a'], ['b'], ['c'], ['d'],
 	  ['e'], ['f'], ['g']]
 
@@ -291,7 +291,7 @@ The collection of sets, each with initially single vertex of the graph (along wi
 
 #+end_src
 Then the kruskal's algorithm will work as follows
-#+begin_src python
+#+begin_src 
   selected_edges = []
 
   for edge in edge_list:

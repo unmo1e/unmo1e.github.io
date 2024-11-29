@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2024-11-04 Mon 04:06 -->
+<!-- 2024-11-29 Fri 21:24 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Algorithms</title>
@@ -193,7 +193,7 @@
     { background-color: #ffff00; color: #000000; font-weight: bold; }
   .org-svg { width: 90%; }
 </style>
-<link rel="stylesheet" href="src/org.css">
+<link rel="stylesheet" href="../common/org.css">
 <script type="text/x-mathjax-config">
     MathJax.Hub.Config({
         displayAlign: "center",
@@ -223,277 +223,277 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org76d5c81">1. Data structure and Algorithm</a></li>
-<li><a href="#org9bb8386">2. Characteristics of Algorithms</a></li>
-<li><a href="#orgd909ead">3. Behaviour of algorithm</a>
+<li><a href="#org6d95ff6">1. Data structure and Algorithm</a></li>
+<li><a href="#orgb12f54e">2. Characteristics of Algorithms</a></li>
+<li><a href="#orga5db32b">3. Behaviour of algorithm</a>
 <ul>
-<li><a href="#orgf025e3c">3.1. Best, Worst and Average Cases</a></li>
-<li><a href="#org1f9590d">3.2. Bounds of algorithm</a></li>
+<li><a href="#orgca3f073">3.1. Best, Worst and Average Cases</a></li>
+<li><a href="#orgca0c0c1">3.2. Bounds of algorithm</a></li>
 </ul>
 </li>
-<li><a href="#orgf41bcd3">4. Asymptotic Notations</a>
+<li><a href="#org080a111">4. Asymptotic Notations</a>
 <ul>
-<li><a href="#orgb4d944c">4.1. Big-Oh Notation [O]</a></li>
-<li><a href="#org1ee5866">4.2. Omega Notation [ \(\Omega\) ]</a></li>
-<li><a href="#orgf6ffdb5">4.3. Theta Notation [ \(\theta\) ]</a></li>
-<li><a href="#org0c70105">4.4. Little-Oh Notation [o]</a></li>
-<li><a href="#orgdfb084f">4.5. Little-Omega Notation [ \(\omega\) ]</a></li>
+<li><a href="#org2b20ad8">4.1. Big-Oh Notation [O]</a></li>
+<li><a href="#org9fb2ca2">4.2. Omega Notation [ \(\Omega\) ]</a></li>
+<li><a href="#orgc08d8e0">4.3. Theta Notation [ \(\theta\) ]</a></li>
+<li><a href="#org055dab6">4.4. Little-Oh Notation [o]</a></li>
+<li><a href="#org38934ed">4.5. Little-Omega Notation [ \(\omega\) ]</a></li>
 </ul>
 </li>
-<li><a href="#org9e05069">5. Comparing Growth rate of funtions</a>
+<li><a href="#org2a662ac">5. Comparing Growth rate of funtions</a>
 <ul>
-<li><a href="#org78a680d">5.1. Applying limit</a></li>
-<li><a href="#org2ede754">5.2. Using logarithm</a></li>
-<li><a href="#org457fe73">5.3. Common funtions</a></li>
+<li><a href="#org6f4ab0f">5.1. Applying limit</a></li>
+<li><a href="#orgf19d225">5.2. Using logarithm</a></li>
+<li><a href="#orgc3693e6">5.3. Common funtions</a></li>
 </ul>
 </li>
-<li><a href="#org9de1ba9">6. Properties of Asymptotic Notations</a>
+<li><a href="#orgddf7d23">6. Properties of Asymptotic Notations</a>
 <ul>
-<li><a href="#org1616697">6.1. Big-Oh</a></li>
-<li><a href="#org3981fce">6.2. Properties</a></li>
+<li><a href="#org90c7210">6.1. Big-Oh</a></li>
+<li><a href="#org417d5e6">6.2. Properties</a></li>
 </ul>
 </li>
-<li><a href="#org33cd51c">7. Calculating time complexity of algorithm</a>
+<li><a href="#orgca4748a">7. Calculating time complexity of algorithm</a>
 <ul>
-<li><a href="#org650ddf0">7.1. Sequential instructions</a></li>
-<li><a href="#org1caa92e">7.2. Iterative instructions</a></li>
-<li><a href="#org7815be2">7.3. An example for time complexities of nested loops</a></li>
+<li><a href="#org63e8db0">7.1. Sequential instructions</a></li>
+<li><a href="#org072b07e">7.2. Iterative instructions</a></li>
+<li><a href="#orgf64dfbb">7.3. An example for time complexities of nested loops</a></li>
 </ul>
 </li>
-<li><a href="#orgd0aae57">8. Time complexity of recursive instructions</a>
+<li><a href="#org59eb572">8. Time complexity of recursive instructions</a>
 <ul>
-<li><a href="#org581d9b6">8.1. Time complexity in recursive form</a></li>
+<li><a href="#org2190085">8.1. Time complexity in recursive form</a></li>
 </ul>
 </li>
-<li><a href="#orgb8e2fd3">9. Solving Recursive time complexities</a>
+<li><a href="#orge658b1a">9. Solving Recursive time complexities</a>
 <ul>
-<li><a href="#org5dcb565">9.1. Iterative method</a></li>
-<li><a href="#org7ffa610">9.2. Master Theorem for Subtract recurrences</a></li>
-<li><a href="#orgaafbda7">9.3. Master Theorem for divide and conquer recurrences</a></li>
+<li><a href="#org23570ae">9.1. Iterative method</a></li>
+<li><a href="#orgea6a952">9.2. Master Theorem for Subtract recurrences</a></li>
+<li><a href="#org430df53">9.3. Master Theorem for divide and conquer recurrences</a></li>
 </ul>
 </li>
-<li><a href="#org6554493">10. Square root recurrence relations</a>
+<li><a href="#org5d01f5d">10. Square root recurrence relations</a>
 <ul>
-<li><a href="#org8b16d2f">10.1. Iterative method</a></li>
-<li><a href="#org830172f">10.2. Master Theorem for square root recurrence relations</a></li>
+<li><a href="#org2142d06">10.1. Iterative method</a></li>
+<li><a href="#orgd7c3cf0">10.2. Master Theorem for square root recurrence relations</a></li>
 </ul>
 </li>
-<li><a href="#org3788f44">11. Extended Master's theorem for time complexity of recursive algorithms</a>
+<li><a href="#org78f66cf">11. Extended Master's theorem for time complexity of recursive algorithms</a>
 <ul>
-<li><a href="#org4cf55ea">11.1. For (k = -1)</a></li>
-<li><a href="#orgd406ba9">11.2. For (k &lt; -1)</a></li>
+<li><a href="#orge41cc2e">11.1. For (k = -1)</a></li>
+<li><a href="#org3e521ce">11.2. For (k &lt; -1)</a></li>
 </ul>
 </li>
-<li><a href="#org9f4acd7">12. Tree method for time complexity of recursive algorithms</a></li>
-<li><a href="#org6349122">13. Space complexity</a>
+<li><a href="#org0e95700">12. Tree method for time complexity of recursive algorithms</a></li>
+<li><a href="#orgeff2a1e">13. Space complexity</a>
 <ul>
-<li><a href="#org5a8c908">13.1. Auxiliary space complexity</a></li>
+<li><a href="#org548d384">13.1. Auxiliary space complexity</a></li>
 </ul>
 </li>
-<li><a href="#orgabf25af">14. Calculating auxiliary space complexity</a>
+<li><a href="#org72ae7ed">14. Calculating auxiliary space complexity</a>
 <ul>
-<li><a href="#orgade04a1">14.1. Data Space used</a></li>
-<li><a href="#org1e01bf7">14.2. Code Execution space in recursive algorithm</a></li>
+<li><a href="#org99e355b">14.1. Data Space used</a></li>
+<li><a href="#org65b693d">14.2. Code Execution space in recursive algorithm</a></li>
 </ul>
 </li>
-<li><a href="#org4800c5b">15. Divide and Conquer algorithms</a></li>
-<li><a href="#org9bb591a">16. Searching for element in array</a>
+<li><a href="#org5c3b163">15. Divide and Conquer algorithms</a></li>
+<li><a href="#org0e83846">16. Searching for element in array</a>
 <ul>
-<li><a href="#orgab07e87">16.1. Straight forward approach for searching (<b>Linear Search</b>)</a></li>
-<li><a href="#orgc9927c0">16.2. Divide and conquer approach (<b>Binary search</b>)</a></li>
+<li><a href="#org92e4e5b">16.1. Straight forward approach for searching (<b>Linear Search</b>)</a></li>
+<li><a href="#orgea54a36">16.2. Divide and conquer approach (<b>Binary search</b>)</a></li>
 </ul>
 </li>
-<li><a href="#orgc05f18e">17. Max and Min element from array</a>
+<li><a href="#orga45a0ed">17. Max and Min element from array</a>
 <ul>
-<li><a href="#org23f3aaf">17.1. Straightforward approach</a></li>
-<li><a href="#org8fe158c">17.2. Divide and conquer approach</a></li>
-<li><a href="#org89f98fa">17.3. Efficient single loop approach (Increment by 2)</a></li>
+<li><a href="#orgb966aaa">17.1. Straightforward approach</a></li>
+<li><a href="#org0746763">17.2. Divide and conquer approach</a></li>
+<li><a href="#org65d112d">17.3. Efficient single loop approach (Increment by 2)</a></li>
 </ul>
 </li>
-<li><a href="#orgcc615c2">18. Square matrix multiplication</a>
+<li><a href="#orgc30bf7a">18. Square matrix multiplication</a>
 <ul>
-<li><a href="#orge1bb9ab">18.1. Straight forward method</a></li>
-<li><a href="#orgabd241c">18.2. Divide and conquer approach</a></li>
-<li><a href="#orgfb16007">18.3. Strassen's algorithm</a></li>
+<li><a href="#orgf0dc08e">18.1. Straight forward method</a></li>
+<li><a href="#org457ba77">18.2. Divide and conquer approach</a></li>
+<li><a href="#orge8216c2">18.3. Strassen's algorithm</a></li>
 </ul>
 </li>
-<li><a href="#org24e0e3c">19. Sorting algorithms</a>
+<li><a href="#orgf61dd57">19. Sorting algorithms</a>
 <ul>
-<li><a href="#orgeb2af1c">19.1. In place vs out place sorting algorithm</a></li>
+<li><a href="#org9cad2d1">19.1. In place vs out place sorting algorithm</a></li>
 </ul>
 </li>
-<li><a href="#orge0b5e81">20. Bubble sort</a></li>
-<li><a href="#orgdb9efbe">21. Selection sort</a>
+<li><a href="#orgfc0f756">20. Bubble sort</a></li>
+<li><a href="#org442a029">21. Selection sort</a>
 <ul>
-<li><a href="#org9c5476b">21.1. Time complexity</a></li>
+<li><a href="#org11c6c9e">21.1. Time complexity</a></li>
 </ul>
 </li>
-<li><a href="#org0811d30">22. Insertion sort</a>
+<li><a href="#org4617c8c">22. Insertion sort</a>
 <ul>
-<li><a href="#org4b3dd91">22.1. Time complexity</a></li>
+<li><a href="#org5502fc1">22.1. Time complexity</a></li>
 </ul>
 </li>
-<li><a href="#orge9eebe7">23. Inversion in array</a>
+<li><a href="#org165dff9">23. Inversion in array</a>
 <ul>
-<li><a href="#orgf6baadc">23.1. Relation between time complexity of insertion sort and inversion</a></li>
+<li><a href="#org32523b2">23.1. Relation between time complexity of insertion sort and inversion</a></li>
 </ul>
 </li>
-<li><a href="#org10b5eed">24. Quick sort</a>
+<li><a href="#org21195d9">24. Quick sort</a>
 <ul>
-<li><a href="#org6fb5505">24.1. Lomuto partition</a></li>
-<li><a href="#org6451ec7">24.2. Time complexity of quicksort</a></li>
-<li><a href="#org8f68dec">24.3. Number of comparisions</a></li>
+<li><a href="#orgebcb6fc">24.1. Lomuto partition</a></li>
+<li><a href="#org209cd09">24.2. Time complexity of quicksort</a></li>
+<li><a href="#orgaeccec5">24.3. Number of comparisions</a></li>
 </ul>
 </li>
-<li><a href="#org1663660">25. Merging two sorted arrays (2-Way Merge)</a></li>
-<li><a href="#orgc0167c9">26. Merging k sorted arrays (k-way merge)</a></li>
-<li><a href="#org8420796">27. Merge sort</a>
+<li><a href="#org48dfc7b">25. Merging two sorted arrays (2-Way Merge)</a></li>
+<li><a href="#orgd35119e">26. Merging k sorted arrays (k-way merge)</a></li>
+<li><a href="#orgc61b3c8">27. Merge sort</a>
 <ul>
-<li><a href="#org5c7790b">27.1. Time complexity</a></li>
-<li><a href="#orgc34e1f9">27.2. Space complexity</a></li>
+<li><a href="#org9135392">27.1. Time complexity</a></li>
+<li><a href="#orgfe93151">27.2. Space complexity</a></li>
 </ul>
 </li>
-<li><a href="#org18b9955">28. Stable and unstable sorting algorithms</a></li>
-<li><a href="#orgde718f8">29. Non-comparitive sorting algorithms</a>
+<li><a href="#org4049015">28. Stable and unstable sorting algorithms</a></li>
+<li><a href="#orgc43ccf1">29. Non-comparitive sorting algorithms</a>
 <ul>
-<li><a href="#orgbfafd39">29.1. Counting sort</a></li>
-<li><a href="#orgea9c5a5">29.2. Radix sort</a></li>
-<li><a href="#org804781d">29.3. Bucket sort</a>
+<li><a href="#org764b817">29.1. Counting sort</a></li>
+<li><a href="#orgbb0b28a">29.2. Radix sort</a></li>
+<li><a href="#orgf7fda19">29.3. Bucket sort</a>
 <ul>
-<li><a href="#orgd065d7e">29.3.1. Time complexity</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href="#orgbad6bc7">30. Dynamic Programming</a>
-<ul>
-<li><a href="#org57d73b3">30.1. Use and steps of dynamic programming</a></li>
-<li><a href="#org629b5ca">30.2. Rod cutting (Simple example for dynamic programming)</a>
-<ul>
-<li><a href="#org4cc3782">30.2.1. Analyzing problem</a></li>
-<li><a href="#orgb5191dc">30.2.2. Recursive solution</a>
-<ul>
-<li><a href="#orgeda2c25">30.2.2.1. Time complexity</a></li>
-</ul>
-</li>
-<li><a href="#org5b5057e">30.2.3. Dynamic Programming Solutions</a></li>
-<li><a href="#orgaf79784">30.2.4. Top Down Memoized Solution</a></li>
-<li><a href="#org3634532">30.2.5. Bottom Up Solution</a></li>
-<li><a href="#org602f672">30.2.6. Running time of Top Down and Bottom Up Solutions</a></li>
-<li><a href="#orgb3423cc">30.2.7. Reconstructing a solution</a></li>
-</ul>
-</li>
-<li><a href="#org486cee7">30.3. Subproblem graph</a></li>
-<li><a href="#orgd643667">30.4. Matrix-chain multiplication</a>
-<ul>
-<li><a href="#org38fb468">30.4.1. Counting number of paranthesis</a></li>
-<li><a href="#org354cbc2">30.4.2. Solution</a>
-<ul>
-<li><a href="#org81d3afd">30.4.2.1. Step 1 : Analyzing problem</a></li>
-<li><a href="#org475a831">30.4.2.2. Step 2 : Creating recursive solution</a></li>
-<li><a href="#org3a855a4">30.4.2.3. Step 3 : Applying dynamic programming</a></li>
-<li><a href="#org89cbbd3">30.4.2.4. Step 4 : Constructing a solution</a></li>
+<li><a href="#orgda8a490">29.3.1. Time complexity</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#orgd291685">30.5. Longest common subsequence</a>
+<li><a href="#org5e7b9d4">30. Dynamic Programming</a>
 <ul>
-<li><a href="#org754f7ee">30.5.1. Substring vs Subsequence</a></li>
-<li><a href="#org3c39e57">30.5.2. Analyzing problem</a></li>
-<li><a href="#org8c70925">30.5.3. Recursive solution</a></li>
-<li><a href="#orgb9caf7c">30.5.4. Applying Dynamic Programming</a></li>
-<li><a href="#orge01feed">30.5.5. Constructing solution</a>
+<li><a href="#org505ed26">30.1. Use and steps of dynamic programming</a></li>
+<li><a href="#org5e6fc59">30.2. Rod cutting (Simple example for dynamic programming)</a>
 <ul>
-<li><a href="#org0b59ae3">30.5.5.1. Storing solution in top-down</a></li>
-<li><a href="#org8d7908b">30.5.5.2. Storing solution in bottom-up</a></li>
-<li><a href="#org3664787">30.5.5.3. Printing solution</a></li>
+<li><a href="#orge0b21e7">30.2.1. Analyzing problem</a></li>
+<li><a href="#org6afe52d">30.2.2. Recursive solution</a>
+<ul>
+<li><a href="#orgc047016">30.2.2.1. Time complexity</a></li>
 </ul>
 </li>
-<li><a href="#orgfeb5123">30.5.6. More compact way to store solution</a></li>
+<li><a href="#orgad1cab1">30.2.3. Dynamic Programming Solutions</a></li>
+<li><a href="#org2112973">30.2.4. Top Down Memoized Solution</a></li>
+<li><a href="#org9691c52">30.2.5. Bottom Up Solution</a></li>
+<li><a href="#org2e8f295">30.2.6. Running time of Top Down and Bottom Up Solutions</a></li>
+<li><a href="#orgd9fb0c5">30.2.7. Reconstructing a solution</a></li>
 </ul>
 </li>
-<li><a href="#org73bbd5c">30.6. 0/1 knapsack problem</a>
+<li><a href="#orgba1997c">30.3. Subproblem graph</a></li>
+<li><a href="#orgca4dd09">30.4. Matrix-chain multiplication</a>
 <ul>
-<li><a href="#org91c4ba6">30.6.1. Analyzing problem</a></li>
-<li><a href="#org8d9cee8">30.6.2. Recursive solution</a></li>
-<li><a href="#orgf4141a4">30.6.3. Applying Dynamic Programming</a></li>
-<li><a href="#org4908d6a">30.6.4. Constructing solution</a></li>
-</ul>
-</li>
-<li><a href="#orgef605dc">30.7. Floyd-Warshall algorithm</a>
+<li><a href="#org415ed04">30.4.1. Counting number of paranthesis</a></li>
+<li><a href="#org3df76d5">30.4.2. Solution</a>
 <ul>
-<li><a href="#orgd357229">30.7.1. Analyzing problem</a></li>
-<li><a href="#org9bee167">30.7.2. Recursive solution</a></li>
-<li><a href="#orgd10c03c">30.7.3. Dynamic Programming</a></li>
-<li><a href="#orgb7dc9f0">30.7.4. Reconstructing path (solution)</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href="#orgd1d55d4">31. Greedy algorithm</a>
-<ul>
-<li><a href="#orgeccded8">31.1. Activity-selection problem</a>
-<ul>
-<li><a href="#orgf95c5d6">31.1.1. Analyzing problem</a></li>
-<li><a href="#org57c1c15">31.1.2. Greedy solution</a></li>
-</ul>
-</li>
-<li><a href="#org5f4a6c4">31.2. Job Scheduling with deadlines</a>
-<ul>
-<li><a href="#orgef16f29">31.2.1. Greedy algorithm</a></li>
-<li><a href="#org60c7263">31.2.2. Worked Example</a></li>
-</ul>
-</li>
-<li><a href="#org620c7ea">31.3. Fractional knapsack</a>
-<ul>
-<li><a href="#org52e0e27">31.3.1. Greedy algorithm</a></li>
-<li><a href="#org8c3fee2">31.3.2. Worked example</a></li>
-</ul>
-</li>
-<li><a href="#org7f61957">31.4. Huffman coding</a>
-<ul>
-<li><a href="#orge354ace">31.4.1. Encoding</a>
-<ul>
-<li><a href="#orgef809a3">31.4.1.1. Building Huffman tree</a></li>
-<li><a href="#org9d6e80f">31.4.1.2. Traversing huffman tree to encode</a></li>
-</ul>
-</li>
-<li><a href="#orgeba24c4">31.4.2. Decoding</a></li>
-</ul>
-</li>
-<li><a href="#org3384b3f">31.5. Minimum spanning trees</a>
-<ul>
-<li><a href="#orgf783e4b">31.5.1. Kruskal's algorithm</a>
-<ul>
-<li><a href="#orgb6d4d40">31.5.1.1. Algorithm</a></li>
-<li><a href="#org88d8ccc">31.5.1.2. Pseudocode</a></li>
-</ul>
-</li>
-<li><a href="#orgd2d3b4e">31.5.2. Prim's algorithm</a>
-<ul>
-<li><a href="#org4dfeca9">31.5.2.1. Algorithm</a></li>
+<li><a href="#org407a047">30.4.2.1. Step 1 : Analyzing problem</a></li>
+<li><a href="#org024883c">30.4.2.2. Step 2 : Creating recursive solution</a></li>
+<li><a href="#org244f66a">30.4.2.3. Step 3 : Applying dynamic programming</a></li>
+<li><a href="#orge70c4ef">30.4.2.4. Step 4 : Constructing a solution</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org2451dbe">31.6. Single source shortest path</a></li>
+<li><a href="#orgfd15a21">30.5. Longest common subsequence</a>
+<ul>
+<li><a href="#org2e090cd">30.5.1. Substring vs Subsequence</a></li>
+<li><a href="#org76433d3">30.5.2. Analyzing problem</a></li>
+<li><a href="#orgfe2f74f">30.5.3. Recursive solution</a></li>
+<li><a href="#orgf68d327">30.5.4. Applying Dynamic Programming</a></li>
+<li><a href="#orgf232eb6">30.5.5. Constructing solution</a>
+<ul>
+<li><a href="#org68b8881">30.5.5.1. Storing solution in top-down</a></li>
+<li><a href="#orgac7122e">30.5.5.2. Storing solution in bottom-up</a></li>
+<li><a href="#org690554a">30.5.5.3. Printing solution</a></li>
 </ul>
 </li>
-<li><a href="#org6fcf453">32. Backtracking</a>
-<ul>
-<li><a href="#orge4e3047">32.1. How to backtrack</a></li>
-<li><a href="#orgefed8a1">32.2. n-Queen problem</a></li>
-<li><a href="#org9a98e4a">32.3. Graph coloring problem</a></li>
-<li><a href="#orgb02302e">32.4. Hamiltonian Cylces</a></li>
-<li><a href="#orgbeeee83">32.5. Sum-of-subsets</a></li>
+<li><a href="#org5eda118">30.5.6. More compact way to store solution</a></li>
 </ul>
 </li>
-<li><a href="#orgfa585fb">33. Branch and Bound</a>
+<li><a href="#org4bc1a85">30.6. 0/1 knapsack problem</a>
 <ul>
-<li><a href="#orgb9cea87">33.1. Travelling Salesman Problem</a>
+<li><a href="#orgacfdb5b">30.6.1. Analyzing problem</a></li>
+<li><a href="#org63cea59">30.6.2. Recursive solution</a></li>
+<li><a href="#org938f323">30.6.3. Applying Dynamic Programming</a></li>
+<li><a href="#orgb4608c2">30.6.4. Constructing solution</a></li>
+</ul>
+</li>
+<li><a href="#org861adfa">30.7. Floyd-Warshall algorithm</a>
 <ul>
-<li><a href="#orgca42131">33.1.1. Bounding function</a></li>
+<li><a href="#orgd9bb665">30.7.1. Analyzing problem</a></li>
+<li><a href="#org584a52e">30.7.2. Recursive solution</a></li>
+<li><a href="#org7ac7212">30.7.3. Dynamic Programming</a></li>
+<li><a href="#org4db0c7b">30.7.4. Reconstructing path (solution)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org4bb5820">31. Greedy algorithm</a>
+<ul>
+<li><a href="#orgdd7fb37">31.1. Activity-selection problem</a>
+<ul>
+<li><a href="#org569fb1c">31.1.1. Analyzing problem</a></li>
+<li><a href="#org45bf9d6">31.1.2. Greedy solution</a></li>
+</ul>
+</li>
+<li><a href="#orgc512fde">31.2. Job Scheduling with deadlines</a>
+<ul>
+<li><a href="#org3545ef9">31.2.1. Greedy algorithm</a></li>
+<li><a href="#org2ddfa43">31.2.2. Worked Example</a></li>
+</ul>
+</li>
+<li><a href="#org4d4afdf">31.3. Fractional knapsack</a>
+<ul>
+<li><a href="#org6e6c468">31.3.1. Greedy algorithm</a></li>
+<li><a href="#orge52edc0">31.3.2. Worked example</a></li>
+</ul>
+</li>
+<li><a href="#org5fbdabc">31.4. Huffman coding</a>
+<ul>
+<li><a href="#org179314d">31.4.1. Encoding</a>
+<ul>
+<li><a href="#org086cd8e">31.4.1.1. Building Huffman tree</a></li>
+<li><a href="#org398293e">31.4.1.2. Traversing huffman tree to encode</a></li>
+</ul>
+</li>
+<li><a href="#org96260fe">31.4.2. Decoding</a></li>
+</ul>
+</li>
+<li><a href="#org78ff670">31.5. Minimum spanning trees</a>
+<ul>
+<li><a href="#org375580f">31.5.1. Kruskal's algorithm</a>
+<ul>
+<li><a href="#org5c466b6">31.5.1.1. Algorithm</a></li>
+<li><a href="#org2c43574">31.5.1.2. Pseudocode</a></li>
+</ul>
+</li>
+<li><a href="#org2721ffd">31.5.2. Prim's algorithm</a>
+<ul>
+<li><a href="#org2d59b7c">31.5.2.1. Algorithm</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org3ca00c1">31.6. Single source shortest path</a></li>
+</ul>
+</li>
+<li><a href="#orgeec3d7d">32. Backtracking</a>
+<ul>
+<li><a href="#org889dd7a">32.1. How to backtrack</a></li>
+<li><a href="#org9b4a12f">32.2. n-Queen problem</a></li>
+<li><a href="#org73a4b6d">32.3. Graph coloring problem</a></li>
+<li><a href="#org5084b2c">32.4. Hamiltonian Cylces</a></li>
+<li><a href="#org6fd4212">32.5. Sum-of-subsets</a></li>
+</ul>
+</li>
+<li><a href="#org2dc1dc6">33. Branch and Bound</a>
+<ul>
+<li><a href="#org773ec68">33.1. Travelling Salesman Problem</a>
+<ul>
+<li><a href="#orgf08ba94">33.1.1. Bounding function</a></li>
 </ul>
 </li>
 </ul>
@@ -502,8 +502,8 @@
 </div>
 </div>
 
-<div id="outline-container-org76d5c81" class="outline-2">
-<h2 id="org76d5c81"><span class="section-number-2">1.</span> Data structure and Algorithm</h2>
+<div id="outline-container-org6d95ff6" class="outline-2">
+<h2 id="org6d95ff6"><span class="section-number-2">1.</span> Data structure and Algorithm</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li>A <b>data structure</b> is a particular way of storing and organizing data. The purpose is to effectively access and modify data effictively.</li>
@@ -516,8 +516,8 @@ During programming we use data structures and algorithms that work on that data.
 </div>
 </div>
 
-<div id="outline-container-org9bb8386" class="outline-2">
-<h2 id="org9bb8386"><span class="section-number-2">2.</span> Characteristics of Algorithms</h2>
+<div id="outline-container-orgb12f54e" class="outline-2">
+<h2 id="orgb12f54e"><span class="section-number-2">2.</span> Characteristics of Algorithms</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 An algorithm has follwing characteristics.
@@ -533,8 +533,8 @@ An algorithm has follwing characteristics.
 </div>
 </div>
 
-<div id="outline-container-orgd909ead" class="outline-2">
-<h2 id="orgd909ead"><span class="section-number-2">3.</span> Behaviour of algorithm</h2>
+<div id="outline-container-orga5db32b" class="outline-2">
+<h2 id="orga5db32b"><span class="section-number-2">3.</span> Behaviour of algorithm</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 The behaviour of an algorithm is the analysis of the algorithm on basis of <b>Time</b> and <b>Space</b>.
@@ -551,8 +551,8 @@ The preference is traditionally/usually given to better time complexity. But we 
 </p>
 </div>
 
-<div id="outline-container-orgf025e3c" class="outline-3">
-<h3 id="orgf025e3c"><span class="section-number-3">3.1.</span> Best, Worst and Average Cases</h3>
+<div id="outline-container-orgca3f073" class="outline-3">
+<h3 id="orgca3f073"><span class="section-number-3">3.1.</span> Best, Worst and Average Cases</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
 The input size tells us the size of the input given to algorithm. Based on the size of input, the time/storage usage of the algorithm changes. <b>Example</b>, an array with larger input size (more elements) will taken more time to sort.
@@ -565,8 +565,8 @@ The input size tells us the size of the input given to algorithm. Based on the s
 </div>
 </div>
 
-<div id="outline-container-org1f9590d" class="outline-3">
-<h3 id="org1f9590d"><span class="section-number-3">3.2.</span> Bounds of algorithm</h3>
+<div id="outline-container-orgca0c0c1" class="outline-3">
+<h3 id="orgca0c0c1"><span class="section-number-3">3.2.</span> Bounds of algorithm</h3>
 <div class="outline-text-3" id="text-3-2">
 <p>
 Since algorithms are finite, they have <b>bounded time</b> taken and <b>bounded space</b> taken. Bounded is short for boundries, so they have a minimum and maximum time/space taken. These bounds are upper bound and lower bound.
@@ -579,12 +579,12 @@ Since algorithms are finite, they have <b>bounded time</b> taken and <b>bounded 
 </div>
 </div>
 
-<div id="outline-container-orgf41bcd3" class="outline-2">
-<h2 id="orgf41bcd3"><span class="section-number-2">4.</span> Asymptotic Notations</h2>
+<div id="outline-container-org080a111" class="outline-2">
+<h2 id="org080a111"><span class="section-number-2">4.</span> Asymptotic Notations</h2>
 <div class="outline-text-2" id="text-4">
 </div>
-<div id="outline-container-orgb4d944c" class="outline-3">
-<h3 id="orgb4d944c"><span class="section-number-3">4.1.</span> Big-Oh Notation [O]</h3>
+<div id="outline-container-org2b20ad8" class="outline-3">
+<h3 id="org2b20ad8"><span class="section-number-3">4.1.</span> Big-Oh Notation [O]</h3>
 <div class="outline-text-3" id="text-4-1">
 <ul class="org-ul">
 <li>The Big Oh notation is used to define the upper bound of an algorithm.</li>
@@ -594,8 +594,8 @@ Since algorithms are finite, they have <b>bounded time</b> taken and <b>bounded 
 </div>
 </div>
 
-<div id="outline-container-org1ee5866" class="outline-3">
-<h3 id="org1ee5866"><span class="section-number-3">4.2.</span> Omega Notation [ \(\Omega\) ]</h3>
+<div id="outline-container-org9fb2ca2" class="outline-3">
+<h3 id="org9fb2ca2"><span class="section-number-3">4.2.</span> Omega Notation [ \(\Omega\) ]</h3>
 <div class="outline-text-3" id="text-4-2">
 <ul class="org-ul">
 <li>It is used to shown the lower bound of the algorithm.</li>
@@ -609,8 +609,8 @@ Since algorithms are finite, they have <b>bounded time</b> taken and <b>bounded 
 </div>
 </div>
 
-<div id="outline-container-orgf6ffdb5" class="outline-3">
-<h3 id="orgf6ffdb5"><span class="section-number-3">4.3.</span> Theta Notation [ \(\theta\) ]</h3>
+<div id="outline-container-orgc08d8e0" class="outline-3">
+<h3 id="orgc08d8e0"><span class="section-number-3">4.3.</span> Theta Notation [ \(\theta\) ]</h3>
 <div class="outline-text-3" id="text-4-3">
 <ul class="org-ul">
 <li>If is used to provide the asymptotic <b>equal bound</b>.</li>
@@ -624,8 +624,8 @@ Since algorithms are finite, they have <b>bounded time</b> taken and <b>bounded 
 </div>
 </div>
 
-<div id="outline-container-org0c70105" class="outline-3">
-<h3 id="org0c70105"><span class="section-number-3">4.4.</span> Little-Oh Notation [o]</h3>
+<div id="outline-container-org055dab6" class="outline-3">
+<h3 id="org055dab6"><span class="section-number-3">4.4.</span> Little-Oh Notation [o]</h3>
 <div class="outline-text-3" id="text-4-4">
 <ul class="org-ul">
 <li>The little o notation defines the strict upper bound of an algorithm.</li>
@@ -635,8 +635,8 @@ Since algorithms are finite, they have <b>bounded time</b> taken and <b>bounded 
 </div>
 </div>
 
-<div id="outline-container-orgdfb084f" class="outline-3">
-<h3 id="orgdfb084f"><span class="section-number-3">4.5.</span> Little-Omega Notation [ \(\omega\) ]</h3>
+<div id="outline-container-org38934ed" class="outline-3">
+<h3 id="org38934ed"><span class="section-number-3">4.5.</span> Little-Omega Notation [ \(\omega\) ]</h3>
 <div class="outline-text-3" id="text-4-5">
 <ul class="org-ul">
 <li>The little omega notation defines the strict lower bound of an algorithm.</li>
@@ -646,12 +646,12 @@ Since algorithms are finite, they have <b>bounded time</b> taken and <b>bounded 
 </div>
 </div>
 </div>
-<div id="outline-container-org9e05069" class="outline-2">
-<h2 id="org9e05069"><span class="section-number-2">5.</span> Comparing Growth rate of funtions</h2>
+<div id="outline-container-org2a662ac" class="outline-2">
+<h2 id="org2a662ac"><span class="section-number-2">5.</span> Comparing Growth rate of funtions</h2>
 <div class="outline-text-2" id="text-5">
 </div>
-<div id="outline-container-org78a680d" class="outline-3">
-<h3 id="org78a680d"><span class="section-number-3">5.1.</span> Applying limit</h3>
+<div id="outline-container-org6f4ab0f" class="outline-3">
+<h3 id="org6f4ab0f"><span class="section-number-3">5.1.</span> Applying limit</h3>
 <div class="outline-text-3" id="text-5-1">
 <p>
 To compare two funtions \(f(n)\) and \(g(n)\). We can use limit
@@ -668,8 +668,8 @@ To compare two funtions \(f(n)\) and \(g(n)\). We can use limit
 </div>
 </div>
 
-<div id="outline-container-org2ede754" class="outline-3">
-<h3 id="org2ede754"><span class="section-number-3">5.2.</span> Using logarithm</h3>
+<div id="outline-container-orgf19d225" class="outline-3">
+<h3 id="orgf19d225"><span class="section-number-3">5.2.</span> Using logarithm</h3>
 <div class="outline-text-3" id="text-5-2">
 <p>
 Using logarithm can be useful to compare exponential functions. When comaparing functions \(f(n)\) and \(g(n)\), 
@@ -683,8 +683,8 @@ Using logarithm can be useful to compare exponential functions. When comaparing 
 </div>
 </div>
 
-<div id="outline-container-org457fe73" class="outline-3">
-<h3 id="org457fe73"><span class="section-number-3">5.3.</span> Common funtions</h3>
+<div id="outline-container-orgc3693e6" class="outline-3">
+<h3 id="orgc3693e6"><span class="section-number-3">5.3.</span> Common funtions</h3>
 <div class="outline-text-3" id="text-5-3">
 <p>
 Commonly, growth rate in increasing order is
@@ -696,12 +696,12 @@ Where \(c\) is any constant.
 </div>
 </div>
 
-<div id="outline-container-org9de1ba9" class="outline-2">
-<h2 id="org9de1ba9"><span class="section-number-2">6.</span> Properties of Asymptotic Notations</h2>
+<div id="outline-container-orgddf7d23" class="outline-2">
+<h2 id="orgddf7d23"><span class="section-number-2">6.</span> Properties of Asymptotic Notations</h2>
 <div class="outline-text-2" id="text-6">
 </div>
-<div id="outline-container-org1616697" class="outline-3">
-<h3 id="org1616697"><span class="section-number-3">6.1.</span> Big-Oh</h3>
+<div id="outline-container-org90c7210" class="outline-3">
+<h3 id="org90c7210"><span class="section-number-3">6.1.</span> Big-Oh</h3>
 <div class="outline-text-3" id="text-6-1">
 <ul class="org-ul">
 <li><b>Product</b> :  \[ Given\ f_1 = O(g_1)\ \ and\ f_2 = O(g_2) \implies f_1 f_2 = O(g_1 g_2) \] \[ Also\  f.O(g) = O(f g) \]</li>
@@ -713,11 +713,11 @@ Where \(c\) is any constant.
 </div>
 </div>
 
-<div id="outline-container-org3981fce" class="outline-3">
-<h3 id="org3981fce"><span class="section-number-3">6.2.</span> Properties</h3>
+<div id="outline-container-org417d5e6" class="outline-3">
+<h3 id="org417d5e6"><span class="section-number-3">6.2.</span> Properties</h3>
 <div class="outline-text-3" id="text-6-2">
 
-<div id="org87c64be" class="figure">
+<div id="orgb870a69" class="figure">
 <p><img src="lectures/imgs/asymptotic-notations-properties.png" alt="asymptotic-notations-properties.png" />
 </p>
 </div>
@@ -733,8 +733,8 @@ Where \(c\) is any constant.
 </div>
 </div>
 </div>
-<div id="outline-container-org33cd51c" class="outline-2">
-<h2 id="org33cd51c"><span class="section-number-2">7.</span> Calculating time complexity of algorithm</h2>
+<div id="outline-container-orgca4748a" class="outline-2">
+<h2 id="orgca4748a"><span class="section-number-2">7.</span> Calculating time complexity of algorithm</h2>
 <div class="outline-text-2" id="text-7">
 <p>
 We will look at three types of situations
@@ -746,8 +746,8 @@ We will look at three types of situations
 </ul>
 </div>
 
-<div id="outline-container-org650ddf0" class="outline-3">
-<h3 id="org650ddf0"><span class="section-number-3">7.1.</span> Sequential instructions</h3>
+<div id="outline-container-org63e8db0" class="outline-3">
+<h3 id="org63e8db0"><span class="section-number-3">7.1.</span> Sequential instructions</h3>
 <div class="outline-text-3" id="text-7-1">
 <p>
 A sequential set of instructions are instructions in a sequence without iterations and recursions. It is a simple block of instructions with no branches. A sequential set of instructions has <b>time complexity of O(1)</b>, i.e., it has <b>constant time complexity</b>.
@@ -755,8 +755,8 @@ A sequential set of instructions are instructions in a sequence without iteratio
 </div>
 </div>
 
-<div id="outline-container-org1caa92e" class="outline-3">
-<h3 id="org1caa92e"><span class="section-number-3">7.2.</span> Iterative instructions</h3>
+<div id="outline-container-org072b07e" class="outline-3">
+<h3 id="org072b07e"><span class="section-number-3">7.2.</span> Iterative instructions</h3>
 <div class="outline-text-3" id="text-7-2">
 <p>
 A set of instructions in a loop. Iterative instructions can have different complexities based on how many iterations occurs depending on input size. 
@@ -960,8 +960,8 @@ Time complexity = \(O(n.log(n))\)
 </div>
 </div>
 
-<div id="outline-container-org7815be2" class="outline-3">
-<h3 id="org7815be2"><span class="section-number-3">7.3.</span> An example for time complexities of nested loops</h3>
+<div id="outline-container-orgf64dfbb" class="outline-3">
+<h3 id="orgf64dfbb"><span class="section-number-3">7.3.</span> An example for time complexities of nested loops</h3>
 <div class="outline-text-3" id="text-7-3">
 <p>
 Suppose a loop,
@@ -1054,16 +1054,16 @@ Putting value \(k = log(n)\)
 </div>
 </div>
 </div>
-<div id="outline-container-orgd0aae57" class="outline-2">
-<h2 id="orgd0aae57"><span class="section-number-2">8.</span> Time complexity of recursive instructions</h2>
+<div id="outline-container-org59eb572" class="outline-2">
+<h2 id="org59eb572"><span class="section-number-2">8.</span> Time complexity of recursive instructions</h2>
 <div class="outline-text-2" id="text-8">
 <p>
 To get time complexity of recursive functions/calls, we first also show time complexity as recursive manner. 
 </p>
 </div>
 
-<div id="outline-container-org581d9b6" class="outline-3">
-<h3 id="org581d9b6"><span class="section-number-3">8.1.</span> Time complexity in recursive form</h3>
+<div id="outline-container-org2190085" class="outline-3">
+<h3 id="org2190085"><span class="section-number-3">8.1.</span> Time complexity in recursive form</h3>
 <div class="outline-text-3" id="text-8-1">
 <p>
 We first have to create a way to describe time complexity of recursive functions in form of an equation as,
@@ -1139,12 +1139,12 @@ Here, the recursive calls are func(n-1) and func(n-2), therefore time complexiti
 </div>
 </div>
 
-<div id="outline-container-orgb8e2fd3" class="outline-2">
-<h2 id="orgb8e2fd3"><span class="section-number-2">9.</span> Solving Recursive time complexities</h2>
+<div id="outline-container-orge658b1a" class="outline-2">
+<h2 id="orge658b1a"><span class="section-number-2">9.</span> Solving Recursive time complexities</h2>
 <div class="outline-text-2" id="text-9">
 </div>
-<div id="outline-container-org5dcb565" class="outline-3">
-<h3 id="org5dcb565"><span class="section-number-3">9.1.</span> Iterative method</h3>
+<div id="outline-container-org23570ae" class="outline-3">
+<h3 id="org23570ae"><span class="section-number-3">9.1.</span> Iterative method</h3>
 <div class="outline-text-3" id="text-9-1">
 <ul class="org-ul">
 <li>Take for example,</li>
@@ -1225,8 +1225,8 @@ Time complexity is
 </p>
 </div>
 </div>
-<div id="outline-container-org7ffa610" class="outline-3">
-<h3 id="org7ffa610"><span class="section-number-3">9.2.</span> Master Theorem for Subtract recurrences</h3>
+<div id="outline-container-orgea6a952" class="outline-3">
+<h3 id="orgea6a952"><span class="section-number-3">9.2.</span> Master Theorem for Subtract recurrences</h3>
 <div class="outline-text-3" id="text-9-2">
 <p>
 For recurrence relation of type
@@ -1256,8 +1256,8 @@ Since a &gt; 1, \(T(n) = O(n^2 . 3^n)\)
 </div>
 </div>
 
-<div id="outline-container-orgaafbda7" class="outline-3">
-<h3 id="orgaafbda7"><span class="section-number-3">9.3.</span> Master Theorem for divide and conquer recurrences</h3>
+<div id="outline-container-org430df53" class="outline-3">
+<h3 id="org430df53"><span class="section-number-3">9.3.</span> Master Theorem for divide and conquer recurrences</h3>
 <div class="outline-text-3" id="text-9-3">
 <p>
 \[ T(n) = aT(n/b) + f(n).(log(n))^k \]
@@ -1311,12 +1311,12 @@ So time complexity is,
 </div>
 </div>
 
-<div id="outline-container-org6554493" class="outline-2">
-<h2 id="org6554493"><span class="section-number-2">10.</span> Square root recurrence relations</h2>
+<div id="outline-container-org5d01f5d" class="outline-2">
+<h2 id="org5d01f5d"><span class="section-number-2">10.</span> Square root recurrence relations</h2>
 <div class="outline-text-2" id="text-10">
 </div>
-<div id="outline-container-org8b16d2f" class="outline-3">
-<h3 id="org8b16d2f"><span class="section-number-3">10.1.</span> Iterative method</h3>
+<div id="outline-container-org2142d06" class="outline-3">
+<h3 id="org2142d06"><span class="section-number-3">10.1.</span> Iterative method</h3>
 <div class="outline-text-3" id="text-10-1">
 <p>
 Example, 
@@ -1358,8 +1358,8 @@ Time complexity is,
 </div>
 </div>
 
-<div id="outline-container-org830172f" class="outline-3">
-<h3 id="org830172f"><span class="section-number-3">10.2.</span> Master Theorem for square root recurrence relations</h3>
+<div id="outline-container-orgd7c3cf0" class="outline-3">
+<h3 id="orgd7c3cf0"><span class="section-number-3">10.2.</span> Master Theorem for square root recurrence relations</h3>
 <div class="outline-text-3" id="text-10-2">
 <p>
 For recurrence relations with square root, we need to first convert the recurrance relation to the form with which we use master theorem. Example,
@@ -1415,12 +1415,12 @@ Putting value of m,
 </div>
 </div>
 
-<div id="outline-container-org3788f44" class="outline-2">
-<h2 id="org3788f44"><span class="section-number-2">11.</span> Extended Master's theorem for time complexity of recursive algorithms</h2>
+<div id="outline-container-org78f66cf" class="outline-2">
+<h2 id="org78f66cf"><span class="section-number-2">11.</span> Extended Master's theorem for time complexity of recursive algorithms</h2>
 <div class="outline-text-2" id="text-11">
 </div>
-<div id="outline-container-org4cf55ea" class="outline-3">
-<h3 id="org4cf55ea"><span class="section-number-3">11.1.</span> For (k = -1)</h3>
+<div id="outline-container-orge41cc2e" class="outline-3">
+<h3 id="orge41cc2e"><span class="section-number-3">11.1.</span> For (k = -1)</h3>
 <div class="outline-text-3" id="text-11-1">
 <p>
 \[ T(n) = aT(n/b) + f(n).(log(n))^{-1} \]
@@ -1436,8 +1436,8 @@ Putting value of m,
 </div>
 </div>
 
-<div id="outline-container-orgd406ba9" class="outline-3">
-<h3 id="orgd406ba9"><span class="section-number-3">11.2.</span> For (k &lt; -1)</h3>
+<div id="outline-container-org3e521ce" class="outline-3">
+<h3 id="org3e521ce"><span class="section-number-3">11.2.</span> For (k &lt; -1)</h3>
 <div class="outline-text-3" id="text-11-2">
 <p>
 \[ T(n) = aT(n/b) + f(n).(log(n))^{k} \]
@@ -1453,8 +1453,8 @@ Putting value of m,
 </div>
 </div>
 </div>
-<div id="outline-container-org9f4acd7" class="outline-2">
-<h2 id="org9f4acd7"><span class="section-number-2">12.</span> Tree method for time complexity of recursive algorithms</h2>
+<div id="outline-container-org0e95700" class="outline-2">
+<h2 id="org0e95700"><span class="section-number-2">12.</span> Tree method for time complexity of recursive algorithms</h2>
 <div class="outline-text-2" id="text-12">
 <p>
 Tree method is used when there are multiple recursive calls in our recurrance relation. Example,
@@ -1584,8 +1584,8 @@ Of the two possible time complexities, we consider the one with higher growth ra
 </div>
 </div>
 
-<div id="outline-container-org6349122" class="outline-2">
-<h2 id="org6349122"><span class="section-number-2">13.</span> Space complexity</h2>
+<div id="outline-container-orgeff2a1e" class="outline-2">
+<h2 id="orgeff2a1e"><span class="section-number-2">13.</span> Space complexity</h2>
 <div class="outline-text-2" id="text-13">
 <p>
 The amount of memory used by the algorithm to execute and produce the result for a given input size is space complexity. Similar to time complexity, when comparing two algorithms space complexity is usually represented as the growth rate of memory used with respect to input size. The space complexity includes
@@ -1600,8 +1600,8 @@ The amount of memory used by the algorithm to execute and produce the result for
 </p>
 </div>
 
-<div id="outline-container-org5a8c908" class="outline-3">
-<h3 id="org5a8c908"><span class="section-number-3">13.1.</span> Auxiliary space complexity</h3>
+<div id="outline-container-org548d384" class="outline-3">
+<h3 id="org548d384"><span class="section-number-3">13.1.</span> Auxiliary space complexity</h3>
 <div class="outline-text-3" id="text-13-1">
 <p>
 The space complexity when we disregard the input space is the auxiliary space complexity, so we basically treat algorithm as if it's input space is zero. Auxiliary space complexity is more useful when comparing algorithms because the algorithms which are working towards same result will have the same input space, Example, the sorting algorithms will all have the input space of the list, so it is not a metric we can use to compare algorithms. So from here, when we calculate space complexity, we are trying to calculate auxiliary space complexity and sometimes just refer to it as space complexity.
@@ -1610,8 +1610,8 @@ The space complexity when we disregard the input space is the auxiliary space co
 </div>
 </div>
 
-<div id="outline-container-orgabf25af" class="outline-2">
-<h2 id="orgabf25af"><span class="section-number-2">14.</span> Calculating auxiliary space complexity</h2>
+<div id="outline-container-org72ae7ed" class="outline-2">
+<h2 id="org72ae7ed"><span class="section-number-2">14.</span> Calculating auxiliary space complexity</h2>
 <div class="outline-text-2" id="text-14">
 <p>
 There are two parameters that affect space complexity,
@@ -1622,8 +1622,8 @@ There are two parameters that affect space complexity,
 </ul>
 </div>
 
-<div id="outline-container-orgade04a1" class="outline-3">
-<h3 id="orgade04a1"><span class="section-number-3">14.1.</span> Data Space used</h3>
+<div id="outline-container-org99e355b" class="outline-3">
+<h3 id="org99e355b"><span class="section-number-3">14.1.</span> Data Space used</h3>
 <div class="outline-text-3" id="text-14-1">
 <p>
 The data space used by the algorithm depends on what data structures it uses to solve the problem. Example,
@@ -1678,8 +1678,8 @@ Here, we create a matrix of size <b>n*n</b>, so the increase in allocated space 
 </div>
 </div>
 
-<div id="outline-container-org1e01bf7" class="outline-3">
-<h3 id="org1e01bf7"><span class="section-number-3">14.2.</span> Code Execution space in recursive algorithm</h3>
+<div id="outline-container-org65b693d" class="outline-3">
+<h3 id="org65b693d"><span class="section-number-3">14.2.</span> Code Execution space in recursive algorithm</h3>
 <div class="outline-text-3" id="text-14-2">
 <p>
 When we use recursion, the function calls are stored in the stack. This means that code execution space will increase. A single function call has fixed (constant) space it takes in the memory. So to get space complexity, <b>we need to know how many function calls occur in the longest branch of the function call tree</b>.
@@ -1769,8 +1769,8 @@ Number of levels is \(log_2n\). Therefore, space complexity is <b>\(\theta (log_
 </div>
 </div>
 </div>
-<div id="outline-container-org4800c5b" class="outline-2">
-<h2 id="org4800c5b"><span class="section-number-2">15.</span> Divide and Conquer algorithms</h2>
+<div id="outline-container-org5c3b163" class="outline-2">
+<h2 id="org5c3b163"><span class="section-number-2">15.</span> Divide and Conquer algorithms</h2>
 <div class="outline-text-2" id="text-15">
 <p>
 Divide and conquer is a problem solving strategy. In divide and conquer algorithms, we solve problem recursively applying three steps :
@@ -1793,12 +1793,12 @@ Divide and conquer is a problem solving strategy. In divide and conquer algorith
 </div>
 </div>
 
-<div id="outline-container-org9bb591a" class="outline-2">
-<h2 id="org9bb591a"><span class="section-number-2">16.</span> Searching for element in array</h2>
+<div id="outline-container-org0e83846" class="outline-2">
+<h2 id="org0e83846"><span class="section-number-2">16.</span> Searching for element in array</h2>
 <div class="outline-text-2" id="text-16">
 </div>
-<div id="outline-container-orgab07e87" class="outline-3">
-<h3 id="orgab07e87"><span class="section-number-3">16.1.</span> Straight forward approach for searching (<b>Linear Search</b>)</h3>
+<div id="outline-container-org92e4e5b" class="outline-3">
+<h3 id="org92e4e5b"><span class="section-number-3">16.1.</span> Straight forward approach for searching (<b>Linear Search</b>)</h3>
 <div class="outline-text-3" id="text-16-1">
 <div class="org-src-container">
 <pre class="src src-C"><span style="color: #c18401;">int</span> <span style="color: #0184bc;">linear_search</span>(<span style="color: #c18401;">int</span> *<span style="color: #8b4513;">array</span>, <span style="color: #c18401;">int</span> <span style="color: #8b4513;">n</span>, <span style="color: #c18401;">int</span> <span style="color: #8b4513;">x</span>){
@@ -1921,8 +1921,8 @@ Recursive approach
 </div>
 </div>
 
-<div id="outline-container-orgc9927c0" class="outline-3">
-<h3 id="orgc9927c0"><span class="section-number-3">16.2.</span> Divide and conquer approach (<b>Binary search</b>)</h3>
+<div id="outline-container-orgea54a36" class="outline-3">
+<h3 id="orgea54a36"><span class="section-number-3">16.2.</span> Divide and conquer approach (<b>Binary search</b>)</h3>
 <div class="outline-text-3" id="text-16-2">
 <p>
 The binary search algorithm works on an array which is sorted. In this algorithm we:
@@ -1946,7 +1946,7 @@ Suppose binarySearch(array, left, right, key), left and right are indicies of le
 </ul>
 
 
-<div id="org88c7265" class="figure">
+<div id="org506ca53" class="figure">
 <p><img src="lectures/imgs/binary-search.jpg" alt="binary-search.jpg" />
 </p>
 </div>
@@ -2017,12 +2017,12 @@ Recursive approach:
 </div>
 </div>
 
-<div id="outline-container-orgc05f18e" class="outline-2">
-<h2 id="orgc05f18e"><span class="section-number-2">17.</span> Max and Min element from array</h2>
+<div id="outline-container-orga45a0ed" class="outline-2">
+<h2 id="orga45a0ed"><span class="section-number-2">17.</span> Max and Min element from array</h2>
 <div class="outline-text-2" id="text-17">
 </div>
-<div id="outline-container-org23f3aaf" class="outline-3">
-<h3 id="org23f3aaf"><span class="section-number-3">17.1.</span> Straightforward approach</h3>
+<div id="outline-container-orgb966aaa" class="outline-3">
+<h3 id="orgb966aaa"><span class="section-number-3">17.1.</span> Straightforward approach</h3>
 <div class="outline-text-3" id="text-17-1">
 <div class="org-src-container">
 <pre class="src src-C"><span style="color: #c18401;">struc</span> <span style="color: #8b4513;">min_max</span> {<span style="color: #c18401;">int</span> <span style="color: #8b4513;">min</span>; <span style="color: #c18401;">int</span> <span style="color: #8b4513;">max</span>;}
@@ -2050,8 +2050,8 @@ Recursive approach:
 </div>
 </div>
 
-<div id="outline-container-org8fe158c" class="outline-3">
-<h3 id="org8fe158c"><span class="section-number-3">17.2.</span> Divide and conquer approach</h3>
+<div id="outline-container-org0746763" class="outline-3">
+<h3 id="org0746763"><span class="section-number-3">17.2.</span> Divide and conquer approach</h3>
 <div class="outline-text-3" id="text-17-2">
 <p>
 Suppose the function is MinMax(array, left, right) which will return a tuple (min, max). We will divide the array in the middle, mid = (left + right) / 2. The left array will be array[left:mid] and right aray will be array[mid+1:right]
@@ -2062,38 +2062,37 @@ Suppose the function is MinMax(array, left, right) which will return a tuple (mi
 <li><b>Combine part</b> : If leftMinMax[0] &gt; rightMinmax[0], then min = righMinMax[0], else min = leftMinMax[0]. Similarly, if leftMinMax[1] &gt; rightMinMax[1], then max = leftMinMax[1], else max = rightMinMax[1].</li>
 </ul>
 
-<div class="org-src-container">
-<pre class="src src-python"><span style="color: #a0a1a7; font-weight: bold;"># </span><span style="color: #a0a1a7;">Will return (min, max)</span>
-<span style="color: #a626a4;">def</span> <span style="color: #0184bc;">minmax</span>(array, left, right):
-    <span style="color: #a626a4;">if</span> left == right:       <span style="color: #a0a1a7; font-weight: bold;"># </span><span style="color: #a0a1a7;">Single element in array</span>
-        <span style="color: #a626a4;">return</span> (array[left], array[left])
-    <span style="color: #a626a4;">elif</span> left + 1 == right: <span style="color: #a0a1a7; font-weight: bold;"># </span><span style="color: #a0a1a7;">Two elements in array</span>
-        <span style="color: #a626a4;">if</span> array[left] &gt; array[right]:
-            <span style="color: #a626a4;">return</span> (array[right], array[left])
-        <span style="color: #a626a4;">else</span>:
-            <span style="color: #a626a4;">return</span> (array[left], array[right])
-    <span style="color: #a626a4;">else</span>:                  <span style="color: #a0a1a7; font-weight: bold;"># </span><span style="color: #a0a1a7;">More than two elements</span>
-        mid = (left + right) / 2
-        <span style="color: #8b4513;">minimum</span>, <span style="color: #8b4513;">maximum</span> = 0, 0
-        leftMinMax = minmax(array, left, mid)
-        rightMinMax = minmax(array, mid + 1, right)
+<pre class="example">
+# Will return (min, max)
+def minmax(array, left, right):
+    if left == right:       # Single element in array
+	return (array[left], array[left])
+    elif left + 1 == right: # Two elements in array
+	if array[left] &gt; array[right]:
+	    return (array[right], array[left])
+	else:
+	    return (array[left], array[right])
+    else:                  # More than two elements
+	mid = (left + right) / 2
+	minimum, maximum = 0, 0
+	leftMinMax = minmax(array, left, mid)
+	rightMinMax = minmax(array, mid + 1, right)
 
-        <span style="color: #a0a1a7; font-weight: bold;"># </span><span style="color: #a0a1a7;">Combining result of the minimum from left and right subarray's</span>
-        <span style="color: #a626a4;">if</span> leftMinMax[0] &gt; rightMinMax[0]:
-            minimum = rightMinMax[0]
-        <span style="color: #a626a4;">else</span>:
-            minimum = leftMinMax[0]
+	# Combining result of the minimum from left and right subarray's
+	if leftMinMax[0] &gt; rightMinMax[0]:
+	    minimum = rightMinMax[0]
+	else:
+	    minimum = leftMinMax[0]
 
-        <span style="color: #a0a1a7; font-weight: bold;"># </span><span style="color: #a0a1a7;">Combining result of the maximum from left and right subarray's</span>
-        <span style="color: #a626a4;">if</span> leftMinMax[1] &gt; rightMinMax[1]:
-            maximum = leftMinMax[1]
-        <span style="color: #a626a4;">else</span>:
-            maximum = rightMinMax[1]
+	# Combining result of the maximum from left and right subarray's
+	if leftMinMax[1] &gt; rightMinMax[1]:
+	    maximum = leftMinMax[1]
+	else:
+	    maximum = rightMinMax[1]
 
-        <span style="color: #a626a4;">return</span> (minimum, maximum)
+	return (minimum, maximum)
 
 </pre>
-</div>
 
 <ul class="org-ul">
 <li>Time complexity</li>
@@ -2130,42 +2129,41 @@ If n is not a power of 2, we will round the number of comparision up.
 </div>
 </div>
 
-<div id="outline-container-org89f98fa" class="outline-3">
-<h3 id="org89f98fa"><span class="section-number-3">17.3.</span> Efficient single loop approach (Increment by 2)</h3>
+<div id="outline-container-org65d112d" class="outline-3">
+<h3 id="org65d112d"><span class="section-number-3">17.3.</span> Efficient single loop approach (Increment by 2)</h3>
 <div class="outline-text-3" id="text-17-3">
 <p>
 In this algorithm we will compare pairs of numbers from the array. It works on the idea that the larger number of the two in pair can be the maximum number and smaller one can be the minimum one. So after comparing the pair, we can simply test from maximum from the bigger of two an minimum from smaller of two. This brings number of comparisions to check two numbers in array from 4 (when we increment by 1) to 3 (when we increment by 2).
 </p>
 
-<div class="org-src-container">
-<pre class="src src-python"><span style="color: #a626a4;">def</span> <span style="color: #0184bc;">min_max</span>(array):
-    (<span style="color: #8b4513;">minimum</span>, <span style="color: #8b4513;">maximum</span>) = (array[0], array[0])
-    <span style="color: #8b4513;">i</span> = 1
-    <span style="color: #a626a4;">while</span> i &lt; <span style="color: #e44649;">len</span>(array):
-        <span style="color: #a626a4;">if</span> i + 1 == <span style="color: #e44649;">len</span>(array):  <span style="color: #a0a1a7; font-weight: bold;"># </span><span style="color: #a0a1a7;">don't check i+1, it's out of bounds, break the loop after checking a[i]</span>
-            <span style="color: #a626a4;">if</span> array[i] &gt; <span style="color: #8b4513;">maximum</span>:
-                maximum = array[i]
-            <span style="color: #a626a4;">elif</span> array[i] &lt; <span style="color: #8b4513;">minimum</span>:
-                minimum = array[i]
-            <span style="color: #a626a4;">break</span>
+<pre class="example">
+def min_max(array):
+    (minimum, maximum) = (array[0], array[0])
+    i = 1
+    while i &lt; len(array):
+	if i + 1 == len(array):  # don't check i+1, it's out of bounds, break the loop after checking a[i]
+	    if array[i] &gt; maximum:
+		maximum = array[i]
+	    elif array[i] &lt; minimum:
+		minimum = array[i]
+	    break
 
-        <span style="color: #a626a4;">if</span> array[i] &gt; array[i + 1]:
-            <span style="color: #a0a1a7; font-weight: bold;"># </span><span style="color: #a0a1a7;">check possibility that array[i] is maximum and array[i+1] is minimum</span>
-            <span style="color: #a626a4;">if</span> array[i] &gt; <span style="color: #8b4513;">maximum</span>:
-                maximum = array[i]
-            <span style="color: #a626a4;">if</span> array[i + 1] &lt; <span style="color: #8b4513;">minimum</span>:
-                minimum = array[i + 1]
-        <span style="color: #a626a4;">else</span>:
-            <span style="color: #a0a1a7; font-weight: bold;"># </span><span style="color: #a0a1a7;">check possibility that array[i+1] is maximum and array[i] is minimum</span>
-            <span style="color: #a626a4;">if</span> array[i + 1] &gt; <span style="color: #8b4513;">maximum</span>:
-                maximum = array[i + 1]
-            <span style="color: #a626a4;">if</span> array[i] &lt; <span style="color: #8b4513;">minimum</span>:
-                minimum = array[i]
+	if array[i] &gt; array[i + 1]:
+	    # check possibility that array[i] is maximum and array[i+1] is minimum
+	    if array[i] &gt; maximum:
+		maximum = array[i]
+	    if array[i + 1] &lt; minimum:
+		minimum = array[i + 1]
+	else:
+	    # check possibility that array[i+1] is maximum and array[i] is minimum
+	    if array[i + 1] &gt; maximum:
+		maximum = array[i + 1]
+	    if array[i] &lt; minimum:
+		minimum = array[i]
 
-        <span style="color: #8b4513;">i</span> += 2
-    <span style="color: #a626a4;">return</span> (minimum, maximum)
+	i += 2
+    return (minimum, maximum)
 </pre>
-</div>
 
 <ul class="org-ul">
 <li>Time complexity = O(n)</li>
@@ -2178,8 +2176,8 @@ In this algorithm we will compare pairs of numbers from the array. It works on t
 </div>
 </div>
 
-<div id="outline-container-orgcc615c2" class="outline-2">
-<h2 id="orgcc615c2"><span class="section-number-2">18.</span> Square matrix multiplication</h2>
+<div id="outline-container-orgc30bf7a" class="outline-2">
+<h2 id="orgc30bf7a"><span class="section-number-2">18.</span> Square matrix multiplication</h2>
 <div class="outline-text-2" id="text-18">
 <p>
 Matrix multiplication algorithms taken from here: 
@@ -2187,8 +2185,8 @@ Matrix multiplication algorithms taken from here:
 </p>
 </div>
 
-<div id="outline-container-orge1bb9ab" class="outline-3">
-<h3 id="orge1bb9ab"><span class="section-number-3">18.1.</span> Straight forward method</h3>
+<div id="outline-container-orgf0dc08e" class="outline-3">
+<h3 id="orgf0dc08e"><span class="section-number-3">18.1.</span> Straight forward method</h3>
 <div class="outline-text-3" id="text-18-1">
 <div class="org-src-container">
 <pre class="src src-C"><span style="color: #a0a1a7; font-weight: bold;">/* </span><span style="color: #a0a1a7;">This will calculate A X B and store it in C.</span><span style="color: #a0a1a7; font-weight: bold;"> */</span>
@@ -2227,8 +2225,8 @@ Time complexity is \(O(n^3)\)
 </div>
 </div>
 
-<div id="outline-container-orgabd241c" class="outline-3">
-<h3 id="orgabd241c"><span class="section-number-3">18.2.</span> Divide and conquer approach</h3>
+<div id="outline-container-org457ba77" class="outline-3">
+<h3 id="org457ba77"><span class="section-number-3">18.2.</span> Divide and conquer approach</h3>
 <div class="outline-text-3" id="text-18-2">
 <p>
 The divide and conquer algorithm only works for a square matrix whose size is n X n, where n is a power of 2. The algorithm works as follows.
@@ -2269,8 +2267,8 @@ Using the <b>master's theorem</b>
 </div>
 </div>
 
-<div id="outline-container-orgfb16007" class="outline-3">
-<h3 id="orgfb16007"><span class="section-number-3">18.3.</span> Strassen's algorithm</h3>
+<div id="outline-container-orge8216c2" class="outline-3">
+<h3 id="orge8216c2"><span class="section-number-3">18.3.</span> Strassen's algorithm</h3>
 <div class="outline-text-3" id="text-18-3">
 <p>
 Another, more efficient divide and conquer algorithm for matrix multiplication. This algorithm also only works on square matrices with n being a power of 2. This algorithm is based on the observation that, for \(A \times B = C\). We can calculate \(C_{11}, C_{12}, C_{21} \text{ and } C_{22}\) as,
@@ -2337,12 +2335,12 @@ Using the master's theorem
 </div>
 </div>
 </div>
-<div id="outline-container-org24e0e3c" class="outline-2">
-<h2 id="org24e0e3c"><span class="section-number-2">19.</span> Sorting algorithms</h2>
+<div id="outline-container-orgf61dd57" class="outline-2">
+<h2 id="orgf61dd57"><span class="section-number-2">19.</span> Sorting algorithms</h2>
 <div class="outline-text-2" id="text-19">
 </div>
-<div id="outline-container-orgeb2af1c" class="outline-3">
-<h3 id="orgeb2af1c"><span class="section-number-3">19.1.</span> In place vs out place sorting algorithm</h3>
+<div id="outline-container-org9cad2d1" class="outline-3">
+<h3 id="org9cad2d1"><span class="section-number-3">19.1.</span> In place vs out place sorting algorithm</h3>
 <div class="outline-text-3" id="text-19-1">
 <p>
 If the space complexity of a sorting algorithm is \(\theta (1)\), then the algorithm is called in place sorting, else the algorithm is called out place sorting.
@@ -2351,8 +2349,8 @@ If the space complexity of a sorting algorithm is \(\theta (1)\), then the algor
 </div>
 </div>
 
-<div id="outline-container-orge0b5e81" class="outline-2">
-<h2 id="orge0b5e81"><span class="section-number-2">20.</span> Bubble sort</h2>
+<div id="outline-container-orgfc0f756" class="outline-2">
+<h2 id="orgfc0f756"><span class="section-number-2">20.</span> Bubble sort</h2>
 <div class="outline-text-2" id="text-20">
 <p>
 Simplest sorting algorithm, easy to implement so it is useful when number of elements to sort is small. It is an in place sorting algorithm. We will compare pairs of elements from array and swap them to be in correct order. Suppose input has n elements.
@@ -2432,8 +2430,8 @@ Recursive time complexity : \(T(n)  = T(n-1) + n - 1\)
 </p>
 </div>
 </div>
-<div id="outline-container-orgdb9efbe" class="outline-2">
-<h2 id="orgdb9efbe"><span class="section-number-2">21.</span> Selection sort</h2>
+<div id="outline-container-org442a029" class="outline-2">
+<h2 id="org442a029"><span class="section-number-2">21.</span> Selection sort</h2>
 <div class="outline-text-2" id="text-21">
 <p>
 It is an inplace sorting technique. In this algorithm, we will get the minimum element from the array, then we swap it to the first position. Now we will get the minimum from array[1:] and place it in index 1. Similarly, we get minimum from array[2:] and then place it on index 2. We do till we get minimum from array[len(array) - 2:] and place minimum on index [len(array) - 2].
@@ -2455,8 +2453,8 @@ It is an inplace sorting technique. In this algorithm, we will get the minimum e
 </div>
 </div>
 
-<div id="outline-container-org9c5476b" class="outline-3">
-<h3 id="org9c5476b"><span class="section-number-3">21.1.</span> Time complexity</h3>
+<div id="outline-container-org11c6c9e" class="outline-3">
+<h3 id="org11c6c9e"><span class="section-number-3">21.1.</span> Time complexity</h3>
 <div class="outline-text-3" id="text-21-1">
 <p>
 The total number of comparisions is,
@@ -2473,8 +2471,8 @@ Therefore the time complexity in all cases is, \[ \text{Time complexity} = \thet
 </div>
 </div>
 
-<div id="outline-container-org0811d30" class="outline-2">
-<h2 id="org0811d30"><span class="section-number-2">22.</span> Insertion sort</h2>
+<div id="outline-container-org4617c8c" class="outline-2">
+<h2 id="org4617c8c"><span class="section-number-2">22.</span> Insertion sort</h2>
 <div class="outline-text-2" id="text-22">
 <p>
 It is an inplace sorting algorithm.
@@ -2506,8 +2504,8 @@ It is an inplace sorting algorithm.
 </div>
 </div>
 
-<div id="outline-container-org4b3dd91" class="outline-3">
-<h3 id="org4b3dd91"><span class="section-number-3">22.1.</span> Time complexity</h3>
+<div id="outline-container-org5502fc1" class="outline-3">
+<h3 id="org5502fc1"><span class="section-number-3">22.1.</span> Time complexity</h3>
 <div class="outline-text-3" id="text-22-1">
 <p>
 <b>Best Case</b> : The best case is when input array is already sorted. In this case, we do <b>(n-1)</b> comparisions and no swaps. The time complexity will be \(\theta (n)\)
@@ -2530,8 +2528,8 @@ Total time complexity becomes \(\theta \left( 2 \frac{n(n-1)}{2} \right)\), whic
 </div>
 </div>
 
-<div id="outline-container-orge9eebe7" class="outline-2">
-<h2 id="orge9eebe7"><span class="section-number-2">23.</span> Inversion in array</h2>
+<div id="outline-container-org165dff9" class="outline-2">
+<h2 id="org165dff9"><span class="section-number-2">23.</span> Inversion in array</h2>
 <div class="outline-text-2" id="text-23">
 <p>
 The inversion of array is the measure of how close array is from being sorted.
@@ -2645,8 +2643,8 @@ Total number of inversions = 1 + 2 = 3
 </p>
 </div>
 
-<div id="outline-container-orgf6baadc" class="outline-3">
-<h3 id="orgf6baadc"><span class="section-number-3">23.1.</span> Relation between time complexity of insertion sort and inversion</h3>
+<div id="outline-container-org32523b2" class="outline-3">
+<h3 id="org32523b2"><span class="section-number-3">23.1.</span> Relation between time complexity of insertion sort and inversion</h3>
 <div class="outline-text-3" id="text-23-1">
 <p>
 If the inversion of an array is f(n), then the time complexity of the insertion sort will be \(\theta (n + f(n))\).
@@ -2655,8 +2653,8 @@ If the inversion of an array is f(n), then the time complexity of the insertion 
 </div>
 </div>
 
-<div id="outline-container-org10b5eed" class="outline-2">
-<h2 id="org10b5eed"><span class="section-number-2">24.</span> Quick sort</h2>
+<div id="outline-container-org21195d9" class="outline-2">
+<h2 id="org21195d9"><span class="section-number-2">24.</span> Quick sort</h2>
 <div class="outline-text-2" id="text-24">
 <p>
 It is a divide and conquer technique. It uses a partition algorithm which will choose an element from array, then place all smaller elements to it's left and larger to it's right. Then we can take these two parts of the array and recursively place all elements in correct position. For ease, the element chosen by the partition algorithm is either leftmost or rightmost element.
@@ -2678,8 +2676,8 @@ As we can see, the main component of this algorithm is the partition algorithm.
 </p>
 </div>
 
-<div id="outline-container-org6fb5505" class="outline-3">
-<h3 id="org6fb5505"><span class="section-number-3">24.1.</span> Lomuto partition</h3>
+<div id="outline-container-orgebcb6fc" class="outline-3">
+<h3 id="orgebcb6fc"><span class="section-number-3">24.1.</span> Lomuto partition</h3>
 <div class="outline-text-3" id="text-24-1">
 <p>
 The partition algorithm will work as follows:
@@ -2715,8 +2713,8 @@ For an array of size <b>n</b>, the number ofcomparisions done by this algorithm 
 </div>
 </div>
 
-<div id="outline-container-org6451ec7" class="outline-3">
-<h3 id="org6451ec7"><span class="section-number-3">24.2.</span> Time complexity of quicksort</h3>
+<div id="outline-container-org209cd09" class="outline-3">
+<h3 id="org209cd09"><span class="section-number-3">24.2.</span> Time complexity of quicksort</h3>
 <div class="outline-text-3" id="text-24-2">
 <p>
 In quick sort, we don't have a fixed recursive relation. The recursive relations differ for different cases.
@@ -2761,8 +2759,8 @@ Therefore, the time complexity in average case becomes,
 </div>
 </div>
 
-<div id="outline-container-org8f68dec" class="outline-3">
-<h3 id="org8f68dec"><span class="section-number-3">24.3.</span> Number of comparisions</h3>
+<div id="outline-container-orgaeccec5" class="outline-3">
+<h3 id="orgaeccec5"><span class="section-number-3">24.3.</span> Number of comparisions</h3>
 <div class="outline-text-3" id="text-24-3">
 <p>
 The number of comparisions in quick sort for,
@@ -2774,8 +2772,8 @@ The number of comparisions in quick sort for,
 </div>
 </div>
 
-<div id="outline-container-org1663660" class="outline-2">
-<h2 id="org1663660"><span class="section-number-2">25.</span> Merging two sorted arrays (2-Way Merge)</h2>
+<div id="outline-container-org48dfc7b" class="outline-2">
+<h2 id="org48dfc7b"><span class="section-number-2">25.</span> Merging two sorted arrays (2-Way Merge)</h2>
 <div class="outline-text-2" id="text-25">
 <p>
 Suppose we have two arrays that are already sorted. The first array has <b>n</b> elements and the second array has <b>m</b> elements.
@@ -2813,8 +2811,8 @@ The way to merge them is to compare the elements in a sequence between the two a
 </div>
 </div>
 
-<div id="outline-container-orgc0167c9" class="outline-2">
-<h2 id="orgc0167c9"><span class="section-number-2">26.</span> Merging k sorted arrays (k-way merge)</h2>
+<div id="outline-container-orgd35119e" class="outline-2">
+<h2 id="orgd35119e"><span class="section-number-2">26.</span> Merging k sorted arrays (k-way merge)</h2>
 <div class="outline-text-2" id="text-26">
 <p>
 k-way merge algorithms take k different sorted arrays and merge them into a single single array. The algorithm is same as that in two way merge except we need to get the smallest element from the pointer on k array's and then move it's corresponding pointer.
@@ -2822,8 +2820,8 @@ k-way merge algorithms take k different sorted arrays and merge them into a sing
 </div>
 </div>
 
-<div id="outline-container-org8420796" class="outline-2">
-<h2 id="org8420796"><span class="section-number-2">27.</span> Merge sort</h2>
+<div id="outline-container-orgc61b3c8" class="outline-2">
+<h2 id="orgc61b3c8"><span class="section-number-2">27.</span> Merge sort</h2>
 <div class="outline-text-2" id="text-27">
 <p>
 Merge sort is a pure divide and conquer algorithm. In this sorting algorithm, we merge the sorted sub-arrays till we get a final sorted array.<br />
@@ -2900,8 +2898,8 @@ An implementation in C language is as follows.
 </div>
 </div>
 
-<div id="outline-container-org5c7790b" class="outline-3">
-<h3 id="org5c7790b"><span class="section-number-3">27.1.</span> Time complexity</h3>
+<div id="outline-container-org9135392" class="outline-3">
+<h3 id="org9135392"><span class="section-number-3">27.1.</span> Time complexity</h3>
 <div class="outline-text-3" id="text-27-1">
 <p>
 Unlike quick sort, <b>the recurrance relation is same for merge sort in all cases.</b>
@@ -2918,8 +2916,8 @@ Using the master's theorem.
 </div>
 </div>
 
-<div id="outline-container-orgc34e1f9" class="outline-3">
-<h3 id="orgc34e1f9"><span class="section-number-3">27.2.</span> Space complexity</h3>
+<div id="outline-container-orgfe93151" class="outline-3">
+<h3 id="orgfe93151"><span class="section-number-3">27.2.</span> Space complexity</h3>
 <div class="outline-text-3" id="text-27-2">
 <p>
 As we can see in the C code, the space complexity is \(\theta (n)\)
@@ -2928,8 +2926,8 @@ As we can see in the C code, the space complexity is \(\theta (n)\)
 </div>
 </div>
 
-<div id="outline-container-org18b9955" class="outline-2">
-<h2 id="org18b9955"><span class="section-number-2">28.</span> Stable and unstable sorting algorithms</h2>
+<div id="outline-container-org4049015" class="outline-2">
+<h2 id="org4049015"><span class="section-number-2">28.</span> Stable and unstable sorting algorithms</h2>
 <div class="outline-text-2" id="text-28">
 <p>
 We call sorting algorithms unstable or stable on the basis of whether they change order of equal values.
@@ -2962,16 +2960,16 @@ Whereas an unstable sorting algorithm will sort without preserving the order of 
 </div>
 </div>
 
-<div id="outline-container-orgde718f8" class="outline-2">
-<h2 id="orgde718f8"><span class="section-number-2">29.</span> Non-comparitive sorting algorithms</h2>
+<div id="outline-container-orgc43ccf1" class="outline-2">
+<h2 id="orgc43ccf1"><span class="section-number-2">29.</span> Non-comparitive sorting algorithms</h2>
 <div class="outline-text-2" id="text-29">
 <p>
 Sorting algorithms which do not use comparisions to sort elements are called non-comparitive sorting algorithms. These tend to be faster than comparitive sorting algorithms.
 </p>
 </div>
 
-<div id="outline-container-orgbfafd39" class="outline-3">
-<h3 id="orgbfafd39"><span class="section-number-3">29.1.</span> Counting sort</h3>
+<div id="outline-container-org764b817" class="outline-3">
+<h3 id="org764b817"><span class="section-number-3">29.1.</span> Counting sort</h3>
 <div class="outline-text-3" id="text-29-1">
 <ul class="org-ul">
 <li>Counting sort <b>only works on integer arrays</b></li>
@@ -3026,15 +3024,15 @@ Therefore,
 </div>
 </div>
 
-<div id="outline-container-orgea9c5a5" class="outline-3">
-<h3 id="orgea9c5a5"><span class="section-number-3">29.2.</span> Radix sort</h3>
+<div id="outline-container-orgbb0b28a" class="outline-3">
+<h3 id="orgbb0b28a"><span class="section-number-3">29.2.</span> Radix sort</h3>
 <div class="outline-text-3" id="text-29-2">
 <p>
 In radix sort, we sort using the digits, from least significant digit (lsd) to most significant digit (msd). In other words, we sort digits from right to left. The algorithm used to sort digits <b>should be a stable sorting algorithm</b>.
 </p>
 
 
-<div id="org2986826" class="figure">
+<div id="org09a0225" class="figure">
 <p><img src="lectures/imgs/radix-sort.png" alt="radix-sort.png" />
 </p>
 </div>
@@ -3084,8 +3082,8 @@ radix sort is paired with counting sort.</li>
 </div>
 </div>
 
-<div id="outline-container-org804781d" class="outline-3">
-<h3 id="org804781d"><span class="section-number-3">29.3.</span> Bucket sort</h3>
+<div id="outline-container-orgf7fda19" class="outline-3">
+<h3 id="orgf7fda19"><span class="section-number-3">29.3.</span> Bucket sort</h3>
 <div class="outline-text-3" id="text-29-3">
 <p>
 Counting sort only works for non-negative integers. Bucket sort is a generalization of counting sort. If we know the range of the elements in the array, we can sort them using bucket sort. In bucket sort, we distribute the elements into buckets (collections of elements). Each bucket will hold elements of different ranges. Then, we can either sort elements in the buckets using some other sorting algorithm or by using bucket sort algorithm recursively.
@@ -3174,8 +3172,8 @@ Where,
 </div>
 </div>
 
-<div id="outline-container-orgd065d7e" class="outline-4">
-<h4 id="orgd065d7e"><span class="section-number-4">29.3.1.</span> Time complexity</h4>
+<div id="outline-container-orgda8a490" class="outline-4">
+<h4 id="orgda8a490"><span class="section-number-4">29.3.1.</span> Time complexity</h4>
 <div class="outline-text-4" id="text-29-3-1">
 <p>
 The time complexity in bucket sort is affected by what sorting algorithm will be used to sort elements in a bucket.
@@ -3226,8 +3224,8 @@ Therefore, in best case,
 </div>
 </div>
 
-<div id="outline-container-orgbad6bc7" class="outline-2">
-<h2 id="orgbad6bc7"><span class="section-number-2">30.</span> Dynamic Programming</h2>
+<div id="outline-container-org5e7b9d4" class="outline-2">
+<h2 id="org5e7b9d4"><span class="section-number-2">30.</span> Dynamic Programming</h2>
 <div class="outline-text-2" id="text-30">
 <p>
 <b>Similar to divide and conquer</b>, dynamic programming also solves problems by combining solutions of smaller sub-problems.
@@ -3246,8 +3244,8 @@ In dynamic programming, each <b>subproblem is only solved once and then its solu
 </p>
 </div>
 
-<div id="outline-container-org57d73b3" class="outline-3">
-<h3 id="org57d73b3"><span class="section-number-3">30.1.</span> Use and steps of dynamic programming</h3>
+<div id="outline-container-org505ed26" class="outline-3">
+<h3 id="org505ed26"><span class="section-number-3">30.1.</span> Use and steps of dynamic programming</h3>
 <div class="outline-text-3" id="text-30-1">
 <p>
 Dynamic programming has four steps :
@@ -3261,8 +3259,8 @@ Dynamic programming has four steps :
 </div>
 </div>
 
-<div id="outline-container-org629b5ca" class="outline-3">
-<h3 id="org629b5ca"><span class="section-number-3">30.2.</span> Rod cutting (Simple example for dynamic programming)</h3>
+<div id="outline-container-org5e6fc59" class="outline-3">
+<h3 id="org5e6fc59"><span class="section-number-3">30.2.</span> Rod cutting (Simple example for dynamic programming)</h3>
 <div class="outline-text-3" id="text-30-2">
 <p>
 Suppose a factory buys long steel rods and cuts them into smaller steel rods, which it then sells. The cutting of rods costs no money.
@@ -3349,8 +3347,8 @@ Therefore, increasing price.
 </p>
 </div>
 
-<div id="outline-container-org4cc3782" class="outline-4">
-<h4 id="org4cc3782"><span class="section-number-4">30.2.1.</span> Analyzing problem</h4>
+<div id="outline-container-orge0b21e7" class="outline-4">
+<h4 id="orge0b21e7"><span class="section-number-4">30.2.1.</span> Analyzing problem</h4>
 <div class="outline-text-4" id="text-30-2-1">
 <p>
 If we have a rod of length \(n\), it can be cut up in \(2^{n-1}\) different ways (when we can only cut in lengths that are natural numbers).
@@ -3456,8 +3454,8 @@ But <b>we don't need to examine all the combination of different cuts</b>
 </div>
 </div>
 
-<div id="outline-container-orgb5191dc" class="outline-4">
-<h4 id="orgb5191dc"><span class="section-number-4">30.2.2.</span> Recursive solution</h4>
+<div id="outline-container-org6afe52d" class="outline-4">
+<h4 id="org6afe52d"><span class="section-number-4">30.2.2.</span> Recursive solution</h4>
 <div class="outline-text-4" id="text-30-2-2">
 <p>
 If we don't use dynamic programming for this problem, we can use the recursive solution as
@@ -3478,8 +3476,8 @@ If we don't use dynamic programming for this problem, we can use the recursive s
 </div>
 </div>
 
-<div id="outline-container-orgeda2c25" class="outline-5">
-<h5 id="orgeda2c25"><span class="section-number-5">30.2.2.1.</span> Time complexity</h5>
+<div id="outline-container-orgc047016" class="outline-5">
+<h5 id="orgc047016"><span class="section-number-5">30.2.2.1.</span> Time complexity</h5>
 <div class="outline-text-5" id="text-30-2-2-1">
 <p>
 The time complexity can be calculated using the recursive relation
@@ -3499,8 +3497,8 @@ We can see that recursive method is working in \(2^n\) time, because it checks a
 </div>
 </div>
 </div>
-<div id="outline-container-org5b5057e" class="outline-4">
-<h4 id="org5b5057e"><span class="section-number-4">30.2.3.</span> Dynamic Programming Solutions</h4>
+<div id="outline-container-orgad1cab1" class="outline-4">
+<h4 id="orgad1cab1"><span class="section-number-4">30.2.3.</span> Dynamic Programming Solutions</h4>
 <div class="outline-text-4" id="text-30-2-3">
 <p>
 In dynamic programming, our goal is to solve every subproblem only once. There are two ways to do this,
@@ -3514,8 +3512,8 @@ In dynamic programming we store the solution to subproblems thus reducing time c
 </p>
 </div>
 </div>
-<div id="outline-container-orgaf79784" class="outline-4">
-<h4 id="orgaf79784"><span class="section-number-4">30.2.4.</span> Top Down Memoized Solution</h4>
+<div id="outline-container-org2112973" class="outline-4">
+<h4 id="org2112973"><span class="section-number-4">30.2.4.</span> Top Down Memoized Solution</h4>
 <div class="outline-text-4" id="text-30-2-4">
 <p>
 This solution will simply modify the recursive solution by adding an array or hash table to store the result of subproblems. Later it can simply check if subproblem was already solved and use the already computed result.
@@ -3557,8 +3555,8 @@ Rather than changing our function, <b>we simply memoize it to avoid solving subp
 </p>
 </div>
 </div>
-<div id="outline-container-org3634532" class="outline-4">
-<h4 id="org3634532"><span class="section-number-4">30.2.5.</span> Bottom Up Solution</h4>
+<div id="outline-container-org9691c52" class="outline-4">
+<h4 id="org9691c52"><span class="section-number-4">30.2.5.</span> Bottom Up Solution</h4>
 <div class="outline-text-4" id="text-30-2-5">
 <p>
 In this method, we will start from the <b>smallest subproblem and work towards larger problem</b>. This is why this method is called bottom up method.
@@ -3590,8 +3588,8 @@ The idea is that when we are working on a larger problem, the prerequisite small
 </ul>
 </div>
 </div>
-<div id="outline-container-org602f672" class="outline-4">
-<h4 id="org602f672"><span class="section-number-4">30.2.6.</span> Running time of Top Down and Bottom Up Solutions</h4>
+<div id="outline-container-org2e8f295" class="outline-4">
+<h4 id="org2e8f295"><span class="section-number-4">30.2.6.</span> Running time of Top Down and Bottom Up Solutions</h4>
 <div class="outline-text-4" id="text-30-2-6">
 <p>
 Both top down and botton up require \(\theta (n^2)\) time.
@@ -3611,8 +3609,8 @@ The <b>top down method does run slower</b> on actual machines <b>due to recursiv
 </p>
 </div>
 </div>
-<div id="outline-container-orgb3423cc" class="outline-4">
-<h4 id="orgb3423cc"><span class="section-number-4">30.2.7.</span> Reconstructing a solution</h4>
+<div id="outline-container-orgd9fb0c5" class="outline-4">
+<h4 id="orgd9fb0c5"><span class="section-number-4">30.2.7.</span> Reconstructing a solution</h4>
 <div class="outline-text-4" id="text-30-2-7">
 <p>
 These solutions give us the maximum revenue, but they tell about the pieces in which rod is to be cut.
@@ -3667,8 +3665,8 @@ Since we can get the size of first piece, we can get the size of all pieces by r
 </div>
 </div>
 </div>
-<div id="outline-container-org486cee7" class="outline-3">
-<h3 id="org486cee7"><span class="section-number-3">30.3.</span> Subproblem graph</h3>
+<div id="outline-container-orgba1997c" class="outline-3">
+<h3 id="orgba1997c"><span class="section-number-3">30.3.</span> Subproblem graph</h3>
 <div class="outline-text-3" id="text-30-3">
 <p>
 In order to get the dynamic programming solution, we need to think about how subproblems depend on each other. The subproblem graph for a problem contains this information.
@@ -3690,8 +3688,8 @@ The bottom-up dynamic problem method solves subproblem in the reverse topologica
 </p>
 </div>
 </div>
-<div id="outline-container-orgd643667" class="outline-3">
-<h3 id="orgd643667"><span class="section-number-3">30.4.</span> Matrix-chain multiplication</h3>
+<div id="outline-container-orgca4dd09" class="outline-3">
+<h3 id="orgca4dd09"><span class="section-number-3">30.4.</span> Matrix-chain multiplication</h3>
 <div class="outline-text-3" id="text-30-4">
 <p>
 The algorithm to multiply two matrices is
@@ -3737,8 +3735,8 @@ So computing \(((A_1A_2)A_3)\) is about 10 times faster than \((A_1(A_2A_3))\) i
 Therefore, the matrix-chain multiplication problem is : <b>given a chain \(\langle A_1, A_2, A_3, ... , A_n \rangle\) of matrices, fully paranthesize the product \(A_1A_2A_3...A_n\) to minimize number of scalar multiplications</b>
 </p>
 </div>
-<div id="outline-container-org38fb468" class="outline-4">
-<h4 id="org38fb468"><span class="section-number-4">30.4.1.</span> Counting number of paranthesis</h4>
+<div id="outline-container-org415ed04" class="outline-4">
+<h4 id="org415ed04"><span class="section-number-4">30.4.1.</span> Counting number of paranthesis</h4>
 <div class="outline-text-4" id="text-30-4-1">
 <p>
 For \(n\) matrices, the number of <b>possible paranthesizations is given by \((n-1)^{th}\) Catalan number.</b>
@@ -3760,15 +3758,15 @@ For \(n\) matrices, the function for paranthesis is
 </p>
 </div>
 </div>
-<div id="outline-container-org354cbc2" class="outline-4">
-<h4 id="org354cbc2"><span class="section-number-4">30.4.2.</span> Solution</h4>
+<div id="outline-container-org3df76d5" class="outline-4">
+<h4 id="org3df76d5"><span class="section-number-4">30.4.2.</span> Solution</h4>
 <div class="outline-text-4" id="text-30-4-2">
 <p>
 The dynamic programming method will have 4 steps similar to rod-cutting problem
 </p>
 </div>
-<div id="outline-container-org81d3afd" class="outline-5">
-<h5 id="org81d3afd"><span class="section-number-5">30.4.2.1.</span> Step 1 : Analyzing problem</h5>
+<div id="outline-container-org407a047" class="outline-5">
+<h5 id="org407a047"><span class="section-number-5">30.4.2.1.</span> Step 1 : Analyzing problem</h5>
 <div class="outline-text-5" id="text-30-4-2-1">
 <p>
 We will use the notation \(A_{ij...k}\) to show product \(A_iA_j...A_k\).
@@ -3787,8 +3785,8 @@ Therefore, the minimum number of scalar multiplications is given by
 </p>
 </div>
 </div>
-<div id="outline-container-org475a831" class="outline-5">
-<h5 id="org475a831"><span class="section-number-5">30.4.2.2.</span> Step 2 : Creating recursive solution</h5>
+<div id="outline-container-org024883c" class="outline-5">
+<h5 id="org024883c"><span class="section-number-5">30.4.2.2.</span> Step 2 : Creating recursive solution</h5>
 <div class="outline-text-5" id="text-30-4-2-2">
 <p>
 Now we will create the recursive divide and conquer solution for the problem.
@@ -3824,8 +3822,8 @@ This algorithm will run in exponential time. Now we can use memoization for top 
 </p>
 </div>
 </div>
-<div id="outline-container-org3a855a4" class="outline-5">
-<h5 id="org3a855a4"><span class="section-number-5">30.4.2.3.</span> Step 3 : Applying dynamic programming</h5>
+<div id="outline-container-org244f66a" class="outline-5">
+<h5 id="org244f66a"><span class="section-number-5">30.4.2.3.</span> Step 3 : Applying dynamic programming</h5>
 <div class="outline-text-5" id="text-30-4-2-3">
 <p>
 The <b>top down dynamic programming</b> using memoization is as follows
@@ -3869,45 +3867,43 @@ In this diagram [x,y] means values [left,right] and what it calls recursively
 <p>
 The easiest way to get the subproblem graph from this tree is to simply use the adjacency list representation, all direct childs are in the adjacency list of the node.
 </p>
-<div class="org-src-container">
-<pre class="src src-python"><span style="color: #8b4513;">graph</span> = {
-    <span style="color: #50a14f;">"0,0"</span> : [],
-    <span style="color: #50a14f;">"0,1"</span> : [<span style="color: #50a14f;">"0,0"</span>,<span style="color: #50a14f;">"1,1"</span>],
-    <span style="color: #50a14f;">"0,2"</span> : [<span style="color: #50a14f;">"0,0"</span>,<span style="color: #50a14f;">"0,1"</span>,<span style="color: #50a14f;">"1,2"</span>,<span style="color: #50a14f;">"2,2"</span>],
-    <span style="color: #50a14f;">"0,3"</span> : [<span style="color: #50a14f;">"0,0"</span>,<span style="color: #50a14f;">"0,1"</span>,<span style="color: #50a14f;">"0,2"</span>,<span style="color: #50a14f;">"1,3"</span>,<span style="color: #50a14f;">"2,3"</span>,<span style="color: #50a14f;">"3,3"</span>],
-    <span style="color: #50a14f;">"1,1"</span> : [],
-    <span style="color: #50a14f;">"1,2"</span> : [<span style="color: #50a14f;">"1,1"</span>,<span style="color: #50a14f;">"2,2"</span>],
-    <span style="color: #50a14f;">"1,3"</span> : [<span style="color: #50a14f;">"1,1"</span>,<span style="color: #50a14f;">"1,2"</span>,<span style="color: #50a14f;">"2,3"</span>,<span style="color: #50a14f;">"3,3"</span>],
-    <span style="color: #50a14f;">"2,2"</span> : [],
-    <span style="color: #50a14f;">"2,3"</span> : [<span style="color: #50a14f;">"2,2"</span>,<span style="color: #50a14f;">"3,3"</span>],
-    <span style="color: #50a14f;">"3,3"</span> : [],
+<pre class="example">
+graph = {
+    "0,0" : [],
+    "0,1" : ["0,0","1,1"],
+    "0,2" : ["0,0","0,1","1,2","2,2"],
+    "0,3" : ["0,0","0,1","0,2","1,3","2,3","3,3"],
+    "1,1" : [],
+    "1,2" : ["1,1","2,2"],
+    "1,3" : ["1,1","1,2","2,3","3,3"],
+    "2,2" : [],
+    "2,3" : ["2,2","3,3"],
+    "3,3" : [],
 }
 </pre>
-</div>
 <p>
 After topological sort, we will get the order
 </p>
-<div class="org-src-container">
-<pre class="src src-python"><span style="color: #8b4513;">graph</span> = {
-    <span style="color: #50a14f;">"0,0"</span> : [],
-    <span style="color: #50a14f;">"1,1"</span> : [],
-    <span style="color: #50a14f;">"2,2"</span> : [],
-    <span style="color: #50a14f;">"3,3"</span> : [],
-    <span style="color: #50a14f;">"0,1"</span> : [<span style="color: #50a14f;">"0,0"</span>,<span style="color: #50a14f;">"1,1"</span>],
-    <span style="color: #50a14f;">"1,2"</span> : [<span style="color: #50a14f;">"1,1"</span>,<span style="color: #50a14f;">"2,2"</span>],
-    <span style="color: #50a14f;">"2,3"</span> : [<span style="color: #50a14f;">"2,2"</span>,<span style="color: #50a14f;">"3,3"</span>],
-    <span style="color: #50a14f;">"0,2"</span> : [<span style="color: #50a14f;">"0,0"</span>,<span style="color: #50a14f;">"0,1"</span>,<span style="color: #50a14f;">"1,2"</span>,<span style="color: #50a14f;">"2,2"</span>],
-    <span style="color: #50a14f;">"1,3"</span> : [<span style="color: #50a14f;">"1,1"</span>,<span style="color: #50a14f;">"1,2"</span>,<span style="color: #50a14f;">"2,3"</span>,<span style="color: #50a14f;">"3,3"</span>],
-    <span style="color: #50a14f;">"0,3"</span> : [<span style="color: #50a14f;">"0,0"</span>,<span style="color: #50a14f;">"0,1"</span>,<span style="color: #50a14f;">"0,2"</span>,<span style="color: #50a14f;">"1,3"</span>,<span style="color: #50a14f;">"2,3"</span>,<span style="color: #50a14f;">"3,3"</span>],
+<pre class="example">
+graph = {
+    "0,0" : [],
+    "1,1" : [],
+    "2,2" : [],
+    "3,3" : [],
+    "0,1" : ["0,0","1,1"],
+    "1,2" : ["1,1","2,2"],
+    "2,3" : ["2,2","3,3"],
+    "0,2" : ["0,0","0,1","1,2","2,2"],
+    "1,3" : ["1,1","1,2","2,3","3,3"],
+    "0,3" : ["0,0","0,1","0,2","1,3","2,3","3,3"],
 }
 </pre>
-</div>
 <p>
 We can see that the order for subproblems arrange them in a pyramid like pattern.
 </p>
 
 
-<div id="orgf476f11" class="figure">
+<div id="org66c9011" class="figure">
 <p><img src="./imgs/IMG_20230928_182449.jpg" alt="IMG_20230928_182449.jpg" />
 </p>
 </div>
@@ -3947,8 +3943,8 @@ Knowing this pyramid is useful because many dynamic programming problems have a 
 </div>
 </div>
 </div>
-<div id="outline-container-org89cbbd3" class="outline-5">
-<h5 id="org89cbbd3"><span class="section-number-5">30.4.2.4.</span> Step 4 : Constructing a solution</h5>
+<div id="outline-container-orge70c4ef" class="outline-5">
+<h5 id="orge70c4ef"><span class="section-number-5">30.4.2.4.</span> Step 4 : Constructing a solution</h5>
 <div class="outline-text-5" id="text-30-4-2-4">
 <p>
 Similar to rod cutting problem, we can reconstruct a solution by storing the location of optimal partition of chain. In our case, we will store the location of optimal paritition in an array sol[,].
@@ -4047,15 +4043,15 @@ This will print the series of partition locations, which can be used to determin
 </div>
 </div>
 </div>
-<div id="outline-container-orgd291685" class="outline-3">
-<h3 id="orgd291685"><span class="section-number-3">30.5.</span> Longest common subsequence</h3>
+<div id="outline-container-orgfd15a21" class="outline-3">
+<h3 id="orgfd15a21"><span class="section-number-3">30.5.</span> Longest common subsequence</h3>
 <div class="outline-text-3" id="text-30-5">
 <p>
 In order to get the longest subsequence, we need to first see the difference between substring and subsequence.
 </p>
 </div>
-<div id="outline-container-org754f7ee" class="outline-4">
-<h4 id="org754f7ee"><span class="section-number-4">30.5.1.</span> Substring vs Subsequence</h4>
+<div id="outline-container-org2e090cd" class="outline-4">
+<h4 id="org2e090cd"><span class="section-number-4">30.5.1.</span> Substring vs Subsequence</h4>
 <div class="outline-text-4" id="text-30-5-1">
 <p>
 A subsequence is a broader generalization of substrings. In substring, the matching characters are in-order and consecutive. But <b>in a subsequence, the matching characters need to be in order but not in consecutive manner.</b>
@@ -4066,20 +4062,20 @@ Therefore, every substring is a subsequence but not all subsequences are substri
 </p>
 
 
-<div id="orgf24711e" class="figure">
+<div id="org283acd6" class="figure">
 <p><img src="./imgs/IMG_20231007_212317.jpg" alt="IMG_20231007_212317.jpg" />
 </p>
 </div>
 
 
-<div id="org7f97990" class="figure">
+<div id="orgb9ea583" class="figure">
 <p><img src="./imgs/IMG_20231007_212424.jpg" alt="IMG_20231007_212424.jpg" />
 </p>
 </div>
 </div>
 </div>
-<div id="outline-container-org3c39e57" class="outline-4">
-<h4 id="org3c39e57"><span class="section-number-4">30.5.2.</span> Analyzing problem</h4>
+<div id="outline-container-org76433d3" class="outline-4">
+<h4 id="org76433d3"><span class="section-number-4">30.5.2.</span> Analyzing problem</h4>
 <div class="outline-text-4" id="text-30-5-2">
 <p>
 Suppose two strings are \(X = \langle x_1, x_2 ... x_m \rangle\) and \(Y = \langle y_1, y_2 ... y_n \rangle\).
@@ -4108,8 +4104,8 @@ For \(X = \langle x_1, x_2 ... x_m \rangle\) and \(Y = \langle y_1, y_2 ... y_n 
 </p>
 </div>
 </div>
-<div id="outline-container-org8c70925" class="outline-4">
-<h4 id="org8c70925"><span class="section-number-4">30.5.3.</span> Recursive solution</h4>
+<div id="outline-container-orgfe2f74f" class="outline-4">
+<h4 id="orgfe2f74f"><span class="section-number-4">30.5.3.</span> Recursive solution</h4>
 <div class="outline-text-4" id="text-30-5-3">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #a0a1a7; font-weight: bold;">// </span><span style="color: #a0a1a7;">i and j are sizes of X and Y respectively</span>
@@ -4130,8 +4126,8 @@ For \(X = \langle x_1, x_2 ... x_m \rangle\) and \(Y = \langle y_1, y_2 ... y_n 
 </div>
 </div>
 </div>
-<div id="outline-container-orgb9caf7c" class="outline-4">
-<h4 id="orgb9caf7c"><span class="section-number-4">30.5.4.</span> Applying Dynamic Programming</h4>
+<div id="outline-container-orgf68d327" class="outline-4">
+<h4 id="orgf68d327"><span class="section-number-4">30.5.4.</span> Applying Dynamic Programming</h4>
 <div class="outline-text-4" id="text-30-5-4">
 <p>
 <b>Top-down solution</b>
@@ -4171,7 +4167,7 @@ For bottom-up dynamic programming, let's consider example with \(X = \langle x_1
 </p>
 
 
-<div id="orgd937bf6" class="figure">
+<div id="org7247630" class="figure">
 <p><img src="./imgs/Untitled-2023-10-08-1048.excalidraw.svg" alt="Untitled-2023-10-08-1048.excalidraw.svg" class="org-svg" />
 </p>
 </div>
@@ -4228,8 +4224,8 @@ Therefore, bottom up solution is
 </div>
 </div>
 </div>
-<div id="outline-container-orge01feed" class="outline-4">
-<h4 id="orge01feed"><span class="section-number-4">30.5.5.</span> Constructing solution</h4>
+<div id="outline-container-orgf232eb6" class="outline-4">
+<h4 id="orgf232eb6"><span class="section-number-4">30.5.5.</span> Constructing solution</h4>
 <div class="outline-text-4" id="text-30-5-5">
 <p>
 In order to get the LCS, we are using
@@ -4256,8 +4252,8 @@ So, we store solution as
 </pre>
 </div>
 </div>
-<div id="outline-container-org0b59ae3" class="outline-5">
-<h5 id="org0b59ae3"><span class="section-number-5">30.5.5.1.</span> Storing solution in top-down</h5>
+<div id="outline-container-org68b8881" class="outline-5">
+<h5 id="org68b8881"><span class="section-number-5">30.5.5.1.</span> Storing solution in top-down</h5>
 <div class="outline-text-5" id="text-30-5-5-1">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #c18401;">int</span> <span style="color: #8b4513;">m</span>[X.len, Y.len] = {(<span style="color: #c18401;">int</span>) INFINITY};
@@ -4300,8 +4296,8 @@ So, we store solution as
 </div>
 </div>
 </div>
-<div id="outline-container-org8d7908b" class="outline-5">
-<h5 id="org8d7908b"><span class="section-number-5">30.5.5.2.</span> Storing solution in bottom-up</h5>
+<div id="outline-container-orgac7122e" class="outline-5">
+<h5 id="orgac7122e"><span class="section-number-5">30.5.5.2.</span> Storing solution in bottom-up</h5>
 <div class="outline-text-5" id="text-30-5-5-2">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #c18401;">void</span> <span style="color: #0184bc;">LCS</span>(<span style="color: #c18401;">string</span> <span style="color: #8b4513;">X</span>, <span style="color: #c18401;">string</span> <span style="color: #8b4513;">Y</span>){
@@ -4342,8 +4338,8 @@ So, we store solution as
 </div>
 </div>
 
-<div id="outline-container-org3664787" class="outline-5">
-<h5 id="org3664787"><span class="section-number-5">30.5.5.3.</span> Printing solution</h5>
+<div id="outline-container-org690554a" class="outline-5">
+<h5 id="org690554a"><span class="section-number-5">30.5.5.3.</span> Printing solution</h5>
 <div class="outline-text-5" id="text-30-5-5-3">
 <p>
 Now we can simply follow the stored solution to get our string
@@ -4366,8 +4362,8 @@ Now we can simply follow the stored solution to get our string
 </div>
 </div>
 </div>
-<div id="outline-container-orgfeb5123" class="outline-4">
-<h4 id="orgfeb5123"><span class="section-number-4">30.5.6.</span> More compact way to store solution</h4>
+<div id="outline-container-org5eda118" class="outline-4">
+<h4 id="org5eda118"><span class="section-number-4">30.5.6.</span> More compact way to store solution</h4>
 <div class="outline-text-4" id="text-30-5-6">
 <p>
 The previous method to store solution uses three fields for each cell of sol[,] matrix. But the data can be in a more compact manner
@@ -4427,12 +4423,12 @@ Now, we can simply print solution by simply inferring the meaning of these arrow
 </div>
 </div>
 
-<div id="outline-container-org73bbd5c" class="outline-3">
-<h3 id="org73bbd5c"><span class="section-number-3">30.6.</span> 0/1 knapsack problem</h3>
+<div id="outline-container-org4bc1a85" class="outline-3">
+<h3 id="org4bc1a85"><span class="section-number-3">30.6.</span> 0/1 knapsack problem</h3>
 <div class="outline-text-3" id="text-30-6">
 </div>
-<div id="outline-container-org91c4ba6" class="outline-4">
-<h4 id="org91c4ba6"><span class="section-number-4">30.6.1.</span> Analyzing problem</h4>
+<div id="outline-container-orgacfdb5b" class="outline-4">
+<h4 id="orgacfdb5b"><span class="section-number-4">30.6.1.</span> Analyzing problem</h4>
 <div class="outline-text-4" id="text-30-6-1">
 <p>
 Suppose the items are stored in struct
@@ -4465,8 +4461,8 @@ Here \(w_n\) is weight of \(n^{th}\) item and \(p_n\) is profit of \(n^{th}\) it
 </p>
 </div>
 </div>
-<div id="outline-container-org8d9cee8" class="outline-4">
-<h4 id="org8d9cee8"><span class="section-number-4">30.6.2.</span> Recursive solution</h4>
+<div id="outline-container-org63cea59" class="outline-4">
+<h4 id="org63cea59"><span class="section-number-4">30.6.2.</span> Recursive solution</h4>
 <div class="outline-text-4" id="text-30-6-2">
 <p>
 The recursive solution for 0/1 knapsack is
@@ -4490,8 +4486,8 @@ The recursive solution for 0/1 knapsack is
 </div>
 </div>
 </div>
-<div id="outline-container-orgf4141a4" class="outline-4">
-<h4 id="orgf4141a4"><span class="section-number-4">30.6.3.</span> Applying Dynamic Programming</h4>
+<div id="outline-container-org938f323" class="outline-4">
+<h4 id="org938f323"><span class="section-number-4">30.6.3.</span> Applying Dynamic Programming</h4>
 <div class="outline-text-4" id="text-30-6-3">
 <p>
 <b>Top-down solution</b>
@@ -4604,8 +4600,8 @@ The traversal is done in this sequence
 </div>
 </div>
 
-<div id="outline-container-org4908d6a" class="outline-4">
-<h4 id="org4908d6a"><span class="section-number-4">30.6.4.</span> Constructing solution</h4>
+<div id="outline-container-orgb4608c2" class="outline-4">
+<h4 id="orgb4608c2"><span class="section-number-4">30.6.4.</span> Constructing solution</h4>
 <div class="outline-text-4" id="text-30-6-4">
 <p>
 In order to construct solution, we will store for every calculated \(m[n,W]\) it's associated \(sol[n,W]\) which will store whether the item \(n\) was included or excluded
@@ -4638,12 +4634,12 @@ Then the solution is printed as
 </div>
 </div>
 
-<div id="outline-container-orgef605dc" class="outline-3">
-<h3 id="orgef605dc"><span class="section-number-3">30.7.</span> Floyd-Warshall algorithm</h3>
+<div id="outline-container-org861adfa" class="outline-3">
+<h3 id="org861adfa"><span class="section-number-3">30.7.</span> Floyd-Warshall algorithm</h3>
 <div class="outline-text-3" id="text-30-7">
 </div>
-<div id="outline-container-orgd357229" class="outline-4">
-<h4 id="orgd357229"><span class="section-number-4">30.7.1.</span> Analyzing problem</h4>
+<div id="outline-container-orgd9bb665" class="outline-4">
+<h4 id="orgd9bb665"><span class="section-number-4">30.7.1.</span> Analyzing problem</h4>
 <div class="outline-text-4" id="text-30-7-1">
 <p>
 Suppose a graph has \(N\) nodes which are labeled \(1,2,3,...,N\). The function which tells the cost of shortest path between any two nodes \(i\) and \(j\) is \(sp(i,j,k)\) when only nodes in set \({1,2,...,k}\) are used to construct the path
@@ -4663,8 +4659,8 @@ For graph with \(N\) nodes, we want to find \(sp(i,j,N)\) for all pairs of \((i,
 </p>
 </div>
 </div>
-<div id="outline-container-org9bee167" class="outline-4">
-<h4 id="org9bee167"><span class="section-number-4">30.7.2.</span> Recursive solution</h4>
+<div id="outline-container-org584a52e" class="outline-4">
+<h4 id="org584a52e"><span class="section-number-4">30.7.2.</span> Recursive solution</h4>
 <div class="outline-text-4" id="text-30-7-2">
 <p>
 The recurisve solution is given by
@@ -4688,8 +4684,8 @@ The recurisve solution is given by
 </div>
 </div>
 </div>
-<div id="outline-container-orgd10c03c" class="outline-4">
-<h4 id="orgd10c03c"><span class="section-number-4">30.7.3.</span> Dynamic Programming</h4>
+<div id="outline-container-org7ac7212" class="outline-4">
+<h4 id="org7ac7212"><span class="section-number-4">30.7.3.</span> Dynamic Programming</h4>
 <div class="outline-text-4" id="text-30-7-3">
 <p>
 The top-down dynamic programming will simply memoize the above recursive program.
@@ -4740,8 +4736,8 @@ Therefore, <b>we will solve in order \(k = 0,1,2,...,N\)</b>
 </div>
 </div>
 </div>
-<div id="outline-container-orgb7dc9f0" class="outline-4">
-<h4 id="orgb7dc9f0"><span class="section-number-4">30.7.4.</span> Reconstructing path (solution)</h4>
+<div id="outline-container-org4db0c7b" class="outline-4">
+<h4 id="org4db0c7b"><span class="section-number-4">30.7.4.</span> Reconstructing path (solution)</h4>
 <div class="outline-text-4" id="text-30-7-4">
 <p>
 Inorder to reconstruct the path, for every pair of node \(i\) and \(j\), we will store the node that appears just before \(j\) in the path from \(i\) to \(j\)
@@ -4812,8 +4808,8 @@ The algorithm to then print the path is simple
 </div>
 </div>
 </div>
-<div id="outline-container-orgd1d55d4" class="outline-2">
-<h2 id="orgd1d55d4"><span class="section-number-2">31.</span> Greedy algorithm</h2>
+<div id="outline-container-org4bb5820" class="outline-2">
+<h2 id="org4bb5820"><span class="section-number-2">31.</span> Greedy algorithm</h2>
 <div class="outline-text-2" id="text-31">
 <p>
 Greedy algorithms are algorithms that make best choice at the moment. These algorithms are usually used in optimization problems.
@@ -4825,8 +4821,8 @@ Greedy algorithms are algorithms that make best choice at the moment. These algo
 <li>A common trend in greedy algorithms is that all options are sorted, and then the top options are selected till limit of selections is reached</li>
 </ul>
 </div>
-<div id="outline-container-orgeccded8" class="outline-3">
-<h3 id="orgeccded8"><span class="section-number-3">31.1.</span> Activity-selection problem</h3>
+<div id="outline-container-orgdd7fb37" class="outline-3">
+<h3 id="orgdd7fb37"><span class="section-number-3">31.1.</span> Activity-selection problem</h3>
 <div class="outline-text-3" id="text-31-1">
 <p>
 Suppose for a festival, we have a single stage and a set of activities (i.e, shows and performances). For each activity, we know what they want their starting time \(s_i\) and finishing time \(f_i\).
@@ -4836,8 +4832,8 @@ Suppose for a festival, we have a single stage and a set of activities (i.e, sho
 Our goal is to get as many activities done on a single stage as possible (making this an optimization problem).
 </p>
 </div>
-<div id="outline-container-orgf95c5d6" class="outline-4">
-<h4 id="orgf95c5d6"><span class="section-number-4">31.1.1.</span> Analyzing problem</h4>
+<div id="outline-container-org569fb1c" class="outline-4">
+<h4 id="org569fb1c"><span class="section-number-4">31.1.1.</span> Analyzing problem</h4>
 <div class="outline-text-4" id="text-31-1-1">
 <p>
 Since there is a single stage, we need to <b>make sure none of the selected activities collide.</b>
@@ -4908,14 +4904,14 @@ We can these activities on a timeline graph
 </p>
 
 
-<div id="orgc3c5945" class="figure">
+<div id="org51afdb2" class="figure">
 <p><img src="./imgs/Untitled-2023-10-08-1356.excalidraw.svg" alt="Untitled-2023-10-08-1356.excalidraw.svg" class="org-svg" />
 </p>
 </div>
 </div>
 </div>
-<div id="outline-container-org57c1c15" class="outline-4">
-<h4 id="org57c1c15"><span class="section-number-4">31.1.2.</span> Greedy solution</h4>
+<div id="outline-container-org45bf9d6" class="outline-4">
+<h4 id="org45bf9d6"><span class="section-number-4">31.1.2.</span> Greedy solution</h4>
 <div class="outline-text-4" id="text-31-1-2">
 <p>
 Since we want <b>to maximize the number of activities, we are greedy for activities that finish quick</b>
@@ -5004,22 +5000,22 @@ The final timeline with all selected activities is
 </p>
 
 
-<div id="org1a8c063" class="figure">
+<div id="org4176553" class="figure">
 <p><img src="./imgs/Untitled-2023-10-08-13561.excalidraw.svg" alt="Untitled-2023-10-08-13561.excalidraw.svg" class="org-svg" />
 </p>
 </div>
 </div>
 </div>
 </div>
-<div id="outline-container-org5f4a6c4" class="outline-3">
-<h3 id="org5f4a6c4"><span class="section-number-3">31.2.</span> Job Scheduling with deadlines</h3>
+<div id="outline-container-orgc512fde" class="outline-3">
+<h3 id="orgc512fde"><span class="section-number-3">31.2.</span> Job Scheduling with deadlines</h3>
 <div class="outline-text-3" id="text-31-2">
 <p>
 Suppose we are given a list of jobs with their deadlines and their profit. <b>Each job takes a unit of time</b>. We want to maximize our profits
 </p>
 </div>
-<div id="outline-container-orgef16f29" class="outline-4">
-<h4 id="orgef16f29"><span class="section-number-4">31.2.1.</span> Greedy algorithm</h4>
+<div id="outline-container-org3545ef9" class="outline-4">
+<h4 id="org3545ef9"><span class="section-number-4">31.2.1.</span> Greedy algorithm</h4>
 <div class="outline-text-4" id="text-31-2-1">
 <p>
 The algorithm <b>will use a Gantt chart</b> and works as follows
@@ -5032,8 +5028,8 @@ The algorithm <b>will use a Gantt chart</b> and works as follows
 </ol>
 </div>
 </div>
-<div id="outline-container-org60c7263" class="outline-4">
-<h4 id="org60c7263"><span class="section-number-4">31.2.2.</span> Worked Example</h4>
+<div id="outline-container-org2ddfa43" class="outline-4">
+<h4 id="org2ddfa43"><span class="section-number-4">31.2.2.</span> Worked Example</h4>
 <div class="outline-text-4" id="text-31-2-2">
 <p>
 We will look at the problem using the example,
@@ -5215,8 +5211,8 @@ Therefore, the final schedule is
 </div>
 </div>
 </div>
-<div id="outline-container-org620c7ea" class="outline-3">
-<h3 id="org620c7ea"><span class="section-number-3">31.3.</span> Fractional knapsack</h3>
+<div id="outline-container-org4d4afdf" class="outline-3">
+<h3 id="org4d4afdf"><span class="section-number-3">31.3.</span> Fractional knapsack</h3>
 <div class="outline-text-3" id="text-31-3">
 <p>
 In the knapsack problem, we are given items with their weights and profits. We need to fill our knapsack (which has a weight limit), in a way that we get maximum possible profit.
@@ -5237,8 +5233,8 @@ The 0/1 knapsack problem is more complex and requires dynamic programming to get
 But, we can get optimal solution for fractional knapsack with greedy method
 </p>
 </div>
-<div id="outline-container-org52e0e27" class="outline-4">
-<h4 id="org52e0e27"><span class="section-number-4">31.3.1.</span> Greedy algorithm</h4>
+<div id="outline-container-org6e6c468" class="outline-4">
+<h4 id="org6e6c468"><span class="section-number-4">31.3.1.</span> Greedy algorithm</h4>
 <div class="outline-text-4" id="text-31-3-1">
 <p>
 The capacity of knapsack is \(W\). The weights of items are \(w_i\) and profits for each are \(p_i\)
@@ -5251,8 +5247,8 @@ The capacity of knapsack is \(W\). The weights of items are \(w_i\) and profits 
 </ol>
 </div>
 </div>
-<div id="outline-container-org8c3fee2" class="outline-4">
-<h4 id="org8c3fee2"><span class="section-number-4">31.3.2.</span> Worked example</h4>
+<div id="outline-container-orge52edc0" class="outline-4">
+<h4 id="orge52edc0"><span class="section-number-4">31.3.2.</span> Worked example</h4>
 <div class="outline-text-4" id="text-31-3-2">
 <p>
 The weight capacity of our knapsack (W) is 60. The items are
@@ -5519,8 +5515,8 @@ Since items in knapsack are \(\langle I1, I2, I5, \frac{20}{22} I4\rangle\), the
 </div>
 </div>
 </div>
-<div id="outline-container-org7f61957" class="outline-3">
-<h3 id="org7f61957"><span class="section-number-3">31.4.</span> Huffman coding</h3>
+<div id="outline-container-org5fbdabc" class="outline-3">
+<h3 id="org5fbdabc"><span class="section-number-3">31.4.</span> Huffman coding</h3>
 <div class="outline-text-3" id="text-31-4">
 <p>
 Huffman coding is used to compress information. In paritcular, it is a simple lossless algorithm to compress 8-bit ASCII values, i.e text.
@@ -5530,8 +5526,8 @@ Huffman coding is used to compress information. In paritcular, it is a simple lo
 On average huffman coding reduces size by half. The amount of compression that is done depends on how frequently characters appear in text.
 </p>
 </div>
-<div id="outline-container-orge354ace" class="outline-4">
-<h4 id="orge354ace"><span class="section-number-4">31.4.1.</span> Encoding</h4>
+<div id="outline-container-org179314d" class="outline-4">
+<h4 id="org179314d"><span class="section-number-4">31.4.1.</span> Encoding</h4>
 <div class="outline-text-4" id="text-31-4-1">
 <p>
 Encoding has two major steps
@@ -5541,8 +5537,8 @@ Encoding has two major steps
 <li>Traverse Huffman tree to assign codes to characters</li>
 </ol>
 </div>
-<div id="outline-container-orgef809a3" class="outline-5">
-<h5 id="orgef809a3"><span class="section-number-5">31.4.1.1.</span> Building Huffman tree</h5>
+<div id="outline-container-org086cd8e" class="outline-5">
+<h5 id="org086cd8e"><span class="section-number-5">31.4.1.1.</span> Building Huffman tree</h5>
 <div class="outline-text-5" id="text-31-4-1-1">
 <ol class="org-ol">
 <li>Find the frequency of all the characters that are in input (including spaces)</li>
@@ -5566,7 +5562,7 @@ Example, the input is "duke blue devils"
 </ul>
 
 
-<div id="orga47b8e5" class="figure">
+<div id="org40f725a" class="figure">
 <p><img src="./imgs/Untitled-2023-10-08-1815.excalidraw.svg" alt="Untitled-2023-10-08-1815.excalidraw.svg" class="org-svg" />
 </p>
 </div>
@@ -5576,7 +5572,7 @@ Example, the input is "duke blue devils"
 </ul>
 
 
-<div id="org9964a78" class="figure">
+<div id="org3c22d32" class="figure">
 <p><img src="./imgs/Untitled-2023-10-08-18151.excalidraw.svg" alt="Untitled-2023-10-08-18151.excalidraw.svg" class="org-svg" />
 </p>
 </div>
@@ -5586,14 +5582,14 @@ Another example,
 </p>
 
 
-<div id="org1a27d78" class="figure">
+<div id="orgd77e110" class="figure">
 <p><img src="Greedy_algorithm/2023-10-08_19-42-22_screenshot.png" alt="2023-10-08_19-42-22_screenshot.png" />
 </p>
 </div>
 </div>
 </div>
-<div id="outline-container-org9d6e80f" class="outline-5">
-<h5 id="org9d6e80f"><span class="section-number-5">31.4.1.2.</span> Traversing huffman tree to encode</h5>
+<div id="outline-container-org398293e" class="outline-5">
+<h5 id="org398293e"><span class="section-number-5">31.4.1.2.</span> Traversing huffman tree to encode</h5>
 <div class="outline-text-5" id="text-31-4-1-2">
 <ol class="org-ol">
 <li>Assign all left edges value of \(0\), and right edges value of \(1\)</li>
@@ -5601,7 +5597,7 @@ Another example,
 <li>The character at leaf node get's the encoding, of it's edges values concatnated (Note : encoding will be left-to-right when going top to down)</li>
 </ol>
 
-<div id="org6bfe7b7" class="figure">
+<div id="org99e44dc" class="figure">
 <p><img src="./imgs/Untitled-2023-10-08-181.excalidraw.svg" alt="Untitled-2023-10-08-181.excalidraw.svg" class="org-svg" />
 </p>
 </div>
@@ -5681,8 +5677,8 @@ Compression ratio = \(\frac{128}{52}\)
 </div>
 </div>
 </div>
-<div id="outline-container-orgeba24c4" class="outline-4">
-<h4 id="orgeba24c4"><span class="section-number-4">31.4.2.</span> Decoding</h4>
+<div id="outline-container-org96260fe" class="outline-4">
+<h4 id="org96260fe"><span class="section-number-4">31.4.2.</span> Decoding</h4>
 <div class="outline-text-4" id="text-31-4-2">
 <p>
 For decoding we will use the same huffman tree.
@@ -5702,8 +5698,8 @@ We repeat this till we get the orignal message.
 </div>
 </div>
 </div>
-<div id="outline-container-org3384b3f" class="outline-3">
-<h3 id="org3384b3f"><span class="section-number-3">31.5.</span> Minimum spanning trees</h3>
+<div id="outline-container-org78ff670" class="outline-3">
+<h3 id="org78ff670"><span class="section-number-3">31.5.</span> Minimum spanning trees</h3>
 <div class="outline-text-3" id="text-31-5">
 <p>
 The spanning tree of an undirected graph is a subgraph which is a tree that contains all of the nodes of the graph. A given graph can have multiple spanning trees.
@@ -5713,8 +5709,8 @@ The spanning tree of an undirected graph is a subgraph which is a tree that cont
 For a weighted undirected graph, the spanning tree the sum of whose edge costs is the minimum among all possible spanning trees is called the minimum spanning tree
 </p>
 </div>
-<div id="outline-container-orgf783e4b" class="outline-4">
-<h4 id="orgf783e4b"><span class="section-number-4">31.5.1.</span> Kruskal's algorithm</h4>
+<div id="outline-container-org375580f" class="outline-4">
+<h4 id="org375580f"><span class="section-number-4">31.5.1.</span> Kruskal's algorithm</h4>
 <div class="outline-text-4" id="text-31-5-1">
 <p>
 This algorithm works by adding safe edges (i.e, edges which won't form a cycle) to a growing spanning tree. For a graph \(G = (V,E)\), it works as follows.
@@ -5729,8 +5725,8 @@ TODO : Add images here
 </p>
 </div>
 
-<div id="outline-container-orgb6d4d40" class="outline-5">
-<h5 id="orgb6d4d40"><span class="section-number-5">31.5.1.1.</span> Algorithm</h5>
+<div id="outline-container-org5c466b6" class="outline-5">
+<h5 id="org5c466b6"><span class="section-number-5">31.5.1.1.</span> Algorithm</h5>
 <div class="outline-text-5" id="text-31-5-1-1">
 <p>
 The formal algorithm is 
@@ -5746,8 +5742,8 @@ The formal algorithm is
 </ol>
 </div>
 </div>
-<div id="outline-container-org88d8ccc" class="outline-5">
-<h5 id="org88d8ccc"><span class="section-number-5">31.5.1.2.</span> Pseudocode</h5>
+<div id="outline-container-org2c43574" class="outline-5">
+<h5 id="org2c43574"><span class="section-number-5">31.5.1.2.</span> Pseudocode</h5>
 <div class="outline-text-5" id="text-31-5-1-2">
 <p>
 TODO : Add image of graph from wikipedia
@@ -5756,56 +5752,53 @@ TODO : Add image of graph from wikipedia
 <p>
 The edge list in sorted order is
 </p>
-<div class="org-src-container">
-<pre class="src src-python"><span style="color: #8b4513;">edge_list</span> = [ [<span style="color: #50a14f;">'a'</span>,<span style="color: #50a14f;">'d'</span>,5], [<span style="color: #50a14f;">'c'</span>,<span style="color: #50a14f;">'e'</span>,5], [<span style="color: #50a14f;">'d'</span>,<span style="color: #50a14f;">'f'</span>,6],
-              [<span style="color: #50a14f;">'b'</span>,<span style="color: #50a14f;">'e'</span>,7], [<span style="color: #50a14f;">'a'</span>,<span style="color: #50a14f;">'b'</span>,7], [<span style="color: #50a14f;">'b'</span>,<span style="color: #50a14f;">'c'</span>,8],
-              [<span style="color: #50a14f;">'f'</span>,<span style="color: #50a14f;">'e'</span>,8], [<span style="color: #50a14f;">'e'</span>,<span style="color: #50a14f;">'g'</span>,9], [<span style="color: #50a14f;">'d'</span>,<span style="color: #50a14f;">'b'</span>,9],
-              [<span style="color: #50a14f;">'g'</span>,<span style="color: #50a14f;">'f'</span>,11], [<span style="color: #50a14f;">'d'</span>,<span style="color: #50a14f;">'e'</span>,15] ]
+<pre class="example">
+edge_list = [ ['a','d',5], ['c','e',5], ['d','f',6],
+	      ['b','e',7], ['a','b',7], ['b','c',8],
+	      ['f','e',8], ['e','g',9], ['d','b',9],
+	      ['g','f',11], ['d','e',15] ]
 </pre>
-</div>
 <p>
 The collection of sets, each with initially single vertex of the graph (along with helper functions to work on collection)
 </p>
-<div class="org-src-container">
-<pre class="src src-python"><span style="color: #8b4513;">sets</span> = [[<span style="color: #50a14f;">'a'</span>], [<span style="color: #50a14f;">'b'</span>], [<span style="color: #50a14f;">'c'</span>], [<span style="color: #50a14f;">'d'</span>],
-        [<span style="color: #50a14f;">'e'</span>], [<span style="color: #50a14f;">'f'</span>], [<span style="color: #50a14f;">'g'</span>]]
+<pre class="example">
+sets = [['a'], ['b'], ['c'], ['d'],
+	['e'], ['f'], ['g']]
 
-<span style="color: #a0a1a7; font-weight: bold;"># </span><span style="color: #a0a1a7;">returns the index of set which has given node</span>
-<span style="color: #a626a4;">def</span> <span style="color: #0184bc;">set_id</span>(c):
-    <span style="color: #a626a4;">for</span> i <span style="color: #a626a4;">in</span> <span style="color: #e44649;">range</span>(<span style="color: #e44649;">len</span>(sets)):
-        <span style="color: #a626a4;">if</span> c <span style="color: #a626a4;">in</span> i:
-            <span style="color: #a626a4;">return</span> i
+# returns the index of set which has given node
+def set_id(c):
+    for i in range(len(sets)):
+	if c in i:
+	    return i
 
-<span style="color: #a0a1a7; font-weight: bold;"># </span><span style="color: #a0a1a7;">merge the two sets into a single set</span>
-<span style="color: #a626a4;">def</span> <span style="color: #0184bc;">merge_sets</span>(a,b):
-    <span style="color: #a626a4;">for</span> element <span style="color: #a626a4;">in</span> sets[b]:
-        sets[a].append(element)
-    <span style="color: #a626a4;">del</span> sets[b]
+# merge the two sets into a single set
+def merge_sets(a,b):
+    for element in sets[b]:
+	sets[a].append(element)
+    del sets[b]
 
 </pre>
-</div>
 <p>
 Then the kruskal's algorithm will work as follows
 </p>
-<div class="org-src-container">
-<pre class="src src-python"><span style="color: #8b4513;">selected_edges</span> = []
+<pre class="example">
+selected_edges = []
 
-<span style="color: #a626a4;">for</span> edge <span style="color: #a626a4;">in</span> <span style="color: #8b4513;">edge_list</span>:
+for edge in edge_list:
     set_u = set_id(edge[0])
-    <span style="color: #8b4513;">set_v</span> = set_id(edge[1])
-    <span style="color: #a626a4;">if</span> set_u != set_v:
-        selected_edges.append(edge)
-        merge_sets(set_u,set_v)
+    set_v = set_id(edge[1])
+    if set_u != set_v:
+	selected_edges.append(edge)
+	merge_sets(set_u,set_v)
 
-<span style="color: #e44649;">print</span>(selected_edges)
+print(selected_edges)
 </pre>
 </div>
 </div>
 </div>
-</div>
 
-<div id="outline-container-orgd2d3b4e" class="outline-4">
-<h4 id="orgd2d3b4e"><span class="section-number-4">31.5.2.</span> Prim's algorithm</h4>
+<div id="outline-container-org2721ffd" class="outline-4">
+<h4 id="org2721ffd"><span class="section-number-4">31.5.2.</span> Prim's algorithm</h4>
 <div class="outline-text-4" id="text-31-5-2">
 <p>
 Prim's algorithm works by selecting smallest edges starting with an initial node
@@ -5815,8 +5808,8 @@ Prim's algorithm works by selecting smallest edges starting with an initial node
 Unlike kruskal's algorithm, we will start with an initial node and try to reach every other node of the graph by only selecting the smallest edges
 </p>
 </div>
-<div id="outline-container-org4dfeca9" class="outline-5">
-<h5 id="org4dfeca9"><span class="section-number-5">31.5.2.1.</span> Algorithm</h5>
+<div id="outline-container-org2d59b7c" class="outline-5">
+<h5 id="org2d59b7c"><span class="section-number-5">31.5.2.1.</span> Algorithm</h5>
 <div class="outline-text-5" id="text-31-5-2-1">
 <p>
 TODO : later
@@ -5825,8 +5818,8 @@ TODO : later
 </div>
 </div>
 </div>
-<div id="outline-container-org2451dbe" class="outline-3">
-<h3 id="org2451dbe"><span class="section-number-3">31.6.</span> Single source shortest path</h3>
+<div id="outline-container-org3ca00c1" class="outline-3">
+<h3 id="org3ca00c1"><span class="section-number-3">31.6.</span> Single source shortest path</h3>
 <div class="outline-text-3" id="text-31-6">
 <p>
 TODO : this is also in todo section
@@ -5834,8 +5827,8 @@ TODO : this is also in todo section
 </div>
 </div>
 </div>
-<div id="outline-container-org6fcf453" class="outline-2">
-<h2 id="org6fcf453"><span class="section-number-2">32.</span> Backtracking</h2>
+<div id="outline-container-orgeec3d7d" class="outline-2">
+<h2 id="orgeec3d7d"><span class="section-number-2">32.</span> Backtracking</h2>
 <div class="outline-text-2" id="text-32">
 <p>
 Backtracking algorithms are used for solving problems where we can verify partial solution like in constraint satisfaction problems
@@ -5857,8 +5850,8 @@ It is a type of problem, where each entry in the solution, or every state of the
 Using these two constraints, it's easy to test whether a number is correctly placed. So even if we are given a parital solution, i.e, a half filled in sudoku problem, we can check if it is currently correct or not
 </p>
 </div>
-<div id="outline-container-orge4e3047" class="outline-3">
-<h3 id="orge4e3047"><span class="section-number-3">32.1.</span> How to backtrack</h3>
+<div id="outline-container-org889dd7a" class="outline-3">
+<h3 id="org889dd7a"><span class="section-number-3">32.1.</span> How to backtrack</h3>
 <div class="outline-text-3" id="text-32-1">
 <p>
 The backtracking method will think of the set of all states of solution in form of a tree
@@ -5877,24 +5870,23 @@ The backtracking method will think of the set of all states of solution in form 
 <p>
 The general pseudocode for a backtrack algorithm is
 </p>
-<div class="org-src-container">
-<pre class="src src-python"><span style="color: #a626a4;">def</span> <span style="color: #0184bc;">backtrack</span>(currentNode):
-  <span style="color: #50a14f; font-style: italic;">""" if partial solution is wrong, return to parent """</span>
-  <span style="color: #a626a4;">if</span> (<span style="color: #a626a4;">not</span> correct(currentNode)):
-    <span style="color: #a626a4;">return</span>
+<pre class="example">
+def backtrack(currentNode):
+  """ if partial solution is wrong, return to parent """
+  if (not correct(currentNode)):
+    return
 
-  <span style="color: #50a14f;">""" work on current node here</span>
-<span style="color: #50a14f;">  we test if we found a solution here """</span>
+  """ work on current node here
+  we test if we found a solution here """
 
-  <span style="color: #50a14f;">""" go the children nodes """</span>
-  <span style="color: #a626a4;">for</span> child <span style="color: #a626a4;">in</span> children(currentNode):
+  """ go the children nodes """
+  for child in children(currentNode):
     backtrack(child)
 </pre>
 </div>
 </div>
-</div>
-<div id="outline-container-orgefed8a1" class="outline-3">
-<h3 id="orgefed8a1"><span class="section-number-3">32.2.</span> n-Queen problem</h3>
+<div id="outline-container-org9b4a12f" class="outline-3">
+<h3 id="org9b4a12f"><span class="section-number-3">32.2.</span> n-Queen problem</h3>
 <div class="outline-text-3" id="text-32-2">
 <p>
 In this problem, we have to place \(n\) queens on a \(n \times n\) chessboard, such that no queen is threatening another queen
@@ -5908,7 +5900,7 @@ In this problem, we have to place \(n\) queens on a \(n \times n\) chessboard, s
 Example, for a 4-queen problem, the search for a solution happens as shown in the following diagram
 </p>
 
-<div id="org9b0650e" class="figure">
+<div id="orgaa0ae5f" class="figure">
 <p><img src="Backtracking/2023-12-11_21-44-59_189khR1bWFu0Tc0TY44_vFw.png" alt="2023-12-11_21-44-59_189khR1bWFu0Tc0TY44_vFw.png" />
 </p>
 </div>
@@ -5955,16 +5947,16 @@ The program to solve n-queen problem is
 </div>
 </div>
 
-<div id="outline-container-org9a98e4a" class="outline-3">
-<h3 id="org9a98e4a"><span class="section-number-3">32.3.</span> Graph coloring problem</h3>
+<div id="outline-container-org73a4b6d" class="outline-3">
+<h3 id="org73a4b6d"><span class="section-number-3">32.3.</span> Graph coloring problem</h3>
 <div class="outline-text-3" id="text-32-3">
 <p>
 TODO
 </p>
 </div>
 </div>
-<div id="outline-container-orgb02302e" class="outline-3">
-<h3 id="orgb02302e"><span class="section-number-3">32.4.</span> Hamiltonian Cylces</h3>
+<div id="outline-container-org5084b2c" class="outline-3">
+<h3 id="org5084b2c"><span class="section-number-3">32.4.</span> Hamiltonian Cylces</h3>
 <div class="outline-text-3" id="text-32-4">
 <p>
 A hamiltonian cycle is a cycle or loop which visits every vertex of the graph exactly once and returns to starting vertex. The constraints will be as follows
@@ -6017,8 +6009,8 @@ For a graph with \(n\) nodes, the backtracking algorithm will start an with init
 </div>
 </div>
 </div>
-<div id="outline-container-orgbeeee83" class="outline-3">
-<h3 id="orgbeeee83"><span class="section-number-3">32.5.</span> Sum-of-subsets</h3>
+<div id="outline-container-org6fd4212" class="outline-3">
+<h3 id="org6fd4212"><span class="section-number-3">32.5.</span> Sum-of-subsets</h3>
 <div class="outline-text-3" id="text-32-5">
 <p>
 TODO
@@ -6026,8 +6018,8 @@ TODO
 </div>
 </div>
 </div>
-<div id="outline-container-orgfa585fb" class="outline-2">
-<h2 id="orgfa585fb"><span class="section-number-2">33.</span> Branch and Bound</h2>
+<div id="outline-container-org2dc1dc6" class="outline-2">
+<h2 id="org2dc1dc6"><span class="section-number-2">33.</span> Branch and Bound</h2>
 <div class="outline-text-2" id="text-33">
 <p>
 Branch and Bound method is a generalization of the backtracking algorithm.
@@ -6043,8 +6035,8 @@ Branch and Bound method is a generalization of the backtracking algorithm.
 Therefore, the main problem in branch and bound algorithms is using the appropriate bounding function
 </p>
 </div>
-<div id="outline-container-orgb9cea87" class="outline-3">
-<h3 id="orgb9cea87"><span class="section-number-3">33.1.</span> Travelling Salesman Problem</h3>
+<div id="outline-container-org773ec68" class="outline-3">
+<h3 id="org773ec68"><span class="section-number-3">33.1.</span> Travelling Salesman Problem</h3>
 <div class="outline-text-3" id="text-33-1">
 <p>
 We are given a list of cities, and distances between each pair of cities. Our goal is to find the shortest possible route which visits every city exactly once and returns to original city
@@ -6054,8 +6046,8 @@ We are given a list of cities, and distances between each pair of cities. Our go
 That is, we are looking for the smallest cost hamiltonian cycle in a graph
 </p>
 </div>
-<div id="outline-container-orgca42131" class="outline-4">
-<h4 id="orgca42131"><span class="section-number-4">33.1.1.</span> Bounding function</h4>
+<div id="outline-container-orgf08ba94" class="outline-4">
+<h4 id="orgf08ba94"><span class="section-number-4">33.1.1.</span> Bounding function</h4>
 <div class="outline-text-4" id="text-33-1-1">
 <p>
 TODO
@@ -6067,7 +6059,7 @@ TODO
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Anmol Nawani</p>
-<p class="date">Created: 2024-11-04 Mon 04:06</p>
+<p class="date">Created: 2024-11-29 Fri 21:24</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

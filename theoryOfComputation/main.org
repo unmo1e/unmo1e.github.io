@@ -1,3 +1,4 @@
 #+title: Theory of Computation
+#+html_head: <link rel="stylesheet" href="../common/org.css">
 
 + [[./TOC_1.pdf][Part 1]]

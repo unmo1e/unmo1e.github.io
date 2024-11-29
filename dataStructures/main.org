@@ -1,16 +1,16 @@
 #+TITLE: Data Structures
 #+AUTHOR: Anmol Nawani
 #+UID: https://git.lomna.xyz
-#+html_head: <link rel="stylesheet" href="src/org.css">
+#+html_head: <link rel="stylesheet" href="../common/org.css">
 #+OPTIONS: H:4
 
 * Stack
 A stack is a data structure which only allows insertion and deletion from one end of the array. The insertion is always on the extreme end of the array. The deletion can only be done on the element which was most recently added.
-\\
+ 
 *It is similar to stacking plates.* The plate can only be added at the *top* of the stack and also only the last added plate to the stack can be removed (which will be on top).
-\\
+ 
 Due to this property, Last In elements are removed First from a stack. Therefore, it is called a *Last In First Out (LIFO)* data structure or a *First In Last Out (FILO)* data structure.
-\\
+ 
 To create a stack, we will keep track of the index which is the *top* of the array. This top index will *increment when we insert element* and *decrement when we remove element.*
 
 ** Operation on stack
@@ -19,7 +19,7 @@ A stack has two operations
 2. Pop
 * Direct Address Table
 Direct Address Tables are useful when we know that key is within a small range. Then, we can allocate an array such that each possible key gets an index and just add the values according to the keys.
-\\
+ 
 This also assumes that keys are integers
 
 + Table creation
@@ -77,34 +77,34 @@ int table_get(struct table t, size_t key){
 
 * Hash Table
 When the set of possible keys is large, it is impractical to allocate a table big enough for all keys. In order to fit all possible keys into a small table, rather than directly using keys as the index for our array, we wil first calculate a /*hash*/ for it using a /*hash function*/. Since we are relying on hashes for this addressing in the table, we call it a hash table.
-\\
-\\
+ 
+ 
 For a given key $k_i$ in */direct address table/*, we store value in $table[k_i]$.
-\\
-\\
+ 
+ 
 For a given key $k_i$ in */hash table/*, we store value in $table[h(k_i)]$, where $h()$ is the hash function.
-\\
-\\
+ 
+ 
 So the main purpose of the hash function is to reduce the range of array indices.
 
 ** Collision
 
 Because we are reducing the range of indices, the hash function may /*hash two keys to the same slot*/. This is called a collision.
-\\
-\\
+ 
+ 
 We should try to find a hash funtion which will minimise the number of collisions.
-\\
-\\
+ 
+ 
 The number of keys is going to be greater than number of slots in table. Therefore avoiding all collisions is not possible.
-\\
+ 
 There are two ways we will look at to resolve collision.
 1. Chaining
 2. Open addressing
    
 *** Chaining
 In chaining, rather than storing values in table slots. We will have /*linked lists at each slot*/ which will store (key, value) pairs.
-\\
-\\
+ 
+ 
 When the hash gives us a slot, we will add the value to linked list at that slot.
 
 + Linked List structure
@@ -162,32 +162,32 @@ Insertion can be done in $\theta (1)$ time if we assume that key being inserted 
 The *load factor* is defined as number of elements per slot and is calculated as
 \[ \alpha \text{(Load factor)} = \frac{\text{number of elements in hash table}}{\text{number of slots in hash table}} \]
 The worst case for chaining is when all keys are assigned to a single slot. In this case searching for an element takes $\theta (n)$ time.
-\\
-\\
+ 
+ 
 If we assume that any given element is equally likely to be hashed into any of the slots, this assumption is called */simple uniform hashing/*.
-\\
-\\
+ 
+ 
 If we also assume that hash funtion takes constant time, then in the average case, the time complexity for searching key in the chaining hash table is
 \[ \text{Average Case Searching} : \theta (1 + \alpha) \]
 *** Open Addressing
 In open addressing, all the key and value pair of entries are stored in the table itself. Because of this, the load factor $\left( \alpha \right)$ can never exceed 1.
-\\
-\\
+ 
+ 
 When we get a key whose slot is already taken, we will look for another empty slot. This is done by what is called */probing/*. To get which slot to check next, we have various methods.
-\\
-\\
-The sequence in which empty slots are looked for is fixed for given key, this sequence is called *probe sequence*. \\
+ 
+ 
+The sequence in which empty slots are looked for is fixed for given key, this sequence is called *probe sequence*.  
 It is necessary to keep probe sequence fixed for any given key, so that we can search for it later.
 
 **** Linear probing
 For a given *ordinary hash function* $h(k)$, the linear probing uses the hash function
 \[ linear\_h(k, i) = (h(k) + 1)\ mod\ m \]
 We refer to $h(k)$ as the */auxiliary hash function/*.
-\\
-\\
+ 
+ 
 In linear probing, we first check the slot [h(k)], if it is not empty, we check [h(k) + 1] then [h(k) + 2] .... upto slot [m - 1] after which we wrap around to [1], [2] ... till we have checked all the slots.
-\\
-\\
+ 
+ 
 Linear probing is easy to implement, but it suffers from */primary clustering/*. In long runs of linear probing, keys tend to cluster together. This causes the performance of operations on hash table to degrade. The time to query a random element from table degrades to $\theta (n)$.
 
 **** Quadratic probing
@@ -199,31 +199,31 @@ Where, $c_1$ and $c_2$ are positive auxiliary constants.
 + For $m = n^p$ where m, n and p are positive integers greater or equal to 2, constants $c_1 = 1, c_2 = n$ are a good choice.
 
 Quadratic probing works much better than linear probing.
-\\
-\\
+ 
+ 
 If $quadratic\_h(k_1, 0) = quadratic\_h(k_2,0)$, then that implies that all $quadratic\_h(k_1, i) = quadratic\_h(k_2,i)$, i.e, they will have the same *probe sequence*. This leads to a probe sequence getting clustered. This is called /*secondary clustering*/. This also effects performance but not as drastically as primary clustering.
 **** Double Hashing
-Double hashing is one of the best available method for open addressing. \\
+Double hashing is one of the best available method for open addressing.  
 *Double hashing uses /two auxiliary hashing functions/.*
 \[ double\_h(k, i) = \left( h_1(k) + i \times h_2(k) \right) \ mod\ m \]
-The value of $h_2(k)$ must be *relatively prime (i.e, coprime) to number of slots (m)*. \\
+The value of $h_2(k)$ must be *relatively prime (i.e, coprime) to number of slots (m)*.  
 + A convenient way to ensure this is let *m be a power of 2* and $h_2(k)$ be a *hash function that always produces an odd number*.
 + Another way is to let *m be a prime* and make $h_2(k)$ such that is *always produces a positive integer less than m.*
 If we use one of the above two methods (either m is a power of 2 or a prime), then double hashing improves over linear and quadratic probing since keys will have distinct probe sequences.
-\\
-\\
+ 
+ 
 When using the above values of m, performance of double hashing is very close to the performance of "ideal" scheme of uniform hashing.
 **n* Performace of open addressing
 In open addressing *load factor* $\left( \alpha \right) \le 1$. We will assume *uniform hashing* i.e, any element is equally likely to be hashed in any slot. We will also assume that for any key, each possible probe sequence is equally likely.
-\\
-\\
+ 
+ 
 Under these assumptions, for load factor $\alpha$. The number of probes in an unsuccessful search is at most $1/(1 - \alpha )$
-\\
+ 
 This means that for a constant load factor, an unsuccessful search will run in $\theta (1)$ time.
-\\
-\\
+ 
+ 
 The number of probes on average for inserting an element under these assumptions is $1/(1- \alpha )$
-\\
+ 
 The number of probes on averge in a successful search is at most $\frac{1}{\alpha} ln\left( \frac{1}{1-\alpha} \right)$
 ** Hash Functions
 A good hash funtion will approximately satisfy the *simple uniform hashing*, which means that any element is equally likely to be hashed to any slot.
@@ -232,11 +232,11 @@ A good hash funtion will approximately satisfy the *simple uniform hashing*, whi
 \[ n : \text{Number of elements in hash table} \]
 
 Suppose we knew that our keys are from a set of real numbers and the keys are picked uniformly. In this case, we could simply use the hash function $h(k) = floor(mk)$.
-\\
-\\
+ 
+ 
 Similarly, in many cases we can make a reasonably good hash funtion if we know the distribution of keys.
-\\
-\\
+ 
+ 
 We will look at a few ways to make a hash function.
 
 *** The division method
@@ -252,12 +252,12 @@ But there are some cases where $m$ is chosen to be something else.
 In multiplication method, we first multiply the key $k$ with a constant $A$ which is in range $0 < A < 1$. Then we get the *fractional part* of $kA$. Then we multiply the fractional part by $m$ and floor it to get the hash.
 \[ h(k) = floor(m \times decimal\_part(kA) ) \]
 The advantage of multiplication method is that we can choose any value of $m$. We can even choose $m$ to be a power of 2.
-\\
+ 
 We can choose any value of $A$. The value depends on characteristics of data,
 \[ A \approx \frac{\sqrt{5} - 1}{2} \]
 will work reasonably well.
-\\
-\\
+ 
+ 
 Example, Suppose
 
 \[ key\ (k) = 1234 \]
@@ -292,21 +292,21 @@ With huge numbers, we need to take care of overflow conditions in this method.
 *** Folding method
 
 While this method can be used on integers, this method is usually used where the key is segmented. For example in arrays or when key is a string.
-\\
-\\
+ 
+ 
 In this method, we add all of the segments and then we mod it with the number of slots.
 \[ h(k) = \left( \text{Sum of all the segments} \right) mod\ m \]
 Example, for string "hello"
-\\
+ 
 sum = 'h' + 'e' + 'l' + 'l' + 'o'
-\\
+ 
 sum = 104 + 101 + 108 + 108 + 111 = 532
-\\
-\\
+ 
+ 
 If m = 100, then
-\\
+ 
 h(k) = 532 mod 100
-\\
+ 
 h(k) = 32
 
 ** Universal Hashing
@@ -321,7 +321,7 @@ When we need to increase the size of hash table or change the hash function, we 
 Rehashing is the process of taking all the entries in a hash table and then reapplying the hash function (possibly changing the hash function) and adding the entries into a new hash table, whose size is usually greater than the previous hash table.
 
 Rehashing is usually done when load factor increases to the point that it affects performace.
-\\
+ 
 In universal hashing, we will change the hash function each time we rehash the hash table.
 *** Universal family
 For universal hashing, the set of hash functions which is used is called *universal family*.
@@ -331,13 +331,13 @@ The set of hash functions is called universal family if, for every distinct pair
 In other words, *the probability of collision between any two distinct keys $(x,y)$ is less than or equal to $(1/m)$* if hash function is randomly choosen from the universal family.
 
 Here, $m$ is the number of slots in hash table.
-\\
+ 
 Sometimes, universal family may be called a universal of hash functions.
 *** Performance of universal hashing
 For any hash function $h$ from the universal. We know that the probability of collision between two keys is $(1/m)$.
-\\
+ 
 Using this, we can show that when using chaining, the expected (or average) length of each list in the hash table will be $(1 + \alpha)$.
-\\
+ 
 Where, alpha is the load factor of hash table.
 *** Example for universal set of hash functions
 Suppose we have set of keys $\{ 0,1,2,...,k \}$, we will choose a prime number $p > k$.
@@ -346,15 +346,15 @@ Then we can define a hash funtion
 And, the universal is
 \[ H = \{ h_{ab} : a \in \{ 1,2,...,(p-1) \} \ and \ b \in \{ 0,1,...,(p-1) \} \} \]
 This class of hash functions will map from set $\{ 0,1,2,...,(p-1) \}$ to set $\{ 0,1,2,...,(m-1) \}$.
-\\
+ 
 Here, $m$ is the number of slots in hash table.
 ** Perfect Hashing
 TODO : Doing this or nah
 NOTE : This doesn't seem to be in B.Tech syllabus, but it seems cool.
-\\
+ 
 * Representing rooted trees using nodes
 We can represent trees using nodes.  A node only stores a single element of the tree. What is a node will depend on the language being used.
-\\
+ 
 In C, we make a struct which will store the element and pointers to other node structs.
 
 #+BEGIN_SRC c
@@ -364,7 +364,7 @@ In C, we make a struct which will store the element and pointers to other node s
     struct tree_node * right_child;
   };
 #+END_SRC
-\\
+ 
 In languages with oop, we create node class which will store refrences to other node objects.
 #+BEGIN_SRC java
   class Node {
@@ -382,7 +382,7 @@ In languages with oop, we create node class which will store refrences to other 
 
 ** Fixed number of children
 When we know how many children any given node can have, i.e, the number of children is bounded. We can just use refrences or pointers to the nodes directly.
-\\
+ 
 For example, if we know we are making a binary tree, then we can just store refrence to left children and right childern.
 
 #+BEGIN_SRC c
@@ -395,9 +395,9 @@ For example, if we know we are making a binary tree, then we can just store refr
 
 ** Unbounded number of children
 When we don't know how many children any given node will have. Thus any node can have any number of children, we can't just use refrences. We could create an array of refrences to nodes, but some nodes will only have one or two childs and some may have no childs. This will lead to a lot of wasted memory.
-\\
+ 
 There is a way to represent such trees without wasting any memory. This is done by using *sibling refrences or pointers*.
-\\
+ 
 #+BEGIN_SRC c
   struct tree_node{
     int element;
@@ -420,21 +420,21 @@ The right sibling pointer will point to the right sibling of the node. This allo
 #+END_SRC
 
 So a tree which is like :
-\\
+ 
 [[./imgs/tree_actual.jpg]]
-\\
-\\
+ 
+ 
 can be represented using refrences and pointers as :
-\\
+ 
 [[./imgs/tree_representation.jpg]]
-\\
+ 
 
 * Binary Search Trees
 A tree where any node can have only two child nodes is called a */binary tree/*.
-\\
+ 
 A binary search tree is a tree where for any give node *the nodes stored in left sub-tree are less than the parent node* and the *nodes stored in right sub-tree are greater than the parent node* (or vice versa). So the left-subtree always have smaller elements and right sub-tree always have greater elements.
-\\
-\\
+ 
+ 
 This property allows us easily search for elements from the data structure. We start our search at the root node. If the element we want is less than the current node, we will go to the left node ,else we will go to the right node. The concept is similar to the binary search on arrays.
 
 In C, we can make a binary tree as
@@ -564,7 +564,7 @@ We often need to find the successor or predecessor of an element in a Binary Sea
   }
 #+END_SRC
 *Case 1* : If the node x has a right subtree, then the minimum of right subtree of x is the succesor.
-\\
+ 
 *Case 2* : If the node x has no right subtree, then successor may or may not exist. If it exists, the successor node will be the ancestor of x whose own left node is also the ancestor of x.
 **** For Predecessor
 #+BEGIN_SRC c
@@ -584,7 +584,7 @@ We often need to find the successor or predecessor of an element in a Binary Sea
   }
 #+END_SRC
 *Case 1* : If the node x has a left subtree, then the maximum of left subtree of x is the predecessor.
-\\
+ 
 *Case 2* : If the node x has no left subtree, then predecessor may or may not exist. If it exists, the predecessor node will be the ancestor of x whose own right node is also the ancestor of x.
 ** Inserting and Deleting nodes
 When inserting and deleting nodes in BST, we need to make sure that the Binary Search Tree property continues to hold. Inserting node is easier in a binary search tree than deleting a node.
@@ -610,8 +610,8 @@ Insertion is simple in a binary search tree. We search for the node we want to i
   }
 #+END_SRC
 The recursive algorithm for inserting into a Binary search tree is simpler than the iterative algorithm.
-\\
-\\
+ 
+ 
 The algorithm for iterative insertion is
 #+BEGIN_SRC c
   void
@@ -641,10 +641,10 @@ The algorithm for iterative insertion is
 #+END_SRC
 *** Deletion
 Deletion in Binary Search Trees is tricky because we need to delete nodes in a way that the property of the Binary Search Tree holds after the deletion of the node. So we first have to remove the node from the tree before we can free it.
-\\
-\\
+ 
+ 
 There are *four different cases* which can occur when we try to delete a node. All four have a different method to handle them. These four cases relate to how many children the node which we want to delete has.
-\\
+ 
 Suppose the node is $X$.
 1. Node $X$ has no children i.e. it is a leaf node. In this case, we can simply delete the node and replace it with NULL.
 2. Node $X$ has one child. In this case, the child of node $X$ will take it's place and we can delete node $X$.
@@ -667,8 +667,8 @@ We also use a helper function called Replace Child for deletion of node. This fu
 
 We will create a funtion that will remove the root node from a given subtree and then return the root node of the result subtree.
 This will allow us to apply remove root node funtion on any node and then reattach the new subtree.
-\\
-\\
+ 
+ 
 Making remove root node a different funtion will also allow us to not worry about attaching the the subtree immediately in the same funtion.
 
 #+BEGIN_SRC c
@@ -727,16 +727,16 @@ Now we can make a delete node function which will remove the node, reattach the 
 
 ** Performance of BST
 The performance of the search operation depends on the height of the tree. If the tree has $n$ elements, the height of a binary tree can be between $n$ and $floor\left( 1+ log_2(n) \right)$.
-\\
-\\
+ 
+ 
 To perform an operation on BST, we need to find the node where we have perform the operation. Since even in worst case *we only need to traverse the height of the search tree to search for any node*, the time taken to perform any operation on a Binary Search Tree is  $\theta (h)$ where, $h$ is the height of the tree.
-\\
-\\
+ 
+ 
 A binary tree with height of $floor(1 + log_2(n))$ is called a *balanced binary tree*, otherwise it is an unbalanced tree. A balanced binary tree is the shortest height a binary tree with that number of nodes can have.
-\\
-\\
+ 
+ 
 The worst case is when tree has a single branch, making the height of tree n. In this case, the worst case for any operation takes $\theta (n)$ time.
-\\
+ 
 A balanced binary search tree in worst case for any operation will take $\theta (log_2n)$ time.
 
 ** Traversing a Binary Tree
@@ -797,11 +797,11 @@ In this algorithm, we first traverse the left sub-tree recursively, then the rig
 
 * Binary Heap
 Heap is a data structure represented as a complete tree which follows the heap property. All levels in a heap tree are completely filled except possible the last one, which is filled from left to right. 
-\\
-\\
+ 
+ 
 The most common implementation of the heap is a *binary heap*. The binary heap is represented as a binary tree. We can use an array to implement binary heaps.
-\\
-\\
+ 
+ 
 The heap data structure is used to implement *priority queues*. In many cases we even refer to heaps as priority queues and vice versa.
 
 ** Heap Property
@@ -814,21 +814,21 @@ The heap property is different for min-heaps and max-heaps.
 
 ** Shape of Heap
 Also reffered to as *shape property* of heap.
-\\
+ 
 A heap is represented as a complete tree. A complete tree is one where all the levels are completely filled except possible the last. The last level if not completely filled is filled from left to right.
 ** Array implementation
 We can implement binary heap using arrays. The root of tree is the first element of the array. The next two elements are elements of second level of tree and children of the root node. Similary, the next four elements are elements of third level of tree and so on.
-\\
-\\
+ 
+ 
 /*For a given level, the position in array from left to right is the position of elements in tree from left to right.*/
-\\
-\\
+ 
+ 
 For example, a max-heap implemented using array can be represented as tree as shown
-\\
-\\
+ 
+ 
 [[./imgs/Heap-as-array.svg]]
-\\
-\\
+ 
+ 
 In C, we can create a heap struct for easier implementation of algorithms
 #+BEGIN_SRC c
   struct heap_type{
@@ -850,7 +850,7 @@ In a binary heap, we can find parent and children for any given index using simp
 
 *** Down-heapify
 The down-heapify is a function which can re-heapify an array if no element of heap violates the heap property other than index and it's two children.
-\\
+ 
 This function runs in $\theta (log_2n)$ time. The algorithm for this works as follows
 1. Compare the index element with its children and stop if in correct order in relation to both children.
 2. If not in correct order, swap the index element with the children which is not in correct order. Repeat till in correct order or at the lowest level.
@@ -878,7 +878,7 @@ Since we shift element downwards, this operation is often called /down-heap/ ope
 
 *** Up-heapify
 The up-heapify is a function which can re-heapify an array if no element of heap violates the heap property other than index and it's parent.
-\\
+ 
 This function runs in $\theta (log_2n)$ time. The algorithm for this works as follows
 1. Compare the index element to its parent and stop algorithm if it is in correct order.
 2. If not in correct order, swap element with its parent. Repeat till element in correct position or at root position.
@@ -901,7 +901,7 @@ This function runs in $\theta (log_2n)$ time. The algorithm for this works as fo
 Since we shift element upwards, this operation is often called /up-heap/ operation. It is also known as /trickle-up, swim-up, heapify-up, or cascade-up/
 *** Insertion
 Insertion takes $\theta (log_2n)$ time in a binary heap. To insert and element in heap, we will add it to the end of the heap and then apply up-heapify operation of the elment
-\\
+ 
 The code shows example of insertion in a max-heap.
 
 #+BEGIN_SRC c
@@ -920,8 +920,8 @@ The code shows example of insertion in a max-heap.
 
 *** Deletion or Extraction
 Like insertion, extraction also takes $\theta (log_2n)$ time. Extraction from heap will extract the root element of the heap. We can use the down-heapify function in order to re-heapify after extracting the root node.
-\\
-\\
+ 
+ 
 The code shows example of extraction in max-heap.
 
 #+BEGIN_SRC c
@@ -943,8 +943,8 @@ The code shows example of extraction in max-heap.
 
 *** Insert then extract
 Inserting an element and then extracting from the heap can be done more efficiently than simply calling these functions seperately as defined previously. If we call both funtions we define above, we have to do an up-heap operation followed by a down-heap. Instead, there is a way to do just a single down-heap.
-\\
-\\
+ 
+ 
 The algorithm for this will work as follows in a max-heap.
 1. Compare whether the item we are trying to push is greater than root of heap.
 2. If item we are pushing is greater, return it.
@@ -987,66 +987,66 @@ We can convert a normal array into a heap using the down-heapify operation in li
   }
 #+END_SRC
 As we see, for */zero indexed language/*, the range of for loop is [(len(array)/2) - 1, 0]
-\\
+ 
 If we are using a */one indexed language/*, then range of for loop is [len(array)/2, 1]
 
 * Graphs
 A graph is a data structure which consists of nodes/vertices, and edges. We sometimes write it as $G=(V,E)$, where $V$ is the set of vertices and $E$ is the set of edges. When we are working on runtime of algorithms related to graphs, we represent runtime in two input sizes. $|V|$ which we simply write as $V$ is the number of vertices and similarly $E$ is the number of edges. 
 ** Representing graphs
 We need a way to represent graphs in computers and to search a graph. Searching a graph means to systematically follow edges of graphs in order to reach vertices.
-\\
-\\
+ 
+ 
 The two common ways of representing graphs are either using adjacency lists and adjacency matrix. Either can represent both directed and undirected graphs.
 
 *** Adjacency List
 Every node in the graph is represented by a linked list. The list contains the nodes to which the list node is connected by an edge.
-\\
+ 
 Example, if list-0 contains node-3, then node-0 is connected to node-3 by an edge.
 + For *undirected graphs* this will simply work by storing all nodes in list who have a shared edge with list node.
 + For *directed graphs* we will only add node to list, if edge goes from list node to the stored node.
 So in our previous example, if list-0 contains node-3, then the edge goes from 0 to 3 in the directed graph.
-\\
-\\
+ 
+ 
 The space taken by adjacency list representation is $\theta (V + E)$.
-\\
+ 
 Since each node represents an edge, it is easy to convert an adjacency representation graph to a *weighted graph*. A weighted graph is a graph where each edge has an associated weight. So the weight of (u, v) edge can be stored in the node-v of u's list.
-\\
+ 
 The adjacency list representation is very robust and can represent various types of graph variants.
 [[./imgs/IMG_20230928_132750.jpg]]
 *** Adjacency Matrix
 We use a single matrix to represent the graph. The size of the matrix is $\left( |V| \times |V| \right)$. When we make the matrix, all it's elements are zero, i.e the matrix is zero initialized.
-\\
-\\
+ 
+ 
 If there is an edge between vertices (x , y), we show it by setting
-\\
+ 
 matrix[x][y] = true */or/* matrix[x][y] = 1
-\\
+ 
 If there is not an edge between vertices (x , y), we set
-\\
+ 
 matrix[x][y] = false */or/* matrix [x][y] = 0
 + For undirected graphs, to show edge (u , v) we have to set both matrix[u][v] and matrix[v][u] to 1.
 + For directed graphs, to show edge (u , v) which goes from u to v, we only set matrix[u][v] to 1.
 
 The space taken by adjacency matrix is $\theta (V^2)$.
-\\
+ 
 For undirected graphs, the matrix will be symmetrical along the diagonal, because matrix will be equal to it's own *transpose*. So we can save space by only storing half the matrix in memory.
-\\
-\\
+ 
+ 
 When comparing asymptotic results, the adjacency list seems more efficient, but matrix has advantage of only storing 1 bit for each cell. So in denser graphs, the matrix may use less space.
-\\
-\\
+ 
+ 
 We can store weighted graphs in adjacency matrix by storing the weights along with the edge information in matrix cells.
 [[./imgs/IMG_20230928_132909.jpg]]
 ** Vertex and edge attributes
 Many times we have to store attributes with either vertices or edges or sometimes both. How this is differs by language. In notation, we will write it using a dot (.)
-\\
-\\
+ 
+ 
 For example, the attribute x of  v will be denoted as v.x
-\\
+ 
 Similarly, the attribute x of edge (u , v) will be denoted as (u , v).x
 ** Density of graph
 Knowing the density of a graph can help us choose the way in which we represent our graph.
-\\
+ 
 The formula for density of graph is
 \[ \text{density} = \frac{\text{number of edges}}{\text{maximum possible edges}} \]
 Maximum possible number of edges for a simple undirected graph is
@@ -1059,30 +1059,30 @@ And density of simple directed directed graph will be
 \[ \text{density (simple directed)} = \frac{|E|}{|V| \left( |V| - 1 \right)} \]
 
 Therefore, maximum density for a graph is 1. The minimum density for a graph is 0.
-\\
+ 
 Knowing this, we can say graph with low density is a sparse graph and graph with high density is a dense graph.
 *** Which representation to use
 For a quick approximation, when undirected graph and $2|E|$ is close to $|V|^2$, we say that graph is dense, else we say it is sparse.
-\\
+ 
 Similarly, for directed graph when $|E|$ is close to $|V|^2$, we can say graph is dense, else it is sparse.
-\\
-\\
+ 
+ 
 The list representation provides a more compact way to represent graph when the graph is *sparse*. Whereas matrix representation is better for *dense* graphs.
-\\
+ 
 Another criteria is how algorithm will use the graph. If we want to traverse to neighbouring nodes, then list representation works well. If we want to quickly tell if there is an edge between two nodes, then matrix representation is better.
 
 ** Searching Graphs
 Graph search (or graph traversal) algorithms are used to explore a graph to find nodes and edges. Vertices not connected by edges are not explored by such algorithms. These algorithms start at a source vertex and traverse as much of the connected graph as possible.
-\\
-\\
+ 
+ 
 Searching graphs algorithm can also be used on trees, because trees are also graphs.
 *** Breadth first search
 BFS is one of the simplest algorithms for searching a graph and is used as an archetype for many other graph algorithms. This algorithm works well with the adjacency list representation.
-\\
-\\
+ 
+ 
 In BFS, the nodes are explored based on their distance from the starting node. What we mean by distance between nodes is how many edges are in between the two nodes.
-\\
-\\
+ 
+ 
 So in BFS, all nodes at distance 1 are explored first, then nodes at distance 2 are explored, then nodes at distance 3 and so on. That is, all nodes at distance $k$ are explored before exploring nodes at distance $(k+1)$.
 #+BEGIN_SRC c
   BFS(graph_type graph, node_type start){
@@ -1111,8 +1111,8 @@ For an input graph $G=(V,E)$, every node is enqued only once and hence, dequeued
 \[ \text{Time complexity of BFS : } \theta(V + E) \]
 *** Breadth-first trees for shortest path
 For a simple graph, we may want to get the shortest path between two nodes. This can be done by making a Breadth-first tree.
-\\
-\\
+ 
+ 
 When we are traversing nodes using BFS, we can create a breadth-first tree. To make this tree, we simply need to set parent of u in the inner while loop in the BFS algorithm to v. So our algorithm from earlier will become.
 #+BEGIN_SRC c
   BFS_shortest_path(graph_type graph, node_type start, node_type end){
@@ -1143,7 +1143,7 @@ When we are traversing nodes using BFS, we can create a breadth-first tree. To m
   }
 #+END_SRC
 In this tree, the path upwards from any given node to start node will be the shortest path to the start node.
-\\
+ 
 Therefore, we can get the shortest path now as follows
 #+BEGIN_SRC c
   print_shortest_path(graph_type graph, node_type start, node_type end){
@@ -1241,7 +1241,7 @@ This algorithm will give all nodes the (node.d) and (node.f) attribute. *Similar
 
 **** Parenthesis theorem
 The paranthesis theorem is used to find relationship between two nodes in the *Depth First Search Tree*.
-\\
+ 
 For any two given nodes $x$ and $y$.
 + If range $[x.d, x.f]$ is completely within $[y.d, y.f]$, then $x$ is a descendant of $y$.
 + If range $[x.d, x.f]$ and $[y.d, y.f]$ are completely disjoint, then neither is descendant or ancestor of another.
@@ -1263,7 +1263,7 @@ The back edge, forward edge and cross edge are not a part of the depth-first tre
 In directed graphs, the depth-first and breadth-first algorithms *can't traverse to nodes which are not connected by a directed edge*. This can leave parts of graph not mapped by a single tree.
 
 These tree's can help us better understand the graph and get properties of nodes, so we can't leave them when converting a graph to tree.
-\\
+ 
 To solve this, we have /*collection of trees for the graph*/. This collection of trees will cover all the nodes of the graph and is called a *forest*. The forest of graph $G$ is represented by $G_{\pi}$.
 
 Thus when using DFS or BFS on a graph, we store this collection of trees i.e, forests so that we can get properties of all the nodes.

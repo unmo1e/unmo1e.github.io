@@ -1,4 +1,5 @@
 #+Title: GATE Notes
+#+html_head: <link rel="stylesheet" href="common/org.css">
 
 + [[./algorithms/main.html][Algorithms]]
 + [[./dataStructures/main.html][Data Structures]]

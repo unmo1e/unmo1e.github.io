@@ -340,7 +340,7 @@ We can also have *bottom up dynamic programming*, but for that we need to unders
 In this diagram [x,y] means values [left,right] and what it calls recursively
 
 The easiest way to get the subproblem graph from this tree is to simply use the adjacency list representation, all direct childs are in the adjacency list of the node.
-#+BEGIN_SRC python
+#+BEGIN_SRC 
   graph = {
       "0,0" : [],
       "0,1" : ["0,0","1,1"],
@@ -355,7 +355,7 @@ The easiest way to get the subproblem graph from this tree is to simply use the 
   }
 #+END_SRC
 After topological sort, we will get the order
-#+BEGIN_SRC python
+#+BEGIN_SRC 
   graph = {
       "0,0" : [],
       "1,1" : [],

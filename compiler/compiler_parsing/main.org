@@ -3,7 +3,7 @@
 #+AUTHOR: Anmol Nawani
 #+UID: https://git.lomna.xyz
 #+OPTIONS: H:4
-#+html_head: <link rel="stylesheet" href="src/org.css">
+#+html_head: <link rel="stylesheet" href="../../common/org.css">
 
 * Language Processors
 Programming Languages are human readable and can't be executed by a machine. Therefore, we need to process them in some form to execute a program written in a programming language. A language processor is of two broad categories
@@ -341,6 +341,26 @@ We can create a parsing table using the FIRST and FOLLOW functions. The algorith
       + add $A \rightarrow \alpha$ to $M[A,b]$
 
 If a grammer is LL(1) this will put only a single rule in each cell of the parsing table. Using this parsing table, we can get first rule by $M[S,a]$ where $a$ is the first symbol in input. Then we can keep matching and moving forward
+
+Suppose the grammar is
+1. S -> aABb
+2. A -> c | $\epsilon$
+3. B -> d | $\epsilon$
+
+The FIRST and FOLLOW for this grammar is
+| Nonterminal | FIRST         | FOLLOW |
+|-------------+---------------+--------|
+| S           | a             | $      |
+| A           | c, $\epsilon$ | d, b   |
+| B           | d, $\epsilon$ | b      |
+
+Then the parsing table is
+
+|     | *a*       | *b*             | *c*    | *d*             | *$* |
+| *S* | S -> aABb |                 |        |                 |     |
+| *A* |           | A -> $\epsilon$ | A -> c | A -> $\epsilon$ |     |
+| *B* |           | B -> $\epsilon$ |        | B -> d          |     |
+
 *** Nonrecursive Predictive Parsing
 Using the parsing table, we can parse LL(1) grammer without recursion. For this we use a stack to parse the input tokens list. The algorithm works as follows
 #+begin_src
@@ -348,33 +368,61 @@ Using the parsing table, we can parse LL(1) grammer without recursion. For this 
   X = top element of stack (don't push out of stack)
   
   while stack is not empty {
-    /* token was matched */
-    if ( X = a ) {
-      pop(stack)
-      a = next symbol of token list
+    if ( X is a terminal ) {
+      /* token was matched */
+      if ( X == a ) {
+        pop(stack)
+        a = next symbol of token list
+      }
+      
+      /* could not match token */
+      else {
+        expected_token_error()
+      }
     }
 
-    /* could not match token */
-    else if (X is terminal) {
-      error()
-    }
-
-    /* parsing error */
-    else if (M[X,a] is empty) {
-      error()
-    }
-
-    /* output the next production to apply */
-    else if (M[X,a] is a production X -> Y1 Y2 Y3 ... Yk) {
-      print the production (X -> Y1 Y2 Y3 ... Yk)
-      pop(stack)
-      push Yk Y{k-1} ... Y1 to stack with Y1 on top
+    if ( X is nonterminal ) {
+      /* parsing error */
+      if (M[X,a] is empty) {
+        parsing_error()
+      }
+  
+      /* output the next production to apply */
+      else if (M[X,a] is a production X -> Y1 Y2 Y3 ... Yk) {
+        print the production (X -> Y1 Y2 Y3 ... Yk)
+        pop(stack)
+        push Yk Y{k-1} ... Y1 to stack with Y1 on top
+      }
     }
 
     X = top element of stack (don't push out of stack)
   }
 #+end_src
 
+Example, we will take the grammar
+1. S -> aABb
+2. A -> c | $\epsilon$
+3. B -> d | $\epsilon$
+
+and the parsing table
+
+|     | *a*       | *b*             | *c*    | *d*             |
+| *S* | S -> aABb |                 |        |                 |
+| *A* |           | A -> $\epsilon$ | A -> c | A -> $\epsilon$ |
+| *B* |           | B -> $\epsilon$ |        | B -> d          |
+
+Then the process of parsing is
+
+| Stack | Input | Action             |
+|-------+-------+--------------------|
+| S     | acbd$ | M[S,a] = S -> aABb |
+| bBAa  | acdb$ | Match and pop 'a'  |
+| bBA   | cdb$  | M[A,c] = A -> c    |
+| bBc   | cdb$  | Match and pop 'c'  |
+| bB    | db$   | M[B,d] = B -> d    |
+| bd    | db$   | Match and pop 'd'  |
+| b     | b$    | Match and pop 'd'  |
+|       | $     | Parsed input       |
 ** Bottom-Up Parsing
 A common method of bottom-up parsing is shift reduce parsing. The class of grammers for which we can build a shift-reduce parser are called LR grammers.
 *** Reduction
@@ -461,269 +509,3 @@ Since both shift and reduce are valid next operations, this is a shift/reduce co
 Suppose our stack content is $\alpha$ and we have two productions $A \rightarrow \alpha$ and $B \rightarrow \alpha$. We don't know which of the production is the correct handle. This is a reduce/reduce conflict
 
 The reduce/reduce conflict is resolved by increasing the lookahead of the parsar
-
-** LR(0) parser
-A simple LR(k) parser uses k lookahead symbols.
-+ L stands for left-to-right scanning
-+ R stands for rightmost derivation /in reverse/ tree
-+ k is the number of lookahead
-For most practical languages we use $k \le 1$. We generally study LR(1) parsers only.
-
-*Why LR parser over LL parsers*
-
-+ LR parsing methods detect syntactic error as soon as possible in a left-to-right scan
-+ LR grammar are a proper superset of LL grammar
-*** Items and LR(0) automata
-An LR parser makes shift/reduce decisions by maintaining states to keep track of where we are in the parsing process.
-+ We keep track of states using an automata called LR automata
-+ The states are the set of items. Items are productions with a dot at some position in the body.
-Example, the production A -> XYZ has four items
-+ A -> .XYZ
-+ A -> X.YZ
-+ A -> XY.Z
-+ A -> XYZ.
-The production A -> $\epsilon$ has a single item
-+ A -> .
-
-The item A -> X.YZ means that we have read X and hope to see YZ next in input
-
-The item A -> XYZ. means that XYZ is read and maybe it's time to reduce
-**** LR(0) collection
-The collection of LR(0) items, called canonical LR(0) collection are basis for constructing a DFA that are used to make parsing decisions.
-
-To construct LR(0) collection for a grammar, we first convert given grammar to an augmented grammar. Then we use two funtions CLOSURE and GOTO.
-
-*Augmented grammar*
-
-If we have a grammar $G$, with the start symbol $S$. We define augmented grammar $G'$ with a new start symbol $S'$
-
-We will add a single new production in $G'$ which is $S' \rightarrow S$. This is useful to indicate to parser when it should stop
-
-Acceptance in parser occurs when and only when the parser is about to reduce $S' \rightarrow S$
-
-*CLOSURE of Item Sets*
-
-Suppose we have a set of item I, then the CLOSURE(I) is given as folows
-1. add every item in I to CLOSURE(I)
-2. If $A \rightarrow \alpha . B \beta$ is in CLOSURE(I) and $B \rightarrow \gamma$ is a production, add $B \rightarrow . \gamma$ to CLOSURE(I). Apply this rule till no new items are added to CLOSURE(I). Here, adding $B \rightarrow . \gamma$ means we add all B-productions (with . at start) to CLOSURE(I)
-
-Suppose we have the grammar
-+ E -> E + T | T
-+ T -> T * F | F
-+ F -> *(* E *)* | *id*
-
-Then, it's augmented grammar is
-+ E' -> E
-+ E -> E + T | T
-+ T -> T * F | F
-+ F -> *(* E *)* | *id*
-
-If I is a items set $I = \{ E' \rightarrow . E \}$. Then CLOSURE(I) is calculated as follows
-+ Initially $CLOSURE(I) = \{ E' \rightarrow . E \}$
-+ Since we have $E$ after . in production $E' \rightarrow . E$, we add productions $\{E \rightarrow . E + T ,\ E \rightarrow . T \}$
-+ Since we have $T$ after . in production $E \rightarrow . T$, we add productions $\{ T \rightarrow . T * F,\ T \rightarrow . F \}$
-+ Now we have $F$ after . in production $T \rightarrow . F$, we need to add productions $\{ F \rightarrow . (E) ,\ F \rightarrow . id\}$
-Therefore, CLOSURE(I) contains following productions
-+ E' -> . E
-+ E -> . E + T
-+ E -> . T
-+ T -> . T * F
-+ T -> . F
-+ F -> . *(* E *)*
-+ F -> . *id*
-
-*GOTO function*
-
-The second useful functin is GOTO(I,X), where I is a set of items and X is a grammar symbol. This function will give us transitions for the LR(0) automata
-
-The method to compute GOTO(I,X) is as follows
-+ For every item $q$ in set I
-   + If X is to the immediate right of the dot
-     + Move . one position to right and add closure of this new item to GOTO(I,X)
-
-So GOTO(I,X) is { CLOSURE($A \rightarrow \alpha X . \beta$) } for all items in I such that $A \rightarrow \alpha . X \beta$ is in set I
-
-Example,
-GOTO({ E -> E + .T , T-> .T * F , T -> .F }, T)
-+ Here, two productions in set have T after the dot (.), they are $E \rightarrow E + \cdot T$ and $T \rightarrow \cdot T * F$
-+ Therefore, the GOTO is equal to CLOSURE({ $E \rightarrow E + T \cdot$ , $T \rightarrow T \cdot * F$})
-
-So, GOTO({ E -> E + .T , T-> .T * F , T -> .F }, T) = CLOSURE({ $E \rightarrow E + T \cdot$ , $T \rightarrow T \cdot * F$})
-
-**** LR(0) automata
-Also called the goto graph, this is the DFA which is used by the parser to make parsing decisions.
-
-The automata is created as follows
-1. The start state $I_0$ of this automata is a set of items CLOSURE({$S' \rightarrow \cdot S$}), where $S' \rightarrow S$ is first production for our augmented grammar
-2. For each state $I$
-  + For each grammar symbol $X$
-    + If GOTO(I, X) is not empty and not already in automata, add new state GOTO(I,X) in automata. The transition is marked by X and it is a between states I and new state GOTO(I,X).
-
-      The transition is $I \overset{X}\rightarrow GOTO(I,X)$
-3. Repeat step 2 till there are no new states added to automata   
-
-For our grammar 
-+ E' -> E
-+ E -> E + T | T
-+ T -> T * F | F
-+ F -> *(* E *)* | *id*
-
-The automata is
-#+https://cs.nyu.edu/~gottlieb/courses/2000s/2007-08-spring/compilers/lectures/lecture-07.html#:~:text=The%20Function%20GOTO,go%20to%20the%20latter%20position.
-#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-12-30%20031755.png @ 2023-12-30 03:18:04
-[[file:Syntax_Analysis_(Parsing)/2023-12-30_03-18-04_Screenshot 2023-12-30 031755.png]]
-
-*NOTE* : The accept is always from the state with item $S' \rightarrow S \cdot$, where $S' \rightarrow S$ is the first production of our augmented grammar. Also the $ shows that there is no more input ahead
-*** LR(0) table and LR-parsing algorithm
-We first need an LR-parsing table to use the parser. An LR-parsing table has two parts
-1. ACTION, which takes a state $i$ and a terminal $a$, and gives one of the four actions
-   1. SHIFT j : this will shift terminal $a$ to the symbols stack and change state from i to j
-   2. REDUCED A $\rightarrow beta$ : reduce $\beta$ from top of symbols stack to A
-   3. ACCEPT : accept input and finish parsing
-   4. ERROR : error in the input, does not belong to grammar
-2. GOTO, is the same function that we used for making the LR(0) automata. But for the table, rather than storing GOTO(I,X) for all grammar symbol X, we only store X that are non-terminals of our non-augmented grammar
-**** GOTO table
-So, the GOTO for parsing table for our grammar
-+ E -> E + T | T
-+ T -> T * F | F
-+ F -> *(* E *)* | *id*
-#+DOWNLOADED: file:E%3A/CN_Notes/Medium_Access_Control_Sublayer/Untitled-2023-12-13-1318.png @ 2023-12-30 22:02:03
-[[file:Syntax_Analysis_(Parsing)/2023-12-30_22-02-03_Untitled-2023-12-13-1318.png]]
-
-This table is filled using the LR(0) automata that we built earlier. for every state, we check if it has transitions using a non-terminal to another state, otherwise we leave it empty
-**** ACTION table
-The parsing action ACTION(i,a) are determined as follows
-1. If $A \rightarrow \alpha \cdot a \beta$ is in $I_i$ and GOTO($I_i$,a) = $I_j$ then ACTION(i,a) = SHIFT j
-   + *NOTE* : this can be filled directly by looking at LR(0) automata by seeing the transition from states over terminals
-   + The *transitions over non-terminals are GOTO* and *transitions over terminals are SHIFT*
-2. If $A \rightarrow \alpha \cdot$ is in $I_i$, then complete row $i$ is REDUCE $A \rightarrow \alpha$
-3. If $S' \rightarrow S \cdot$ is in $I_i$, then ACTION(i,$) = ACCEPT
-4. If none of the three conditions above are satisfied, it is an error
-If there are multiple possible actions for a single (i,a) pair using the above rules, the grammar is not LR(0)
-
-Using the above rules, we can fill the whole ACTION(i,a) table for all terminals a and states i
-
-The ACTION table for our grammar is
-
-# TODO : Add LR(0) table
-
-+ $s_i$ means operation SHIFT i
-+ $r_i$ means operation REDUCE $i^{th}$ production of current state
-
-**** LR-parsing algorithm
-For the LR-parsing algorithm, we use two stacks, one for storing the states and another for symbols
-
-We show the current state of the LR-parser as
-\[ (s_0 s_1 ... s_m \ ,\ \ a_i a_(i+1) ... a_n ) \]
-Here, $a_i a_(i+1) ... a_n$ is the remaining input (not shifted to symbols stack yet)
-
-The state $(s_0 s_1 ... s_m \ ,\  \ a_i a_(i+1) ... a_n )$ corrosponds to right-sentinal form $X_1 X_2 ... X_m a_i a_(i+1) ... a_n$
-
-The algorithm for LR-parsing given a parsing table is
-
-If the current state is $(s_0 s_1 ... s_m \ ,\  \ a_i a_(i+1) ... a_n )$
-1. If ACTION($s_m$, $a_i$) = SHIFT $s_x$, then shift another symbol from input to the symbols stack and change the state of parser to $(s_0 s_1 ... s_m s_x \ ,\ \ a_(i+1) ... a_n )$
-2. If ACTION($s_m$, $a_i$) = reduce $A \rightarrow \beta$, then apply reduce on symbols stack and change configuration to $(s_0 s_1 ... s_{m-r} s_x \ ,\ \ a_i a_(i+1) ... a_n )$, here, $GOTO(s_{m-r},A) = s_x$
-
-*NOTE* : The initial state of the parser is $(s_0 \ ,\  \ a_0 a_1 ... a_n )$. That is, whole input is not currently shifted and we start on initial state $s_0$
-
-All LR-parsing algorithm use this same process, the only difference is in the parsing table
-
-*** Viable Prefixes
-The LR(0) automata can be used to make a LR(0) table since the automata has property of recognizing viable prefixes.
-
-The stack content is always a collection some prefix of one of the possible handle. These prefixes that can appear on the stack are called viable prefixes.
-
-Example, for the grammar
-+ E -> E + T | T
-+ T -> T * F | F
-+ F -> *(* E *)* | *id*
-*(* E *)* is a handle, therefore { (, ( E } are viable prefixes. Since they call can appear on the symbols stack.
-
-+ It is not necessary that valid prefix always appear at the symbols stack. After shifting { ( E } , parser may shift { T * } to the stack. Which means there are two valid prefixes in our stack now { ( E T * }
-+ The symbols stack always only contains of valid prefixes
-+ Parser can never shift over a complete handle. So parser will never shift new symbol over a *(* E *)* Therefore, *(* E *)* is a non-viable prefix.
-An item $A \rightarrow \beta_1 \cdot \beta_2$ is said to be valid item for a viable prefix $\alpha \beta_1$, if there is a derivation $S' \overset{*}{\underset{rm}\Rightarrow} \alpha A w \underset{rm}\Rightarrow \alpha \beta_1 \beta_2 w$
-**** Central theorem of LR-parsing
-For an arbitrary viable prefix $\gamma$, the set of valid items is the state in LR(0) automata which we reach then following path labeled by $\gamma$ starting from the initial state. So if $\gamma = ABC$, we take transition A, then B and lastly C, and state we end on is the set of valid items
-
-** SLR Parser
-In both, reduce-reduce and shift-reduce conflicts; the main cause of the conflict is the shift operation. The SLR parser is more powerful than LR(0). It uses the *FOLLOW* operation to avoid some of these conflicts.
-
-The /only difference between LR(0) and SLR/ is where the reduce actions are placed in the table.
-
-Suppose we have the grammar
-+ E -> E + T | T
-+ T -> T * F | F
-+ F -> *(* E *)* | *id*
-
-For our grammar, the automata is
-#+https://cs.nyu.edu/~gottlieb/courses/2000s/2007-08-spring/compilers/lectures/lecture-07.html#:~:text=The%20Function%20GOTO,go%20to%20the%20latter%20position.
-#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-12-30%20031755.png @ 2023-12-30 03:18:04
-[[file:Syntax_Analysis_(Parsing)/2023-12-30_03-18-04_Screenshot 2023-12-30 031755.png]]
-
-**** GOTO table
-So, the GOTO for parsing table for our grammar is filled using the LR(0) automata. Procedure is same as it is for LR(0) parser.
-#+DOWNLOADED: file:E%3A/CN_Notes/Medium_Access_Control_Sublayer/Untitled-2023-12-13-1318.png @ 2023-12-30 22:02:03
-[[file:Syntax_Analysis_(Parsing)/2023-12-30_22-02-03_Untitled-2023-12-13-1318.png]]
-
-**** ACTION table
-The whole ACTION table is filled in same way as LR(0) parser /except the reduce operation/
-The parsing action ACTION(i,a) are determined as follows
-1. If $A \rightarrow \alpha \cdot a \beta$ is in $I_i$ and GOTO($I_i$,a) = $I_j$ then ACTION(i,a) = SHIFT j
-   + *NOTE* : this can be filled directly by looking at LR(0) automata by seeing the transition from states over terminals
-   + The *transitions over non-terminals are GOTO* and *transitions over terminals are SHIFT*
-2. If $A \rightarrow \alpha \cdot$ is in $I_i$, then
-   + for every token 'a' in FOLLOW(A) we add ACTION(i,a) = REDUCE $A \rightarrow \alpha$
-3. If $S' \rightarrow S \cdot$ is in $I_i$, then ACTION(i,$) = ACCEPT
-4. If none of the three conditions above are satisfied, it is an error
-If there are multiple possible actions for a single (i,a) pair using the above rules, the grammar is not LR(0)
-
-Using the above rules, we can fill the whole ACTION(i,a) table for all terminals a and states i
-
-The ACTION table for our grammar is
-# COPYRIGHT HAZARD
-#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202023-12-30%20231151.png @ 2023-12-30 23:11:57
-[[file:Syntax_Analysis_(Parsing)/2023-12-30_23-11-57_Screenshot 2023-12-30 231151.png]]
-
-+ $s_i$ means operation SHIFT i
-+ $r_i$ means operation REDUCE $i^{th}$ production of current state
-
-**** The Parsing Algorithm
-Once we have the table, the parsing algorithm is same for all the LR parsers. LR(0), SLR, CLR and LALR all use the same algorithm; only difference is the table which they produce.
-** More Powerful LR Parsers
-There are two different LR parsing techniques that are more powerful that LR(0)
-1. canonical-LR or just "LR" method makes full use of the lookahead symbols. This method uses a very large set of items called LR(1) items
-2. lookahead-LR or LALR, which is based on LR(0) items has fewer states. But we introduce lookaheads into LR(0) items to handle more grammars
-*** Canonical LR(1) items
-In a LR(1) item, along with the production with a dot, we also store a terminal symbol. So LR(1) items have two components, example $[ A \rightarrow \alpha \cdot \beta \ ,\  a ]$. The $a$ is the lookahead of the item.
-+ For an item of type $[ A \rightarrow \alpha \cdot \beta \ ,\ a ]$ and $\beta \ne \epsilon$ i.e, where dot is not at the rightmost position, the lookahead is not used
-+ For item $[ A \rightarrow \alpha \cdot \ ,\ a ]$, this item represents a reduction by the production $A \rightarrow \alpha$ if and only if the next input symbol is $a$
-So unlike LR(0) items, for LR(1) item we only reduce if the next input symbol matches the lookahead
-**** Viable prefix
-LR(1) item $[X \rightarrow \alpha \cdot \beta \ ,\ x]$ is valid for a viable prefix $\delta \alpha$, if
-+ there is a derivation $S \overset{*}{\underset{rm}\Rightarrow} \delta X w \underset{rm}\Rightarrow \delta \alpha \beta w$
-+  $w$ starts with symbol $x$; or if $w$ is $\epsilon$ and $x$ is rightend marker $
-
-Example, for the grammar
-\\
-S -> BB
-\\
-B -> aB | b
-\\
-+ If LR(1) item is $[ B \rightarrow a \cdot B \ ,\  a ]$  to show that $aaa$ is a viable prefix, first we get that $X = B$, $\alpha = a$, $\beta = B$, $x = a$ so the derivation needs to be
-  \[ S \overset{*}{\underset{rm}\Rightarrow} \delta B w  \underset{rm}\Rightarrow \delta a B w \]
-  there exists a suitable derivation with $\delta = aa$ and $w = ab$,
-  \[ S \overset{*}{\underset{rm}\Rightarrow} aaBab  \underset{rm}\Rightarrow aaaBab \]
-  Therefore, $\delta \alpha = aaa$ is a viable prefix
-
-
-+ If item is [ B $\rightarrow$ a $\cdot$ B , $ ] and we need to show that Baa is viable prefix, we first find that A = B, $\alpha = a$, $\beta = B$ and x = $. Since x = $, we also know that $w = \epsilon$. hence, derivation must be
-  \[ S \overset{*}{\underset{rm}\Rightarrow} \delta B  \underset{rm}\Rightarrow \delta a B \]
-  And for $\delta = Ba$, we have derivation
-  \[ S \overset{*}{\underset{rm}\Rightarrow} B a B  \underset{rm}\Rightarrow B a a B \]
-  Therefore, $\delta \alpha = Baa$ is a viable prefix
-**** Constructing LR(1) sets of items
-TODO
-*** LALR parsing tables
-TODO

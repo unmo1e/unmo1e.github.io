@@ -165,7 +165,7 @@ Suppose the function is MinMax(array, left, right) which will return a tuple (mi
 + *Conquer part* : Recursively get the min and max of left and right array, leftMinMax = MinMax(array, left, mid)  and rightMinMax = MinMax(array, mid + 1, right).
 + *Combine part* : If leftMinMax[0] > rightMinmax[0], then min = righMinMax[0], else min = leftMinMax[0]. Similarly, if leftMinMax[1] > rightMinMax[1], then max = leftMinMax[1], else max = rightMinMax[1].
 
-#+BEGIN_SRC python
+#+BEGIN_SRC 
   # Will return (min, max)
   def minmax(array, left, right):
       if left == right:       # Single element in array
@@ -222,7 +222,7 @@ If n is not a power of 2, we will round the number of comparision up.
 
 In this algorithm we will compare pairs of numbers from the array. It works on the idea that the larger number of the two in pair can be the maximum number and smaller one can be the minimum one. So after comparing the pair, we can simply test from maximum from the bigger of two an minimum from smaller of two. This brings number of comparisions to check two numbers in array from 4 (when we increment by 1) to 3 (when we increment by 2).
 
-#+BEGIN_SRC python
+#+BEGIN_SRC 
 def min_max(array):
     (minimum, maximum) = (array[0], array[0])
     i = 1

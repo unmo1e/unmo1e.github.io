@@ -1,4 +1,5 @@
 #+Title: Compilers
+#+html_head: <link rel="stylesheet" href="../common/org.css">
 
 + [[./compiler_parsing/main.html][Part 1]]
 + [[./compiler_translation/main.html][Part 2]]
