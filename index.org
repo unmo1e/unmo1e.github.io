@@ -1,5 +1,4 @@
 #+Title: GATE Notes
-#+html_head: <link rel="stylesheet" href="common/org.css">
 
 + [[./algorithms/main.html][Algorithms]]
 + [[./dataStructures/main.html][Data Structures]]
@@ -8,3 +7,9 @@
 + [[./computerNetworks/main.html][Computer Networks]]
 + [[./theoryOfComputation/main.html][Theory of Computation]]
 + [[./compiler/main.html][Compilers]]
+
+
+#+begin_export html
+<button onclick="window.location.href = `${window.location.href}#dark`;window.location.reload();">dark mode</button>
+<button onclick="window.location.href = `${window.location.href}#light`;window.location.reload();">light mode</button>
+#+end_export

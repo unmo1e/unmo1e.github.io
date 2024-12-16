@@ -1,5 +1,4 @@
 #+Title: Computer Organization and Architechture
-#+html_head: <link rel="stylesheet" href="../common/org.css">
 
 + [[./GATE_COA_Notes1.pdf][Part 1]]
 + [[./GATE_COA_Notes2.pdf][Part 2]]

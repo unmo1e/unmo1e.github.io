@@ -110,8 +110,7 @@ Time complexity is
 For recurrence relation of type
 
 \[ T(n) = c\ for\ n \le 1 \]
-\[ T(n) = a.T(n-b) + f(n)\ for\ n > 1 \]
-\[ \text{where for f(n) we can say, } f(n) = O(n^k) \]
+\[ T(n) = a.T(n-b) + O(n^k)\ for\ n > 1 \]
 \[ \text{where, a > 0, b > 0 and k}  \ge 0  \]
 
 + If a < 1, then T(n) = O(n^k)

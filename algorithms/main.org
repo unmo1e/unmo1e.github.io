@@ -1,7 +1,6 @@
 #+TITLE: Algorithms
 #+AUTHOR: Anmol Nawani
 #+OPTIONS: H:4
-#+html_head: <link rel="stylesheet" href="../common/org.css">
 
 #+INCLUDE: "./lectures/1.org" :minlevel 1
 #+INCLUDE: "./lectures/2.org" :minlevel 1

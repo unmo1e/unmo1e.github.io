@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2024-11-29 Fri 21:24 -->
+<!-- 2024-12-16 Mon 18:45 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Compiler Design</title>
@@ -193,7 +193,7 @@
     { background-color: #ffff00; color: #000000; font-weight: bold; }
   .org-svg { width: 90%; }
 </style>
-<link rel="stylesheet" href="../../common/org.css">
+<link id="css-link" rel="stylesheet" href="/common/org.css"> <script src="/common/webpage.js"></script>
 <script type="text/x-mathjax-config">
     MathJax.Hub.Config({
         displayAlign: "center",
@@ -223,83 +223,83 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org2e7efa4">1. Language Processors</a>
+<li><a href="#orgd6a7768">1. Language Processors</a>
 <ul>
-<li><a href="#org3281e22">1.1. Programs required for executable</a></li>
-<li><a href="#org50c4179">1.2. Structure of a compiler</a>
+<li><a href="#org9aa5a38">1.1. Programs required for executable</a></li>
+<li><a href="#orga4f3402">1.2. Structure of a compiler</a>
 <ul>
-<li><a href="#orgdb2246e">1.2.1. Lexical Analysis</a></li>
-<li><a href="#orgd31ecd8">1.2.2. Syntax Analysis</a></li>
-<li><a href="#orgff51467">1.2.3. Semantic Analysis</a></li>
-<li><a href="#org9a9e114">1.2.4. Intermediate Code Generation</a></li>
-<li><a href="#org1eb1350">1.2.5. Code optimizations</a></li>
-<li><a href="#orgc332ffc">1.2.6. Code generation</a></li>
+<li><a href="#org0680f13">1.2.1. Lexical Analysis</a></li>
+<li><a href="#org530b893">1.2.2. Syntax Analysis</a></li>
+<li><a href="#orgb7462af">1.2.3. Semantic Analysis</a></li>
+<li><a href="#org2eeb41c">1.2.4. Intermediate Code Generation</a></li>
+<li><a href="#orgdce7988">1.2.5. Code optimizations</a></li>
+<li><a href="#org4e98d89">1.2.6. Code generation</a></li>
 </ul>
 </li>
-<li><a href="#org64705fe">1.3. Classification of Languages</a></li>
+<li><a href="#org8ef74c0">1.3. Classification of Languages</a></li>
 </ul>
 </li>
-<li><a href="#org6b8d51d">2. Lexical Analysis</a>
+<li><a href="#orge5a2e33">2. Lexical Analysis</a>
 <ul>
-<li><a href="#orgf2d1fb8">2.1. Input Buffering</a>
+<li><a href="#org8b43daf">2.1. Input Buffering</a>
 <ul>
-<li><a href="#org2f1951d">2.1.1. Two-Buffer arrangement</a></li>
+<li><a href="#orgba113a8">2.1.1. Two-Buffer arrangement</a></li>
 </ul>
 </li>
-<li><a href="#org27982d5">2.2. Regular Expressions</a>
+<li><a href="#org4ccc7f9">2.2. Regular Expressions</a>
 <ul>
-<li><a href="#orgf9f660d">2.2.1. Properties of regular expressions</a></li>
-<li><a href="#org5118335">2.2.2. Regular definitions</a></li>
-<li><a href="#orge5750f8">2.2.3. Extensions to regular expressions</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href="#org06be5c6">3. Syntax Analysis (Parsing)</a>
-<ul>
-<li><a href="#org47f9bc0">3.1. Context-free grammers</a>
-<ul>
-<li><a href="#org2b172c6">3.1.1. Rightmost derivations</a></li>
-<li><a href="#org54ff9ce">3.1.2. Leftmost derivations</a></li>
-<li><a href="#org12ba436">3.1.3. Ambiguity</a></li>
-<li><a href="#org082ce5c">3.1.4. Eliminating Ambiguity</a></li>
-<li><a href="#org6aeb842">3.1.5. Elimination of Left Recursion</a>
-<ul>
-<li><a href="#orgeacaadd">3.1.5.1. Eliminating direct left recursion</a></li>
-<li><a href="#org0d2e96c">3.1.5.2. Eliminating all left recursion</a></li>
+<li><a href="#org7ef746f">2.2.1. Properties of regular expressions</a></li>
+<li><a href="#orgd961862">2.2.2. Regular definitions</a></li>
+<li><a href="#org9b52e2e">2.2.3. Extensions to regular expressions</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org19b0713">3.2. FIRST and FOLLOW functions</a>
+<li><a href="#orgce6fdf5">3. Syntax Analysis (Parsing)</a>
 <ul>
-<li><a href="#org970e063">3.2.1. FIRST function</a>
+<li><a href="#org089c617">3.1. Context-free grammers</a>
 <ul>
-<li><a href="#orgd51f681">3.2.1.1. If \(X\) is a terminal</a></li>
-<li><a href="#orgd3f9f96">3.2.1.2. If \(X\) is a non-terminal</a></li>
-<li><a href="#orgf618750">3.2.1.3. For string \(X_1 X_2 ... X_n\) of terminals and non-terminals</a></li>
+<li><a href="#org079f070">3.1.1. Rightmost derivations</a></li>
+<li><a href="#org8f1382a">3.1.2. Leftmost derivations</a></li>
+<li><a href="#org5dd2f86">3.1.3. Ambiguity</a></li>
+<li><a href="#orgb81235d">3.1.4. Eliminating Ambiguity</a></li>
+<li><a href="#org718ad09">3.1.5. Elimination of Left Recursion</a>
+<ul>
+<li><a href="#org6354e60">3.1.5.1. Eliminating direct left recursion</a></li>
+<li><a href="#orge0ed896">3.1.5.2. Eliminating all left recursion</a></li>
 </ul>
 </li>
-<li><a href="#org481c7cf">3.2.2. FOLLOW function</a></li>
 </ul>
 </li>
-<li><a href="#org7cacb89">3.3. Top-Down Parsing</a>
+<li><a href="#org2a983a5">3.2. FIRST and FOLLOW functions</a>
 <ul>
-<li><a href="#orgf70e634">3.3.1. Recursive descent parser</a></li>
-<li><a href="#org35523b2">3.3.2. LL(1) Grammars</a></li>
-<li><a href="#org466fe89">3.3.3. Parsing Table</a></li>
-<li><a href="#org04f6aea">3.3.4. Nonrecursive Predictive Parsing</a></li>
+<li><a href="#org86a355d">3.2.1. FIRST function</a>
+<ul>
+<li><a href="#org88f1b1a">3.2.1.1. If \(X\) is a terminal</a></li>
+<li><a href="#orgc4d95c9">3.2.1.2. If \(X\) is a non-terminal</a></li>
+<li><a href="#org77e524b">3.2.1.3. For string \(X_1 X_2 ... X_n\) of terminals and non-terminals</a></li>
 </ul>
 </li>
-<li><a href="#org4ee53bd">3.4. Bottom-Up Parsing</a>
+<li><a href="#org7dfd642">3.2.2. FOLLOW function</a></li>
+</ul>
+</li>
+<li><a href="#org1e5b878">3.3. Top-Down Parsing</a>
 <ul>
-<li><a href="#org222c63b">3.4.1. Reduction</a></li>
-<li><a href="#orgb07e599">3.4.2. Handle Pruning</a></li>
-<li><a href="#orgb371abf">3.4.3. Shift-reduce parsing</a></li>
-<li><a href="#orga2ca643">3.4.4. Conflicts during shift-reduce parsing</a>
+<li><a href="#org616da92">3.3.1. Recursive descent parser</a></li>
+<li><a href="#orgbf1b659">3.3.2. LL(1) Grammars</a></li>
+<li><a href="#orge25e480">3.3.3. Parsing Table</a></li>
+<li><a href="#org5d3615b">3.3.4. Nonrecursive Predictive Parsing</a></li>
+</ul>
+</li>
+<li><a href="#orgf23031d">3.4. Bottom-Up Parsing</a>
 <ul>
-<li><a href="#org36b2f27">3.4.4.1. shift/reduce conflict</a></li>
-<li><a href="#org337675b">3.4.4.2. reduce/reduce conflict</a></li>
+<li><a href="#org026fdd3">3.4.1. Reduction</a></li>
+<li><a href="#orgaf9f3fd">3.4.2. Handle Pruning</a></li>
+<li><a href="#orgc87cc11">3.4.3. Shift-reduce parsing</a></li>
+<li><a href="#org95d0e80">3.4.4. Conflicts during shift-reduce parsing</a>
+<ul>
+<li><a href="#org28d0330">3.4.4.1. shift/reduce conflict</a></li>
+<li><a href="#org595041a">3.4.4.2. reduce/reduce conflict</a></li>
 </ul>
 </li>
 </ul>
@@ -310,8 +310,8 @@
 </div>
 </div>
 
-<div id="outline-container-org2e7efa4" class="outline-2">
-<h2 id="org2e7efa4"><span class="section-number-2">1.</span> Language Processors</h2>
+<div id="outline-container-orgd6a7768" class="outline-2">
+<h2 id="orgd6a7768"><span class="section-number-2">1.</span> Language Processors</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 Programming Languages are human readable and can't be executed by a machine. Therefore, we need to process them in some form to execute a program written in a programming language. A language processor is of two broad categories
@@ -321,7 +321,7 @@ Programming Languages are human readable and can't be executed by a machine. The
 <b>Compiler</b> : A compiler converts the source program written in a programming language to a target program which is executable by the machine.
 </p>
 
-<div id="orgd56047c" class="figure">
+<div id="org2822a3f" class="figure">
 <p><img src="Language_Processors/2023-12-13_13-19-58_Untitled-2023-12-13-1318.png" alt="2023-12-13_13-19-58_Untitled-2023-12-13-1318.png" />
 </p>
 </div>
@@ -330,7 +330,7 @@ Programming Languages are human readable and can't be executed by a machine. The
 This target program is then executed by the user, who can provide input to this program.
 </p>
 
-<div id="org3e0f565" class="figure">
+<div id="org5bf51f2" class="figure">
 <p><img src="Language_Processors/2023-12-13_13-23-07_Untitled-2023-12-13-1318.png" alt="2023-12-13_13-23-07_Untitled-2023-12-13-1318.png" />
 </p>
 </div></li>
@@ -338,7 +338,7 @@ This target program is then executed by the user, who can provide input to this 
 <b>Interpreter</b> : An interpreter does not generate a target program. It will take the source code and the input from the user and executes it, seemingly without producing target machine's code. The interpreter actually may convert the source code to a byte code or even to machine code (usually via Just-In-Time compilers).
 </p>
 
-<div id="org8f09b2a" class="figure">
+<div id="org4cb1da3" class="figure">
 <p><img src="Language_Processors/2023-12-13_13-27-39_Untitled-2023-12-13-1318.png" alt="2023-12-13_13-27-39_Untitled-2023-12-13-1318.png" />
 </p>
 </div>
@@ -349,8 +349,8 @@ Programs using interpreters are usually slower in execution than compiled progra
 <li><b>Hybrids</b> : Some languages like Java have a hybrid approach. The java compiler first converts the Java source code into bytecode. This bytecode can't be run on an actual machine. Instead it is then given to a virtual machine, called Java Virtual Machine which will interpret the bytecode.</li>
 </ul>
 </div>
-<div id="outline-container-org3281e22" class="outline-3">
-<h3 id="org3281e22"><span class="section-number-3">1.1.</span> Programs required for executable</h3>
+<div id="outline-container-org9aa5a38" class="outline-3">
+<h3 id="org9aa5a38"><span class="section-number-3">1.1.</span> Programs required for executable</h3>
 <div class="outline-text-3" id="text-1-1">
 <p>
 When using a compiler, it often doesn't directly convert source code to an executable form. There are various steps that are taken to convert a source program to an actual executable program. A compiler is one of the working components, but the other parts are
@@ -362,7 +362,7 @@ When using a compiler, it often doesn't directly convert source code to an execu
 <li>Linker/Loader : the whole program is often not in a single executable. Programs depend on system libraries and modules. The linker resolves the external memory addresses to libraries and modules and loader is responsible for loading libraries in memory when program is running.</li>
 </ul>
 
-<div id="org5bd13f2" class="figure">
+<div id="org3d95a5d" class="figure">
 <p><img src="Language_Processors/2023-12-13_14-24-14_Untitled-2023-12-13-1318.png" alt="2023-12-13_14-24-14_Untitled-2023-12-13-1318.png" />
 </p>
 </div>
@@ -372,8 +372,8 @@ We will only look at the compiler portion of this whole language processing syst
 </p>
 </div>
 </div>
-<div id="outline-container-org50c4179" class="outline-3">
-<h3 id="org50c4179"><span class="section-number-3">1.2.</span> Structure of a compiler</h3>
+<div id="outline-container-orga4f3402" class="outline-3">
+<h3 id="orga4f3402"><span class="section-number-3">1.2.</span> Structure of a compiler</h3>
 <div class="outline-text-3" id="text-1-2">
 <p>
 A compiler will have two primary parts : analysis and synthesis
@@ -383,8 +383,8 @@ A compiler will have two primary parts : analysis and synthesis
 <li>Synthesis : the synthesis portion of compiler will use the IR and symbol table to generate the target code. It produces optimized code by optimizing the IR. Optimization is a major part of the compiler, the optimization is of two types. The machine independent optimization will optimize the IR which it gets from the frontend of compiler. The machine dependent optimization will optimize the machine code which is obtained after code generator has converted IR to machine code. The synthesis part of compiler is called backend of the compiler</li>
 </ul>
 </div>
-<div id="outline-container-orgdb2246e" class="outline-4">
-<h4 id="orgdb2246e"><span class="section-number-4">1.2.1.</span> Lexical Analysis</h4>
+<div id="outline-container-org0680f13" class="outline-4">
+<h4 id="org0680f13"><span class="section-number-4">1.2.1.</span> Lexical Analysis</h4>
 <div class="outline-text-4" id="text-1-2-1">
 <p>
 The lexical analyzer called the lexer or scanner, takes the source code and converts in to a list of meaningful atoms called lexemes. A lexeme is the smallest unit of the source code which is meaningful to a compiler. Types of lexemes includes all the operators, keywords, identifiers, literals, and other symbols used by language (like parenthesis, braces, commas, dot, semicolon etc.)
@@ -475,8 +475,8 @@ And the lexemes are grouped into tokens as
 </div>
 </div>
 
-<div id="outline-container-orgd31ecd8" class="outline-4">
-<h4 id="orgd31ecd8"><span class="section-number-4">1.2.2.</span> Syntax Analysis</h4>
+<div id="outline-container-org530b893" class="outline-4">
+<h4 id="org530b893"><span class="section-number-4">1.2.2.</span> Syntax Analysis</h4>
 <div class="outline-text-4" id="text-1-2-2">
 <p>
 The tokens we get from lexical analysis are then arranged in form of a tree, called the Abstract Syntax Tree (AST). These trees are formed by a process called parsing, which is done by parsers. These parsers use context-free grammers in order to make the AST.
@@ -486,22 +486,22 @@ The tokens we get from lexical analysis are then arranged in form of a tree, cal
 <li>The leaf nodes of tree are arguments for the operators</li>
 </ul>
 
-<div id="org182a976" class="figure">
+<div id="orgfe3ed06" class="figure">
 <p><img src="Language_Processors/2023-12-13_20-09-28_Untitled-2023-12-13-1318.png" alt="2023-12-13_20-09-28_Untitled-2023-12-13-1318.png" />
 </p>
 </div>
 </div>
 </div>
-<div id="outline-container-orgff51467" class="outline-4">
-<h4 id="orgff51467"><span class="section-number-4">1.2.3.</span> Semantic Analysis</h4>
+<div id="outline-container-orgb7462af" class="outline-4">
+<h4 id="orgb7462af"><span class="section-number-4">1.2.3.</span> Semantic Analysis</h4>
 <div class="outline-text-4" id="text-1-2-3">
 <p>
 The syntax tree is checked by a semantic analyzer to check if it follows all the rules defined by the language. This is the place where type checking is done and implicit conversions are done. If the syntax tree is not correct, then it will give programmer a messaage informing that went wrong.
 </p>
 </div>
 </div>
-<div id="outline-container-org9a9e114" class="outline-4">
-<h4 id="org9a9e114"><span class="section-number-4">1.2.4.</span> Intermediate Code Generation</h4>
+<div id="outline-container-org2eeb41c" class="outline-4">
+<h4 id="org2eeb41c"><span class="section-number-4">1.2.4.</span> Intermediate Code Generation</h4>
 <div class="outline-text-4" id="text-1-2-4">
 <p>
 While we can simply generate target code at this point (which transpilers will do). When making a langauge, we often want it to work on multiple platforms. To achieve this, rather than convert to machine code or assembly code that works on a single machine, we generte a machine-like intermediate code. The requirements for good intermediate code is that it is easy to generate and easy to map to actual machine code. We usually use a three-address code, it is assembly language like instructions with every instruction having only 3 operands.
@@ -519,8 +519,8 @@ id1 = t3
 </div>
 </div>
 </div>
-<div id="outline-container-org1eb1350" class="outline-4">
-<h4 id="org1eb1350"><span class="section-number-4">1.2.5.</span> Code optimizations</h4>
+<div id="outline-container-orgdce7988" class="outline-4">
+<h4 id="orgdce7988"><span class="section-number-4">1.2.5.</span> Code optimizations</h4>
 <div class="outline-text-4" id="text-1-2-5">
 <p>
 The machine independent code optimization is done on the Intermediate Code that we produced in the previous step. The optimization can be done to increase speed, reduce space, reduce number of instruction etc.
@@ -537,8 +537,8 @@ id1 = id2 + t1
 </div>
 </div>
 
-<div id="outline-container-orgc332ffc" class="outline-4">
-<h4 id="orgc332ffc"><span class="section-number-4">1.2.6.</span> Code generation</h4>
+<div id="outline-container-org4e98d89" class="outline-4">
+<h4 id="org4e98d89"><span class="section-number-4">1.2.6.</span> Code generation</h4>
 <div class="outline-text-4" id="text-1-2-6">
 <p>
 The optimized intermediate code from the previous step is converted to equivalent machine code. This machine code is usually assembly for the platform. The storage allocation such as stack and heap are also initialized here. The type of storage allocation needed will depend on the type language. Example, C needs both a stack and a heap, but Forth only needs a stack.
@@ -547,8 +547,8 @@ The optimized intermediate code from the previous step is converted to equivalen
 </div>
 </div>
 
-<div id="outline-container-org64705fe" class="outline-3">
-<h3 id="org64705fe"><span class="section-number-3">1.3.</span> Classification of Languages</h3>
+<div id="outline-container-org8ef74c0" class="outline-3">
+<h3 id="org8ef74c0"><span class="section-number-3">1.3.</span> Classification of Languages</h3>
 <div class="outline-text-3" id="text-1-3">
 <p>
 Classification by generation is done as
@@ -580,8 +580,8 @@ Some other types of langauges classification are
 </div>
 </div>
 
-<div id="outline-container-org6b8d51d" class="outline-2">
-<h2 id="org6b8d51d"><span class="section-number-2">2.</span> Lexical Analysis</h2>
+<div id="outline-container-orge5a2e33" class="outline-2">
+<h2 id="orge5a2e33"><span class="section-number-2">2.</span> Lexical Analysis</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li><p>
@@ -596,8 +596,8 @@ A <i>token</i> is a 2-tuple of a name and an attribute (The attribute is often o
 <li>A <i>lexeme</i> is a sequence of characters in the source code which matches a pattern. It is usually stored as the attribute of a token</li>
 </ul>
 </div>
-<div id="outline-container-orgf2d1fb8" class="outline-3">
-<h3 id="orgf2d1fb8"><span class="section-number-3">2.1.</span> Input Buffering</h3>
+<div id="outline-container-org8b43daf" class="outline-3">
+<h3 id="org8b43daf"><span class="section-number-3">2.1.</span> Input Buffering</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 Suppse our lexer sees the symbol \(<\), rather than simply declare it as a \(\langle \text{less than}, < \rangle\) token. It needs to look forward to check whether it is \(<=\), in which case it would be a \(\langle \text{less than equal}, <= \rangle\) token.
@@ -611,8 +611,8 @@ Similarly, on seeing characters \(if\), it can't simply declare it as \(\langle 
 Therefore, we need to buffer input to a lexer, so that it can look ahead at the input source code and make correct decisions
 </p>
 </div>
-<div id="outline-container-org2f1951d" class="outline-4">
-<h4 id="org2f1951d"><span class="section-number-4">2.1.1.</span> Two-Buffer arrangement</h4>
+<div id="outline-container-orgba113a8" class="outline-4">
+<h4 id="orgba113a8"><span class="section-number-4">2.1.1.</span> Two-Buffer arrangement</h4>
 <div class="outline-text-4" id="text-2-1-1">
 <p>
 We use two buffers for look ahead. Each buffer is of same size \(N\) (usually we use 4096 bytes for a single buffer).
@@ -627,8 +627,8 @@ We use two buffers for look ahead. Each buffer is of same size \(N\) (usually we
 </div>
 </div>
 
-<div id="outline-container-org27982d5" class="outline-3">
-<h3 id="org27982d5"><span class="section-number-3">2.2.</span> Regular Expressions</h3>
+<div id="outline-container-org4ccc7f9" class="outline-3">
+<h3 id="org4ccc7f9"><span class="section-number-3">2.2.</span> Regular Expressions</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 We will use regular expressions to match lexemes. We use regular expression from automata theory, not those which are used in programming usually
@@ -654,8 +654,8 @@ Rather than using a \(\cup\) we may also use \(|\) symbol. This will shorten the
 \[ letter (letter | digit)* \]
 </p>
 </div>
-<div id="outline-container-orgf9f660d" class="outline-4">
-<h4 id="orgf9f660d"><span class="section-number-4">2.2.1.</span> Properties of regular expressions</h4>
+<div id="outline-container-org7ef746f" class="outline-4">
+<h4 id="org7ef746f"><span class="section-number-4">2.2.1.</span> Properties of regular expressions</h4>
 <div class="outline-text-4" id="text-2-2-1">
 <p>
 Some properties that help when working with regular expressions are
@@ -718,8 +718,8 @@ Some properties that help when working with regular expressions are
 </table>
 </div>
 </div>
-<div id="outline-container-org5118335" class="outline-4">
-<h4 id="org5118335"><span class="section-number-4">2.2.2.</span> Regular definitions</h4>
+<div id="outline-container-orgd961862" class="outline-4">
+<h4 id="orgd961862"><span class="section-number-4">2.2.2.</span> Regular definitions</h4>
 <div class="outline-text-4" id="text-2-2-2">
 <p>
 Rather than writing large regular expressions, we will break a single regular expression into smaller definitions
@@ -757,8 +757,8 @@ Another example is regular definitions to match all floats, including the floats
 </div>
 </div>
 
-<div id="outline-container-orge5750f8" class="outline-4">
-<h4 id="orge5750f8"><span class="section-number-4">2.2.3.</span> Extensions to regular expressions</h4>
+<div id="outline-container-org9b52e2e" class="outline-4">
+<h4 id="org9b52e2e"><span class="section-number-4">2.2.3.</span> Extensions to regular expressions</h4>
 <div class="outline-text-4" id="text-2-2-3">
 <p>
 There are three common extensions to regular expressions
@@ -816,15 +816,15 @@ There are three common extensions to regular expressions
 </div>
 </div>
 
-<div id="outline-container-org06be5c6" class="outline-2">
-<h2 id="org06be5c6"><span class="section-number-2">3.</span> Syntax Analysis (Parsing)</h2>
+<div id="outline-container-orgce6fdf5" class="outline-2">
+<h2 id="orgce6fdf5"><span class="section-number-2">3.</span> Syntax Analysis (Parsing)</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 Parsers can be divided into three categories : universal, top-down and bottom-up. Universal parsers such as CYK can parse any context-free grammer. Whereas top-down and bottom-up grammer only parse a subset of all context-free grammers, usually LL and LR grammers. But we usually only use top-down and bottom-up parsers for compilers since universal parsers are very slow and LL/LR grammers are sufficient for syntax analysis.
 </p>
 </div>
-<div id="outline-container-org47f9bc0" class="outline-3">
-<h3 id="org47f9bc0"><span class="section-number-3">3.1.</span> Context-free grammers</h3>
+<div id="outline-container-org089c617" class="outline-3">
+<h3 id="org089c617"><span class="section-number-3">3.1.</span> Context-free grammers</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
 A derivation in a CFG is shown by
@@ -838,8 +838,8 @@ A derivation in a CFG is shown by
 Here, \(\alpha\) is an indermediate in the derivation and is called a <i>sentinal</i>
 </p>
 </div>
-<div id="outline-container-org2b172c6" class="outline-4">
-<h4 id="org2b172c6"><span class="section-number-4">3.1.1.</span> Rightmost derivations</h4>
+<div id="outline-container-org079f070" class="outline-4">
+<h4 id="org079f070"><span class="section-number-4">3.1.1.</span> Rightmost derivations</h4>
 <div class="outline-text-4" id="text-3-1-1">
 <p>
 When deriving sentinals, if we always select the rightmost terminal for next step in derivation, it is called <i>rightmost derivations</i> also called <i>cannonical derivations</i>
@@ -858,8 +858,8 @@ Here, \(\alpha\) is the final derived string. We can show steps of rightmost der
 </p>
 </div>
 </div>
-<div id="outline-container-org54ff9ce" class="outline-4">
-<h4 id="org54ff9ce"><span class="section-number-4">3.1.2.</span> Leftmost derivations</h4>
+<div id="outline-container-org8f1382a" class="outline-4">
+<h4 id="org8f1382a"><span class="section-number-4">3.1.2.</span> Leftmost derivations</h4>
 <div class="outline-text-4" id="text-3-1-2">
 <p>
 In leftmost derivation, we will always choose the leftmost non-terminal to replace during the derivation process.
@@ -879,8 +879,8 @@ The same example we saw before is derived using leftmost derivatives as
 </div>
 </div>
 
-<div id="outline-container-org12ba436" class="outline-4">
-<h4 id="org12ba436"><span class="section-number-4">3.1.3.</span> Ambiguity</h4>
+<div id="outline-container-org5dd2f86" class="outline-4">
+<h4 id="org5dd2f86"><span class="section-number-4">3.1.3.</span> Ambiguity</h4>
 <div class="outline-text-4" id="text-3-1-3">
 <p>
 A context-free grammer is said to be ambiguous if there exists two different parse trees for the same final derived string. This means that there is some other set of steps that could have been taken during derivation to reach the same string. Example, for the grammer
@@ -910,15 +910,15 @@ and
 This gives two different parse trees
 </p>
 
-<div id="orgc7da46e" class="figure">
+<div id="org1fb713e" class="figure">
 <p><img src="Syntax_Analysis_(Parsing)/2023-12-21_17-35-36_Untitled-2023-12-13-1318.png" alt="2023-12-21_17-35-36_Untitled-2023-12-13-1318.png" />
 </p>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org082ce5c" class="outline-4">
-<h4 id="org082ce5c"><span class="section-number-4">3.1.4.</span> Eliminating Ambiguity</h4>
+<div id="outline-container-orgb81235d" class="outline-4">
+<h4 id="orgb81235d"><span class="section-number-4">3.1.4.</span> Eliminating Ambiguity</h4>
 <div class="outline-text-4" id="text-3-1-4">
 <p>
 There is no guaranteed algorithm that can remove all ambiguity from a grammer. But if we find a ambiguity in our grammer, we can remove it by hand.
@@ -938,15 +938,15 @@ Let's take the previous example; we know that for the above we want the first pa
 This will lead to a single parse tree for sentence \(id + id * id\)
 </p>
 
-<div id="orgd3d420e" class="figure">
+<div id="org0200c51" class="figure">
 <p><img src="Syntax_Analysis_(Parsing)/2023-12-21_20-27-25_Untitled-2023-12-13-1318.png" alt="2023-12-21_20-27-25_Untitled-2023-12-13-1318.png" />
 </p>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org6aeb842" class="outline-4">
-<h4 id="org6aeb842"><span class="section-number-4">3.1.5.</span> Elimination of Left Recursion</h4>
+<div id="outline-container-org718ad09" class="outline-4">
+<h4 id="org718ad09"><span class="section-number-4">3.1.5.</span> Elimination of Left Recursion</h4>
 <div class="outline-text-4" id="text-3-1-5">
 <p>
 A grammer is left recursive is
@@ -962,8 +962,8 @@ A grammer is left recursive is
 <li>We need to eliminate left recursion when using top-down parsing. Since top-down parsing does not support left recursion in the grammer</li>
 </ul>
 </div>
-<div id="outline-container-orgeacaadd" class="outline-5">
-<h5 id="orgeacaadd"><span class="section-number-5">3.1.5.1.</span> Eliminating direct left recursion</h5>
+<div id="outline-container-org6354e60" class="outline-5">
+<h5 id="org6354e60"><span class="section-number-5">3.1.5.1.</span> Eliminating direct left recursion</h5>
 <div class="outline-text-5" id="text-3-1-5-1">
 <p>
 If there is a rule of type
@@ -996,8 +996,8 @@ Replace these \(A\) productions with
 </div>
 </div>
 
-<div id="outline-container-org0d2e96c" class="outline-5">
-<h5 id="org0d2e96c"><span class="section-number-5">3.1.5.2.</span> Eliminating all left recursion</h5>
+<div id="outline-container-orge0ed896" class="outline-5">
+<h5 id="orge0ed896"><span class="section-number-5">3.1.5.2.</span> Eliminating all left recursion</h5>
 <div class="outline-text-5" id="text-3-1-5-2">
 <p>
 After eliminating all direct left recursion, there may still be indirect left recursion. The algorithm to eliminate all left recursions is as follows
@@ -1018,8 +1018,8 @@ After eliminating all direct left recursion, there may still be indirect left re
 </div>
 </div>
 
-<div id="outline-container-org19b0713" class="outline-3">
-<h3 id="org19b0713"><span class="section-number-3">3.2.</span> FIRST and FOLLOW functions</h3>
+<div id="outline-container-org2a983a5" class="outline-3">
+<h3 id="org2a983a5"><span class="section-number-3">3.2.</span> FIRST and FOLLOW functions</h3>
 <div class="outline-text-3" id="text-3-2">
 <p>
 These two functions are used in both top-down parsing and bottom-up parsing.
@@ -1029,8 +1029,8 @@ These two functions are used in both top-down parsing and bottom-up parsing.
 <li>these functions can be used for panic-mode error recovery for synchronizing</li>
 </ul>
 </div>
-<div id="outline-container-org970e063" class="outline-4">
-<h4 id="org970e063"><span class="section-number-4">3.2.1.</span> FIRST function</h4>
+<div id="outline-container-org86a355d" class="outline-4">
+<h4 id="org86a355d"><span class="section-number-4">3.2.1.</span> FIRST function</h4>
 <div class="outline-text-4" id="text-3-2-1">
 <p>
 \(FIRST(\alpha)\) is a function that will take input \(\alpha\) which is either a terminals or non-terminals and returns a set of terminals. The set of terminals is the first terminal in strings that can be derived from \(\alpha\)
@@ -1043,8 +1043,8 @@ The algorithm to compute \(FIRST(X)\) is as follows
 </p>
 </div>
 
-<div id="outline-container-orgd51f681" class="outline-5">
-<h5 id="orgd51f681"><span class="section-number-5">3.2.1.1.</span> If \(X\) is a terminal</h5>
+<div id="outline-container-org88f1b1a" class="outline-5">
+<h5 id="org88f1b1a"><span class="section-number-5">3.2.1.1.</span> If \(X\) is a terminal</h5>
 <div class="outline-text-5" id="text-3-2-1-1">
 <p>
 If \(X\) is a terminal, then \(FIRST(X) = \{X\}\)
@@ -1052,8 +1052,8 @@ If \(X\) is a terminal, then \(FIRST(X) = \{X\}\)
 </div>
 </div>
 
-<div id="outline-container-orgd3f9f96" class="outline-5">
-<h5 id="orgd3f9f96"><span class="section-number-5">3.2.1.2.</span> If \(X\) is a non-terminal</h5>
+<div id="outline-container-orgc4d95c9" class="outline-5">
+<h5 id="orgc4d95c9"><span class="section-number-5">3.2.1.2.</span> If \(X\) is a non-terminal</h5>
 <div class="outline-text-5" id="text-3-2-1-2">
 <p>
 IF \(X\) is a non-terminal then
@@ -1065,8 +1065,8 @@ IF \(X\) is a non-terminal then
 </ol>
 </div>
 </div>
-<div id="outline-container-orgf618750" class="outline-5">
-<h5 id="orgf618750"><span class="section-number-5">3.2.1.3.</span> For string \(X_1 X_2 ... X_n\) of terminals and non-terminals</h5>
+<div id="outline-container-org77e524b" class="outline-5">
+<h5 id="org77e524b"><span class="section-number-5">3.2.1.3.</span> For string \(X_1 X_2 ... X_n\) of terminals and non-terminals</h5>
 <div class="outline-text-5" id="text-3-2-1-3">
 <p>
 We can also define \(FIRST(X_1 X_2 ... X_n)\) where each \(X_i\) can be a terminal or non-terminal.
@@ -1078,8 +1078,8 @@ We can also define \(FIRST(X_1 X_2 ... X_n)\) where each \(X_i\) can be a termin
 </div>
 </div>
 </div>
-<div id="outline-container-org481c7cf" class="outline-4">
-<h4 id="org481c7cf"><span class="section-number-4">3.2.2.</span> FOLLOW function</h4>
+<div id="outline-container-org7dfd642" class="outline-4">
+<h4 id="org7dfd642"><span class="section-number-4">3.2.2.</span> FOLLOW function</h4>
 <div class="outline-text-4" id="text-3-2-2">
 <p>
 The \(FOLLOW(A)\) excepts a non-terminal \(A\), and returns a set of terminals that appear immediately to the right of this terminal in sentinals (sentinals are intermediate forms during derivation).
@@ -1099,8 +1099,8 @@ The algorithm to compute \(FOLLOW(A)\) is as follows
 </div>
 </div>
 </div>
-<div id="outline-container-org7cacb89" class="outline-3">
-<h3 id="org7cacb89"><span class="section-number-3">3.3.</span> Top-Down Parsing</h3>
+<div id="outline-container-org1e5b878" class="outline-3">
+<h3 id="org1e5b878"><span class="section-number-3">3.3.</span> Top-Down Parsing</h3>
 <div class="outline-text-3" id="text-3-3">
 <p>
 A common technique for top-down parsing is recursive descent parsing.
@@ -1114,8 +1114,8 @@ A common technique for top-down parsing is recursive descent parsing.
 </ul></li>
 </ul>
 </div>
-<div id="outline-container-orgf70e634" class="outline-4">
-<h4 id="orgf70e634"><span class="section-number-4">3.3.1.</span> Recursive descent parser</h4>
+<div id="outline-container-org616da92" class="outline-4">
+<h4 id="org616da92"><span class="section-number-4">3.3.1.</span> Recursive descent parser</h4>
 <div class="outline-text-4" id="text-3-3-1">
 <p>
 In recursive-descent parser, we have a procedure for each non-terminal in the grammer. This procedure will know all of the productions of the grammer.
@@ -1139,8 +1139,8 @@ For some general context-free grammers this can cause a lot of backtracking maki
 </div>
 </div>
 
-<div id="outline-container-org35523b2" class="outline-4">
-<h4 id="org35523b2"><span class="section-number-4">3.3.2.</span> LL(1) Grammars</h4>
+<div id="outline-container-orgbf1b659" class="outline-4">
+<h4 id="orgbf1b659"><span class="section-number-4">3.3.2.</span> LL(1) Grammars</h4>
 <div class="outline-text-4" id="text-3-3-2">
 <p>
 The LL(1) grammer is the grammer which can be parsed by a recursive descent (predictive) parser.
@@ -1160,8 +1160,8 @@ A grammer is LL(1) if for any production of type \(A \rightarrow \alpha | \beta\
 </ol>
 </div>
 </div>
-<div id="outline-container-org466fe89" class="outline-4">
-<h4 id="org466fe89"><span class="section-number-4">3.3.3.</span> Parsing Table</h4>
+<div id="outline-container-orge25e480" class="outline-4">
+<h4 id="orge25e480"><span class="section-number-4">3.3.3.</span> Parsing Table</h4>
 <div class="outline-text-4" id="text-3-3-3">
 <p>
 We can create a parsing table using the FIRST and FOLLOW functions. The algorithm for a parsing table \(M\) is as follows
@@ -1295,8 +1295,8 @@ Then the parsing table is
 </div>
 </div>
 
-<div id="outline-container-org04f6aea" class="outline-4">
-<h4 id="org04f6aea"><span class="section-number-4">3.3.4.</span> Nonrecursive Predictive Parsing</h4>
+<div id="outline-container-org5d3615b" class="outline-4">
+<h4 id="org5d3615b"><span class="section-number-4">3.3.4.</span> Nonrecursive Predictive Parsing</h4>
 <div class="outline-text-4" id="text-3-3-4">
 <p>
 Using the parsing table, we can parse LL(1) grammer without recursion. For this we use a stack to parse the input tokens list. The algorithm works as follows
@@ -1473,15 +1473,15 @@ Then the process of parsing is
 </div>
 </div>
 </div>
-<div id="outline-container-org4ee53bd" class="outline-3">
-<h3 id="org4ee53bd"><span class="section-number-3">3.4.</span> Bottom-Up Parsing</h3>
+<div id="outline-container-orgf23031d" class="outline-3">
+<h3 id="orgf23031d"><span class="section-number-3">3.4.</span> Bottom-Up Parsing</h3>
 <div class="outline-text-3" id="text-3-4">
 <p>
 A common method of bottom-up parsing is shift reduce parsing. The class of grammers for which we can build a shift-reduce parser are called LR grammers.
 </p>
 </div>
-<div id="outline-container-org222c63b" class="outline-4">
-<h4 id="org222c63b"><span class="section-number-4">3.4.1.</span> Reduction</h4>
+<div id="outline-container-org026fdd3" class="outline-4">
+<h4 id="org026fdd3"><span class="section-number-4">3.4.1.</span> Reduction</h4>
 <div class="outline-text-4" id="text-3-4-1">
 <p>
 In every reduction step, we will take leftmost current symbols (terminal or non-terminal) from input and replace with a non-terminal using one of the productions.
@@ -1505,8 +1505,8 @@ Example,
 </p>
 </div>
 </div>
-<div id="outline-container-orgb07e599" class="outline-4">
-<h4 id="orgb07e599"><span class="section-number-4">3.4.2.</span> Handle Pruning</h4>
+<div id="outline-container-orgaf9f3fd" class="outline-4">
+<h4 id="orgaf9f3fd"><span class="section-number-4">3.4.2.</span> Handle Pruning</h4>
 <div class="outline-text-4" id="text-3-4-2">
 <p>
 The handle is a substring of symbols (terminals or non-terminals) in the sentinal form that matches the RHS of one of the production.
@@ -1575,8 +1575,8 @@ Formally, if \(S \overset{*}{\underset{rm}\Rightarrow} \alpha A w \underset{rm}\
 </ul>
 </div>
 </div>
-<div id="outline-container-orgb371abf" class="outline-4">
-<h4 id="orgb371abf"><span class="section-number-4">3.4.3.</span> Shift-reduce parsing</h4>
+<div id="outline-container-orgc87cc11" class="outline-4">
+<h4 id="orgc87cc11"><span class="section-number-4">3.4.3.</span> Shift-reduce parsing</h4>
 <div class="outline-text-4" id="text-3-4-3">
 <p>
 For shift-reduce parsing, we a stack and a input buffer. The input buffer holds the input string and stack holds the grammar symbols.
@@ -1678,8 +1678,8 @@ Therefore, we can have four operations a shift-reduce parser can do
 </div>
 </div>
 
-<div id="outline-container-orga2ca643" class="outline-4">
-<h4 id="orga2ca643"><span class="section-number-4">3.4.4.</span> Conflicts during shift-reduce parsing</h4>
+<div id="outline-container-org95d0e80" class="outline-4">
+<h4 id="org95d0e80"><span class="section-number-4">3.4.4.</span> Conflicts during shift-reduce parsing</h4>
 <div class="outline-text-4" id="text-3-4-4">
 <p>
 There can be two types of coflicts that happen in a shift-reduce parser.
@@ -1692,8 +1692,8 @@ There can be two types of coflicts that happen in a shift-reduce parser.
 <b>Grammers in which these conflicts can occur are non-LR grammers</b>.
 </p>
 </div>
-<div id="outline-container-org36b2f27" class="outline-5">
-<h5 id="org36b2f27"><span class="section-number-5">3.4.4.1.</span> shift/reduce conflict</h5>
+<div id="outline-container-org28d0330" class="outline-5">
+<h5 id="org28d0330"><span class="section-number-5">3.4.4.1.</span> shift/reduce conflict</h5>
 <div class="outline-text-5" id="text-3-4-4-1">
 <p>
 All ambiguous grammers are non-LR grammers. Suppose we have a langauge with dangling-else to chain if-else as shown in following grammar
@@ -1755,8 +1755,8 @@ Since both shift and reduce are valid next operations, this is a shift/reduce co
 </div>
 </div>
 
-<div id="outline-container-org337675b" class="outline-5">
-<h5 id="org337675b"><span class="section-number-5">3.4.4.2.</span> reduce/reduce conflict</h5>
+<div id="outline-container-org595041a" class="outline-5">
+<h5 id="org595041a"><span class="section-number-5">3.4.4.2.</span> reduce/reduce conflict</h5>
 <div class="outline-text-5" id="text-3-4-4-2">
 <p>
 Suppose our stack content is \(\alpha\) and we have two productions \(A \rightarrow \alpha\) and \(B \rightarrow \alpha\). We don't know which of the production is the correct handle. This is a reduce/reduce conflict
@@ -1770,11 +1770,6 @@ The reduce/reduce conflict is resolved by increasing the lookahead of the parsar
 </div>
 </div>
 </div>
-</div>
-<div id="postamble" class="status">
-<p class="author">Author: Anmol Nawani</p>
-<p class="date">Created: 2024-11-29 Fri 21:24</p>
-<p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
 </html>

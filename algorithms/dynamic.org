@@ -750,10 +750,20 @@ Now, we can simply print solution by simply inferring the meaning of these arrow
       print_subsequence(i, j - 1);
   }
 #+END_SRC
-# TODO : maybe add one of those fancy table representation of sol[,] and m[,] table combined
+
+[[file:Dynamic_Programming/2024-12-03_18-28-15_Screenshot 2024-12-03 182603.png]]
 
 ** 0/1 knapsack problem
-# TODO : explanation of problem
+Suppose we have a sack with a weight limit and are given some items. We can either take an item or leave it.
++ Taking item means our available weight capacity for sack goes down by weight of item. But we get the profit
++ Leaving the item means we save weight capacity. But lose on the profit of that item.
+Taking item is shown by a (1) and leaving an item is shown by a (0). Thus the name 0/1 knapsack.
+
+The goal is to maximize our profit.
+
+#+DOWNLOADED: file:C%3A/Users/nawan/Pictures/Screenshots/Screenshot%202024-12-03%20183413.png @ 2024-12-03 18:34:18
+[[file:Dynamic_Programming/2024-12-03_18-34-18_Screenshot 2024-12-03 183413.png]]
+
 *** Analyzing problem
 Suppose the items are stored in struct
 #+BEGIN_SRC c
@@ -886,7 +896,6 @@ The traversal is done in this sequence
 #+end_src
 
 *** Constructing solution
-# TODO : maybe add sol[,] in code implementation here (probably not needed)
 In order to construct solution, we will store for every calculated $m[n,W]$ it's associated $sol[n,W]$ which will store whether the item $n$ was included or excluded
 + If $m[n,W]$ has $n$ included, then we will store $sol[n,W]$ as $1$
 + If $m[n,W]$ has $n$ excluded, then we will store $sol[n,W]$ as $0$
@@ -909,8 +918,12 @@ Then the solution is printed as
 #+end_src
 
 ** Floyd-Warshall algorithm
-# TODO : Intro to algorithm and what is does
-# TODO : Detecting negetive weight cycles (if any of the diagonal element in sp[,] is negative there is a negative weight cycle)
+Floyd-Warshall algorithm is an /all-source shortest path algorithm/. Meaning, it will find the shortest path between every pair of node on the graph in a single run. So for use cases where we may need shortest path from every node to every other node (like maps app) this is the fastest algorithm for that.
+
+Another benefit is that it can /work with graphs having negetive edges/. It can also /detect negetive edges/.
++ This algorithm has time complexity of $\theta (V^3)$
++ This algorithm has space complexity of $\theta (V^2)$
+
 *** Analyzing problem
 Suppose a graph has $N$ nodes which are labeled $1,2,3,...,N$. The function which tells the cost of shortest path between any two nodes $i$ and $j$ is $sp(i,j,k)$ when only nodes in set ${1,2,...,k}$ are used to construct the path
 + If $k = 0$, then the set of allowed nodes in path is $\{ \}$, therefore the shortest path is simply given by $sp(i,j,0) = w(i,j)$. Here, $w(i,j)$ is weight of edge between $i$ and $j$ if it exists else it is $\infty$. *Also $w(i,i) = 0$.*
@@ -1031,3 +1044,8 @@ The algorithm to then print the path is simple
     }while(sol[i,j] != i);
   }
 #+end_src
+
+*** Detecting negetive cycle
+After the floyd-warshall algorithm, if any of the diagonal element in solution matrix is non-zero (negetive) then we can say that there is a negetive cycle.
++ If every (i, i) is zero then no negetive weight cycle
++ If any (i, i) < 0, then there is negetive weight cycle

@@ -103,6 +103,37 @@ or
 
 Of the two possible time complexities, we consider the one with higher growth rate in the big-oh notation.
 
+** Alternative to tree
+An alternative to tree method which can determine time complexity in only two levels and then applying master's theorem is as follows
+
+Suppose our recursion problem is as follows
+
+\[ T(n) = T \left( \frac{n}{a} \right) + T \left(\frac{n}{b} \right) + T\left(\frac{n}{c} \right) + f(n) \]
+
+And $f(n) = \theta (n^k)$
+
++ If $f(n) > f(n/a) + f(n/b) + f(n/c)$
+  + root is dominant
+  + $T(n) = \theta (n^k)$
++ If $f(n) = f(n/a) + f(n/b) + f(n/c)$
+  + root equal to leaves
+  + $T(n) = \theta (n^k log_b (n))$
++ If $f(n) < f(n/a) + f(n/b) + f(n/c)$
+  + leaves are dominant
+  + $T(n) = \theta (n^{log_b (a)})$
+
+*Example*, find the time complexity of
+
+\[ T(n) = T(n/2) + T(2n/5) + 7n \]
+
+/Solution/, here $f(n) = \theta (n^1)$
+
++ The root is $f(n) = 7n$
++ The leaves are $f(n/2) + f(2n/5) = 7n/2 + 14n/5 = 6.3n$
+
+[[file:Tree_method_for_time_complexity_of_recursive_algorithms/2024-12-06_00-38-43_Screenshot 2024-12-06 003837.png]]
+
+So the root is dominant, therefore $T(n) = \theta (n^1) = \theta (n)$
 * Space complexity
 The amount of memory used by the algorithm to execute and produce the result for a given input size is space complexity. Similar to time complexity, when comparing two algorithms space complexity is usually represented as the growth rate of memory used with respect to input size. The space complexity includes
 + *Input space* : The amount of memory used by the inputs to the algorithm.

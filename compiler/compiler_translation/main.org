@@ -1,6 +1,5 @@
 #+TITLE: Compilers
 #+OPTIONS: H:4
-#+html_head: <link rel="stylesheet" href="../../common/org.css">
 
 * Syntax-Directed Translation and Syntax-Directed Definition
 We have two different ways of having semantic specifications for translation of our source code
@@ -775,3 +774,13 @@ An optimization which is done to increase spatial locality. When we start lookin
 This strategy can be paired with both first-fit and best-fit to get the closest free-space in heap for new allocation.
 
 **** Managing and Coalescing Free Space
+# TODO
+
+* Code Optimization
+After we get the three address code from frontend of the compiler; before we generate the target code we will optimize the three address code.
+
+Optimization is performing transformations to the IR that
++ preserve the semantics of program
++ improves execution efficiency of program (hopefully)
+The execution efficiency can be both size of generated code as well as running time.
+

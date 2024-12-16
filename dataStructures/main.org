@@ -1,7 +1,6 @@
 #+TITLE: Data Structures
 #+AUTHOR: Anmol Nawani
 #+UID: https://git.lomna.xyz
-#+html_head: <link rel="stylesheet" href="../common/org.css">
 #+OPTIONS: H:4
 
 * Stack
@@ -611,7 +610,6 @@ Insertion is simple in a binary search tree. We search for the node we want to i
 #+END_SRC
 The recursive algorithm for inserting into a Binary search tree is simpler than the iterative algorithm.
  
- 
 The algorithm for iterative insertion is
 #+BEGIN_SRC c
   void
@@ -639,9 +637,9 @@ The algorithm for iterative insertion is
       (*trailing_node)->right = node;
   }
 #+END_SRC
+
 *** Deletion
 Deletion in Binary Search Trees is tricky because we need to delete nodes in a way that the property of the Binary Search Tree holds after the deletion of the node. So we first have to remove the node from the tree before we can free it.
- 
  
 There are *four different cases* which can occur when we try to delete a node. All four have a different method to handle them. These four cases relate to how many children the node which we want to delete has.
  

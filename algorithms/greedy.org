@@ -249,7 +249,7 @@ For a weighted undirected graph, the spanning tree the sum of whose edge costs i
 *** Kruskal's algorithm
 This algorithm works by adding safe edges (i.e, edges which won't form a cycle) to a growing spanning tree. For a graph $G = (V,E)$, it works as follows.
 
-*Simply put*, the algorithm is greedy for small weight edges. It will start selecting edges from smallest weight and only leave an edge if it is causing a cycle. Example
+*Simply put*, the algorithm is greedy for small weight edges. It will start selecting edges from smallest weight and only leave an edge if it is causing a cycle. Example,
 
 TODO : Add images here
 

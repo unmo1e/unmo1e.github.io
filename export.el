@@ -10,12 +10,21 @@
 ;; stop creating ~ files
 (setq make-backup-files nil) 
 
-;; In elisp, default-directory is the current directory
+;; load stuff from common folder
 (add-to-list 'load-path "common")
 (require 'htmlize)
 
+;; theme for code blocks
 (load-theme 'tsdh-light)
 
+;; Adding stylesheet
+(setq org-html-head-extra "<link id=\"css-link\" rel=\"stylesheet\" href=\"/common/org.css\"> <script src=\"/common/webpage.js\"></script>")
+
+;; remove postamble
+(eval-after-load "ox-html"
+  (setq org-html-postamble nil))
+
+;; exporting
 (message "[*] Exporting homepage")
 (find-file "index.org")
 (org-html-export-to-html)

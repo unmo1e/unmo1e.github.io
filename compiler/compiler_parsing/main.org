@@ -3,7 +3,6 @@
 #+AUTHOR: Anmol Nawani
 #+UID: https://git.lomna.xyz
 #+OPTIONS: H:4
-#+html_head: <link rel="stylesheet" href="../../common/org.css">
 
 * Language Processors
 Programming Languages are human readable and can't be executed by a machine. Therefore, we need to process them in some form to execute a program written in a programming language. A language processor is of two broad categories

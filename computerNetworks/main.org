@@ -3,7 +3,6 @@
 #+AUTHOR: Anmol Nawani
 #+UID: https://git.lomna.xyz
 #+OPTIONS: H:4
-#+html_head: <link rel="stylesheet" href="../common/org.css">
 
 @@html:<hr />@@
 * Introduction
